@@ -1,0 +1,130 @@
+{
+  "log_in": "Login",
+  "login": "Login",
+  "mobileNo": "Mobile No",
+  "password": "Password",
+  "login_desc": "Please enter your credentials below.",
+  "forgot_password": "Forgot password?",
+  "reset_now": "Reset now",
+
+  "mobile_reqd": "Mobile number is required",
+  "enter_valid_mobile_no": "Enter a valid 10-digit mobile number",
+  "password_reqd": "Password is required",
+  "password_must_long": "Password must be at least 8 characters long",
+  "incorrect_mobile_or_password": "Mobile number or Password is incorrect",
+  "login_success": "Login successful",
+
+  "registration": "Registration",
+  "user_registration": "User Registration",
+  "reg_no": "Register Number",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "house_name": "House Name",
+  "place": "Place",
+  "gender": "Gender",
+  "age": "Age",
+  "dob": "Date of Birth",
+  "job": "Job",
+  "income": "Annual Income",
+  "blood_group": "Blood Group",
+  "pending_amt": "Pending Amount",
+  "is_expat":"Is Expat (Pravasi) ?",
+  "country":"Country",
+
+  "submit": "Submit",
+
+  "male": "Male",
+  "female": "Female",
+  "others": "Others",
+
+  "a_pos": "A positive (A+)",
+  "a_neg": "A negative (A-)",
+  "b_pos": "B positive (B+)",
+  "b_neg": "B negative (B-)",
+  "ab_pos": "AB positive (AB+)",
+  "ab_neg": "AB negative (AB-)",
+  "o_pos": "O positive (O+)",
+  "o_neg": "O negative (O-)",
+
+
+  "below_lakh": "Below 1 Lakh",
+  "one_to_two_nine_lakh": "1,00,000 to 2,99,999 Lakhs",
+  "three_to_four_nine_lakh": "3,00,000 to 4,99,999 Lakhs",
+  "five_to_six_nine_lakh": "5,00,000 to 6,99,999 Lakhs",
+  "seven_to_eight_nine_lakh": "7,00,000 to 8,99,999 Lakhs",
+  "nine_to_nine_nine_lakh": "9,00,000 to 9,99,999 Lakhs",
+  "above_ten_lakh": "10 Lakhs and above",
+
+  "reg_no_reqd": "Register number required",
+  "fname_reqd": "First name required",
+  "lname_reqd": "Last name required",
+  "house_name_reqd": "House name required",
+  "place_reqd": "Place required",
+  "gender_reqd": "Gender required",
+  "age_reqd": "Age required",
+  "age_invalid": "Age should be between 1 and 130",
+  "job_reqd": "Job required",
+  "income_reqd": "Income required",
+  "blood_reqd": "Blood group required",
+  "country_reqd": "Country required",
+  "district_reqd": "District required",
+  "state_reqd": "State required",
+
+  "house_holder_name_reqd": "Householder name required",
+  "mahall_name_reqd": "Mahall name required",
+
+  "password_mismatch": "Password Mismatch!!\nPlease check the password",
+  "password_must_different": "New password must be different from current password",
+
+
+  "thank_you": "Thank You",
+  "user_reg_success": "User registration successful",
+  "house_reg_success": "House registration successful",
+  "register_another": "Register another",
+  "or": "or",
+  "go_home": "Go Home",
+
+
+  "committee_registration": "Committee Registration",
+
+  "president": "President",
+  "secretary": "Secretary",
+  "treasurer": "Treasurer",
+
+  "house_registration": "House Registration",
+  "house_holder_name": "Householder Name",
+
+  "mahall_name": "Mahall Name",
+
+  "district":"District",
+
+  "alappuzha":"Alappuzha",
+  "ernakulam":"Ernakulam",
+  "idukki":"Idukki",
+  "kannur":"Kannur",
+  "kasaragod":"Kasaragod",
+  "kollam":"Kollam",
+  "kottayam":"Kottayam",
+  "kozhikode":"Kozhikode",
+  "malappuram":"Malappuram",
+  "palakkad":"Palakkad",
+  "pathanamthitta":"Pathanamthitta",
+  "thiruvananthapuram":"Thiruvananthapuram",
+  "thrissur":"Thrissur",
+  "wayanad":"Wayanad",
+
+  "delete":"Delete",
+  "cancel":"Cancel",
+  "are_you_sure_to_delete":"Are you sure to delete?",
+
+  "state":"State",
+
+  "reset_password":"Reset Password",
+
+  "current_password":"Current Password",
+  "new_password":"New Password",
+  "confirm_password":"Confirm Password",
+
+  "password_reset_success":"Password reset successful"
+
+}

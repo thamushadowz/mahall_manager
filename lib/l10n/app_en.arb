@@ -72,6 +72,8 @@
 
   "house_holder_name_reqd": "Householder name required",
   "mahall_name_reqd": "Mahall name required",
+  "mahall_address_reqd": "Mahall address required",
+  "pin_code_reqd": "Pincode required",
 
   "password_mismatch": "Password Mismatch!!\nPlease check the password",
   "password_must_different": "New password must be different from current password",
@@ -95,6 +97,8 @@
   "house_holder_name": "Householder Name",
 
   "mahall_name": "Mahall Name",
+  "mahall_address": "Address",
+  "mahall_pin": "Pin Code",
 
   "district":"District",
 
@@ -125,6 +129,10 @@
   "new_password":"New Password",
   "confirm_password":"Confirm Password",
 
-  "password_reset_success":"Password reset successful"
+  "password_reset_success":"Password reset successful",
+
+  "contact_us":"Contact Us",
+
+  "log_out":"Logout"
 
 }

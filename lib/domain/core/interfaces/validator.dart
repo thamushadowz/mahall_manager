@@ -152,4 +152,18 @@ class Validators {
     }
     return null;
   }
+
+  static String? validateMahallAddress(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppLocalizations.of(Get.context!)!.mahall_address_reqd;
+    }
+    return null;
+  }
+
+  static String? validateMahallPin(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppLocalizations.of(Get.context!)!.pin_code_reqd;
+    }
+    return null;
+  }
 }

@@ -14,6 +14,8 @@ dependencies:
   intl: any
   flutter: 
     sdk: flutter
+  url_launcher: ^6.3.1
+  fl_chart: ^0.69.0
 
 
 dev_dependencies: 

@@ -6,8 +6,20 @@ class CommitteeRegistrationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final RxBool isEditMode = false.obs;
+  final RxInt adminCode = 1.obs;
+  @override
+  void onInit() {
+    if (adminCode.value == 0) {
+      isEditMode.value = true;
+    } else {
+      isEditMode.value = false;
+    }
+    super.onInit();
+  }
 
   final mahallNameFocusNode = FocusNode();
+  final mahallAddressFocusNode = FocusNode();
+  final mahallPinFocusNode = FocusNode();
 
   final presidentFNameFocusNode = FocusNode();
   final secretaryFNameFocusNode = FocusNode();
@@ -26,6 +38,8 @@ class CommitteeRegistrationController extends GetxController {
   final treasurerPasswordFocusNode = FocusNode();
 
   final mahallNameController = TextEditingController();
+  final mahallAddressController = TextEditingController();
+  final mahallPinController = TextEditingController();
 
   final presidentFNameController = TextEditingController();
   final secretaryFNameController = TextEditingController();
@@ -73,6 +87,8 @@ class CommitteeRegistrationController extends GetxController {
 
   disposeAll() {
     mahallNameFocusNode.dispose();
+    mahallAddressFocusNode.dispose();
+    mahallPinFocusNode.dispose();
     presidentFNameFocusNode.dispose();
     secretaryFNameFocusNode.dispose();
     treasurerFNameFocusNode.dispose();
@@ -86,6 +102,8 @@ class CommitteeRegistrationController extends GetxController {
     secretaryPasswordFocusNode.dispose();
     treasurerPasswordFocusNode.dispose();
     mahallNameController.dispose();
+    mahallAddressController.dispose();
+    mahallPinController.dispose();
     presidentFNameController.dispose();
     secretaryFNameController.dispose();
     treasurerFNameController.dispose();

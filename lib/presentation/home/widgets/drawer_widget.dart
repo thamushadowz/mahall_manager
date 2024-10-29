@@ -96,6 +96,25 @@ class DrawerWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     CommonClickableTextWidget(
+                      icon: Icons.contact_phone_rounded,
+                      fontSize: AppMeasures.normalTextSize,
+                      fontWeight: AppMeasures.mediumWeight,
+                      textColor: AppColors.blueGrey,
+                      title: AppLocalizations.of(context)!.contact_us,
+                      onTap: () {
+                        Get.toNamed(Routes.CONTACT_US);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    Divider(
+                      height: 30,
+                      thickness: 2,
+                      indent: 15,
+                      endIndent: 15,
+                      color: AppColors.lightGrey,
+                    ),
+                    const SizedBox(height: 10),
+                    CommonClickableTextWidget(
                       icon: Icons.password_rounded,
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
@@ -107,19 +126,12 @@ class DrawerWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     CommonClickableTextWidget(
-                      fontSize: AppMeasures.bigTextSize,
+                      icon: Icons.logout_rounded,
+                      fontSize: AppMeasures.normalTextSize,
+                      fontWeight: AppMeasures.mediumWeight,
                       textColor: AppColors.blueGrey,
-                      title: 'Settings',
+                      title: AppLocalizations.of(context)!.log_out,
                       onTap: () {},
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Contact Us',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blueGrey,
-                      ),
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 
 import '../../config.dart';
@@ -61,6 +62,11 @@ class Nav {
       name: Routes.RESET_PASSWORD,
       page: () => const ResetPasswordScreen(),
       binding: ResetPasswordControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.CONTACT_US,
+      page: () => const ContactUsScreen(),
+      binding: ContactUsControllerBinding(),
     ),
   ];
 }

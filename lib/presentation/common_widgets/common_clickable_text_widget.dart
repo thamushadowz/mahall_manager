@@ -26,11 +26,13 @@ class CommonClickableTextWidget extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 20,
-            color: AppColors.blueGrey,
-          ),
+          icon == null
+              ? const SizedBox()
+              : Icon(
+                  icon,
+                  size: 20,
+                  color: AppColors.blueGrey,
+                ),
           const SizedBox(width: 10),
           Text(
             title,

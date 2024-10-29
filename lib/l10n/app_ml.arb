@@ -71,6 +71,8 @@
 
   "house_holder_name_reqd": "ഗൃഹനാഥന്റെ പേര് ആവശ്യമാണ്",
   "mahall_name_reqd": "മഹല്ലിന്റെ പേര് ആവശ്യമാണ്",
+    "mahall_address_reqd": "Mahall address required",
+    "pin_code_reqd": "Pincode required",
 
   "password_mismatch": "പാസ്സ്‌വേർഡ് പൊരുത്തക്കേട്!!\nദയവായി പാസ്‌വേഡ് പരിശോധിക്കുക",
   "password_must_different": "പുതിയ പാസ്‌വേഡ് നിലവിലെ പാസ്‌വേഡിൽ നിന്ന്\nവ്യത്യസ്തമായിരിക്കണം",
@@ -92,6 +94,8 @@
   "house_holder_name": "ഗൃഹനാഥന്റെ പേര്",
 
   "mahall_name": "മഹല്ലിന്റെ  പേര്",
+    "mahall_address": "Address",
+    "mahall_pin": "Pin Code",
 
   "district":"ജില്ല",
 
@@ -122,5 +126,9 @@
   "new_password":"പുതിയ പാസ്സ്‌വേർഡ്",
   "confirm_password":"പാസ്സ്‌വേർഡ് സ്ഥിരീകരിക്കുക",
 
-  "password_reset_success":"പാസ്സ്‌വേർഡ് മാറ്റൽ വിജയകരം"
+  "password_reset_success":"പാസ്സ്‌വേർഡ് മാറ്റൽ വിജയകരം",
+
+  "contact_us":"ബന്ധപ്പെടുക",
+
+  "log_out":"ലോഗ്ഔട്ട്"
 }

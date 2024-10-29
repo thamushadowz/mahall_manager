@@ -9,7 +9,6 @@ import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.
 
 import '../../domain/core/interfaces/validator.dart';
 import '../common_widgets/common_button_widget.dart';
-import '../common_widgets/common_delete_button_widget.dart';
 import '../common_widgets/common_text_form_field.dart';
 import '../common_widgets/common_text_widget.dart';
 import 'controllers/committee_registration.controller.dart';
@@ -23,73 +22,120 @@ class CommitteeRegistrationScreen
     return Scaffold(
       appBar: CommonAppbarWidget(
         actions: [
-          InkWell(
-            onTap: () {
-              controller.performEdit();
-              controller.isEditMode.value = !controller.isEditMode.value;
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: Obx(
-                () => Icon(controller.isEditMode.value
-                    ? Icons.edit_off_outlined
-                    : Icons.edit),
-              ),
-            ),
-          )
+          controller.adminCode.value == 0
+              ? const SizedBox()
+              : InkWell(
+                  onTap: () {
+                    controller.performEdit();
+                    controller.isEditMode.value = !controller.isEditMode.value;
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Obx(
+                      () => Icon(controller.isEditMode.value
+                          ? Icons.edit_off_outlined
+                          : Icons.edit),
+                    ),
+                  ),
+                )
         ],
         title: AppLocalizations.of(context)!.committee_registration,
       ),
-      body: Obx(
-        () => Container(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: controller.formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 5),
-                  CommonTextFormField(
-                      disabledLabelColor: controller.isEditMode.value
-                          ? AppColors.themeColor
-                          : AppColors.grey,
-                      enabled: controller.isEditMode.value,
-                      label: AppLocalizations.of(context)!.mahall_name,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(40),
-                      ],
-                      keyboardType: TextInputType.name,
-                      textController: controller.mahallNameController,
-                      focusNode: controller.mahallNameFocusNode,
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context)
-                            .requestFocus(controller.presidentFNameFocusNode);
-                      },
-                      validator: Validators.validateMahallName),
-                  const SizedBox(height: 20),
-                  // President Section
-                  _buildPresidentWidget(context),
-                  const SizedBox(height: 20),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Obx(
+          () => Container(
+            padding: const EdgeInsets.all(20),
+            child: Form(
+              key: controller.formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 5),
+                    //Mahall name
+                    CommonTextFormField(
+                        disabledLabelColor: controller.isEditMode.value
+                            ? AppColors.themeColor
+                            : AppColors.grey,
+                        enabled: controller.isEditMode.value,
+                        label: AppLocalizations.of(context)!.mahall_name,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(40),
+                        ],
+                        keyboardType: TextInputType.name,
+                        textController: controller.mahallNameController,
+                        focusNode: controller.mahallNameFocusNode,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context)
+                              .requestFocus(controller.mahallAddressFocusNode);
+                        },
+                        validator: Validators.validateMahallName),
+                    const SizedBox(height: 10),
+                    //Mahall address
+                    CommonTextFormField(
+                        disabledLabelColor: controller.isEditMode.value
+                            ? AppColors.themeColor
+                            : AppColors.grey,
+                        enabled: controller.isEditMode.value,
+                        label: AppLocalizations.of(context)!.mahall_address,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(80),
+                        ],
+                        keyboardType: TextInputType.name,
+                        textController: controller.mahallAddressController,
+                        focusNode: controller.mahallAddressFocusNode,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context)
+                              .requestFocus(controller.mahallPinFocusNode);
+                        },
+                        validator: Validators.validateMahallAddress),
+                    const SizedBox(height: 10),
+                    //Mahall pin
+                    CommonTextFormField(
+                        disabledLabelColor: controller.adminCode.value == 0
+                            ? AppColors.themeColor
+                            : AppColors.grey,
+                        enabled: controller.adminCode.value == 0 ? true : false,
+                        label: AppLocalizations.of(context)!.mahall_pin,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(6),
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        keyboardType: TextInputType.number,
+                        textController: controller.mahallPinController,
+                        focusNode: controller.mahallPinFocusNode,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context)
+                              .requestFocus(controller.presidentFNameFocusNode);
+                        },
+                        validator: Validators.validateMahallPin),
+                    const SizedBox(height: 20),
+                    // President Section
+                    _buildPresidentWidget(context),
+                    const SizedBox(height: 20),
 
-                  // Secretary Section
-                  _buildSecretaryWidget(context),
-                  const SizedBox(height: 20),
+                    // Secretary Section
+                    _buildSecretaryWidget(context),
+                    const SizedBox(height: 20),
 
-                  // Treasurer Section
-                  _buildTreasurerWidget(context),
+                    // Treasurer Section
+                    _buildTreasurerWidget(context),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  controller.isEditMode.value
-                      ? CommonButtonWidget(
-                          onTap: () {
-                            if (controller.formKey.currentState!.validate()) {
-                              controller.performCommitteeRegistration();
-                            }
-                          },
-                          label: AppLocalizations.of(context)!.submit)
-                      : const SizedBox()
-                ],
+                    controller.isEditMode.value
+                        ? CommonButtonWidget(
+                            onTap: () {
+                              if (controller.formKey.currentState!.validate()) {
+                                controller.performCommitteeRegistration();
+                              }
+                            },
+                            label: AppLocalizations.of(context)!.submit)
+                        : const SizedBox()
+                  ],
+                ),
               ),
             ),
           ),
@@ -124,7 +170,7 @@ class CommitteeRegistrationScreen
           border: Border.all(color: AppColors.blueGrey)),
       child: Column(
         children: [
-          controller.isEditMode.value
+          /*controller.isEditMode.value
               ? Align(
                   alignment: Alignment.topRight,
                   child: CommonDeleteButtonWidget(
@@ -136,7 +182,7 @@ class CommitteeRegistrationScreen
                     },
                   ),
                 )
-              : const SizedBox(),
+              : const SizedBox(),*/
           Image.asset(
             'assets/images/president.png',
             width: 60,
@@ -228,7 +274,7 @@ class CommitteeRegistrationScreen
           border: Border.all(color: AppColors.blueGrey)),
       child: Column(
         children: [
-          controller.isEditMode.value
+          /*controller.isEditMode.value
               ? Align(
                   alignment: Alignment.topRight,
                   child: CommonDeleteButtonWidget(onTap: () {
@@ -237,7 +283,7 @@ class CommitteeRegistrationScreen
                       Get.back();
                     });
                   }))
-              : const SizedBox(),
+              : const SizedBox(),*/
           Image.asset(
             'assets/images/secretary.png',
             width: 60,
@@ -329,7 +375,7 @@ class CommitteeRegistrationScreen
           border: Border.all(color: AppColors.blueGrey)),
       child: Column(
         children: [
-          controller.isEditMode.value
+          /*controller.isEditMode.value
               ? Align(
                   alignment: Alignment.topRight,
                   child: CommonDeleteButtonWidget(onTap: () {
@@ -338,7 +384,7 @@ class CommitteeRegistrationScreen
                       Get.back();
                     });
                   }))
-              : const SizedBox(),
+              : const SizedBox(),*/
           Image.asset(
             'assets/images/treasurer.png',
             width: 60,

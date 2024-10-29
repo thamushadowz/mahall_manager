@@ -9,18 +9,21 @@ class CommonTextWidget extends StatelessWidget {
       required this.text,
       this.fontSize,
       this.fontWeight,
+      this.shadows,
       this.color});
 
   final String text;
   final double? fontSize;
   final FontWeight? fontWeight;
   final Color? color;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       style: TextStyle(
+          shadows: shadows,
           fontSize: fontSize ?? AppMeasures.normalTextSize,
           fontWeight: fontWeight ?? AppMeasures.normalWeight,
           color: color ?? AppColors.black),

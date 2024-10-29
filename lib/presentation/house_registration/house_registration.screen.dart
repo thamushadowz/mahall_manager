@@ -19,25 +19,30 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
       appBar: CommonAppbarWidget(
         title: AppLocalizations.of(context)!.house_registration,
       ),
-      body: Obx(() => controller.isHouseRegistrationSuccess.value
-          ? CommonRegistrationSuccessWidget(
-              onRegAnotherTap: () {
-                controller.isHouseRegistrationSuccess.value =
-                    !controller.isHouseRegistrationSuccess.value;
-                controller.resetForm();
-              },
-              regAnotherTitle: AppLocalizations.of(context)!.register_another,
-              regSuccessMsg: AppLocalizations.of(context)!.house_reg_success,
-            )
-          : Container(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: controller.formKey,
-                child: SingleChildScrollView(
-                  child: _buildTreasurerWidget(context),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Obx(() => controller.isHouseRegistrationSuccess.value
+            ? CommonRegistrationSuccessWidget(
+                onRegAnotherTap: () {
+                  controller.isHouseRegistrationSuccess.value =
+                      !controller.isHouseRegistrationSuccess.value;
+                  controller.resetForm();
+                },
+                regAnotherTitle: AppLocalizations.of(context)!.register_another,
+                regSuccessMsg: AppLocalizations.of(context)!.house_reg_success,
+              )
+            : Container(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: controller.formKey,
+                  child: SingleChildScrollView(
+                    child: _buildTreasurerWidget(context),
+                  ),
                 ),
-              ),
-            )),
+              )),
+      ),
     );
   }
 

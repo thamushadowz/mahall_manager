@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/presentation/home/widgets/drawer_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/pie_chart_widget.dart';
 
 import '../common_widgets/common_appbar_widget.dart';
 import 'controllers/home.controller.dart';
@@ -34,8 +35,14 @@ class HomeScreen extends GetView<HomeController> {
           appBar: const CommonAppbarWidget(
             title: 'Home',
           ),
-          body: Column(
-            children: [],
+          body: Center(
+            child: SizedBox(
+              width: 250,
+              height: 250,
+              child: PieChartWidget(
+                controller: controller,
+              ),
+            ),
           ),
         ),
       ),

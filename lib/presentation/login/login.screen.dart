@@ -36,14 +36,20 @@ class LoginScreen extends GetView<LoginController> {
         }
         return true;
       },
-      child: Scaffold(
-        appBar: CommonAppbarWidget(title: AppLocalizations.of(context)!.log_in),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              _languageSelectionDropdown(),
-              _loginWidget(context),
-            ],
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Scaffold(
+          appBar:
+              CommonAppbarWidget(title: AppLocalizations.of(context)!.log_in),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                _languageSelectionDropdown(),
+                _loginWidget(context),
+              ],
+            ),
           ),
         ),
       ),

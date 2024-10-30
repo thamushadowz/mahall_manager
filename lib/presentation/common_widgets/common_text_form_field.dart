@@ -7,10 +7,11 @@ import '../../infrastructure/theme/measures/app_measures.dart';
 class CommonTextFormField extends StatelessWidget {
   const CommonTextFormField(
       {super.key,
-      required this.label,
+      this.label,
+      this.hint,
       required this.inputFormatters,
       required this.textController,
-      required this.focusNode,
+      this.focusNode,
       this.validator,
       required this.onFieldSubmitted,
       this.suffixIcon,
@@ -18,22 +19,23 @@ class CommonTextFormField extends StatelessWidget {
       this.obscureText,
       this.enabled,
       this.keyboardType,
-      this.onTap,
+      this.onSuffixTap,
       this.disabledBorderColor,
       this.disabledLabelColor,
       this.onDateTap});
 
-  final String label;
+  final String? label;
+  final String? hint;
   final IconData? suffixIcon;
   final String? prefixText;
-  final Function()? onTap;
+  final Function()? onSuffixTap;
   final Function()? onDateTap;
   final String? Function(String?)? validator;
   final Function(String?) onFieldSubmitted;
   final List<TextInputFormatter> inputFormatters;
   final TextInputType? keyboardType;
   final TextEditingController textController;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final bool? obscureText;
   final bool? enabled;
   final Color? disabledBorderColor;
@@ -57,6 +59,9 @@ class CommonTextFormField extends StatelessWidget {
         inputFormatters: inputFormatters,
         keyboardType: keyboardType ?? TextInputType.text,
         decoration: InputDecoration(
+            hintText: hint,
+            fillColor: AppColors.white,
+            filled: true,
             errorStyle: TextStyle(
               color: AppColors.darkRed,
               fontSize: 10.0,
@@ -70,7 +75,7 @@ class CommonTextFormField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10)),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             label: Text(
-              label,
+              label ?? '',
               style: TextStyle(
                   color: disabledLabelColor ?? AppColors.themeColor,
                   fontSize: AppMeasures.mediumTextSize,
@@ -78,7 +83,7 @@ class CommonTextFormField extends StatelessWidget {
             ),
             prefix: Text(prefixText ?? ''),
             suffixIcon: InkWell(
-              onTap: onTap,
+              onTap: onSuffixTap,
               child: Icon(
                 suffixIcon,
                 color: AppColors.themeColor,

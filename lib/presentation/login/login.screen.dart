@@ -46,7 +46,7 @@ class LoginScreen extends GetView<LoginController> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                _languageSelectionDropdown(),
+                //_languageSelectionDropdown(),
                 _loginWidget(context),
               ],
             ),
@@ -63,7 +63,7 @@ class LoginScreen extends GetView<LoginController> {
       child: Form(
         key: controller.formKey,
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Prevents overflow
+          mainAxisSize: MainAxisSize.min,
           children: [
             Align(
               alignment: Alignment.centerLeft,
@@ -101,7 +101,7 @@ class LoginScreen extends GetView<LoginController> {
                   suffixIcon: controller.showPassword.value
                       ? Icons.remove_red_eye_outlined
                       : Icons.visibility_off_outlined,
-                  onTap: () {
+                  onSuffixTap: () {
                     controller.showPassword.value =
                         !controller.showPassword.value;
                   },

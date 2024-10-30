@@ -68,5 +68,20 @@ class Nav {
       page: () => const ContactUsScreen(),
       binding: ContactUsControllerBinding(),
     ),
+    GetPage(
+      name: Routes.ADD_INCOME,
+      page: () => const AddIncomeScreen(),
+      binding: AddIncomeControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ADD_EXPENSES,
+      page: () => const AddExpensesScreen(),
+      binding: AddExpensesControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.SEARCH_SCREEN,
+      page: () => const SearchScreenScreen(),
+      binding: SearchScreenControllerBinding(),
+    ),
   ];
 }

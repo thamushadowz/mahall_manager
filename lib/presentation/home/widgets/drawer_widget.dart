@@ -1,14 +1,15 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
-import 'package:mahall_manager/presentation/common_widgets/common_language_selection_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 
 import '../../../infrastructure/theme/colors/app_colors.dart';
+import '../../../infrastructure/theme/strings/app_strings.dart';
 import '../../common_widgets/common_clickable_text_widget.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -87,6 +88,28 @@ class DrawerWidget extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 10),
+                    CommonClickableTextWidget(
+                      icon: Icons.currency_rupee,
+                      fontSize: AppMeasures.normalTextSize,
+                      fontWeight: AppMeasures.mediumWeight,
+                      textColor: AppColors.blueGrey,
+                      title: AppStrings.addIncome,
+                      onTap: () {
+                        Get.toNamed(Routes.ADD_INCOME);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CommonClickableTextWidget(
+                      icon: Icons.payments_rounded,
+                      fontSize: AppMeasures.normalTextSize,
+                      fontWeight: AppMeasures.mediumWeight,
+                      textColor: AppColors.blueGrey,
+                      title: AppStrings.addExpenses,
+                      onTap: () {
+                        Get.toNamed(Routes.ADD_EXPENSES);
+                      },
+                    ),
+                    const SizedBox(height: 10),
                     Divider(
                       height: 30,
                       thickness: 2,
@@ -115,7 +138,7 @@ class DrawerWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     CommonClickableTextWidget(
-                      icon: Icons.password_rounded,
+                      icon: Icons.lock_reset_rounded,
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
                       textColor: AppColors.blueGrey,
@@ -138,7 +161,7 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Padding(
+            /*Padding(
               padding: const EdgeInsets.all(10.0),
               child: CommonLanguageSelectionWidget(
                 selectedLanguage: controller.selectedLanguage.value,
@@ -149,16 +172,35 @@ class DrawerWidget extends StatelessWidget {
                   }
                 },
               ),
-            ),
+            ),*/
             const Divider(
               thickness: 1,
               endIndent: 10,
               indent: 10,
             ),
-            Text(
-              '© 2024 AllerTempus Innovative.\n All rights reserved.',
-              style: TextStyle(
-                  color: AppColors.grey, fontSize: AppMeasures.mediumTextSize),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text.rich(
+                TextSpan(
+                  text: AppStrings.copyRight,
+                  style: TextStyle(
+                    color: AppColors.grey,
+                    fontSize: AppMeasures.mediumTextSize,
+                    fontWeight: AppMeasures.mediumWeight,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: ' ${AppStrings.privacyPolicy}',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: AppMeasures.mediumTextSize,
+                        fontWeight: AppMeasures.mediumWeight,
+                      ),
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    ),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 20)
           ],

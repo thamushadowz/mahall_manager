@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
+import 'package:mahall_manager/presentation/home/widgets/blood_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/dashboard_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/drawer_widget.dart';
-import 'package:mahall_manager/presentation/home/widgets/pie_chart_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/expats_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/reports_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/users_widget.dart';
 
+import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
 import 'controllers/home.controller.dart';
 
@@ -20,10 +27,11 @@ class HomeScreen extends GetView<HomeController> {
                   const Duration(seconds: 2)) {
             controller.lastPressedAt = now;
             Get.showSnackbar(
-              const GetSnackBar(
-                snackPosition: SnackPosition.TOP,
-                message: 'Press back again to exit',
-                duration: Duration(seconds: 2),
+              GetSnackBar(
+                snackPosition: SnackPosition.BOTTOM,
+                message: AppStrings.pressBackExit,
+                duration: const Duration(seconds: 2),
+                backgroundColor: AppColors.themeColor,
               ),
             );
             return false;
@@ -32,17 +40,27 @@ class HomeScreen extends GetView<HomeController> {
         },
         child: Scaffold(
           drawer: DrawerWidget(controller: controller),
-          appBar: const CommonAppbarWidget(
-            title: 'Home',
+          bottomNavigationBar: BottomNavWidget(
+            onTap: (index) {
+              controller.selectedNavIndex.value = index;
+            },
           ),
-          body: Center(
-            child: SizedBox(
-              width: 250,
-              height: 250,
-              child: PieChartWidget(
-                controller: controller,
-              ),
-            ),
+          appBar: CommonAppbarWidget(
+            title: AppStrings.home,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Obx(() => IndexedStack(
+                  index: controller
+                      .selectedNavIndex.value, // Show the selected screen
+                  children: [
+                    DashboardWidget(controller: controller),
+                    const UsersWidget(),
+                    const ReportsWidget(),
+                    const BloodWidget(),
+                    const ExpatsWidget(),
+                  ],
+                )),
           ),
         ),
       ),

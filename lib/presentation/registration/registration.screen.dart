@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
+import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_button_widget.dart';
@@ -12,6 +13,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_text_form_fiel
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
 import '../../domain/core/interfaces/validator.dart';
+import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
 import '../common_widgets/common_dropdown_form_field_widget.dart';
 import 'controllers/registration.controller.dart';
@@ -22,6 +24,7 @@ class RegistrationScreen extends GetView<RegistrationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar:
           CommonAppbarWidget(title: AppLocalizations.of(context)!.registration),
       body: GestureDetector(
@@ -121,37 +124,55 @@ class RegistrationScreen extends GetView<RegistrationController> {
                             },
                             validator: Validators.validatePlaceName),
                         const SizedBox(height: 10),
-                        //District
-                        CommonDropdownFormFieldWidget(
-                          focusNode: controller.districtFocusNode,
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              controller.districtController.text = newValue;
-                            }
+                        //State
+                        CommonTextFormField(
+                          disabledBorderColor: AppColors.blueGrey,
+                          enabled: false,
+                          label: AppLocalizations.of(context)!.state,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(40),
+                          ],
+                          validator: Validators.validateState,
+                          keyboardType: TextInputType.none,
+                          textController: controller.stateController,
+                          focusNode: controller.stateFocusNode,
+                          onFieldSubmitted: (value) {
+                            FocusScope.of(context)
+                                .requestFocus(controller.districtFocusNode);
                           },
-                          itemList: Utilities.getDistrictList(context),
-                          label: AppLocalizations.of(context)!.district,
-                          validator: Validators.validateDistrict,
-                          selectedValue:
-                              controller.districtController.text.isEmpty
-                                  ? null
-                                  : controller.districtController.text,
+                          onDateTap: () {
+                            Get.toNamed(Routes.SEARCH_SCREEN,
+                                    arguments: Utilities.getStateList(context))
+                                ?.then((onValue) {
+                              controller.stateController.text = onValue;
+                            });
+                          },
                         ),
                         const SizedBox(height: 10),
-                        //State
-                        CommonDropdownFormFieldWidget(
-                          focusNode: controller.stateFocusNode,
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              controller.stateController.text = newValue;
-                            }
+                        //District
+                        CommonTextFormField(
+                          disabledBorderColor: AppColors.blueGrey,
+                          enabled: false,
+                          label: AppLocalizations.of(context)!.district,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(40),
+                          ],
+                          validator: Validators.validateDistrict,
+                          keyboardType: TextInputType.none,
+                          textController: controller.districtController,
+                          focusNode: controller.districtFocusNode,
+                          onFieldSubmitted: (value) {
+                            FocusScope.of(context)
+                                .requestFocus(controller.mobileNoFocusNode);
                           },
-                          itemList: Utilities.getStateList(context),
-                          label: AppLocalizations.of(context)!.state,
-                          validator: Validators.validateState,
-                          selectedValue: controller.stateController.text.isEmpty
-                              ? null
-                              : controller.stateController.text,
+                          onDateTap: () {
+                            Get.toNamed(Routes.SEARCH_SCREEN,
+                                    arguments:
+                                        Utilities.getDistrictList(context))
+                                ?.then((onValue) {
+                              controller.districtController.text = onValue;
+                            });
+                          },
                         ),
                         const SizedBox(height: 10),
                         //Mobile Number
@@ -285,22 +306,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                                   : controller.incomeController.text,
                         ),
                         const SizedBox(height: 10),
-                        //Blood Group
-                        CommonDropdownFormFieldWidget(
-                          focusNode: controller.bloodFocusNode,
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              controller.bloodController.text = newValue;
-                            }
-                          },
-                          itemList: Utilities.getBloodList(context),
-                          label: AppLocalizations.of(context)!.blood_group,
-                          validator: Validators.validateBlood,
-                          selectedValue: controller.bloodController.text.isEmpty
-                              ? null
-                              : controller.bloodController.text,
-                        ),
-                        const SizedBox(height: 10),
                         //Pending Amount
                         CommonTextFormField(
                           label: AppLocalizations.of(context)!.pending_amt,
@@ -312,6 +317,49 @@ class RegistrationScreen extends GetView<RegistrationController> {
                           textController: controller.pendingAmountController,
                           focusNode: controller.pendingAmountFocusNode,
                           onFieldSubmitted: (value) {},
+                        ),
+                        const SizedBox(height: 10),
+                        //Ready to donate blood?
+                        Row(
+                          children: [
+                            Obx(
+                              () => Checkbox(
+                                activeColor: AppColors.themeColor,
+                                value: controller.isWillingToDonate.value,
+                                onChanged: (bool? value) {
+                                  controller.isWillingToDonate.value =
+                                      value ?? false;
+                                },
+                              ),
+                            ),
+                            CommonTextWidget(
+                              text: AppStrings.willingToDonateBlood,
+                              fontSize: AppMeasures.mediumTextSize,
+                              fontWeight: AppMeasures.mediumWeight,
+                            ),
+                          ],
+                        ),
+                        //Blood Group
+                        Obx(
+                          () => controller.isWillingToDonate.value
+                              ? CommonDropdownFormFieldWidget(
+                                  focusNode: controller.bloodFocusNode,
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      controller.bloodController.text =
+                                          newValue;
+                                    }
+                                  },
+                                  itemList: Utilities.getBloodList(context),
+                                  label:
+                                      AppLocalizations.of(context)!.blood_group,
+                                  validator: Validators.validateBlood,
+                                  selectedValue:
+                                      controller.bloodController.text.isEmpty
+                                          ? null
+                                          : controller.bloodController.text,
+                                )
+                              : const SizedBox(),
                         ),
                         const SizedBox(height: 10),
                         //Is Expat
@@ -335,23 +383,26 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         ),
                         //Country List
                         Obx(() => controller.isExpat.value
-                            ? CommonDropdownFormFieldWidget(
-                                focusNode: controller.countryFocusNode,
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    controller.countryController.text =
-                                        newValue;
-                                  }
-                                },
-                                itemList: Utilities.getCountryList(context),
+                            ? CommonTextFormField(
+                                disabledBorderColor: AppColors.blueGrey,
+                                enabled: false,
                                 label: AppLocalizations.of(context)!.country,
-                                validator: controller.isExpat.value
-                                    ? Validators.validateCountry
-                                    : null,
-                                selectedValue:
-                                    controller.countryController.text.isEmpty
-                                        ? null
-                                        : controller.countryController.text,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(40),
+                                ],
+                                validator: Validators.validateCountry,
+                                keyboardType: TextInputType.none,
+                                textController: controller.countryController,
+                                focusNode: controller.countryFocusNode,
+                                onFieldSubmitted: (value) {},
+                                onDateTap: () {
+                                  Get.toNamed(Routes.SEARCH_SCREEN,
+                                          arguments:
+                                              Utilities.getCountryList(context))
+                                      ?.then((onValue) {
+                                    controller.countryController.text = onValue;
+                                  });
+                                },
                               )
                             : const SizedBox()),
                         const SizedBox(height: 10),

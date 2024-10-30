@@ -65,9 +65,6 @@ class Utilities {
   static List<String> getStateList(BuildContext context) {
     return [
       'Kerala',
-      'Karnataka',
-      'Tamil Nadu',
-      'Telangana',
     ];
   }
 

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class RegistrationController extends GetxController {
   RxBool isExpat = false.obs;
+  RxBool isWillingToDonate = false.obs;
   RxBool isRegistrationSuccess = false.obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 

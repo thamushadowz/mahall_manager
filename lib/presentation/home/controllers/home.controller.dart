@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:get/get.dart';
@@ -11,13 +10,14 @@ import '../../../infrastructure/theme/strings/app_strings.dart';
 class HomeController extends GetxController {
   RxString selectedLanguage = 'English'.obs;
   DateTime? lastPressedAt;
+  RxInt selectedNavIndex = 0.obs;
 
-  var income = 0.0.obs;
-  var expense = 0.0.obs;
+  var income = 165093.0.obs;
+  var expense = 79576.0.obs;
 
-  final double targetIncome = 60.0; // Set your actual income percentage
-  final double targetExpense = 40.0; // Set your actual expense percentage
-  final double animationSpeed = 1.0; // Adjust speed of animation
+  final double incomePercent = 0.0;
+  final double expensePercent = 0.0;
+  var selectedSectionIndex = (-1).obs;
 
   List<ChartDataModel> get chartData => [
         ChartDataModel(category: "Income", amount: income.value),
@@ -27,7 +27,6 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    animateChart();
     final storage = GetStorage();
     String lang = storage.read(AppStrings.preferredLanguage) ?? 'en';
 
@@ -49,19 +48,5 @@ class HomeController extends GetxController {
     final storage = GetStorage();
     storage.write(AppStrings.preferredLanguage, langCode);
     Get.updateLocale(Locale(langCode));
-  }
-
-  void animateChart() {
-    Timer.periodic(const Duration(milliseconds: 20), (timer) {
-      if (income.value < targetIncome) {
-        income.value += animationSpeed;
-      }
-      if (expense.value < targetExpense) {
-        expense.value += animationSpeed;
-      }
-      if (income.value >= targetIncome && expense.value >= targetExpense) {
-        timer.cancel();
-      }
-    });
   }
 }

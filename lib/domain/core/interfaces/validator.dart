@@ -1,6 +1,8 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
+import '../../../infrastructure/theme/strings/app_strings.dart';
+
 class Validators {
   static String? validateMobileNumber(String? value) {
     if (value == null || value.isEmpty) {
@@ -163,6 +165,29 @@ class Validators {
   static String? validateMahallPin(String? value) {
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(Get.context!)!.pin_code_reqd;
+    }
+    return null;
+  }
+
+  ///Localization needed for texts
+
+  static String? validateDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.dateReqd;
+    }
+    return null;
+  }
+
+  static String? validateDescription(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.descriptionReqd;
+    }
+    return null;
+  }
+
+  static String? validateAmount(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.amountReqd;
     }
     return null;
   }

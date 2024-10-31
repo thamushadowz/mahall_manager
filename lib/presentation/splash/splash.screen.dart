@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/presentation/splash/controllers/splash.controller.dart';
 
-import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/colors/app_colors.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends GetView<SplashController> {
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offNamed(Routes.LOGIN); // Replace with your home screen
+      controller.checkLogin();
     });
 
     return Scaffold(

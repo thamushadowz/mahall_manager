@@ -6,13 +6,17 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mahall_manager/domain/core/interfaces/snackbar_service.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
 
+import 'domain/core/di/dependancy.dart';
+import 'domain/listing/listing_repository.dart';
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
 void main() async {
   var initialRoute = await Routes.initialRoute;
+  DependencyCreator.init();
   await GetStorage.init();
   Get.put(SnackbarService());
+  Get.put(ListingRepository());
   runApp(Main(initialRoute));
 }
 

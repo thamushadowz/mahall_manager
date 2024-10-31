@@ -15,8 +15,6 @@ class ContactUsController extends GetxController {
     final Uri whatsappUri = Uri.parse("whatsapp://send?phone=$phoneNumber");
     if (await canLaunchUrl(whatsappUri)) {
       await launchUrl(whatsappUri);
-    } else {
-      print("Could not launch $whatsappUri");
-    }
+    } else {}
   }
 }

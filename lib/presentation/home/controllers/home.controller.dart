@@ -2,12 +2,14 @@ import 'dart:ui';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mahall_manager/infrastructure/dal/services/storage_service.dart';
 
 import '../../../domain/core/interfaces/utilities.dart';
 import '../../../infrastructure/dal/models/home/chart_data_model.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
 
 class HomeController extends GetxController {
+  final StorageService storageService = StorageService();
   RxString selectedLanguage = 'English'.obs;
   DateTime? lastPressedAt;
   RxInt selectedNavIndex = 0.obs;

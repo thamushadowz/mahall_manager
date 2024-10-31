@@ -10,11 +10,11 @@ class ConfigEnvironments {
   static final List<Map<String, String>> _availableEnvironments = [
     {
       'env': Environments.LOCAL,
-      'url': 'http://localhost:8080/api/',
+      'url': 'https://api-masjid.allertempus.com/api/',
     },
     {
       'env': Environments.DEV,
-      'url': '',
+      'url': 'https://api-masjid.allertempus.com/api/',
     },
     {
       'env': Environments.QAS,
@@ -22,7 +22,7 @@ class ConfigEnvironments {
     },
     {
       'env': Environments.PRODUCTION,
-      'url': '',
+      'url': 'https://api-masjid.allertempus.com/api/',
     },
   ];
 

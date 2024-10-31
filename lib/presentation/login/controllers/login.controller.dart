@@ -7,10 +7,18 @@ import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
 
 import '../../../domain/core/interfaces/snackbar_service.dart';
+import '../../../domain/listing/listing_repository.dart';
+import '../../../domain/listing/listing_service.dart';
+import '../../../domain/listing/models/login_model.dart';
+import '../../../infrastructure/dal/services/storage_service.dart';
 
 class LoginController extends GetxController {
+  ListingService listingService = Get.find<ListingRepository>();
+
+  final StorageService _storageService = StorageService();
   RxString selectedLanguage = 'English'.obs;
   RxBool showPassword = false.obs;
+  RxBool isLoading = false.obs;
   DateTime? lastPressedAt;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -26,17 +34,15 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    mobileController.text = "9400477889";
+    mobileController.text = "9995560424";
     passwordController.text = "admin123";
-    final storage = GetStorage();
-    String lang = storage.read(AppStrings.preferredLanguage) ?? 'en';
-
+    String lang = _storageService.getPreferredLanguage() ?? 'en';
     try {
       selectedLanguage.value = Utilities.languages
           .firstWhere((element) => element['code'] == lang)['name']!;
     } catch (e) {
       selectedLanguage.value = 'English';
-      storage.write(AppStrings.preferredLanguage, 'en');
+      _storageService.savePreferredLanguage('en');
     }
 
     Get.updateLocale(Locale(lang));
@@ -51,24 +57,32 @@ class LoginController extends GetxController {
     Get.updateLocale(Locale(langCode));
   }
 
-  void performLogin() {
-    if (mobileController.text == '9400477889' &&
-        passwordController.text == 'admin123') {
-      _snackbarService.showSuccess(
-          AppLocalizations.of(Get.context!)!.login_success,
-          AppLocalizations.of(Get.context!)!.log_in);
-      Get.offAllNamed(Routes.HOME);
-    } else {
-      _snackbarService.showError(
-          AppLocalizations.of(Get.context!)!.incorrect_mobile_or_password,
-          AppLocalizations.of(Get.context!)!.log_in);
+  Future<void> performLogin() async {
+    isLoading.value = true;
+    try {
+      LoginModel response = await listingService.loginCheck(
+          mobileController.text, passwordController.text);
+      if (response.status == true) {
+        _snackbarService.showSuccess(response.message.toString(),
+            AppLocalizations.of(Get.context!)!.log_in);
+        _storageService.saveToken(response.token ?? '');
+        _storageService.saveUserType(response.userType ?? 0);
+        Get.offAllNamed(Routes.HOME);
+      } else {
+        _snackbarService.showError(response.message.toString(),
+            AppLocalizations.of(Get.context!)!.log_in);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Something went wrong');
+    } finally {
+      isLoading.value = false;
     }
   }
 
   @override
   void onClose() {
-    mobileFocusNode.dispose();
-    passwordFocusNode.dispose();
+    /*mobileFocusNode.dispose();
+    passwordFocusNode.dispose();*/
     super.onClose();
   }
 }

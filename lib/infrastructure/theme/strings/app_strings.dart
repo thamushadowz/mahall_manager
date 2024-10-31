@@ -15,10 +15,15 @@ class AppStrings {
   static String amount = 'Amount';
   static String submit = 'Submit';
   static String search = 'Search';
-  static String willingToDonateBlood = 'Are you willing to donate blood?';
+
+  static String warning = 'Warning';
+  static String logout = 'Logout';
+  static String cancel = 'Cancel';
 
   ///Validation messages
 
+  static String areYouSureToLogout = 'Are you sure to Logout?';
+  static String willingToDonateBlood = 'Are you willing to donate blood?';
   static String pressBackExit = 'Press back again to exit';
   static String dateReqd = 'Date Required';
   static String descriptionReqd = 'Description Required';

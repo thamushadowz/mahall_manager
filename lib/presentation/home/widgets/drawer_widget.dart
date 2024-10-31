@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
@@ -154,7 +155,20 @@ class DrawerWidget extends StatelessWidget {
                       fontWeight: AppMeasures.mediumWeight,
                       textColor: AppColors.blueGrey,
                       title: AppLocalizations.of(context)!.log_out,
-                      onTap: () {},
+                      onTap: () {
+                        CommonAlert.alertDialogWidget(
+                            onConfirm: () {
+                              controller.storageService.logout();
+                              Get.offAllNamed(Routes.LOGIN);
+                            },
+                            onCancel: () {
+                              // Get.close(0);
+                            },
+                            title: AppStrings.warning,
+                            textConfirm: AppStrings.logout,
+                            textCancel: AppStrings.cancel,
+                            middleText: AppStrings.areYouSureToLogout);
+                      },
                     ),
                   ],
                 ),

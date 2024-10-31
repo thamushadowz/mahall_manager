@@ -10,7 +10,7 @@ class SnackbarService {
       backgroundColor: Colors.green,
       icon: const Icon(
         Icons.check_circle_outlined,
-        size: 40,
+        size: 30,
       ),
       colorText: Colors.white,
       duration: const Duration(seconds: 3),
@@ -23,7 +23,7 @@ class SnackbarService {
       message,
       icon: const Icon(
         Icons.cancel_outlined,
-        size: 40,
+        size: 30,
       ),
       snackPosition: SnackPosition.TOP,
       backgroundColor: Colors.red,

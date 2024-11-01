@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
-import 'package:mahall_manager/presentation/home/widgets/blood_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widget.dart';
-import 'package:mahall_manager/presentation/home/widgets/dashboard_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/blood_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/dashboard_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/expats_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/reports_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/users_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/drawer_widget.dart';
-import 'package:mahall_manager/presentation/home/widgets/expats_widget.dart';
-import 'package:mahall_manager/presentation/home/widgets/reports_widget.dart';
-import 'package:mahall_manager/presentation/home/widgets/users_widget.dart';
 
 import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
@@ -39,6 +39,7 @@ class HomeScreen extends GetView<HomeController> {
           return true;
         },
         child: Scaffold(
+          backgroundColor: AppColors.white,
           drawer: DrawerWidget(controller: controller),
           bottomNavigationBar: BottomNavWidget(
             onTap: (index) {
@@ -55,7 +56,7 @@ class HomeScreen extends GetView<HomeController> {
                       .selectedNavIndex.value, // Show the selected screen
                   children: [
                     DashboardWidget(controller: controller),
-                    const UsersWidget(),
+                    UsersWidget(controller: controller),
                     const ReportsWidget(),
                     const BloodWidget(),
                     const ExpatsWidget(),

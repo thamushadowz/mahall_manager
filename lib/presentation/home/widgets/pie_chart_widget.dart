@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
+import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 
 class PieChartWidget extends StatelessWidget {
@@ -18,7 +19,6 @@ class PieChartWidget extends StatelessWidget {
               final isIncome = data.category == "Income";
               final isSelected = index == controller.selectedSectionIndex.value;
 
-              // Display amount if selected, otherwise display percentage
               final titleText = isSelected
                   ? "₹${data.amount.toStringAsFixed(1)}"
                   : "${((data.amount / (controller.income.value + controller.expense.value)) * 100).toStringAsFixed(1)}%";
@@ -27,9 +27,9 @@ class PieChartWidget extends StatelessWidget {
                 color: isIncome ? AppColors.themeColor : AppColors.darkRed,
                 value: data.amount,
                 title: titleText,
-                radius: isSelected ? 100 : 80, // Expanded radius if selected
+                radius: isSelected ? 80 : 70, // Expanded radius if selected
                 titleStyle: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppMeasures.mediumTextSize,
                   fontWeight: FontWeight.bold,
                   color: AppColors.white,
                 ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
+import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/blood_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/dashboard_widget.dart';
@@ -29,9 +31,13 @@ class HomeScreen extends GetView<HomeController> {
             Get.showSnackbar(
               GetSnackBar(
                 snackPosition: SnackPosition.BOTTOM,
-                message: AppStrings.pressBackExit,
+                messageText: CommonTextWidget(
+                  text: AppStrings.pressBackExit,
+                  fontSize: AppMeasures.mediumTextSize,
+                  color: AppColors.themeColor,
+                ),
                 duration: const Duration(seconds: 2),
-                backgroundColor: AppColors.themeColor,
+                backgroundColor: AppColors.white,
               ),
             );
             return false;
@@ -49,19 +55,24 @@ class HomeScreen extends GetView<HomeController> {
           appBar: CommonAppbarWidget(
             title: AppStrings.home,
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Obx(() => IndexedStack(
-                  index: controller
-                      .selectedNavIndex.value, // Show the selected screen
-                  children: [
-                    DashboardWidget(controller: controller),
-                    UsersWidget(controller: controller),
-                    const ReportsWidget(),
-                    const BloodWidget(),
-                    const ExpatsWidget(),
-                  ],
-                )),
+          body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Obx(() => IndexedStack(
+                    index: controller
+                        .selectedNavIndex.value, // Show the selected screen
+                    children: [
+                      DashboardWidget(controller: controller),
+                      UsersWidget(controller: controller),
+                      ReportsWidget(controller: controller),
+                      const BloodWidget(),
+                      const ExpatsWidget(),
+                    ],
+                  )),
+            ),
           ),
         ),
       ),

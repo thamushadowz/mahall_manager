@@ -19,6 +19,18 @@ class AppStrings {
   static String warning = 'Warning';
   static String logout = 'Logout';
   static String cancel = 'Cancel';
+  static String collectMoney = 'Collect Money';
+  static String collectTotal = 'Collect Total';
+  static String noDues = 'No Dues';
+  static String totalDue = ' Total Due:';
+  static String addedBy = 'Added By';
+  static String filters = 'Filters';
+  static String fromDate = 'From Date';
+  static String toDate = 'To Date';
+  static String selectAnOption = 'Select an option: ';
+  static String clearFilters = 'Clear Filters';
+  static String selectFromDate = 'Select From Date';
+  static String selectToDate = 'Select To Date';
 
   ///Validation messages
 

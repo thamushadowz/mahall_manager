@@ -66,7 +66,7 @@ class LoginController extends GetxController {
         _snackbarService.showSuccess(response.message.toString(),
             AppLocalizations.of(Get.context!)!.log_in);
         _storageService.saveToken(response.token ?? '');
-        _storageService.saveUserType(response.userType.toString() ?? '');
+        _storageService.saveUserType(response.userType.toString());
         Get.offAllNamed(Routes.HOME);
       } else {
         _snackbarService.showError(response.message.toString(),

@@ -320,7 +320,7 @@ class ReportsWidget extends StatelessWidget {
                 : AppColors.darkRed.withOpacity(0.1)),
             cells: [
               DataCell(CommonTextWidget(
-                text: report.id.toString() ?? '',
+                text: report.id.toString(),
                 fontWeight: AppMeasures.mediumWeight,
                 fontSize: AppMeasures.mediumTextSize,
               )),

@@ -127,6 +127,7 @@ class CommitteeRegistrationScreen
 
                     controller.isEditMode.value
                         ? CommonButtonWidget(
+                            isLoading: controller.isLoading,
                             onTap: () {
                               if (controller.formKey.currentState!.validate()) {
                                 controller.performCommitteeRegistration();

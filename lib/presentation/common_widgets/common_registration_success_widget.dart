@@ -8,11 +8,12 @@ import 'package:mahall_manager/presentation/common_widgets/common_button_widget.
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
 class CommonRegistrationSuccessWidget extends StatelessWidget {
-  const CommonRegistrationSuccessWidget(
-      {super.key,
-      required this.onRegAnotherTap,
-      required this.regAnotherTitle,
-      required this.regSuccessMsg});
+  const CommonRegistrationSuccessWidget({
+    super.key,
+    required this.onRegAnotherTap,
+    required this.regAnotherTitle,
+    required this.regSuccessMsg,
+  });
 
   final Function() onRegAnotherTap;
   final String regAnotherTitle;
@@ -48,6 +49,7 @@ class CommonRegistrationSuccessWidget extends StatelessWidget {
               height: 200,
             ),
             CommonButtonWidget(
+              isLoading: false.obs,
               border: Border.all(color: AppColors.themeColor),
               onTap: onRegAnotherTap,
               label: regAnotherTitle,
@@ -60,6 +62,7 @@ class CommonRegistrationSuccessWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             CommonButtonWidget(
+              isLoading: false.obs,
               onTap: () {
                 Get.offAllNamed(Routes.HOME);
               },

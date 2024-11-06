@@ -58,6 +58,7 @@ class GetReportsModel {
   }
 }
 
+///id : 1
 /// description : "Electricity Bill Payment"
 /// date : "2024/11/01"
 /// incomeOrExpense : 0/1
@@ -69,12 +70,14 @@ String dataToJson(ReportsData data) => json.encode(data.toJson());
 
 class ReportsData {
   ReportsData({
+    num? id,
     String? description,
     String? date,
     num? incomeOrExpense,
     num? amount,
     String? addedBy,
   }) {
+    _id = id;
     _description = description;
     _date = date;
     _incomeOrExpense = incomeOrExpense;
@@ -83,18 +86,21 @@ class ReportsData {
   }
 
   ReportsData.fromJson(dynamic json) {
+    _id = json['id'];
     _description = json['description'];
     _date = json['date'];
     _incomeOrExpense = json['incomeOrExpense'];
     _amount = json['amount'];
     _addedBy = json['addedBy'];
   }
+  num? _id;
   String? _description;
   String? _date;
   num? _incomeOrExpense;
   num? _amount;
   String? _addedBy;
   ReportsData copyWith({
+    num? id,
     String? description,
     String? date,
     num? incomeOrExpense,
@@ -102,12 +108,14 @@ class ReportsData {
     String? addedBy,
   }) =>
       ReportsData(
+        id: id ?? _id,
         description: description ?? _description,
         date: date ?? _date,
         incomeOrExpense: incomeOrExpense ?? _incomeOrExpense,
         amount: amount ?? _amount,
         addedBy: addedBy ?? _addedBy,
       );
+  num? get id => _id;
   String? get description => _description;
   String? get date => _date;
   num? get incomeOrExpense => _incomeOrExpense;
@@ -116,6 +124,7 @@ class ReportsData {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['id'] = _id;
     map['description'] = _description;
     map['date'] = _date;
     map['incomeOrExpense'] = _incomeOrExpense;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../../domain/core/interfaces/validator.dart';
 import '../../infrastructure/theme/colors/app_colors.dart';
@@ -23,6 +24,7 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
     required this.onDateTap,
     required this.onSubmitTap,
     required this.formKey,
+    required this.isLoading,
   });
 
   final String heading;
@@ -36,6 +38,7 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
   final Function() onDateTap;
   final Function() onSubmitTap;
   final Key formKey;
+  final RxBool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +144,7 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
 
                             // Submit button
                             CommonButtonWidget(
+                              isLoading: isLoading,
                               color: color,
                               label: AppStrings.submit,
                               onTap: onSubmitTap,

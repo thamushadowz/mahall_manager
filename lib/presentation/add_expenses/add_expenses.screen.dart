@@ -47,6 +47,7 @@ class AddExpensesScreen extends GetView<AddExpensesController> {
             controller.dateController.text = formattedDate;
           }
         },
+        isLoading: controller.isLoading,
       ),
     );
   }

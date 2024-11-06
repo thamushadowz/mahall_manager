@@ -32,6 +32,29 @@ class AppStrings {
   static String selectFromDate = 'Select From Date';
   static String selectToDate = 'Select To Date';
 
+  static String male = 'Male';
+  static String female = 'Female';
+
+  static String apos = 'A+ve';
+  static String aneg = 'A-ve';
+  static String bpos = 'B+ve';
+  static String bneg = 'B-ve';
+  static String abpos = 'AB+ve';
+  static String abneg = 'AB-ve';
+  static String opos = 'O+ve';
+  static String oneg = 'O-ve';
+
+  static String bloodGroup = 'Blood Group';
+  static String name = 'Name';
+  static String mobileNo = 'Mobile No';
+  static String houseNameAndPlace = 'House Name & Place';
+  static String contactAdmin = 'Contact Admin';
+  static String registerNo = 'Register No';
+  static String actions = 'Actions';
+  static String id = 'Id';
+  static String gender = 'Gender';
+  static String country = 'Country';
+
   ///Validation messages
 
   static String areYouSureToLogout = 'Are you sure to Logout?';

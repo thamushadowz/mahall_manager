@@ -6,6 +6,7 @@ import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_button_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_clickable_text_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/filter_and_clear_filter_widget.dart';
 
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
@@ -31,7 +32,8 @@ class ReportsWidget extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _buildFilterAndClearFilterOption(),
-        Obx(() => SizedBox(height: controller.isFiltering.value ? 20 : 0)),
+        Obx(() =>
+            SizedBox(height: controller.isReportFiltering.value ? 20 : 0)),
         _buildFilterWidget(context),
         const SizedBox(height: 20),
         _buildReportsList(),
@@ -66,54 +68,6 @@ class ReportsWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 500,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 20),
-                    color: AppColors.themeColor,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex:
-                              2, // Adjust flex as needed for each column's width
-                          child: CommonTextWidget(
-                            text: AppStrings.description,
-                            fontWeight: AppMeasures.mediumWeight,
-                            fontSize: AppMeasures.mediumTextSize,
-                            color: AppColors.white,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: CommonTextWidget(
-                            text: AppStrings.date,
-                            fontWeight: AppMeasures.mediumWeight,
-                            fontSize: AppMeasures.mediumTextSize,
-                            color: AppColors.white,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: CommonTextWidget(
-                            text: AppStrings.amount,
-                            fontWeight: AppMeasures.mediumWeight,
-                            fontSize: AppMeasures.mediumTextSize,
-                            color: AppColors.white,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: CommonTextWidget(
-                            text: AppStrings.addedBy,
-                            fontWeight: AppMeasures.mediumWeight,
-                            fontSize: AppMeasures.mediumTextSize,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // List of Rows
                   Expanded(
                     child: _buildUserList(),
                   ),
@@ -125,7 +79,7 @@ class ReportsWidget extends StatelessWidget {
 
   Obx _buildFilterWidget(BuildContext context) {
     return Obx(
-      () => controller.isFiltering.value
+      () => controller.isReportFiltering.value
           ? Material(
               elevation: 10,
               color: AppColors.white,
@@ -277,9 +231,9 @@ class ReportsWidget extends StatelessWidget {
                         width: 120,
                         onTap: () {
                           controller.isReportFilterSubmitted.value =
-                              controller.checkFilters();
+                              controller.checkReportFilters();
                           controller.applyFilters();
-                          controller.isFiltering.value = false;
+                          controller.isReportFiltering.value = false;
                         },
                         label: AppStrings.submit,
                         isLoading: false.obs,
@@ -293,127 +247,131 @@ class ReportsWidget extends StatelessWidget {
     );
   }
 
-  Row _buildFilterAndClearFilterOption() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Obx(() => controller.isReportFilterSubmitted.value
-            ? CommonClickableTextWidget(
-                title: AppStrings.clearFilters,
-                onTap: controller.clearFilters,
-                border: Border.all(color: AppColors.darkRed),
-                fontSize: AppMeasures.mediumTextSize,
-                padding: const EdgeInsets.all(7),
-                borderRadius: BorderRadius.circular(10),
-                textColor: AppColors.darkRed,
-                fontWeight: AppMeasures.mediumWeight,
-              )
-            : const SizedBox()),
-        const SizedBox(width: 20),
-        InkWell(
-          borderRadius: BorderRadius.circular(15),
-          onTap: () {
-            controller.isFiltering.value = !controller.isFiltering.value;
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                CommonTextWidget(
-                  text: AppStrings.filters,
-                  fontSize: AppMeasures.mediumTextSize,
-                  fontWeight: AppMeasures.smallWeight,
-                ),
-                const SizedBox(width: 6),
-                const Icon(
-                  Icons.filter_alt,
-                  size: 20,
-                  color: Colors.blueGrey,
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(width: 20),
-      ],
-    );
+  _buildFilterAndClearFilterOption() {
+    return Obx(() => FilterAndClearFilterWidget(
+        isFilterSubmitted: controller.isReportFilterSubmitted.value,
+        onClearFilterTap: controller.clearReportFilters,
+        onFilterTap: () {
+          controller.isReportFiltering.value =
+              !controller.isReportFiltering.value;
+        }));
   }
 
   Widget _buildUserList() {
-    return SizedBox(
-      width: 600, // Set width for horizontal scroll
-      child: Obx(
-        () => ListView.separated(
-          shrinkWrap: true,
-          itemCount: controller.filteredReportsDetails.length,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.all(15),
-              color:
-                  controller.filteredReportsDetails[index].incomeOrExpense == 0
-                      ? AppColors.themeColor.withOpacity(0.2)
-                      : AppColors.darkRed.withOpacity(0.2),
-              alignment: Alignment.center,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CommonTextWidget(
-                      text: controller
-                              .filteredReportsDetails[index].description ??
-                          '',
-                      fontWeight: AppMeasures.mediumWeight,
-                      fontSize: AppMeasures.mediumTextSize,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: 20,
+        headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+        columns: [
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.id,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.description,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.date,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.amount,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.addedBy,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.actions,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+        ],
+        rows: controller.filteredReportsDetails.map((report) {
+          return DataRow(
+            color: WidgetStateProperty.all(report.incomeOrExpense == 0
+                ? AppColors.themeColor.withOpacity(0.1)
+                : AppColors.darkRed.withOpacity(0.1)),
+            cells: [
+              DataCell(CommonTextWidget(
+                text: report.id.toString() ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: report.description ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: report.date ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.smallTextSize,
+                color: AppColors.darkRed.withOpacity(0.6),
+              )),
+              DataCell(CommonTextWidget(
+                text: report.amount.toString(),
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: report.addedBy ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.edit_note_rounded,
+                        color: AppColors.blueGrey,
+                      ),
+                      onPressed: () {
+                        // Add edit action here
+                      },
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: CommonTextWidget(
-                      text: controller.filteredReportsDetails[index].date ?? '',
-                      fontWeight: AppMeasures.mediumWeight,
-                      fontSize: AppMeasures.smallTextSize,
-                      color: AppColors.darkRed.withOpacity(0.6),
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete_outline_rounded,
+                        color: AppColors.darkRed,
+                      ),
+                      onPressed: () {
+                        // Add delete action here
+                      },
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: CommonTextWidget(
-                      text: controller.filteredReportsDetails[index].amount
-                              .toString() ??
-                          '',
-                      fontWeight: AppMeasures.mediumWeight,
-                      fontSize: AppMeasures.mediumTextSize,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: CommonTextWidget(
-                      text: controller.filteredReportsDetails[index].addedBy ??
-                          '',
-                      fontWeight: AppMeasures.mediumWeight,
-                      fontSize: AppMeasures.mediumTextSize,
-                    ),
-                  ),
-                  const SizedBox(width: 30),
-                  Icon(
-                    Icons.edit_note_rounded,
-                    color: AppColors.blueGrey,
-                  ),
-                  const SizedBox(width: 30),
-                  Icon(
-                    Icons.delete_outline_rounded,
-                    color: AppColors.darkRed,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return Divider(
-              color: AppColors.blueGrey.withOpacity(0.5),
-            );
-          },
-        ),
+            ],
+          );
+        }).toList(),
       ),
     );
   }

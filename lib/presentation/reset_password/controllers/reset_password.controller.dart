@@ -8,7 +8,7 @@ import '../../../infrastructure/navigation/routes.dart';
 class ResetPasswordController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final SnackbarService _snackbarService = Get.put(SnackbarService());
-
+  final RxBool isLoading = false.obs;
   final currentPswdController = TextEditingController();
   final newPswdController = TextEditingController();
   final confirmPswdController = TextEditingController();

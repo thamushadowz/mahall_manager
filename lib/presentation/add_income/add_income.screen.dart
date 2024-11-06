@@ -46,6 +46,7 @@ class AddIncomeScreen extends GetView<AddIncomeController> {
             controller.dateController.text = formattedDate;
           }
         },
+        isLoading: controller.isLoading,
       ),
     );
   }

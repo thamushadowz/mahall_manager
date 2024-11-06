@@ -407,6 +407,7 @@ class RegistrationScreen extends GetView<RegistrationController> {
                             : const SizedBox()),
                         const SizedBox(height: 10),
                         CommonButtonWidget(
+                            isLoading: controller.isLoading,
                             onTap: () {
                               if (controller.formKey.currentState!.validate()) {
                                 controller.performRegistration();

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class HouseRegistrationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RxBool isHouseRegistrationSuccess = false.obs;
-
+  final RxBool isLoading = false.obs;
   final regNoFocusNode = FocusNode();
   final houseNameFocusNode = FocusNode();
   final houseHolderNameFocusNode = FocusNode();

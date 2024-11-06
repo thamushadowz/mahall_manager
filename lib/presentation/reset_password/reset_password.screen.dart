@@ -76,6 +76,7 @@ class ResetPasswordScreen extends GetView<ResetPasswordController> {
                   ),
                   const SizedBox(height: 10),
                   CommonButtonWidget(
+                      isLoading: controller.isLoading,
                       onTap: () {
                         if (controller.formKey.currentState!.validate()) {
                           controller.performReset();

@@ -11,7 +11,7 @@ class StorageService {
     _storage.write(_tokenKey, token);
   }
 
-  void saveUserType(num userType) {
+  void saveUserType(String userType) {
     _storage.write(_userTypeKey, userType);
   }
 

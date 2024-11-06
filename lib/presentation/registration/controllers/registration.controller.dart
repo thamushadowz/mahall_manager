@@ -6,7 +6,7 @@ class RegistrationController extends GetxController {
   RxBool isWillingToDonate = false.obs;
   RxBool isRegistrationSuccess = false.obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  final RxBool isLoading = false.obs;
   final regNoFocusNode = FocusNode();
   final fNameFocusNode = FocusNode();
   final lNameFocusNode = FocusNode();

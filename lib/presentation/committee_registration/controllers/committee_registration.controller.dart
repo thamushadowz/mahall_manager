@@ -6,6 +6,7 @@ class CommitteeRegistrationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final RxBool isEditMode = false.obs;
+  final RxBool isLoading = false.obs;
   final RxInt adminCode = 1.obs;
   @override
   void onInit() {

@@ -37,7 +37,9 @@ class CommonClickableTextWidget extends StatelessWidget {
                 : const EdgeInsets.all(5)),
         decoration: BoxDecoration(border: border, borderRadius: borderRadius),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: border == null || borderRadius == null
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
           children: [
             icon == null
                 ? const SizedBox()

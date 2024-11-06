@@ -89,6 +89,7 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
             validator: Validators.validateHouseholderName),
         const SizedBox(height: 20),
         CommonButtonWidget(
+            isLoading: controller.isLoading,
             onTap: () {
               if (controller.formKey.currentState!.validate()) {
                 controller.performHouseRegistration();

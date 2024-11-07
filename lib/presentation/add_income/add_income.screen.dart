@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/colors/app_colors.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
@@ -14,10 +15,10 @@ class AddIncomeScreen extends GetView<AddIncomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppbarWidget(
-        title: AppStrings.addIncome,
+        title: controller.mainHeading,
       ),
       body: CommonIncomeExpensesWidget(
-        heading: AppStrings.addIncome,
+        heading: controller.mainHeading,
         color: AppColors.themeColor,
         dateController: controller.dateController,
         descriptionController: controller.descriptionController,
@@ -28,7 +29,19 @@ class AddIncomeScreen extends GetView<AddIncomeController> {
         formKey: controller.formKey,
         onSubmitTap: () {
           if (controller.formKey.currentState!.validate()) {
-            //Get.offAllNamed(Routes.HOME);
+            if (controller.mainHeading == AppStrings.editIncome) {
+              final updatedReport = {
+                'id': controller.report.id,
+                'date': controller.dateController.text,
+                'description': controller.descriptionController.text,
+                'amount': controller.amountController.text,
+                'addedBy': controller.report.addedBy,
+                'incomeOrExpense': controller.report.incomeOrExpense
+              };
+              Get.back(result: updatedReport);
+            } else {
+              Get.offAllNamed(Routes.HOME);
+            }
           }
         },
         onDateTap: () async {

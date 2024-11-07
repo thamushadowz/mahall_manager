@@ -54,6 +54,12 @@ class AppStrings {
   static String id = 'Id';
   static String gender = 'Gender';
   static String country = 'Country';
+  static String editIncome = 'Edit Income';
+  static String editExpenses = 'Edit Expenses';
+  static String currentDue = 'Current Due';
+  static String collect = 'Collect';
+  static String registration = 'Registration';
+  static String editUser = 'Edit User';
 
   ///Validation messages
 

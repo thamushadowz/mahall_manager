@@ -8,6 +8,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_clickable_text
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/filter_and_clear_filter_widget.dart';
 
+import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
 import '../../../common_widgets/common_text_form_field.dart';
@@ -315,7 +316,7 @@ class ReportsWidget extends StatelessWidget {
         ],
         rows: controller.filteredReportsDetails.map((report) {
           return DataRow(
-            color: WidgetStateProperty.all(report.incomeOrExpense == 0
+            color: WidgetStateProperty.all(report.incomeOrExpense == '0'
                 ? AppColors.themeColor.withOpacity(0.1)
                 : AppColors.darkRed.withOpacity(0.1)),
             cells: [
@@ -353,8 +354,22 @@ class ReportsWidget extends StatelessWidget {
                         Icons.edit_note_rounded,
                         color: AppColors.blueGrey,
                       ),
-                      onPressed: () {
-                        // Add edit action here
+                      onPressed: () async {
+                        if (report.incomeOrExpense == '0') {
+                          final updatedReport = await Get.toNamed(
+                              Routes.ADD_INCOME,
+                              arguments: report);
+                          if (updatedReport != null) {
+                            controller.updateReportItem(updatedReport);
+                          }
+                        } else {
+                          final updatedReport = await Get.toNamed(
+                              Routes.ADD_EXPENSES,
+                              arguments: report);
+                          if (updatedReport != null) {
+                            controller.updateReportItem(updatedReport);
+                          }
+                        }
                       },
                     ),
                     IconButton(

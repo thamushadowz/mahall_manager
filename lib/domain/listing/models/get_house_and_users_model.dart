@@ -13,7 +13,7 @@ class GetHouseAndUsersModel {
   GetHouseAndUsersModel({
     bool? status,
     String? message,
-    List<HouseData>? data,
+    List<PeopleData>? data,
   }) {
     _status = status;
     _message = message;
@@ -26,17 +26,17 @@ class GetHouseAndUsersModel {
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {
-        _data?.add(HouseData.fromJson(v));
+        _data?.add(PeopleData.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<HouseData>? _data;
+  List<PeopleData>? _data;
   GetHouseAndUsersModel copyWith({
     bool? status,
     String? message,
-    List<HouseData>? data,
+    List<PeopleData>? data,
   }) =>
       GetHouseAndUsersModel(
         status: status ?? _status,
@@ -45,7 +45,7 @@ class GetHouseAndUsersModel {
       );
   bool? get status => _status;
   String? get message => _message;
-  List<HouseData>? get data => _data;
+  List<PeopleData>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -58,116 +58,191 @@ class GetHouseAndUsersModel {
   }
 }
 
-/// house_reg_no : "KNY01"
-/// house_name : "White House"
-/// people : [{"user_reg_no":"U01","name":"Person 1","phone":"1234567890","due":"₹1000"},{"user_reg_no":"U02","name":"Person 2","phone":"1234567891","due":"₹2000"}]
-
-HouseData dataFromJson(String str) => HouseData.fromJson(json.decode(str));
-String dataToJson(HouseData data) => json.encode(data.toJson());
-
-class HouseData {
-  HouseData({
-    String? houseRegNo,
-    String? houseName,
-    List<People>? people,
-  }) {
-    _houseRegNo = houseRegNo;
-    _houseName = houseName;
-    _people = people;
-  }
-
-  HouseData.fromJson(dynamic json) {
-    _houseRegNo = json['house_reg_no'];
-    _houseName = json['house_name'];
-    if (json['people'] != null) {
-      _people = [];
-      json['people'].forEach((v) {
-        _people?.add(People.fromJson(v));
-      });
-    }
-  }
-  String? _houseRegNo;
-  String? _houseName;
-  List<People>? _people;
-  HouseData copyWith({
-    String? houseRegNo,
-    String? houseName,
-    List<People>? people,
-  }) =>
-      HouseData(
-        houseRegNo: houseRegNo ?? _houseRegNo,
-        houseName: houseName ?? _houseName,
-        people: people ?? _people,
-      );
-  String? get houseRegNo => _houseRegNo;
-  String? get houseName => _houseName;
-  List<People>? get people => _people;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['house_reg_no'] = _houseRegNo;
-    map['house_name'] = _houseName;
-    if (_people != null) {
-      map['people'] = _people?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
-}
-
 /// user_reg_no:"U01"
 /// name : "Person 1"
 /// phone : "1234567890"
 /// due : "₹1000"
 
-People peopleFromJson(String str) => People.fromJson(json.decode(str));
-String peopleToJson(People data) => json.encode(data.toJson());
+PeopleData peopleFromJson(String str) => PeopleData.fromJson(json.decode(str));
+String peopleToJson(PeopleData data) => json.encode(data.toJson());
 
-class People {
-  People({
+class PeopleData {
+  PeopleData({
     String? userRegNo,
-    String? name,
+    String? fName,
+    String? lName,
+    String? houseName,
+    String? houseRegNo,
     String? phone,
     String? due,
+    String? totalDue,
+    String? place,
+    String? state,
+    String? district,
+    String? gender,
+    String? dob,
+    String? age,
+    String? job,
+    String? annualIncome,
+    bool? willingToDonateBlood,
+    String? bloodGroup,
+    bool? isExpat,
+    String? country,
   }) {
     _userRegNo = userRegNo;
-    _name = name;
+    _fName = fName;
+    _lName = lName;
+    _houseName = houseName;
+    _houseRegNo = houseRegNo;
     _phone = phone;
     _due = due;
+    _totalDue = totalDue;
+    _place = place;
+    _state = state;
+    _district = district;
+    _gender = gender;
+    _dob = dob;
+    _age = age;
+    _job = job;
+    _annualIncome = annualIncome;
+    _willingToDonateBlood = willingToDonateBlood;
+    _bloodGroup = bloodGroup;
+    _isExpat = isExpat;
+    _country = country;
   }
 
-  People.fromJson(dynamic json) {
+  PeopleData.fromJson(dynamic json) {
     _userRegNo = json['user_reg_no'];
-    _name = json['name'];
+    _fName = json['f_name'];
+    _lName = json['l_name'];
+    _houseName = json['house_name'];
+    _houseRegNo = json['house_reg_no'];
     _phone = json['phone'];
     _due = json['due'];
+    _totalDue = json['totalDue'];
+    _place = json['place'];
+    _state = json['state'];
+    _district = json['district'];
+    _gender = json['gender'];
+    _dob = json['dob'];
+    _age = json['age'];
+    _job = json['job'];
+    _annualIncome = json['annual_income'];
+    _willingToDonateBlood = json['willing_to_donate_blood'];
+    _bloodGroup = json['blood_group'];
+    _isExpat = json['is_expat'];
+    _country = json['country'];
   }
+
   String? _userRegNo;
-  String? _name;
+  String? _fName;
+  String? _lName;
+  String? _houseName;
+  String? _houseRegNo;
   String? _phone;
   String? _due;
-  People copyWith({
+  String? _totalDue;
+  String? _place;
+  String? _state;
+  String? _district;
+  String? _gender;
+  String? _dob;
+  String? _age;
+  String? _job;
+  String? _annualIncome;
+  bool? _willingToDonateBlood;
+  String? _bloodGroup;
+  bool? _isExpat;
+  String? _country;
+
+  PeopleData copyWith({
     String? userRegNo,
-    String? name,
+    String? fName,
+    String? lName,
+    String? houseName,
+    String? houseRegNo,
     String? phone,
     String? due,
+    String? totalDue,
+    String? place,
+    String? state,
+    String? district,
+    String? gender,
+    String? dob,
+    String? age,
+    String? job,
+    String? annualIncome,
+    bool? willingToDonateBlood,
+    String? bloodGroup,
+    bool? isExpat,
+    String? country,
   }) =>
-      People(
+      PeopleData(
         userRegNo: userRegNo ?? _userRegNo,
-        name: name ?? _name,
+        fName: fName ?? _fName,
+        lName: lName ?? _lName,
+        houseName: houseName ?? _houseName,
+        houseRegNo: houseRegNo ?? _houseRegNo,
         phone: phone ?? _phone,
         due: due ?? _due,
+        totalDue: totalDue ?? _totalDue,
+        place: place ?? _place,
+        state: state ?? _state,
+        district: district ?? _district,
+        gender: gender ?? _gender,
+        dob: dob ?? _dob,
+        age: age ?? _age,
+        job: job ?? _job,
+        annualIncome: annualIncome ?? _annualIncome,
+        willingToDonateBlood: willingToDonateBlood ?? _willingToDonateBlood,
+        bloodGroup: bloodGroup ?? _bloodGroup,
+        isExpat: isExpat ?? _isExpat,
+        country: country ?? _country,
       );
+
   String? get userRegNo => _userRegNo;
-  String? get name => _name;
+  String? get fName => _fName;
+  String? get lName => _lName;
+  String? get houseName => _houseName;
+  String? get houseRegNo => _houseRegNo;
   String? get phone => _phone;
   String? get due => _due;
+  String? get totalDue => _totalDue;
+  String? get place => _place;
+  String? get state => _state;
+  String? get district => _district;
+  String? get gender => _gender;
+  String? get dob => _dob;
+  String? get age => _age;
+  String? get job => _job;
+  String? get annualIncome => _annualIncome;
+  bool? get willingToDonateBlood => _willingToDonateBlood;
+  String? get bloodGroup => _bloodGroup;
+  bool? get isExpat => _isExpat;
+  String? get country => _country;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['user_reg_no'] = _userRegNo;
-    map['name'] = _name;
+    map['f_name'] = _fName;
+    map['l_name'] = _lName;
+    map['house_name'] = _houseName;
+    map['house_reg_no'] = _houseRegNo;
     map['phone'] = _phone;
     map['due'] = _due;
+    map['totalDue'] = _totalDue;
+    map['place'] = _place;
+    map['state'] = _state;
+    map['district'] = _district;
+    map['gender'] = _gender;
+    map['dob'] = _dob;
+    map['age'] = _age;
+    map['job'] = _job;
+    map['annual_income'] = _annualIncome;
+    map['willing_to_donate_blood'] = _willingToDonateBlood;
+    map['blood_group'] = _bloodGroup;
+    map['is_expat'] = _isExpat;
+    map['country'] = _country;
     return map;
   }
 }

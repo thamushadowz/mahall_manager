@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
+
+import '../../../infrastructure/theme/strings/app_strings.dart';
 
 class RegistrationController extends GetxController {
+  String mainHeading = AppStrings.registration;
+  PeopleData person = PeopleData();
   RxBool isExpat = false.obs;
   RxBool isWillingToDonate = false.obs;
   RxBool isRegistrationSuccess = false.obs;
@@ -42,6 +47,33 @@ class RegistrationController extends GetxController {
   final bloodController = TextEditingController();
   final pendingAmountController = TextEditingController();
   final countryController = TextEditingController();
+
+  @override
+  void onInit() {
+    if (Get.arguments != null) {
+      mainHeading = AppStrings.editUser;
+      person = Get.arguments;
+      regNoController.text = person.userRegNo ?? '';
+      fNameController.text = person.fName ?? '';
+      lNameController.text = person.lName ?? '';
+      houseNameController.text = person.houseName ?? '';
+      placeController.text = person.place ?? '';
+      districtController.text = person.district ?? '';
+      stateController.text = person.state ?? '';
+      mobileNoController.text = person.phone ?? '';
+      genderController.text = person.gender ?? '';
+      dobController.text = person.dob ?? '';
+      ageController.text = person.age ?? '';
+      jobController.text = person.job ?? '';
+      incomeController.text = person.annualIncome ?? '';
+      bloodController.text = person.bloodGroup ?? '';
+      pendingAmountController.text = person.due ?? '';
+      countryController.text = person.country ?? '';
+      isWillingToDonate.value = person.willingToDonateBlood ?? false;
+      isExpat.value = person.isExpat ?? false;
+    }
+    super.onInit();
+  }
 
   int calculateAge(DateTime birthDate) {
     DateTime today = DateTime.now();

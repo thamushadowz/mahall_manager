@@ -153,16 +153,16 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // Image at the bottom
+                    Image.asset(
+                      'assets/images/income_image.png',
+                      width: 400,
+                      height: 300,
+                      fit: BoxFit.fill,
+                    ),
                   ],
                 ),
               ),
-            ),
-            // Image at the bottom
-            Image.asset(
-              'assets/images/income_image.png',
-              width: 400,
-              height: 300,
-              fit: BoxFit.fill,
             ),
           ],
         ),

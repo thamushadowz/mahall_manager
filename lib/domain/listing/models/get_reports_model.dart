@@ -70,11 +70,11 @@ String dataToJson(ReportsData data) => json.encode(data.toJson());
 
 class ReportsData {
   ReportsData({
-    num? id,
+    String? id,
     String? description,
     String? date,
-    num? incomeOrExpense,
-    num? amount,
+    String? incomeOrExpense,
+    String? amount,
     String? addedBy,
   }) {
     _id = id;
@@ -93,18 +93,18 @@ class ReportsData {
     _amount = json['amount'];
     _addedBy = json['addedBy'];
   }
-  num? _id;
+  String? _id;
   String? _description;
   String? _date;
-  num? _incomeOrExpense;
-  num? _amount;
+  String? _incomeOrExpense;
+  String? _amount;
   String? _addedBy;
   ReportsData copyWith({
-    num? id,
+    String? id,
     String? description,
     String? date,
-    num? incomeOrExpense,
-    num? amount,
+    String? incomeOrExpense,
+    String? amount,
     String? addedBy,
   }) =>
       ReportsData(
@@ -115,11 +115,11 @@ class ReportsData {
         amount: amount ?? _amount,
         addedBy: addedBy ?? _addedBy,
       );
-  num? get id => _id;
+  String? get id => _id;
   String? get description => _description;
   String? get date => _date;
-  num? get incomeOrExpense => _incomeOrExpense;
-  num? get amount => _amount;
+  String? get incomeOrExpense => _incomeOrExpense;
+  String? get amount => _amount;
   String? get addedBy => _addedBy;
 
   Map<String, dynamic> toJson() {

@@ -68,223 +68,245 @@ class HomeController extends GetxController {
 
   final RxList<bool> isExpandedList = RxList([]);
 
-  var filteredUserDetails = <HouseData>[].obs;
+  var filteredUserDetails = <PeopleData>[].obs;
   var filteredReportsDetails = <ReportsData>[].obs;
   var filteredBloodDetails = <BloodData>[].obs;
   var filteredExpatDetails = <ExpatData>[].obs;
   RxString searchQuery = ''.obs;
 
-  List<HouseData> userDetails = [
-    HouseData(houseName: 'White House', houseRegNo: 'KNY01', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '4500'),
-      People(
-          userRegNo: "U01",
-          name: 'Muhammed',
-          phone: '+91789012345',
-          due: '500'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Shafeer', phone: '+916756453426', due: '0'),
-      People(userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '0'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '1600'),
-    ]),
-    HouseData(houseName: 'Safa Mahal', houseRegNo: 'KNY02', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '2000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Darussalam', houseRegNo: 'KNY03', people: [
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '2000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Sinan Manzil', houseRegNo: 'KNY04', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '1000'),
-    ]),
-    HouseData(houseName: 'Fathimas', houseRegNo: 'KNY05', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Puthiyapura', houseRegNo: 'MKY01', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '2000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Cherikkal House', houseRegNo: 'MKY02', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '2000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '6000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '7500'),
-      People(userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '0'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Safa Mahal', houseRegNo: 'MKY03', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '2000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Nasha Mahal', houseRegNo: 'PRY01', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '5000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Abrar', houseRegNo: 'PRY02', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '2000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Safa Mahal', houseRegNo: 'KLD01', people: [
-      People(
-          userRegNo: "U01",
-          name: 'Abdullah',
-          phone: '+919293949596',
-          due: '8000'),
-      People(
-          userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '3000'),
-      People(
-          userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '2000'),
-      People(
-          userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '3600'),
-    ]),
-    HouseData(houseName: 'Safa Mahal', houseRegNo: 'KLD02', people: [
-      People(
-          userRegNo: "U01", name: 'Abdullah', phone: '+919293949596', due: '0'),
-      People(userRegNo: "U01", name: 'Kasim', phone: '+911213141516', due: '0'),
-      People(userRegNo: "U01", name: 'Azees', phone: '+914598523601', due: '0'),
-      People(userRegNo: "U01", name: 'Navas', phone: '+918952012576', due: '0'),
-    ])
+  List<PeopleData> userDetails = [
+    PeopleData(
+        userRegNo: "U01",
+        fName: 'Kasim',
+        lName: 'Ahmed',
+        houseName: 'White House',
+        houseRegNo: 'KNY01',
+        place: 'Kayani',
+        state: 'Kerala',
+        district: 'Kannur',
+        phone: '+918652148562',
+        gender: 'Male',
+        dob: '11/05/1980',
+        age: '44',
+        job: 'Business',
+        annualIncome: '9,00,000 to 9,99,999 Lakhs',
+        due: '0',
+        totalDue: '10500',
+        willingToDonateBlood: true,
+        bloodGroup: 'O positive (O+)',
+        isExpat: true,
+        country: 'Saudi Arabia'),
+    PeopleData(
+      userRegNo: "U02",
+      fName: 'Wasim',
+      lName: 'Ahmed',
+      houseName: 'White House',
+      houseRegNo: 'KNY01',
+      place: 'Kayani',
+      state: 'Kerala',
+      district: 'Kannur',
+      phone: '+911213141516',
+      gender: 'Male',
+      dob: '10/03/1984',
+      age: '40',
+      job: 'Doctor',
+      annualIncome: '10 Lakhs and above',
+      due: '7500',
+      totalDue: '10500',
+      willingToDonateBlood: true,
+      bloodGroup: 'A positive (A+)',
+      isExpat: false,
+    ),
+    PeopleData(
+      userRegNo: "U03",
+      fName: 'Nasim',
+      lName: 'Ahmed',
+      houseName: 'White House',
+      houseRegNo: 'KNY01',
+      place: 'Kayani',
+      state: 'Kerala',
+      district: 'Kannur',
+      phone: '+918923104578',
+      gender: 'Male',
+      dob: '01/09/1990',
+      age: '34',
+      job: 'Engineer',
+      annualIncome: '10 Lakhs and above',
+      due: '3000',
+      totalDue: '10500',
+      willingToDonateBlood: false,
+      isExpat: true,
+      country: 'Japan',
+    ),
+    PeopleData(
+      userRegNo: "U04",
+      fName: 'Jasim',
+      lName: 'Ahmed',
+      houseName: 'White House',
+      houseRegNo: 'KNY01',
+      place: 'Kayani',
+      state: 'Kerala',
+      district: 'Kannur',
+      phone: '+919091929394',
+      gender: 'Male',
+      dob: '11/05/1996',
+      age: '28',
+      job: 'Hotel',
+      annualIncome: '7,00,000 to 8,99,999 Lakhs',
+      due: '0',
+      totalDue: '10500',
+      willingToDonateBlood: true,
+      bloodGroup: 'AB negative (AB-)',
+      isExpat: false,
+    ),
+    PeopleData(
+      userRegNo: "U05",
+      fName: 'Muhammed',
+      lName: 'Ameer',
+      houseName: 'Safiyas',
+      houseRegNo: 'KNY02',
+      place: 'Kayani',
+      state: 'Kerala',
+      district: 'Kannur',
+      phone: '+915289421358',
+      gender: 'Male',
+      dob: '11/05/1990',
+      age: '34',
+      job: 'Daily wage',
+      annualIncome: '3,00,000 to 4,99,999 Lakhs',
+      due: '8500',
+      totalDue: '8500',
+      willingToDonateBlood: true,
+      bloodGroup: 'AB positive (AB+)',
+      isExpat: false,
+    ),
+    PeopleData(
+      userRegNo: "U06",
+      fName: 'Muhammed',
+      lName: 'Navas',
+      houseName: 'Baithunnoor',
+      houseRegNo: 'PRY01',
+      place: 'Perincheri',
+      state: 'Kerala',
+      district: 'Kannur',
+      phone: '+919955478562',
+      gender: 'Male',
+      dob: '11/05/1988',
+      age: '36',
+      job: 'Business',
+      annualIncome: '9,00,000 to 9,99,999 Lakhs',
+      due: '0',
+      totalDue: '0',
+      willingToDonateBlood: false,
+      isExpat: false,
+    ),
+    PeopleData(
+      userRegNo: "U07",
+      fName: 'Muhammed',
+      lName: 'Niyas',
+      houseName: 'Baithunnoor',
+      houseRegNo: 'PRY01',
+      place: 'Perincheri',
+      state: 'Kerala',
+      district: 'Kannur',
+      phone: '+915230148976',
+      gender: 'Male',
+      dob: '11/05/1986',
+      age: '38',
+      job: 'Business',
+      annualIncome: '9,00,000 to 9,99,999 Lakhs',
+      due: '0',
+      totalDue: '0',
+      willingToDonateBlood: true,
+      bloodGroup: 'A positive (A+)',
+      isExpat: false,
+    ),
+    PeopleData(
+      userRegNo: "U08",
+      fName: 'Muhammed',
+      lName: 'Nisar',
+      houseName: 'Baithunnoor',
+      houseRegNo: 'PRY01',
+      place: 'Perincheri',
+      state: 'Kerala',
+      district: 'Kannur',
+      phone: '+917089562145',
+      gender: 'Male',
+      dob: '11/05/1980',
+      age: '44',
+      job: 'Business',
+      annualIncome: '10 Lakhs and above',
+      due: '0',
+      totalDue: '0',
+      willingToDonateBlood: true,
+      bloodGroup: 'O negative (O-)',
+      isExpat: true,
+      country: 'Australia',
+    ),
   ];
   List<ReportsData> reportsDetails = [
     ReportsData(
-        id: 1000,
+        id: '1000',
         description: "Honey Auction",
         date: "01/11/2024",
-        amount: 3000,
-        incomeOrExpense: 0,
+        amount: '3000',
+        incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
-        id: 1001,
+        id: '1001',
         description: "Banana Auction",
         date: "04/11/2024",
-        amount: 1000,
-        incomeOrExpense: 0,
+        amount: '1000',
+        incomeOrExpense: '0',
         addedBy: "Treasurer"),
     ReportsData(
-        id: 1002,
+        id: '1002',
         description: "Electricity Bill",
         date: "11/11/2024",
-        amount: 14500,
-        incomeOrExpense: 1,
+        amount: '14500',
+        incomeOrExpense: '1',
         addedBy: "Secretary"),
     ReportsData(
-        id: 1003,
+        id: '1003',
         description: "Ustad Salary",
         date: "10/11/2024",
-        amount: 21000,
-        incomeOrExpense: 1,
+        amount: '21000',
+        incomeOrExpense: '1',
         addedBy: "Treasurer"),
     ReportsData(
-        id: 1004,
+        id: '1004',
         description: "Friday Bucket",
         date: "14/11/2024",
-        amount: 1500,
-        incomeOrExpense: 0,
+        amount: '1500',
+        incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
-        id: 1005,
+        id: '1005',
         description: "Maulid vaka",
         date: "01/10/2024",
-        amount: 245000,
-        incomeOrExpense: 0,
+        amount: '245000',
+        incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
-        id: 1006,
+        id: '1006',
         description: "Moulid nercha food",
         date: "01/10/2024",
-        amount: 198000,
-        incomeOrExpense: 1,
+        amount: '198000',
+        incomeOrExpense: '1',
         addedBy: "President"),
     ReportsData(
-        id: 1007,
+        id: '1007',
         description: "Badreengal aand nercha vaka",
         date: "25/10/2024",
-        amount: 150000,
-        incomeOrExpense: 0,
+        amount: '150000',
+        incomeOrExpense: '0',
         addedBy: "Treasurer"),
     ReportsData(
-        id: 1008,
+        id: '1008',
         description: "Badreengal aand nercha food",
         date: "01/11/2024",
-        amount: 97000,
-        incomeOrExpense: 1,
+        amount: '97000',
+        incomeOrExpense: '1',
         addedBy: "Treasurer"),
   ];
   List<BloodData> bloodDetails = [
@@ -543,6 +565,26 @@ class HomeController extends GetxController {
     Get.updateLocale(Locale(lang));
   }
 
+  Map<String, List<PeopleData>> groupedUsers() {
+    Map<String, List<PeopleData>> grouped = {};
+    for (var house in filteredUserDetails) {
+      final key = '${house.houseRegNo} - ${house.houseName}';
+      if (!grouped.containsKey(key)) {
+        grouped[key!] = [];
+      }
+      grouped[key]?.add(house);
+    }
+    return grouped;
+  }
+
+  void updateReportItem(Map<String, dynamic> updatedItem) {
+    int index = filteredReportsDetails
+        .indexWhere((item) => item.id == updatedItem['id']);
+    if (index != -1) {
+      filteredReportsDetails[index] = ReportsData.fromJson(updatedItem);
+    }
+  }
+
   void applyFilters() {
     String searchText = reportSearchController.text.trim().toLowerCase();
 
@@ -565,8 +607,8 @@ class HomeController extends GetxController {
 
       // Type Filter (Income/Expense)
       bool isTypeMatched =
-          (isIncomeChecked.value && report.incomeOrExpense == 0) ||
-              (isExpenseChecked.value && report.incomeOrExpense == 1) ||
+          (isIncomeChecked.value && report.incomeOrExpense == '0') ||
+              (isExpenseChecked.value && report.incomeOrExpense == '1') ||
               (!isIncomeChecked.value && !isExpenseChecked.value);
 
       // Role Filter (addedBy)
@@ -837,9 +879,12 @@ class HomeController extends GetxController {
         return house.houseName!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
-            house.people!.any((person) => person.name!
+            house.fName!
                 .toLowerCase()
-                .contains(searchQuery.value.toLowerCase()));
+                .contains(searchQuery.value.toLowerCase()) ||
+            house.lName!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase());
       }).toList();
     }
   }
@@ -910,7 +955,7 @@ class HomeController extends GetxController {
     isExpandedList[index] = !isExpandedList[index];
   }
 
-  int calculateTotalDue(List<People> people) {
+  int calculateTotalDue(List<PeopleData> people) {
     return people.fold(0, (sum, person) {
       int due = int.tryParse(person.due ?? '0') ?? 0;
       return sum + due;

@@ -10,17 +10,20 @@ class CommonTextWidget extends StatelessWidget {
       this.fontSize,
       this.fontWeight,
       this.shadows,
-      this.color});
+      this.color,
+      this.textAlign});
 
   final String text;
   final double? fontSize;
   final FontWeight? fontWeight;
   final Color? color;
   final List<Shadow>? shadows;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
+      textAlign: textAlign,
       text,
       style: TextStyle(
           shadows: shadows,

@@ -52,9 +52,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         //Register Number
                         CommonTextFormField(
                             label: AppLocalizations.of(context)!.reg_no,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(40),
-                            ],
                             keyboardType: TextInputType.name,
                             textController: controller.regNoController,
                             focusNode: controller.regNoFocusNode,
@@ -67,9 +64,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         //First Name
                         CommonTextFormField(
                             label: AppLocalizations.of(context)!.first_name,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(40),
-                            ],
                             keyboardType: TextInputType.name,
                             textController: controller.fNameController,
                             focusNode: controller.fNameFocusNode,
@@ -82,9 +76,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         //Last Name
                         CommonTextFormField(
                             label: AppLocalizations.of(context)!.last_name,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(40),
-                            ],
                             keyboardType: TextInputType.name,
                             textController: controller.lNameController,
                             focusNode: controller.lNameFocusNode,
@@ -97,9 +88,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         //House Name
                         CommonTextFormField(
                             label: AppLocalizations.of(context)!.house_name,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(40),
-                            ],
                             keyboardType: TextInputType.name,
                             textController: controller.houseNameController,
                             focusNode: controller.houseNameFocusNode,
@@ -112,9 +100,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         //Place
                         CommonTextFormField(
                             label: AppLocalizations.of(context)!.place,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(40),
-                            ],
                             keyboardType: TextInputType.name,
                             textController: controller.placeController,
                             focusNode: controller.placeFocusNode,
@@ -129,9 +114,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                           disabledBorderColor: AppColors.blueGrey,
                           enabled: false,
                           label: AppLocalizations.of(context)!.state,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(40),
-                          ],
                           validator: Validators.validateState,
                           keyboardType: TextInputType.none,
                           textController: controller.stateController,
@@ -154,9 +136,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                           disabledBorderColor: AppColors.blueGrey,
                           enabled: false,
                           label: AppLocalizations.of(context)!.district,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(40),
-                          ],
                           validator: Validators.validateDistrict,
                           keyboardType: TextInputType.none,
                           textController: controller.districtController,
@@ -229,9 +208,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                           disabledBorderColor: AppColors.blueGrey,
                           enabled: false,
                           label: AppLocalizations.of(context)!.dob,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(40),
-                          ],
                           keyboardType: TextInputType.none,
                           textController: controller.dobController,
                           focusNode: controller.dobFocusNode,
@@ -262,7 +238,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         CommonTextFormField(
                             label: AppLocalizations.of(context)!.age,
                             inputFormatters: [
-                              LengthLimitingTextInputFormatter(40),
                               FilteringTextInputFormatter.digitsOnly
                             ],
                             keyboardType: TextInputType.number,
@@ -277,9 +252,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         //Job
                         CommonTextFormField(
                             label: AppLocalizations.of(context)!.job,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(40),
-                            ],
                             keyboardType: TextInputType.name,
                             textController: controller.jobController,
                             focusNode: controller.jobFocusNode,
@@ -310,7 +282,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                         CommonTextFormField(
                           label: AppLocalizations.of(context)!.pending_amt,
                           inputFormatters: [
-                            LengthLimitingTextInputFormatter(40),
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           keyboardType: TextInputType.number,
@@ -387,9 +358,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                                 disabledBorderColor: AppColors.blueGrey,
                                 enabled: false,
                                 label: AppLocalizations.of(context)!.country,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(40),
-                                ],
                                 validator: Validators.validateCountry,
                                 keyboardType: TextInputType.none,
                                 textController: controller.countryController,

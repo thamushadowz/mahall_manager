@@ -186,8 +186,15 @@ class Validators {
   }
 
   static String? validateAmount(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.isEmpty || int.parse(value) == 0) {
       return AppStrings.amountReqd;
+    }
+    return null;
+  }
+
+  static String? validateAnnouncement(String? value) {
+    if (value == null || value.isEmpty || int.parse(value) == 0) {
+      return AppStrings.announcementReqd;
     }
     return null;
   }

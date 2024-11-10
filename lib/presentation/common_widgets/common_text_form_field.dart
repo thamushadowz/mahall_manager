@@ -9,11 +9,11 @@ class CommonTextFormField extends StatelessWidget {
       {super.key,
       this.label,
       this.hint,
-      required this.inputFormatters,
+      this.inputFormatters,
       required this.textController,
       this.focusNode,
       this.validator,
-      required this.onFieldSubmitted,
+      this.onFieldSubmitted,
       this.suffixIcon,
       this.prefixText,
       this.obscureText,
@@ -22,7 +22,9 @@ class CommonTextFormField extends StatelessWidget {
       this.onSuffixTap,
       this.disabledBorderColor,
       this.disabledLabelColor,
-      this.onDateTap});
+      this.onDateTap,
+      this.minLines,
+      this.maxLines});
 
   final String? label;
   final String? hint;
@@ -31,8 +33,8 @@ class CommonTextFormField extends StatelessWidget {
   final Function()? onSuffixTap;
   final Function()? onDateTap;
   final String? Function(String?)? validator;
-  final Function(String?) onFieldSubmitted;
-  final List<TextInputFormatter> inputFormatters;
+  final Function(String?)? onFieldSubmitted;
+  final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final TextEditingController textController;
   final FocusNode? focusNode;
@@ -40,6 +42,8 @@ class CommonTextFormField extends StatelessWidget {
   final bool? enabled;
   final Color? disabledBorderColor;
   final Color? disabledLabelColor;
+  final int? minLines;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +56,8 @@ class CommonTextFormField extends StatelessWidget {
             color: AppColors.black,
             fontSize: AppMeasures.mediumTextSize,
             fontWeight: AppMeasures.mediumWeight),
+        minLines: minLines,
+        maxLines: maxLines,
         enabled: enabled,
         validator: validator,
         obscureText: obscureText ?? false,

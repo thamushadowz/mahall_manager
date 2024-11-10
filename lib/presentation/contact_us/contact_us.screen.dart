@@ -11,7 +11,9 @@ import '../common_widgets/common_appbar_widget.dart';
 import 'controllers/contact_us.controller.dart';
 
 class ContactUsScreen extends GetView<ContactUsController> {
-  const ContactUsScreen({super.key});
+  ContactUsScreen({super.key}) {
+    Get.put(ContactUsController());
+  }
 
   @override
   Widget build(BuildContext context) {

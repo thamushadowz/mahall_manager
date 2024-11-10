@@ -6,6 +6,7 @@ export 'package:mahall_manager/presentation/contact_us/contact_us.screen.dart';
 export 'package:mahall_manager/presentation/home/home.screen.dart';
 export 'package:mahall_manager/presentation/house_registration/house_registration.screen.dart';
 export 'package:mahall_manager/presentation/login/login.screen.dart';
+export 'package:mahall_manager/presentation/payment_screen/payment_screen.screen.dart';
 export 'package:mahall_manager/presentation/registration/registration.screen.dart';
 export 'package:mahall_manager/presentation/reset_password/reset_password.screen.dart';
 export 'package:mahall_manager/presentation/search_screen/search_screen.screen.dart';

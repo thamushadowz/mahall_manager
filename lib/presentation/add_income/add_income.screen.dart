@@ -17,50 +17,83 @@ class AddIncomeScreen extends GetView<AddIncomeController> {
       appBar: CommonAppbarWidget(
         title: controller.mainHeading,
       ),
-      body: CommonIncomeExpensesWidget(
-        heading: controller.mainHeading,
-        color: AppColors.themeColor,
-        dateController: controller.dateController,
-        descriptionController: controller.descriptionController,
-        amountController: controller.amountController,
-        dateFocusNode: controller.dateFocusNode,
-        descriptionFocusNode: controller.descriptionFocusNode,
-        amountFocusNode: controller.amountFocusNode,
-        formKey: controller.formKey,
-        onSubmitTap: () {
-          if (controller.formKey.currentState!.validate()) {
-            if (controller.mainHeading == AppStrings.editIncome) {
-              final updatedReport = {
-                'id': controller.report.id,
-                'date': controller.dateController.text,
-                'description': controller.descriptionController.text,
-                'amount': controller.amountController.text,
-                'addedBy': controller.report.addedBy,
-                'incomeOrExpense': controller.report.incomeOrExpense
-              };
-              Get.back(result: updatedReport);
-            } else {
-              Get.offAllNamed(Routes.HOME);
-            }
-          }
-        },
-        onDateTap: () async {
-          FocusScope.of(context).requestFocus(FocusNode());
-          DateTime? pickedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1900),
-            lastDate: DateTime(2050),
-          );
+      body: SizedBox.expand(
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/lite_white_background.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
-          if (pickedDate != null) {
-            String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-
-            controller.dateController.text = formattedDate;
-          }
-        },
-        isLoading: controller.isLoading,
+              return SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  top: keyboardHeight == 0 ? constraints.maxHeight * 0.2 : 20,
+                  bottom: 20,
+                ),
+                child: Column(
+                  mainAxisAlignment: keyboardHeight == 0
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.start,
+                  children: [
+                    _incomeWidget(context),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       ),
+    );
+  }
+
+  CommonIncomeExpensesWidget _incomeWidget(BuildContext context) {
+    return CommonIncomeExpensesWidget(
+      heading: controller.mainHeading,
+      color: AppColors.themeColor,
+      dateController: controller.dateController,
+      descriptionController: controller.descriptionController,
+      amountController: controller.amountController,
+      dateFocusNode: controller.dateFocusNode,
+      descriptionFocusNode: controller.descriptionFocusNode,
+      amountFocusNode: controller.amountFocusNode,
+      formKey: controller.formKey,
+      onSubmitTap: () {
+        if (controller.formKey.currentState!.validate()) {
+          if (controller.mainHeading == AppStrings.editIncome) {
+            final updatedReport = {
+              'id': controller.report.id,
+              'date': controller.dateController.text,
+              'description': controller.descriptionController.text,
+              'amount': controller.amountController.text,
+              'addedBy': controller.report.addedBy,
+              'incomeOrExpense': controller.report.incomeOrExpense
+            };
+            Get.back(result: updatedReport);
+          } else {
+            Get.offAllNamed(Routes.HOME);
+          }
+        }
+      },
+      onDateTap: () async {
+        FocusScope.of(context).requestFocus(FocusNode());
+        DateTime? pickedDate = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime(2050),
+        );
+
+        if (pickedDate != null) {
+          String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+
+          controller.dateController.text = formattedDate;
+        }
+      },
+      isLoading: controller.isLoading,
     );
   }
 }

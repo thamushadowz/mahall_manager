@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/presentation/home/widgets/filter_and_clear_filter_widget.dart';
 
@@ -23,12 +22,8 @@ class ExpatsWidget extends StatelessWidget {
     return Column(
       children: [
         CommonTextFormField(
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(40),
-          ],
           suffixIcon: Icons.search,
           textController: controller.expatSearchController,
-          onFieldSubmitted: (val) {},
         ),
         const SizedBox(height: 20),
         // _buildFilterAndClearFilterOption(),

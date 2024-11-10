@@ -59,20 +59,17 @@ class HomeScreen extends GetView<HomeController> {
             onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
             },
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Obx(() => IndexedStack(
-                    index: controller
-                        .selectedNavIndex.value, // Show the selected screen
-                    children: [
-                      DashboardWidget(controller: controller),
-                      UsersWidget(controller: controller),
-                      ReportsWidget(controller: controller),
-                      BloodWidget(controller: controller),
-                      ExpatsWidget(controller: controller),
-                    ],
-                  )),
-            ),
+            child: Obx(() => IndexedStack(
+                  index: controller
+                      .selectedNavIndex.value, // Show the selected screen
+                  children: [
+                    DashboardWidget(controller: controller),
+                    UsersWidget(controller: controller),
+                    ReportsWidget(controller: controller),
+                    BloodWidget(controller: controller),
+                    ExpatsWidget(controller: controller),
+                  ],
+                )),
           ),
         ),
       ),

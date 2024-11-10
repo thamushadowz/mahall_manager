@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
@@ -51,9 +50,6 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
       children: [
         CommonTextFormField(
             label: AppLocalizations.of(context)!.reg_no,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(40),
-            ],
             keyboardType: TextInputType.name,
             textController: controller.regNoController,
             focusNode: controller.regNoFocusNode,
@@ -65,9 +61,6 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
         const SizedBox(height: 10),
         CommonTextFormField(
             label: AppLocalizations.of(context)!.house_name,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(40),
-            ],
             keyboardType: TextInputType.name,
             textController: controller.houseNameController,
             focusNode: controller.houseNameFocusNode,
@@ -79,9 +72,6 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
         const SizedBox(height: 10),
         CommonTextFormField(
             label: AppLocalizations.of(context)!.house_holder_name,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(40),
-            ],
             keyboardType: TextInputType.text,
             textController: controller.houseHolderNameController,
             focusNode: controller.houseHolderNameFocusNode,

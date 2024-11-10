@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 
@@ -23,12 +22,8 @@ class BloodWidget extends StatelessWidget {
     return Column(
       children: [
         CommonTextFormField(
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(40),
-          ],
           suffixIcon: Icons.search,
           textController: controller.bloodSearchController,
-          onFieldSubmitted: (val) {},
         ),
         const SizedBox(height: 20),
         _buildFilterAndClearFilterOption(),

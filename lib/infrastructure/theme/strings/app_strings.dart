@@ -16,11 +16,12 @@ class AppStrings {
   static String submit = 'Submit';
   static String search = 'Search';
 
-  static String warning = 'Warning';
+  static String warning = 'Warning!!';
   static String logout = 'Logout';
   static String cancel = 'Cancel';
   static String collectMoney = 'Collect Money';
   static String collectTotal = 'Collect Total';
+  static String fullyPaid = 'Fully Paid';
   static String noDues = 'No Dues';
   static String totalDue = ' Total Due:';
   static String addedBy = 'Added By';
@@ -31,6 +32,10 @@ class AppStrings {
   static String clearFilters = 'Clear Filters';
   static String selectFromDate = 'Select From Date';
   static String selectToDate = 'Select To Date';
+  static String paymentDetails = 'Payment Details';
+  static String enterCustomAmount = 'Enter Custom Amount';
+  static String payNow = 'Pay Now';
+  static String houseName = 'House Name';
 
   static String male = 'Male';
   static String female = 'Female';
@@ -60,15 +65,26 @@ class AppStrings {
   static String collect = 'Collect';
   static String registration = 'Registration';
   static String editUser = 'Edit User';
+  static String referenceNo = 'Reference No';
+  static String paidAmount = 'Paid Amount';
+  static String paymentSuccess = 'Payment Successful!';
+  static String delete = 'Delete';
+  static String typeHere = 'Type Here....';
+  static String announcementManager = 'Announcement Manager';
+  static String total = 'Total';
 
   ///Validation messages
 
   static String areYouSureToLogout = 'Are you sure to Logout?';
+  static String areYouSureToPay = 'Are you sure to Pay now?';
+  static String areYouSureToDelete =
+      'Are you sure to Delete?\nThis process is irreversible!';
   static String willingToDonateBlood = 'Are you willing to donate blood?';
   static String pressBackExit = 'Press back again to exit';
   static String dateReqd = 'Date Required';
   static String descriptionReqd = 'Description Required';
   static String amountReqd = 'Amount Required';
+  static String announcementReqd = 'Announcement Required';
 
   ///Policy Related Strings
   static String privacyPolicy = 'Privacy Policy';

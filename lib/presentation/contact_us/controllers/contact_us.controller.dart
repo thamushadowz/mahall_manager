@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsController extends GetxController {
-  launchDialer(String number) async {
+  Future<void> launchDialer(String number) async {
     final Uri url = Uri(scheme: 'tel', path: number);
     if (await canLaunchUrl(url)) {
       await launchUrl(url);

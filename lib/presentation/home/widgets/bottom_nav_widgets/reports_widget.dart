@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
@@ -8,6 +7,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_clickable_text
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/filter_and_clear_filter_widget.dart';
 
+import '../../../../domain/core/interfaces/common_alert.dart';
 import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
@@ -23,13 +23,12 @@ class ReportsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CommonTextFormField(
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(40),
-          ],
-          suffixIcon: Icons.search,
-          textController: controller.reportSearchController,
-          onFieldSubmitted: (val) {},
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: CommonTextFormField(
+            suffixIcon: Icons.search,
+            textController: controller.reportSearchController,
+          ),
         ),
         const SizedBox(height: 20),
         _buildFilterAndClearFilterOption(),
@@ -38,7 +37,31 @@ class ReportsWidget extends StatelessWidget {
         _buildFilterWidget(context),
         const SizedBox(height: 20),
         _buildReportsList(),
+        _buildTotalWidget(),
+        const SizedBox(height: 20)
       ],
+    );
+  }
+
+  Container _buildTotalWidget() {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      color: AppColors.themeColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          CommonTextWidget(
+            text: '${AppStrings.total} : ',
+            color: AppColors.white,
+          ),
+          const SizedBox(width: 50),
+          Obx(
+            () => CommonTextWidget(
+                text: controller.reportTotal.value.toString(),
+                color: AppColors.white),
+          ),
+        ],
+      ),
     );
   }
 
@@ -66,13 +89,11 @@ class ReportsWidget extends StatelessWidget {
             ))
           : SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _buildUserList(),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Expanded(
+                  child: _buildDataTable(),
+                ),
               ),
             ),
     ));
@@ -253,141 +274,145 @@ class ReportsWidget extends StatelessWidget {
         isFilterSubmitted: controller.isReportFilterSubmitted.value,
         onClearFilterTap: controller.clearReportFilters,
         onFilterTap: () {
+          controller.reportTotal.value = 0.0;
           controller.isReportFiltering.value =
               !controller.isReportFiltering.value;
         }));
   }
 
-  Widget _buildUserList() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columnSpacing: 20,
-        headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
-        columns: [
-          DataColumn(
-            label: CommonTextWidget(
-              text: AppStrings.id,
+  Widget _buildDataTable() {
+    return DataTable(
+      columnSpacing: 20,
+      headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+      columns: [
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.id,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.description,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.date,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.amount,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.addedBy,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.actions,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+      ],
+      rows: controller.filteredReportsDetails.map((report) {
+        return DataRow(
+          color: WidgetStateProperty.all(report.incomeOrExpense == '0'
+              ? AppColors.themeColor.withOpacity(0.1)
+              : AppColors.darkRed.withOpacity(0.1)),
+          cells: [
+            DataCell(CommonTextWidget(
+              text: report.id.toString(),
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-              color: AppColors.white,
-            ),
-          ),
-          DataColumn(
-            label: CommonTextWidget(
-              text: AppStrings.description,
+            )),
+            DataCell(CommonTextWidget(
+              text: report.description ?? '',
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-              color: AppColors.white,
-            ),
-          ),
-          DataColumn(
-            label: CommonTextWidget(
-              text: AppStrings.date,
+            )),
+            DataCell(CommonTextWidget(
+              text: report.date ?? '',
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.smallTextSize,
+              color: AppColors.darkRed.withOpacity(0.6),
+            )),
+            DataCell(CommonTextWidget(
+              text: report.amount.toString(),
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-              color: AppColors.white,
-            ),
-          ),
-          DataColumn(
-            label: CommonTextWidget(
-              text: AppStrings.amount,
+            )),
+            DataCell(CommonTextWidget(
+              text: report.addedBy ?? '',
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-              color: AppColors.white,
-            ),
-          ),
-          DataColumn(
-            label: CommonTextWidget(
-              text: AppStrings.addedBy,
-              fontWeight: AppMeasures.mediumWeight,
-              fontSize: AppMeasures.mediumTextSize,
-              color: AppColors.white,
-            ),
-          ),
-          DataColumn(
-            label: CommonTextWidget(
-              text: AppStrings.actions,
-              fontWeight: AppMeasures.mediumWeight,
-              fontSize: AppMeasures.mediumTextSize,
-              color: AppColors.white,
-            ),
-          ),
-        ],
-        rows: controller.filteredReportsDetails.map((report) {
-          return DataRow(
-            color: WidgetStateProperty.all(report.incomeOrExpense == '0'
-                ? AppColors.themeColor.withOpacity(0.1)
-                : AppColors.darkRed.withOpacity(0.1)),
-            cells: [
-              DataCell(CommonTextWidget(
-                text: report.id.toString(),
-                fontWeight: AppMeasures.mediumWeight,
-                fontSize: AppMeasures.mediumTextSize,
-              )),
-              DataCell(CommonTextWidget(
-                text: report.description ?? '',
-                fontWeight: AppMeasures.mediumWeight,
-                fontSize: AppMeasures.mediumTextSize,
-              )),
-              DataCell(CommonTextWidget(
-                text: report.date ?? '',
-                fontWeight: AppMeasures.mediumWeight,
-                fontSize: AppMeasures.smallTextSize,
-                color: AppColors.darkRed.withOpacity(0.6),
-              )),
-              DataCell(CommonTextWidget(
-                text: report.amount.toString(),
-                fontWeight: AppMeasures.mediumWeight,
-                fontSize: AppMeasures.mediumTextSize,
-              )),
-              DataCell(CommonTextWidget(
-                text: report.addedBy ?? '',
-                fontWeight: AppMeasures.mediumWeight,
-                fontSize: AppMeasures.mediumTextSize,
-              )),
-              DataCell(
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.edit_note_rounded,
-                        color: AppColors.blueGrey,
-                      ),
-                      onPressed: () async {
-                        if (report.incomeOrExpense == '0') {
-                          final updatedReport = await Get.toNamed(
-                              Routes.ADD_INCOME,
-                              arguments: report);
-                          if (updatedReport != null) {
-                            controller.updateReportItem(updatedReport);
-                          }
-                        } else {
-                          final updatedReport = await Get.toNamed(
-                              Routes.ADD_EXPENSES,
-                              arguments: report);
-                          if (updatedReport != null) {
-                            controller.updateReportItem(updatedReport);
-                          }
+            )),
+            DataCell(
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.edit_note_rounded,
+                      color: AppColors.blueGrey,
+                    ),
+                    onPressed: () async {
+                      if (report.incomeOrExpense == '0') {
+                        final updatedReport = await Get.toNamed(
+                            Routes.ADD_INCOME,
+                            arguments: report);
+                        if (updatedReport != null) {
+                          controller.updateReportItem(updatedReport);
                         }
-                      },
+                      } else {
+                        final updatedReport = await Get.toNamed(
+                            Routes.ADD_EXPENSES,
+                            arguments: report);
+                        if (updatedReport != null) {
+                          controller.updateReportItem(updatedReport);
+                        }
+                      }
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      color: AppColors.darkRed,
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete_outline_rounded,
-                        color: AppColors.darkRed,
-                      ),
-                      onPressed: () {
-                        // Add delete action here
-                      },
-                    ),
-                  ],
-                ),
+                    onPressed: () {
+                      CommonAlert.alertDialogWidget(
+                          onConfirm: () {},
+                          onCancel: () {},
+                          title: AppStrings.warning,
+                          textConfirm: AppStrings.delete,
+                          textCancel: AppStrings.cancel,
+                          middleText: AppStrings.areYouSureToDelete);
+                    },
+                  ),
+                ],
               ),
-            ],
-          );
-        }).toList(),
-      ),
+            ),
+          ],
+        );
+      }).toList(),
     );
   }
 }

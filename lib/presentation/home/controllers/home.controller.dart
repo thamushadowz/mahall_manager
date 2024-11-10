@@ -27,6 +27,10 @@ class HomeController extends GetxController {
   final reportSearchController = TextEditingController();
   final bloodSearchController = TextEditingController();
   final expatSearchController = TextEditingController();
+  final announcementController = TextEditingController();
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   RxString selectedLanguage = 'English'.obs;
   DateTime? lastPressedAt;
   RxInt selectedNavIndex = 0.obs;
@@ -61,6 +65,7 @@ class HomeController extends GetxController {
 
   var income = 165093.0.obs;
   var expense = 79576.0.obs;
+  RxDouble reportTotal = 0.0.obs;
 
   final double incomePercent = 0.0;
   final double expensePercent = 0.0;
@@ -105,7 +110,7 @@ class HomeController extends GetxController {
       place: 'Kayani',
       state: 'Kerala',
       district: 'Kannur',
-      phone: '+911213141516',
+      phone: '+917012652170',
       gender: 'Male',
       dob: '10/03/1984',
       age: '40',
@@ -245,6 +250,69 @@ class HomeController extends GetxController {
     ),
   ];
   List<ReportsData> reportsDetails = [
+    ReportsData(
+        id: '1000',
+        description: "Honey Auction",
+        date: "01/11/2024",
+        amount: '3000',
+        incomeOrExpense: '0',
+        addedBy: "President"),
+    ReportsData(
+        id: '1001',
+        description: "Banana Auction",
+        date: "04/11/2024",
+        amount: '1000',
+        incomeOrExpense: '0',
+        addedBy: "Treasurer"),
+    ReportsData(
+        id: '1002',
+        description: "Electricity Bill",
+        date: "11/11/2024",
+        amount: '14500',
+        incomeOrExpense: '1',
+        addedBy: "Secretary"),
+    ReportsData(
+        id: '1003',
+        description: "Ustad Salary",
+        date: "10/11/2024",
+        amount: '21000',
+        incomeOrExpense: '1',
+        addedBy: "Treasurer"),
+    ReportsData(
+        id: '1004',
+        description: "Friday Bucket",
+        date: "14/11/2024",
+        amount: '1500',
+        incomeOrExpense: '0',
+        addedBy: "President"),
+    ReportsData(
+        id: '1005',
+        description: "Maulid vaka",
+        date: "01/10/2024",
+        amount: '245000',
+        incomeOrExpense: '0',
+        addedBy: "President"),
+    ReportsData(
+        id: '1006',
+        description: "Moulid nercha food",
+        date: "01/10/2024",
+        amount: '198000',
+        incomeOrExpense: '1',
+        addedBy: "President"),
+    ReportsData(
+        id: '1007',
+        description: "Badreengal aand nercha vaka",
+        date: "25/10/2024",
+        amount: '150000',
+        incomeOrExpense: '0',
+        addedBy: "Treasurer"),
+    ReportsData(
+        id: '1008',
+        description: "Badreengal aand nercha food",
+        date: "01/11/2024",
+        amount: '97000',
+        incomeOrExpense: '1',
+        addedBy: "Treasurer"),
     ReportsData(
         id: '1000',
         description: "Honey Auction",
@@ -539,6 +607,7 @@ class HomeController extends GetxController {
     userSearchController.addListener(() {
       searchUser(userSearchController.text);
     });
+    calculateReportTotal();
     reportSearchController.addListener(() {
       searchReports(reportSearchController.text);
     });
@@ -570,11 +639,25 @@ class HomeController extends GetxController {
     for (var house in filteredUserDetails) {
       final key = '${house.houseRegNo} - ${house.houseName}';
       if (!grouped.containsKey(key)) {
-        grouped[key!] = [];
+        grouped[key] = [];
       }
       grouped[key]?.add(house);
     }
     return grouped;
+  }
+
+  calculateReportTotal() {
+    reportTotal.value = 0.0;
+    for (int i = 0; i < filteredReportsDetails.length; i++) {
+      if (filteredReportsDetails[i].incomeOrExpense == '0') {
+        print('sgfdsfg :::: ${filteredReportsDetails[i].amount}');
+        reportTotal.value = reportTotal.value +
+            double.parse(filteredReportsDetails[i].amount ?? '');
+      } else {
+        reportTotal.value = reportTotal.value -
+            double.parse(filteredReportsDetails[i].amount ?? '');
+      }
+    }
   }
 
   void updateReportItem(Map<String, dynamic> updatedItem) {
@@ -586,6 +669,7 @@ class HomeController extends GetxController {
   }
 
   void applyFilters() {
+    calculateReportTotal();
     String searchText = reportSearchController.text.trim().toLowerCase();
 
     filteredReportsDetails.value = reportsDetails.where((report) {

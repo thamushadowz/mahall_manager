@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_form_field.dart';
@@ -21,12 +21,9 @@ class UsersWidget extends StatelessWidget {
     return Column(
       children: [
         CommonTextFormField(
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(40),
-          ],
           suffixIcon: Icons.search,
+          hint: AppStrings.search,
           textController: controller.userSearchController,
-          onFieldSubmitted: (val) {},
         ),
         const SizedBox(height: 20),
         _buildUserList(),
@@ -94,6 +91,23 @@ class UsersWidget extends StatelessWidget {
                                         ? Icons.expand_less
                                         : Icons.expand_more,
                                     color: AppColors.blueGrey,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete_outline_rounded,
+                                      color: AppColors.darkRed,
+                                    ),
+                                    onPressed: () {
+                                      CommonAlert.alertDialogWidget(
+                                          onConfirm: () {},
+                                          onCancel: () {},
+                                          title: AppStrings.warning,
+                                          textConfirm: AppStrings.delete,
+                                          textCancel: AppStrings.cancel,
+                                          middleText:
+                                              AppStrings.areYouSureToDelete);
+                                    },
                                   ),
                                 ],
                               ),
@@ -201,10 +215,20 @@ class UsersWidget extends StatelessWidget {
                                                             AppColors.darkRed,
                                                         title: AppStrings
                                                             .collectMoney,
-                                                        onTap: () {},
+                                                        onTap: () {
+                                                          Get.toNamed(
+                                                              Routes
+                                                                  .PAYMENT_SCREEN,
+                                                              arguments: {
+                                                                'house': house,
+                                                                'totalOrNot':
+                                                                    false,
+                                                              });
+                                                        },
                                                       )
                                                     : CommonTextWidget(
-                                                        text: 'Fully Paid',
+                                                        text: AppStrings
+                                                            .fullyPaid,
                                                         color: AppColors
                                                             .themeColor,
                                                       )),
@@ -239,7 +263,19 @@ class UsersWidget extends StatelessWidget {
                                                               AppColors.darkRed,
                                                         ),
                                                         onPressed: () {
-                                                          // Add delete action here
+                                                          CommonAlert.alertDialogWidget(
+                                                              onConfirm: () {},
+                                                              onCancel: () {},
+                                                              title: AppStrings
+                                                                  .warning,
+                                                              textConfirm:
+                                                                  AppStrings
+                                                                      .delete,
+                                                              textCancel:
+                                                                  AppStrings
+                                                                      .cancel,
+                                                              middleText: AppStrings
+                                                                  .areYouSureToDelete);
                                                         },
                                                       ),
                                                     ],
@@ -303,7 +339,17 @@ class UsersWidget extends StatelessWidget {
                                                           AppColors.themeColor,
                                                       title: AppStrings
                                                           .collectTotal,
-                                                      onTap: () {},
+                                                      onTap: () {
+                                                        Get.toNamed(
+                                                            Routes
+                                                                .PAYMENT_SCREEN,
+                                                            arguments: {
+                                                              'house':
+                                                                  houses[0],
+                                                              'totalOrNot':
+                                                                  true,
+                                                            });
+                                                      },
                                                     )),
                                               const DataCell(SizedBox.shrink()),
                                             ],

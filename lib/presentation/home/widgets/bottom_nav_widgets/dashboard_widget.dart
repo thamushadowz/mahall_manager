@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mahall_manager/domain/core/interfaces/validator.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_button_widget.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_text_form_field.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 import 'package:mahall_manager/presentation/home/widgets/pie_chart_widget.dart';
 
@@ -14,22 +18,58 @@ class DashboardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.grey),
-          ),
-        ),
-        const SizedBox(height: 20),
-        _generatePieChartView(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          /*Container(
+            height: 100,
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.grey),
+            ),
+          ),*/
+          const SizedBox(height: 20),
+          _generatePieChartView(),
+          const SizedBox(height: 10),
+          Material(
+            elevation: 10,
+            borderRadius: BorderRadius.circular(20),
+            color: AppColors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: controller.formKey,
+                child: Column(
+                  children: [
+                    CommonTextWidget(text: AppStrings.announcementManager),
+                    const SizedBox(height: 10),
+                    CommonTextFormField(
+                      textController: controller.announcementController,
+                      minLines: 10,
+                      maxLines: 30,
+                      hint: AppStrings.typeHere,
+                      validator: Validators.validateAnnouncement,
+                    ),
+                    const SizedBox(height: 10),
+                    CommonButtonWidget(
+                      onTap: () {
+                        if (controller.formKey.currentState!.validate()) {}
+                      },
+                      label: AppStrings.submit,
+                      isLoading: false.obs,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
   _generatePieChartView() {
     return Material(
+      color: AppColors.white,
       elevation: 10,
       borderRadius: BorderRadius.circular(20),
       child: Container(

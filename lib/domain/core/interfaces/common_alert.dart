@@ -17,7 +17,8 @@ class CommonAlert {
       buttonColor: AppColors.themeColor,
       confirmTextColor: AppColors.white,
       cancelTextColor: AppColors.blueGrey,
-      contentPadding: const EdgeInsets.all(10),
+      contentPadding: const EdgeInsets.all(30),
+      titlePadding: const EdgeInsets.all(10),
       title: title,
       middleTextStyle: TextStyle(
           color: AppColors.darkRed, fontSize: AppMeasures.normalTextSize),

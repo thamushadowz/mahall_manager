@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
@@ -31,9 +30,6 @@ class SearchScreenScreen extends GetView<SearchScreenController> {
             children: [
               CommonTextFormField(
                 hint: AppStrings.search,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(40),
-                ],
                 textController: controller.searchController,
                 onFieldSubmitted: (value) {},
                 suffixIcon: Icons.search,

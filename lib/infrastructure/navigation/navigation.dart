@@ -65,7 +65,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.CONTACT_US,
-      page: () => const ContactUsScreen(),
+      page: () => ContactUsScreen(),
       binding: ContactUsControllerBinding(),
     ),
     GetPage(
@@ -82,6 +82,11 @@ class Nav {
       name: Routes.SEARCH_SCREEN,
       page: () => const SearchScreenScreen(),
       binding: SearchScreenControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PAYMENT_SCREEN,
+      page: () => const PaymentScreenScreen(),
+      binding: PaymentScreenControllerBinding(),
     ),
   ];
 }

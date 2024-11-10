@@ -2,15 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
 
+import '../../../infrastructure/dal/services/storage_service.dart';
+
 class CommitteeRegistrationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  final StorageService _storageService = StorageService();
   final RxBool isEditMode = false.obs;
   final RxBool isLoading = false.obs;
-  final RxInt adminCode = 1.obs;
+  final RxString adminCode = ''.obs; //superAdmin=0,admin=1,user=2,
   @override
   void onInit() {
-    if (adminCode.value == 0) {
+    adminCode.value = _storageService.getUserType() ?? '';
+    print('adminCode::: $adminCode');
+    if (adminCode.value == '0') {
       isEditMode.value = true;
     } else {
       isEditMode.value = false;

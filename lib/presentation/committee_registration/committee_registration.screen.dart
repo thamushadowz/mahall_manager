@@ -20,9 +20,10 @@ class CommitteeRegistrationScreen
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: CommonAppbarWidget(
         actions: [
-          controller.adminCode.value == 0
+          controller.adminCode.value != '1'
               ? const SizedBox()
               : InkWell(
                   onTap: () {
@@ -61,9 +62,6 @@ class CommitteeRegistrationScreen
                             : AppColors.grey,
                         enabled: controller.isEditMode.value,
                         label: AppLocalizations.of(context)!.mahall_name,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(40),
-                        ],
                         keyboardType: TextInputType.name,
                         textController: controller.mahallNameController,
                         focusNode: controller.mahallNameFocusNode,
@@ -80,9 +78,6 @@ class CommitteeRegistrationScreen
                             : AppColors.grey,
                         enabled: controller.isEditMode.value,
                         label: AppLocalizations.of(context)!.mahall_address,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(80),
-                        ],
                         keyboardType: TextInputType.name,
                         textController: controller.mahallAddressController,
                         focusNode: controller.mahallAddressFocusNode,
@@ -94,10 +89,11 @@ class CommitteeRegistrationScreen
                     const SizedBox(height: 10),
                     //Mahall pin
                     CommonTextFormField(
-                        disabledLabelColor: controller.adminCode.value == 0
+                        disabledLabelColor: controller.adminCode.value == '0'
                             ? AppColors.themeColor
                             : AppColors.grey,
-                        enabled: controller.adminCode.value == 0 ? true : false,
+                        enabled:
+                            controller.adminCode.value == '0' ? true : false,
                         label: AppLocalizations.of(context)!.mahall_pin,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(6),
@@ -199,9 +195,6 @@ class CommitteeRegistrationScreen
                   : AppColors.grey,
               enabled: controller.isEditMode.value,
               label: AppLocalizations.of(context)!.first_name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(40),
-              ],
               keyboardType: TextInputType.name,
               textController: controller.presidentFNameController,
               focusNode: controller.presidentFNameFocusNode,
@@ -217,9 +210,6 @@ class CommitteeRegistrationScreen
                   : AppColors.grey,
               enabled: controller.isEditMode.value,
               label: AppLocalizations.of(context)!.last_name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(40),
-              ],
               keyboardType: TextInputType.name,
               textController: controller.presidentLNameController,
               focusNode: controller.presidentLNameFocusNode,
@@ -300,9 +290,6 @@ class CommitteeRegistrationScreen
                   : AppColors.grey,
               enabled: controller.isEditMode.value,
               label: AppLocalizations.of(context)!.first_name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(40),
-              ],
               keyboardType: TextInputType.name,
               textController: controller.secretaryFNameController,
               focusNode: controller.secretaryFNameFocusNode,
@@ -318,9 +305,6 @@ class CommitteeRegistrationScreen
                   : AppColors.grey,
               enabled: controller.isEditMode.value,
               label: AppLocalizations.of(context)!.last_name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(40),
-              ],
               keyboardType: TextInputType.name,
               textController: controller.secretaryLNameController,
               focusNode: controller.secretaryLNameFocusNode,
@@ -401,9 +385,6 @@ class CommitteeRegistrationScreen
                   : AppColors.grey,
               enabled: controller.isEditMode.value,
               label: AppLocalizations.of(context)!.first_name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(40),
-              ],
               keyboardType: TextInputType.name,
               textController: controller.treasurerFNameController,
               focusNode: controller.treasurerFNameFocusNode,
@@ -419,9 +400,6 @@ class CommitteeRegistrationScreen
                   : AppColors.grey,
               enabled: controller.isEditMode.value,
               label: AppLocalizations.of(context)!.last_name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(40),
-              ],
               keyboardType: TextInputType.name,
               textController: controller.treasurerLNameController,
               focusNode: controller.treasurerLNameFocusNode,

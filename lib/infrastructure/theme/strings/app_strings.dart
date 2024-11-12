@@ -36,6 +36,13 @@ class AppStrings {
   static String enterCustomAmount = 'Enter Custom Amount';
   static String payNow = 'Pay Now';
   static String houseName = 'House Name';
+  static String profile = 'My Profile';
+  static String address = 'Address';
+  static String houseNo = 'House Number';
+  static String dob = 'Date of Birth';
+  static String age = 'Age';
+  static String job = 'Job';
+  static String annualIncome = 'Annual Income';
 
   static String male = 'Male';
   static String female = 'Female';
@@ -72,6 +79,8 @@ class AppStrings {
   static String typeHere = 'Type Here....';
   static String announcementManager = 'Announcement Manager';
   static String total = 'Total';
+  static String promises = 'Promises';
+  static String addPromises = 'Add Promises';
 
   ///Validation messages
 

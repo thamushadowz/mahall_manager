@@ -14,31 +14,18 @@ class BottomNavWidget extends StatelessWidget {
       backgroundColor: AppColors.white,
       color: AppColors.themeColor,
       items: [
-        Icon(
-          Icons.home,
-          size: 30,
-          color: AppColors.white,
-        ),
-        Icon(
-          Icons.people_alt_rounded,
-          size: 30,
-          color: AppColors.white,
-        ),
-        Icon(
-          Icons.file_copy_rounded,
-          size: 30,
-          color: AppColors.white,
-        ),
-        Icon(
-          Icons.water_drop,
-          size: 30,
-          color: AppColors.white,
-        ),
-        Icon(
-          Icons.map_rounded,
-          size: 30,
-          color: AppColors.white,
-        ),
+        Image.asset('assets/images/home.png',
+            width: 25, height: 25, color: AppColors.white),
+        Image.asset('assets/images/users.png',
+            width: 25, height: 25, color: AppColors.white),
+        Image.asset('assets/images/promises.png',
+            width: 25, height: 25, color: AppColors.white),
+        Image.asset('assets/images/report.png',
+            width: 25, height: 25, color: AppColors.white),
+        Image.asset('assets/images/blood.png',
+            width: 25, height: 25, color: AppColors.white),
+        Image.asset('assets/images/expat.png',
+            width: 25, height: 25, color: AppColors.white),
       ],
       onTap: onTap,
     );

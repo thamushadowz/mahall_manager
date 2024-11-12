@@ -88,5 +88,15 @@ class Nav {
       page: () => const PaymentScreenScreen(),
       binding: PaymentScreenControllerBinding(),
     ),
+    GetPage(
+      name: Routes.PROMISES,
+      page: () => const PromisesScreen(),
+      binding: PromisesControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILE,
+      page: () => const ProfileScreen(),
+      binding: ProfileControllerBinding(),
+    ),
   ];
 }

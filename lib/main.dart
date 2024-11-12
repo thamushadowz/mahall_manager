@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,10 +10,17 @@ import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
 
 import 'domain/core/di/dependancy.dart';
 import 'domain/listing/listing_repository.dart';
+import 'firebase_options.dart';
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print('TOKENNNNN : $fcmToken');
   var initialRoute = await Routes.initialRoute;
   DependencyCreator.init();
   await GetStorage.init();

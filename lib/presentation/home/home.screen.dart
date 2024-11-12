@@ -7,6 +7,7 @@ import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widget.dart'
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/blood_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/dashboard_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/expats_widget.dart';
+import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/promises_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/reports_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/users_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/drawer_widget.dart';
@@ -60,11 +61,11 @@ class HomeScreen extends GetView<HomeController> {
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Obx(() => IndexedStack(
-                  index: controller
-                      .selectedNavIndex.value, // Show the selected screen
+                  index: controller.selectedNavIndex.value,
                   children: [
                     DashboardWidget(controller: controller),
                     UsersWidget(controller: controller),
+                    PromisesWidget(controller: controller),
                     ReportsWidget(controller: controller),
                     BloodWidget(controller: controller),
                     ExpatsWidget(controller: controller),

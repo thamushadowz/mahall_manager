@@ -280,7 +280,7 @@ class BloodWidget extends StatelessWidget {
               ),
               DataCell(
                 CommonTextWidget(
-                  text: blood.name ?? '',
+                  text: '${blood.fName} ${blood.lName}',
                   fontWeight: AppMeasures.mediumWeight,
                   fontSize: AppMeasures.mediumTextSize,
                 ),

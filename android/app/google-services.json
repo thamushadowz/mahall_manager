@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "242737080427",
+    "project_id": "mahall-manager",
+    "storage_bucket": "mahall-manager.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242737080427:android:f5735f18d9ca2fb5a8a92e",
+        "android_client_info": {
+          "package_name": "com.example.mahall_manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxse6kz27CDRqC38be4rASB6Lz1tJ7G7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
+import 'package:mahall_manager/domain/listing/models/get_promises_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_reports_model.dart';
 import 'package:mahall_manager/infrastructure/dal/services/storage_service.dart';
 
@@ -24,6 +25,7 @@ class HomeController extends GetxController {
   final StorageService storageService = StorageService();
   String userType = '2';
   final userSearchController = TextEditingController();
+  final promisesSearchController = TextEditingController();
   final reportSearchController = TextEditingController();
   final bloodSearchController = TextEditingController();
   final expatSearchController = TextEditingController();
@@ -66,6 +68,7 @@ class HomeController extends GetxController {
   var income = 165093.0.obs;
   var expense = 79576.0.obs;
   RxDouble reportTotal = 0.0.obs;
+  RxDouble promisesTotal = 0.0.obs;
 
   final double incomePercent = 0.0;
   final double expensePercent = 0.0;
@@ -74,6 +77,7 @@ class HomeController extends GetxController {
   final RxList<bool> isExpandedList = RxList([]);
 
   var filteredUserDetails = <PeopleData>[].obs;
+  var filteredPromisesDetails = <PromisesData>[].obs;
   var filteredReportsDetails = <ReportsData>[].obs;
   var filteredBloodDetails = <BloodData>[].obs;
   var filteredExpatDetails = <ExpatData>[].obs;
@@ -249,6 +253,43 @@ class HomeController extends GetxController {
       country: 'Australia',
     ),
   ];
+  List<PromisesData> promisesDetails = [
+    PromisesData(
+        description: 'Nabidinam - Navas T P',
+        amount: '3000',
+        date: '10/06/2024',
+        addedBy: 'Treasurer'),
+    PromisesData(
+        description: 'Nabidinam - Thameem Ali',
+        amount: '2000',
+        date: '10/07/2024',
+        addedBy: 'President'),
+    PromisesData(
+        description: 'Badreengal aand - Musthafa N K',
+        amount: '5000',
+        date: '27/03/2024',
+        addedBy: 'Treasurer'),
+    PromisesData(
+        description: 'Badreengal aand - Navas T P',
+        amount: '1000',
+        date: '27/03/2024',
+        addedBy: 'Treasurer'),
+    PromisesData(
+        description: 'Nabidinam - Musthafa N K',
+        amount: '1000',
+        date: '10/06/2024',
+        addedBy: 'Treasurer'),
+    PromisesData(
+        description: 'prabhashanam - Navas T P',
+        amount: '2000',
+        date: '03/09/2024',
+        addedBy: 'Secretary'),
+    PromisesData(
+        description: 'prabhashanam - Thameem Ali',
+        amount: '1000',
+        date: '02/09/2024',
+        addedBy: 'Secretary'),
+  ];
   List<ReportsData> reportsDetails = [
     ReportsData(
         id: '1000',
@@ -381,7 +422,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U01',
         bloodGroup: 'A+ve',
-        name: 'Thameem Ali',
+        fName: 'Thameem',
+        lName: 'Ali',
         mobileNo: '+919400444999',
         gender: "Male",
         houseName: 'Sinan Manzil',
@@ -389,7 +431,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U02',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -397,7 +440,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U03',
         bloodGroup: 'AB-ve',
-        name: 'Hana Maryam',
+        fName: 'Hana',
+        lName: 'Maryam',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Hana Mahal',
@@ -405,7 +449,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U04',
         bloodGroup: 'O+ve',
-        name: 'Arshad K M',
+        fName: 'Arshad',
+        lName: 'K M',
         mobileNo: '+917865475376',
         gender: "Male",
         houseName: 'White House',
@@ -413,7 +458,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U05',
         bloodGroup: 'B-ve',
-        name: 'Ramees K',
+        fName: 'Ramees',
+        lName: 'K',
         mobileNo: '+917895260125',
         gender: "Male",
         houseName: 'Puthiyapura',
@@ -421,7 +467,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U06',
         bloodGroup: 'AB+ve',
-        name: 'Ramshad K',
+        fName: 'Ramshad',
+        lName: 'K',
         mobileNo: '+917865478743',
         gender: "Male",
         houseName: 'Baithunnoor',
@@ -429,7 +476,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U07',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -437,7 +485,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U08',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -445,7 +494,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U09',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -453,7 +503,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U10',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -461,7 +512,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U11',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -469,7 +521,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U12',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -477,7 +530,8 @@ class HomeController extends GetxController {
     BloodData(
         userRegNo: 'U13',
         bloodGroup: 'B-ve',
-        name: 'Ayisha Beigum',
+        fName: 'Ayisha',
+        lName: 'Beigum',
         mobileNo: '+917865478743',
         gender: "Female",
         houseName: 'Safa Mahal',
@@ -601,13 +655,19 @@ class HomeController extends GetxController {
     super.onInit();
     userType = storageService.getUserType() ?? '';
     filteredUserDetails.assignAll(userDetails);
+    filteredPromisesDetails.assignAll(promisesDetails);
     filteredReportsDetails.assignAll(reportsDetails);
     filteredBloodDetails.assignAll(bloodDetails);
     filteredExpatDetails.assignAll(expatDetails);
+
     userSearchController.addListener(() {
       searchUser(userSearchController.text);
     });
+    promisesSearchController.addListener(() {
+      searchPromises(promisesSearchController.text);
+    });
     calculateReportTotal();
+    calculatePromisesTotal();
     reportSearchController.addListener(() {
       searchReports(reportSearchController.text);
     });
@@ -631,7 +691,7 @@ class HomeController extends GetxController {
       storage.write(AppStrings.preferredLanguage, 'en');
     }
 
-    Get.updateLocale(Locale(lang));
+    //Get.updateLocale(Locale(lang));
   }
 
   Map<String, List<PeopleData>> groupedUsers() {
@@ -650,13 +710,20 @@ class HomeController extends GetxController {
     reportTotal.value = 0.0;
     for (int i = 0; i < filteredReportsDetails.length; i++) {
       if (filteredReportsDetails[i].incomeOrExpense == '0') {
-        print('sgfdsfg :::: ${filteredReportsDetails[i].amount}');
         reportTotal.value = reportTotal.value +
             double.parse(filteredReportsDetails[i].amount ?? '');
       } else {
         reportTotal.value = reportTotal.value -
             double.parse(filteredReportsDetails[i].amount ?? '');
       }
+    }
+  }
+
+  calculatePromisesTotal() {
+    promisesTotal.value = 0.0;
+    for (int i = 0; i < filteredPromisesDetails.length; i++) {
+      promisesTotal.value = promisesTotal.value +
+          double.parse(filteredPromisesDetails[i].amount ?? '');
     }
   }
 
@@ -669,7 +736,6 @@ class HomeController extends GetxController {
   }
 
   void applyFilters() {
-    calculateReportTotal();
     String searchText = reportSearchController.text.trim().toLowerCase();
 
     filteredReportsDetails.value = reportsDetails.where((report) {
@@ -716,6 +782,7 @@ class HomeController extends GetxController {
           isRoleMatched &&
           isSearchMatched;
     }).toList();
+    calculateReportTotal();
   }
 
   void applyBloodFilters() {
@@ -746,7 +813,8 @@ class HomeController extends GetxController {
 
       // Search Filter
       bool isSearchMatched = searchText.isEmpty ||
-          (blood.name?.toLowerCase().contains(searchText) ?? false) ||
+          (blood.fName?.toLowerCase().contains(searchText) ?? false) ||
+          (blood.lName?.toLowerCase().contains(searchText) ?? false) ||
           (blood.place?.toLowerCase().contains(searchText) ?? false) ||
           (blood.bloodGroup.toString().contains(searchText)) ||
           (blood.userRegNo.toString().contains(searchText));
@@ -756,7 +824,9 @@ class HomeController extends GetxController {
   }
 
   clearReportFilters() {
+    reportTotal.value = 0.0;
     filteredReportsDetails.assignAll(reportsDetails);
+    calculateReportTotal();
     reportSearchController.clear();
     isReportFilterSubmitted.value = false;
     fromDate.value = AppStrings.selectFromDate;
@@ -973,6 +1043,23 @@ class HomeController extends GetxController {
     }
   }
 
+  searchPromises(String query) {
+    searchQuery.value = query.toLowerCase();
+    if (searchQuery.isEmpty) {
+      filteredPromisesDetails.value = promisesDetails;
+    } else {
+      filteredPromisesDetails.value = promisesDetails.where((reports) {
+        return reports.description!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            reports.addedBy!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase());
+      }).toList();
+      calculatePromisesTotal();
+    }
+  }
+
   searchReports(String query) {
     searchQuery.value = query.toLowerCase();
     if (searchQuery.isEmpty) {
@@ -985,8 +1072,12 @@ class HomeController extends GetxController {
             reports.addedBy!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
-            reports.id.toString().toLowerCase().contains(query);
+            reports.id
+                .toString()
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase());
       }).toList();
+      calculateReportTotal();
     }
   }
 
@@ -999,11 +1090,17 @@ class HomeController extends GetxController {
         return reports.bloodGroup!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
-            reports.name!
+            reports.fName!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            reports.lName!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
             reports.userRegNo.toString().toLowerCase().contains(query) ||
-            reports.place.toString().toLowerCase().contains(query);
+            reports.place
+                .toString()
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase());
       }).toList();
     }
   }
@@ -1020,8 +1117,14 @@ class HomeController extends GetxController {
             reports.name!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
-            reports.userRegNo.toString().toLowerCase().contains(query) ||
-            reports.place.toString().toLowerCase().contains(query);
+            reports.userRegNo
+                .toString()
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            reports.place
+                .toString()
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase());
       }).toList();
     }
   }

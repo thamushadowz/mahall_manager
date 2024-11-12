@@ -11,9 +11,11 @@ class Routes {
   static const HOME = '/home';
   static const HOUSE_REGISTRATION = '/house-registration';
   static const LOGIN = '/login';
+  static const PAYMENT_SCREEN = '/payment-screen';
+  static const PROMISES = '/promises';
   static const REGISTRATION = '/registration';
   static const RESET_PASSWORD = '/reset-password';
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
-  static const PAYMENT_SCREEN = '/payment-screen';
+  static const PROFILE = '/profile';
 }

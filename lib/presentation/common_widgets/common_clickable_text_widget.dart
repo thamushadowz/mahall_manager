@@ -10,7 +10,7 @@ class CommonClickableTextWidget extends StatelessWidget {
       required this.onTap,
       this.textColor,
       this.fontWeight,
-      this.icon,
+      this.image,
       this.fontSize,
       this.border,
       this.borderRadius,
@@ -21,7 +21,7 @@ class CommonClickableTextWidget extends StatelessWidget {
   final Function() onTap;
   final double? fontSize;
   final FontWeight? fontWeight;
-  final IconData? icon;
+  final String? image;
   final BoxBorder? border;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
@@ -41,14 +41,15 @@ class CommonClickableTextWidget extends StatelessWidget {
               ? MainAxisAlignment.start
               : MainAxisAlignment.center,
           children: [
-            icon == null
+            image == null
                 ? const SizedBox()
-                : Icon(
-                    icon,
-                    size: 20,
+                : Image.asset(
+                    image ?? '',
+                    width: 20,
+                    height: 20,
                     color: AppColors.blueGrey,
                   ),
-            icon == null ? const SizedBox() : const SizedBox(width: 10),
+            image == null ? const SizedBox() : const SizedBox(width: 10),
             Text(
               title,
               style: TextStyle(

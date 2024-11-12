@@ -57,7 +57,7 @@ class ReportsWidget extends StatelessWidget {
           const SizedBox(width: 50),
           Obx(
             () => CommonTextWidget(
-                text: controller.reportTotal.value.toString(),
+                text: controller.reportTotal.value.toStringAsFixed(0),
                 color: AppColors.white),
           ),
         ],
@@ -274,7 +274,6 @@ class ReportsWidget extends StatelessWidget {
         isFilterSubmitted: controller.isReportFilterSubmitted.value,
         onClearFilterTap: controller.clearReportFilters,
         onFilterTap: () {
-          controller.reportTotal.value = 0.0;
           controller.isReportFiltering.value =
               !controller.isReportFiltering.value;
         }));

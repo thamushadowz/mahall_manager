@@ -21,53 +21,57 @@ class DashboardWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          /*Container(
-            height: 100,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.grey),
-            ),
-          ),*/
           const SizedBox(height: 20),
           _generatePieChartView(),
           const SizedBox(height: 10),
-          Material(
-            elevation: 10,
-            borderRadius: BorderRadius.circular(20),
-            color: AppColors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Form(
-                key: controller.formKey,
-                child: Column(
-                  children: [
-                    CommonTextWidget(text: AppStrings.announcementManager),
-                    const SizedBox(height: 10),
-                    CommonTextFormField(
-                      textController: controller.announcementController,
-                      minLines: 10,
-                      maxLines: 30,
-                      hint: AppStrings.typeHere,
-                      validator: Validators.validateAnnouncement,
-                    ),
-                    const SizedBox(height: 10),
-                    CommonButtonWidget(
-                      onTap: () {
-                        if (controller.formKey.currentState!.validate()) {}
-                      },
-                      label: AppStrings.submit,
-                      isLoading: false.obs,
-                    )
-                  ],
-                ),
-              ),
-            ),
-          )
+          _generateAnnouncementView()
         ],
       ),
     );
   }
 
-  _generatePieChartView() {
+  Material _generateAnnouncementView() {
+    return Material(
+      elevation: 10,
+      borderRadius: BorderRadius.circular(20),
+      color: AppColors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: controller.formKey,
+          child: Column(
+            children: [
+              CommonTextWidget(text: AppStrings.announcementManager),
+              const SizedBox(height: 10),
+              CommonTextFormField(
+                textController: controller.announcementController,
+                minLines: 10,
+                maxLines: 30,
+                hint: AppStrings.typeHere,
+                validator: Validators.validateAnnouncement,
+                suffixIcon: Icons.delete_sweep_outlined,
+                onSuffixTap: () {
+                  controller.announcementController.clear();
+                },
+              ),
+              const SizedBox(height: 10),
+              CommonButtonWidget(
+                onTap: () {
+                  if (controller.formKey.currentState!.validate()) {
+                    // Handle form submission
+                  }
+                },
+                label: AppStrings.submit,
+                isLoading: false.obs,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Material _generatePieChartView() {
     return Material(
       color: AppColors.white,
       elevation: 10,
@@ -92,7 +96,7 @@ class DashboardWidget extends StatelessWidget {
                     controller: controller,
                   ),
                 ),
-                Expanded(
+                Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

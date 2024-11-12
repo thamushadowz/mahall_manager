@@ -54,73 +54,25 @@ class DrawerWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    controller.userType == '2'
+                        ? const SizedBox()
+                        : _buildAdminDrawer(context),
                     const SizedBox(height: 10),
+                    //Profile
                     CommonClickableTextWidget(
-                      icon: Icons.group_add,
+                      image: 'assets/images/profile.png',
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
                       textColor: AppColors.blueGrey,
-                      title:
-                          AppLocalizations.of(context)!.committee_registration,
+                      title: AppStrings.profile,
                       onTap: () {
-                        Get.toNamed(Routes.COMMITTEE_REGISTRATION);
+                        Get.toNamed(Routes.PROFILE);
                       },
                     ),
                     const SizedBox(height: 10),
+                    //Contact Us
                     CommonClickableTextWidget(
-                      icon: Icons.house_rounded,
-                      fontSize: AppMeasures.normalTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
-                      title: AppLocalizations.of(context)!.house_registration,
-                      onTap: () {
-                        Get.toNamed(Routes.HOUSE_REGISTRATION);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    CommonClickableTextWidget(
-                      icon: Icons.person,
-                      fontSize: AppMeasures.normalTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
-                      title: AppLocalizations.of(context)!.user_registration,
-                      onTap: () {
-                        Get.toNamed(Routes.REGISTRATION);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    CommonClickableTextWidget(
-                      icon: Icons.currency_rupee,
-                      fontSize: AppMeasures.normalTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
-                      title: AppStrings.addIncome,
-                      onTap: () {
-                        Get.toNamed(Routes.ADD_INCOME);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    CommonClickableTextWidget(
-                      icon: Icons.payments_rounded,
-                      fontSize: AppMeasures.normalTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
-                      title: AppStrings.addExpenses,
-                      onTap: () {
-                        Get.toNamed(Routes.ADD_EXPENSES);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      height: 30,
-                      thickness: 2,
-                      indent: 15,
-                      endIndent: 15,
-                      color: AppColors.lightGrey,
-                    ),
-                    const SizedBox(height: 10),
-                    CommonClickableTextWidget(
-                      icon: Icons.contact_phone_rounded,
+                      image: 'assets/images/contact_us.png',
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
                       textColor: AppColors.blueGrey,
@@ -138,8 +90,9 @@ class DrawerWidget extends StatelessWidget {
                       color: AppColors.lightGrey,
                     ),
                     const SizedBox(height: 10),
+                    //Reset Password
                     CommonClickableTextWidget(
-                      icon: Icons.lock_reset_rounded,
+                      image: 'assets/images/reset_password.png',
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
                       textColor: AppColors.blueGrey,
@@ -149,8 +102,9 @@ class DrawerWidget extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 10),
+                    //Logout
                     CommonClickableTextWidget(
-                      icon: Icons.logout_rounded,
+                      image: 'assets/images/logout.png',
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
                       textColor: AppColors.blueGrey,
@@ -220,6 +174,93 @@ class DrawerWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  _buildAdminDrawer(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        //Committee Registration
+        CommonClickableTextWidget(
+          image: 'assets/images/committee.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppLocalizations.of(context)!.committee_registration,
+          onTap: () {
+            Get.toNamed(Routes.COMMITTEE_REGISTRATION);
+          },
+        ),
+        const SizedBox(height: 10),
+        //House Registration
+        CommonClickableTextWidget(
+          image: 'assets/images/home.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppLocalizations.of(context)!.house_registration,
+          onTap: () {
+            Get.toNamed(Routes.HOUSE_REGISTRATION);
+          },
+        ),
+        const SizedBox(height: 10),
+        //User Registration
+        CommonClickableTextWidget(
+          image: 'assets/images/user.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppLocalizations.of(context)!.user_registration,
+          onTap: () {
+            Get.toNamed(Routes.REGISTRATION);
+          },
+        ),
+        const SizedBox(height: 10),
+        //Add Promises
+        CommonClickableTextWidget(
+          image: 'assets/images/promises.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppStrings.addPromises,
+          onTap: () {
+            Get.toNamed(Routes.PROMISES);
+          },
+        ),
+        const SizedBox(height: 10),
+        //Add Income
+        CommonClickableTextWidget(
+          image: 'assets/images/income.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppStrings.addIncome,
+          onTap: () {
+            Get.toNamed(Routes.ADD_INCOME);
+          },
+        ),
+        const SizedBox(height: 10),
+        //Add Expense
+        CommonClickableTextWidget(
+          image: 'assets/images/expense.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppStrings.addExpenses,
+          onTap: () {
+            Get.toNamed(Routes.ADD_EXPENSES);
+          },
+        ),
+        const SizedBox(height: 10),
+        Divider(
+          height: 30,
+          thickness: 2,
+          indent: 15,
+          endIndent: 15,
+          color: AppColors.lightGrey,
+        ),
+      ],
     );
   }
 }

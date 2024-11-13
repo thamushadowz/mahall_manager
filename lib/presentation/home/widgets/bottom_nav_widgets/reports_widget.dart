@@ -36,7 +36,7 @@ class ReportsWidget extends StatelessWidget {
             SizedBox(height: controller.isReportFiltering.value ? 20 : 0)),
         _buildFilterWidget(context),
         const SizedBox(height: 20),
-        _buildReportsList(),
+        _buildReportsList(context),
         _buildTotalWidget(),
         const SizedBox(height: 20)
       ],
@@ -65,7 +65,7 @@ class ReportsWidget extends StatelessWidget {
     );
   }
 
-  Expanded _buildReportsList() {
+  Expanded _buildReportsList(BuildContext context) {
     return Expanded(
         child: Obx(
       () => controller.filteredReportsDetails.isEmpty
@@ -92,7 +92,7 @@ class ReportsWidget extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Expanded(
-                  child: _buildDataTable(),
+                  child: _buildDataTable(context),
                 ),
               ),
             ),
@@ -279,7 +279,7 @@ class ReportsWidget extends StatelessWidget {
         }));
   }
 
-  Widget _buildDataTable() {
+  Widget _buildDataTable(BuildContext context) {
     return DataTable(
       columnSpacing: 20,
       headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
@@ -397,13 +397,12 @@ class ReportsWidget extends StatelessWidget {
                       color: AppColors.darkRed,
                     ),
                     onPressed: () {
-                      CommonAlert.alertDialogWidget(
-                          onConfirm: () {},
-                          onCancel: () {},
+                      showCommonDialog(context,
                           title: AppStrings.warning,
-                          textConfirm: AppStrings.delete,
-                          textCancel: AppStrings.cancel,
-                          middleText: AppStrings.areYouSureToDelete);
+                          message: AppStrings.areYouSureToDelete,
+                          yesButtonName: AppStrings.delete,
+                          messageColor: AppColors.darkRed,
+                          onYesTap: () {});
                     },
                   ),
                 ],

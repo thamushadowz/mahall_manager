@@ -10,23 +10,25 @@ import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
 
 import 'domain/core/di/dependancy.dart';
 import 'domain/listing/listing_repository.dart';
-import 'firebase_options.dart';
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print('TOKENNNNN : $fcmToken');
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
   var initialRoute = await Routes.initialRoute;
   DependencyCreator.init();
   await GetStorage.init();
   Get.put(SnackbarService());
   Get.put(ListingRepository());
   runApp(Main(initialRoute));
+}
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
 }
 
 class Main extends StatelessWidget {

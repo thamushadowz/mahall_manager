@@ -110,18 +110,14 @@ class DrawerWidget extends StatelessWidget {
                       textColor: AppColors.blueGrey,
                       title: AppLocalizations.of(context)!.log_out,
                       onTap: () {
-                        CommonAlert.alertDialogWidget(
-                            onConfirm: () {
-                              controller.storageService.logout();
-                              Get.offAllNamed(Routes.LOGIN);
-                            },
-                            onCancel: () {
-                              // Get.close(0);
-                            },
+                        showCommonDialog(context,
                             title: AppStrings.warning,
-                            textConfirm: AppStrings.logout,
-                            textCancel: AppStrings.cancel,
-                            middleText: AppStrings.areYouSureToLogout);
+                            message: AppStrings.areYouSureToLogout,
+                            yesButtonName: AppStrings.logout,
+                            messageColor: AppColors.darkRed, onYesTap: () {
+                          controller.storageService.logout();
+                          Get.offAllNamed(Routes.LOGIN);
+                        });
                       },
                     ),
                   ],

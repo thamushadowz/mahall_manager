@@ -11,6 +11,7 @@ import '../../../domain/core/interfaces/utilities.dart';
 import '../../../domain/listing/models/get_blood_model.dart';
 import '../../../domain/listing/models/get_expat_model.dart';
 import '../../../infrastructure/dal/models/home/chart_data_model.dart';
+import '../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
 
 enum IncomeExpenseType { income, expense }
@@ -22,8 +23,9 @@ enum GenderType { male, female }
 enum BloodType { apos, aneg, bpos, bneg, abpos, abneg, opos, oneg }
 
 class HomeController extends GetxController {
+  RxString appBarTitle = AppStrings.dashboard.obs;
   final StorageService storageService = StorageService();
-  String userType = '2';
+  String userType = '';
   final userSearchController = TextEditingController();
   final promisesSearchController = TextEditingController();
   final reportSearchController = TextEditingController();
@@ -82,6 +84,9 @@ class HomeController extends GetxController {
   var filteredBloodDetails = <BloodData>[].obs;
   var filteredExpatDetails = <ExpatData>[].obs;
   RxString searchQuery = ''.obs;
+
+  List<String> bottomNavTitles = [];
+  List<Widget> bottomNavIcons = [];
 
   List<PeopleData> userDetails = [
     PeopleData(
@@ -653,7 +658,44 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    userType = storageService.getUserType() ?? '';
+    //userType = storageService.getUserType() ?? '';
+    userType = '2';
+
+    bottomNavIcons = userType == '2'
+        ? [
+            Image.asset('assets/images/home.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/blood.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/expat.png',
+                width: 25, height: 25, color: AppColors.white),
+          ]
+        : [
+            Image.asset('assets/images/home.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/users.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/promises.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/report.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/blood.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/expat.png',
+                width: 25, height: 25, color: AppColors.white),
+          ];
+
+    bottomNavTitles = userType == '2'
+        ? [AppStrings.dashboard, AppStrings.blood, AppStrings.expat]
+        : [
+            AppStrings.dashboard,
+            AppStrings.users,
+            AppStrings.promises,
+            AppStrings.reports,
+            AppStrings.blood,
+            AppStrings.expat
+          ];
+
     filteredUserDetails.assignAll(userDetails);
     filteredPromisesDetails.assignAll(promisesDetails);
     filteredReportsDetails.assignAll(reportsDetails);

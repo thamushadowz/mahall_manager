@@ -21,9 +21,12 @@ class ExpatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CommonTextFormField(
-          suffixIcon: Icons.search,
-          textController: controller.expatSearchController,
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: CommonTextFormField(
+            suffixIcon: Icons.search,
+            textController: controller.expatSearchController,
+          ),
         ),
         const SizedBox(height: 20),
         // _buildFilterAndClearFilterOption(),

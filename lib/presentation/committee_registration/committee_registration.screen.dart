@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
@@ -149,7 +148,7 @@ class CommitteeRegistrationScreen
         fontWeight: AppMeasures.normalWeight);
   }
 
-  _commonAlertWidget({required Function() onConfirm}) {
+/*  _commonAlertWidget({required Function() onConfirm}) {
     CommonAlert.alertDialogWidget(
         onConfirm: onConfirm,
         onCancel: () {},
@@ -157,7 +156,7 @@ class CommitteeRegistrationScreen
         textConfirm: AppLocalizations.of(Get.context!)!.delete,
         textCancel: AppLocalizations.of(Get.context!)!.cancel,
         middleText: AppLocalizations.of(Get.context!)!.are_you_sure_to_delete);
-  }
+  }*/
 
   _buildPresidentWidget(BuildContext context) {
     return Container(

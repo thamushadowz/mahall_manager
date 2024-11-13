@@ -45,32 +45,43 @@ class HomeScreen extends GetView<HomeController> {
           }
           return true;
         },
-        child: Scaffold(
-          backgroundColor: AppColors.white,
-          drawer: DrawerWidget(controller: controller),
-          bottomNavigationBar: BottomNavWidget(
-            onTap: (index) {
-              controller.selectedNavIndex.value = index;
-            },
-          ),
-          appBar: CommonAppbarWidget(
-            title: AppStrings.home,
-          ),
-          body: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Obx(() => IndexedStack(
-                  index: controller.selectedNavIndex.value,
-                  children: [
-                    DashboardWidget(controller: controller),
-                    UsersWidget(controller: controller),
-                    PromisesWidget(controller: controller),
-                    ReportsWidget(controller: controller),
-                    BloodWidget(controller: controller),
-                    ExpatsWidget(controller: controller),
-                  ],
-                )),
+        child: Obx(
+          () => Scaffold(
+            backgroundColor: AppColors.white,
+            drawer: DrawerWidget(controller: controller),
+            bottomNavigationBar: BottomNavWidget(
+              controller: controller,
+              onTap: (index) {
+                controller.selectedNavIndex.value = index;
+                controller.appBarTitle.value =
+                    controller.bottomNavTitles[index];
+              },
+            ),
+            appBar: CommonAppbarWidget(
+              title: controller.appBarTitle.value,
+            ),
+            body: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: Obx(() => IndexedStack(
+                    index: controller.selectedNavIndex.value,
+                    children: controller.userType == '2'
+                        ? [
+                            DashboardWidget(controller: controller),
+                            BloodWidget(controller: controller),
+                            ExpatsWidget(controller: controller),
+                          ]
+                        : [
+                            DashboardWidget(controller: controller),
+                            UsersWidget(controller: controller),
+                            PromisesWidget(controller: controller),
+                            ReportsWidget(controller: controller),
+                            BloodWidget(controller: controller),
+                            ExpatsWidget(controller: controller),
+                          ],
+                  )),
+            ),
           ),
         ),
       ),

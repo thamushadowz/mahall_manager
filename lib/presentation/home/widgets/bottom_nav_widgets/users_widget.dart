@@ -20,10 +20,13 @@ class UsersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CommonTextFormField(
-          suffixIcon: Icons.search,
-          hint: AppStrings.search,
-          textController: controller.userSearchController,
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: CommonTextFormField(
+            suffixIcon: Icons.search,
+            hint: AppStrings.search,
+            textController: controller.userSearchController,
+          ),
         ),
         const SizedBox(height: 20),
         _buildUserList(),
@@ -71,7 +74,8 @@ class UsersWidget extends StatelessWidget {
                         },
                         child: Container(
                           padding: const EdgeInsets.all(15),
-                          margin: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.only(
+                              left: 10, right: 10, top: 5, bottom: 5),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -99,14 +103,13 @@ class UsersWidget extends StatelessWidget {
                                       color: AppColors.darkRed,
                                     ),
                                     onPressed: () {
-                                      CommonAlert.alertDialogWidget(
-                                          onConfirm: () {},
-                                          onCancel: () {},
+                                      showCommonDialog(context,
                                           title: AppStrings.warning,
-                                          textConfirm: AppStrings.delete,
-                                          textCancel: AppStrings.cancel,
-                                          middleText:
-                                              AppStrings.areYouSureToDelete);
+                                          message:
+                                              AppStrings.areYouSureToDelete,
+                                          yesButtonName: AppStrings.delete,
+                                          messageColor: AppColors.darkRed,
+                                          onYesTap: () {});
                                     },
                                   ),
                                 ],
@@ -263,19 +266,19 @@ class UsersWidget extends StatelessWidget {
                                                               AppColors.darkRed,
                                                         ),
                                                         onPressed: () {
-                                                          CommonAlert.alertDialogWidget(
-                                                              onConfirm: () {},
-                                                              onCancel: () {},
+                                                          showCommonDialog(
+                                                              context,
                                                               title: AppStrings
                                                                   .warning,
-                                                              textConfirm:
+                                                              message: AppStrings
+                                                                  .areYouSureToDelete,
+                                                              yesButtonName:
                                                                   AppStrings
                                                                       .delete,
-                                                              textCancel:
-                                                                  AppStrings
-                                                                      .cancel,
-                                                              middleText: AppStrings
-                                                                  .areYouSureToDelete);
+                                                              messageColor:
+                                                                  AppColors
+                                                                      .darkRed,
+                                                              onYesTap: () {});
                                                         },
                                                       ),
                                                     ],

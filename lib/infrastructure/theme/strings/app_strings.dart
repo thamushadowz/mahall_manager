@@ -1,6 +1,7 @@
 class AppStrings {
   ///Headings and Strings
 
+  static String notificationChannelName = "Mahall Manager Notification";
   static String preferredLanguage = "preferredLanguage";
   static String home = "Home";
   static String addIncome = "Add Income";
@@ -81,6 +82,11 @@ class AppStrings {
   static String total = 'Total';
   static String promises = 'Promises';
   static String addPromises = 'Add Promises';
+  static String dashboard = 'Dashboard';
+  static String users = 'Users';
+  static String reports = 'Reports';
+  static String blood = 'Blood Donors';
+  static String expat = 'Expats (Pravasi)';
 
   ///Validation messages
 
@@ -96,6 +102,8 @@ class AppStrings {
   static String announcementReqd = 'Announcement Required';
 
   ///Policy Related Strings
+  static String craftedWithAllerTempus =
+      "Crafted with ♥ AllerTempus Innovative®";
   static String privacyPolicy = 'Privacy Policy';
   static String copyRight =
       '© 2024 AllerTempus Innovative. All rights reserved.';

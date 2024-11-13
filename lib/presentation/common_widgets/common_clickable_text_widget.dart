@@ -9,6 +9,7 @@ class CommonClickableTextWidget extends StatelessWidget {
       required this.title,
       required this.onTap,
       this.textColor,
+      this.fillColor,
       this.fontWeight,
       this.image,
       this.fontSize,
@@ -18,6 +19,7 @@ class CommonClickableTextWidget extends StatelessWidget {
 
   final String title;
   final Color? textColor;
+  final Color? fillColor;
   final Function() onTap;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -35,7 +37,10 @@ class CommonClickableTextWidget extends StatelessWidget {
             (border == null || borderRadius == null
                 ? const EdgeInsets.all(0)
                 : const EdgeInsets.all(5)),
-        decoration: BoxDecoration(border: border, borderRadius: borderRadius),
+        decoration: BoxDecoration(
+            border: border,
+            borderRadius: borderRadius,
+            color: fillColor ?? Colors.transparent),
         child: Row(
           mainAxisAlignment: border == null || borderRadius == null
               ? MainAxisAlignment.start

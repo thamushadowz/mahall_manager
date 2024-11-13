@@ -22,6 +22,7 @@ class CommonTextFormField extends StatelessWidget {
       this.onSuffixTap,
       this.disabledBorderColor,
       this.disabledLabelColor,
+      this.fillColor,
       this.onDateTap,
       this.minLines,
       this.maxLines});
@@ -42,6 +43,7 @@ class CommonTextFormField extends StatelessWidget {
   final bool? enabled;
   final Color? disabledBorderColor;
   final Color? disabledLabelColor;
+  final Color? fillColor;
   final int? minLines;
   final int? maxLines;
 
@@ -66,7 +68,7 @@ class CommonTextFormField extends StatelessWidget {
         keyboardType: keyboardType ?? TextInputType.text,
         decoration: InputDecoration(
             hintText: hint,
-            fillColor: AppColors.white,
+            fillColor: fillColor ?? AppColors.white,
             filled: true,
             errorStyle: TextStyle(
               color: AppColors.darkRed,

@@ -24,7 +24,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         appBar: CommonAppbarWidget(title: AppStrings.paymentDetails),
         body: Obx(() => controller.paymentSuccess.value
             ? _buildSuccessWidget(context)
-            : _buildMainWidget()));
+            : _buildMainWidget(context)));
   }
 
   _buildSuccessWidget(BuildContext context) {
@@ -147,7 +147,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
     );
   }
 
-  _buildMainWidget() {
+  _buildMainWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Material(
@@ -205,16 +205,14 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                 CommonButtonWidget(
                   onTap: () {
                     if (controller.formKey.currentState!.validate()) {
-                      CommonAlert.alertDialogWidget(
-                          onConfirm: () {
-                            controller.paymentSuccess.value = true;
-                            Get.close(0);
-                          },
-                          onCancel: () {},
+                      showCommonDialog(context,
                           title: AppStrings.paymentDetails,
-                          textConfirm: AppStrings.payNow,
-                          textCancel: AppStrings.cancel,
-                          middleText: AppStrings.areYouSureToPay);
+                          message: AppStrings.areYouSureToPay,
+                          yesButtonName: AppStrings.payNow,
+                          messageColor: AppColors.darkRed, onYesTap: () {
+                        controller.paymentSuccess.value = true;
+                        Get.close(0);
+                      });
                     }
                   },
                   label: AppStrings.payNow,

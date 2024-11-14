@@ -9,11 +9,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
+import 'package:mahall_manager/domain/listing/models/get_promises_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class PaymentScreenController extends GetxController {
   PeopleData house = PeopleData();
+  PromisesData promises = PromisesData();
   bool totalOrNot = false;
   final textController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -25,9 +27,14 @@ class PaymentScreenController extends GetxController {
 
   @override
   void onInit() {
-    house = args['house'];
-    totalOrNot = args['totalOrNot'];
-    textController.text = totalOrNot ? house.totalDue ?? '' : house.due ?? '';
+    if (args['house'] != null && args['totalOrNot'] != null) {
+      house = args['house'];
+      totalOrNot = args['totalOrNot'];
+      textController.text = totalOrNot ? house.totalDue ?? '' : house.due ?? '';
+    } else if (args['promises'] != null) {
+      promises = args['promises'];
+    }
+
     super.onInit();
   }
 

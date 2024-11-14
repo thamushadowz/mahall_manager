@@ -10,6 +10,7 @@ import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
 import '../../../common_widgets/common_clickable_text_widget.dart';
 import '../../controllers/home.controller.dart';
+import '../single_user_widget.dart';
 
 class UsersWidget extends StatelessWidget {
   const UsersWidget({super.key, required this.controller});
@@ -18,20 +19,22 @@ class UsersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CommonTextFormField(
-            suffixIcon: Icons.search,
-            hint: AppStrings.search,
-            textController: controller.userSearchController,
-          ),
-        ),
-        const SizedBox(height: 20),
-        _buildUserList(),
-      ],
-    );
+    return controller.userType == '2'
+        ? SingleUserWidget(controller: controller)
+        : Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CommonTextFormField(
+                  suffixIcon: Icons.search,
+                  hint: AppStrings.search,
+                  textController: controller.userSearchController,
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildUserList(),
+            ],
+          );
   }
 
   Expanded _buildUserList() {
@@ -104,7 +107,6 @@ class UsersWidget extends StatelessWidget {
                                     ),
                                     onPressed: () {
                                       showCommonDialog(context,
-                                          title: AppStrings.warning,
                                           message:
                                               AppStrings.areYouSureToDelete,
                                           yesButtonName: AppStrings.delete,
@@ -118,7 +120,6 @@ class UsersWidget extends StatelessWidget {
                                 Column(
                                   children: [
                                     const SizedBox(height: 10),
-                                    // Wrap the DataTable in a horizontal SingleChildScrollView
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: DataTable(
@@ -268,8 +269,6 @@ class UsersWidget extends StatelessWidget {
                                                         onPressed: () {
                                                           showCommonDialog(
                                                               context,
-                                                              title: AppStrings
-                                                                  .warning,
                                                               message: AppStrings
                                                                   .areYouSureToDelete,
                                                               yesButtonName:

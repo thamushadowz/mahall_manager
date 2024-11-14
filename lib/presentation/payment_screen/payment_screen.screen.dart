@@ -73,42 +73,9 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                     color: AppColors.white,
                   ),
                   const Divider(height: 25),
-                  _buildDataRow(
-                      color: AppColors.white,
-                      label: '${AppStrings.referenceNo} : ',
-                      text: controller.referenceNo),
-                  const Divider(height: 20),
-                  controller.totalOrNot
-                      ? const SizedBox()
-                      : _buildDataRow(
-                          color: AppColors.white,
-                          label: '${AppStrings.name} : ',
-                          text:
-                              '${controller.house.userRegNo} - ${controller.house.fName} ${controller.house.lName}'),
-                  controller.totalOrNot
-                      ? const SizedBox()
-                      : const Divider(height: 20),
-                  _buildDataRow(
-                      color: AppColors.white,
-                      label: '${AppStrings.houseName} : ',
-                      text:
-                          '${controller.house.houseRegNo} - ${controller.house.houseName}'),
-                  const Divider(height: 20),
-                  _buildDataRow(
-                      color: AppColors.white,
-                      label: '${AppStrings.paidAmount} : ',
-                      text: '₹ ${controller.textController.text}'),
-                  const Divider(height: 20),
-                  controller.totalOrNot
-                      ? const SizedBox()
-                      : _buildDataRow(
-                          color: AppColors.white,
-                          label: '${AppStrings.currentDue} : ',
-                          text:
-                              '₹ ${int.parse(controller.house.due ?? '') - int.parse(controller.textController.text)}'),
-                  controller.totalOrNot
-                      ? const SizedBox()
-                      : const Divider(height: 20),
+                  controller.args['promises'] != null
+                      ? _buildPromisesPaymentSuccessDetailsWidget()
+                      : _buildUserPaymentSuccessDetailsWidget(),
                   _buildDataRow(
                       color: AppColors.white,
                       label: '${AppStrings.date} : ',
@@ -147,6 +114,72 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
     );
   }
 
+  _buildUserPaymentSuccessDetailsWidget() {
+    return Column(
+      children: [
+        _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.referenceNo} : ',
+            text: controller.referenceNo),
+        const Divider(height: 20),
+        controller.totalOrNot
+            ? const SizedBox()
+            : _buildDataRow(
+                color: AppColors.white,
+                label: '${AppStrings.name} : ',
+                text:
+                    '${controller.house.userRegNo} - ${controller.house.fName} ${controller.house.lName}'),
+        controller.totalOrNot ? const SizedBox() : const Divider(height: 20),
+        _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.houseName} : ',
+            text:
+                '${controller.house.houseRegNo} - ${controller.house.houseName}'),
+        const Divider(height: 20),
+        _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.paidAmount} : ',
+            text: '₹ ${controller.textController.text}'),
+        const Divider(height: 20),
+        controller.totalOrNot
+            ? const SizedBox()
+            : _buildDataRow(
+                color: AppColors.white,
+                label: '${AppStrings.currentDue} : ',
+                text:
+                    '₹ ${int.parse(controller.house.due ?? '') - int.parse(controller.textController.text)}'),
+        controller.totalOrNot ? const SizedBox() : const Divider(height: 20),
+      ],
+    );
+  }
+
+  _buildPromisesPaymentSuccessDetailsWidget() {
+    return Column(
+      children: [
+        _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.referenceNo} : ',
+            text: controller.referenceNo),
+        const Divider(height: 20),
+        _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.description} : ',
+            text: '${controller.promises.description}'),
+        const Divider(height: 20),
+        _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.promisedDate} : ',
+            text: '${controller.promises.date}'),
+        const Divider(height: 20),
+        _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.paidAmount} : ',
+            text: '₹ ${controller.promises.amount}'),
+        const Divider(height: 20),
+      ],
+    );
+  }
+
   _buildMainWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -158,71 +191,113 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
           padding: const EdgeInsets.all(30.0),
           child: Form(
             key: controller.formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                controller.totalOrNot
-                    ? const SizedBox()
-                    : _buildDataRow(
-                        color: AppColors.black,
-                        label: '${AppStrings.name} : ',
-                        text:
-                            '${controller.house.userRegNo} - ${controller.house.fName} ${controller.house.lName}'),
-                controller.totalOrNot
-                    ? const SizedBox()
-                    : const Divider(height: 25),
-                _buildDataRow(
-                    color: AppColors.black,
-                    label: '${AppStrings.houseName} : ',
-                    text:
-                        '${controller.house.houseRegNo} - ${controller.house.houseName}'),
-                const Divider(height: 25),
-                _buildDataRow(
-                    color: AppColors.black,
-                    label: '${AppStrings.currentDue} : ',
-                    text:
-                        '₹ ${controller.totalOrNot ? controller.house.totalDue : controller.house.due}'),
-                const Divider(height: 25),
-                _buildDataRow(
-                    color: AppColors.black,
-                    label: '${AppStrings.date} : ',
-                    text: controller.fetchFormattedDate()),
-                const Divider(height: 25),
-                controller.totalOrNot
-                    ? const SizedBox()
-                    : CommonTextFormField(
-                        label: AppStrings.enterCustomAmount,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        keyboardType: TextInputType.number,
-                        prefixText: '₹ ',
-                        validator: Validators.validateAmount,
-                        textController: controller.textController,
-                      ),
-                const SizedBox(height: 20),
-                CommonButtonWidget(
-                  onTap: () {
-                    if (controller.formKey.currentState!.validate()) {
-                      showCommonDialog(context,
-                          title: AppStrings.paymentDetails,
-                          message: AppStrings.areYouSureToPay,
-                          yesButtonName: AppStrings.payNow,
-                          messageColor: AppColors.darkRed, onYesTap: () {
-                        controller.paymentSuccess.value = true;
-                        Get.close(0);
-                      });
-                    }
-                  },
-                  label: AppStrings.payNow,
-                  isLoading: false.obs,
-                )
-              ],
-            ),
+            child: controller.args['promises'] != null
+                ? _buildPromisePaymentWidget(context)
+                : _buildUserPaymentWidget(context),
           ),
         ),
       ),
+    );
+  }
+
+  Column _buildUserPaymentWidget(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        controller.totalOrNot
+            ? const SizedBox()
+            : _buildDataRow(
+                color: AppColors.black,
+                label: '${AppStrings.name} : ',
+                text:
+                    '${controller.house.userRegNo} - ${controller.house.fName} ${controller.house.lName}'),
+        controller.totalOrNot ? const SizedBox() : const Divider(height: 25),
+        _buildDataRow(
+            color: AppColors.black,
+            label: '${AppStrings.houseName} : ',
+            text:
+                '${controller.house.houseRegNo} - ${controller.house.houseName}'),
+        const Divider(height: 25),
+        _buildDataRow(
+            color: AppColors.black,
+            label: '${AppStrings.currentDue} : ',
+            text:
+                '₹ ${controller.totalOrNot ? controller.house.totalDue : controller.house.due}'),
+        const Divider(height: 25),
+        _buildDataRow(
+            color: AppColors.black,
+            label: '${AppStrings.date} : ',
+            text: controller.fetchFormattedDate()),
+        const Divider(height: 25),
+        controller.totalOrNot
+            ? const SizedBox()
+            : CommonTextFormField(
+                label: AppStrings.enterCustomAmount,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                keyboardType: TextInputType.number,
+                prefixText: '₹ ',
+                validator: Validators.validateAmount,
+                textController: controller.textController,
+              ),
+        const SizedBox(height: 20),
+        CommonButtonWidget(
+          onTap: () {
+            if (controller.formKey.currentState!.validate()) {
+              showCommonDialog(context,
+                  message: AppStrings.areYouSureToPay,
+                  yesButtonName: AppStrings.payNow,
+                  messageColor: AppColors.darkRed, onYesTap: () {
+                controller.paymentSuccess.value = true;
+                Get.close(0);
+              });
+            }
+          },
+          label: AppStrings.payNow,
+          isLoading: false.obs,
+        )
+      ],
+    );
+  }
+
+  Column _buildPromisePaymentWidget(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildDataRow(
+            color: AppColors.black,
+            label: '${AppStrings.description} : ',
+            text: controller.promises.description ?? ''),
+        const Divider(height: 25),
+        _buildDataRow(
+            color: AppColors.black,
+            label: '${AppStrings.date} : ',
+            text: controller.promises.date ?? ''),
+        const Divider(height: 25),
+        _buildDataRow(
+            color: AppColors.black,
+            label: '${AppStrings.amount} : ',
+            text: '₹ ${controller.promises.amount}'),
+        const Divider(height: 25),
+        CommonButtonWidget(
+          onTap: () {
+            if (controller.formKey.currentState!.validate()) {
+              showCommonDialog(context,
+                  message: AppStrings.areYouSureToPay,
+                  yesButtonName: AppStrings.payNow,
+                  messageColor: AppColors.darkRed, onYesTap: () {
+                controller.paymentSuccess.value = true;
+                Get.close(0);
+              });
+            }
+          },
+          label: AppStrings.payNow,
+          isLoading: false.obs,
+        )
+      ],
     );
   }
 

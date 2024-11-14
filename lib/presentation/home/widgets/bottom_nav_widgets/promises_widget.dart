@@ -169,7 +169,8 @@ class PromisesWidget extends StatelessWidget {
                     textColor: AppColors.themeColor,
                     title: AppStrings.collectMoney,
                     onTap: () {
-                      Get.toNamed(Routes.PAYMENT_SCREEN);
+                      Get.toNamed(Routes.PAYMENT_SCREEN,
+                          arguments: {'promises': promises});
                     },
                   ),
                 ],

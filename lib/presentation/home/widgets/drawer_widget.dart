@@ -111,7 +111,6 @@ class DrawerWidget extends StatelessWidget {
                       title: AppLocalizations.of(context)!.log_out,
                       onTap: () {
                         showCommonDialog(context,
-                            title: AppStrings.warning,
                             message: AppStrings.areYouSureToLogout,
                             yesButtonName: AppStrings.logout,
                             messageColor: AppColors.darkRed, onYesTap: () {
@@ -137,11 +136,13 @@ class DrawerWidget extends StatelessWidget {
                 },
               ),
             ),*/
-            const Divider(
-              thickness: 1,
-              endIndent: 10,
-              indent: 10,
+            CommonTextWidget(
+              text: controller.versionCode.value,
+              fontSize: AppMeasures.mediumTextSize,
+              fontWeight: AppMeasures.mediumWeight,
+              color: AppColors.blueGrey.withOpacity(0.5),
             ),
+            const Divider(thickness: 1, endIndent: 10, indent: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text.rich(

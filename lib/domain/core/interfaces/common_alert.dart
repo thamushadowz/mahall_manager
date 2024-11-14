@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_clickable_text_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
@@ -8,95 +10,171 @@ import '../../../infrastructure/theme/measures/app_measures.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
 
 showCommonDialog(BuildContext context,
-    {required String title,
-    required String message,
-    Color? titleColor,
+    {required String message,
     Color? messageColor,
     String? noButtonName,
     String? yesButtonName,
+    bool? barrierDismissible,
+    bool? updatesAvailable,
+    int? licenseKey = 0,
+    int? userType = 0,
     Function()? onNoTap,
-    required Function() onYesTap}) {
+    Function()? onYesTap}) {
   return showDialog(
+      barrierDismissible: barrierDismissible ?? true,
       context: context,
       builder: (BuildContext context) {
+        print('license Key ::: $licenseKey');
         return Dialog(
-          surfaceTintColor: Colors.white,
+          surfaceTintColor: AppColors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Stack(
-            alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: [
-              SizedBox(
-                height: 230,
-                width: 320,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CommonTextWidget(
-                      text: title,
-                      fontSize: AppMeasures.bigTextSize,
-                      color: titleColor ?? AppColors.black,
-                    ),
-                    const SizedBox(height: 10),
-                    CommonTextWidget(
-                      textAlign: TextAlign.center,
-                      text: message,
-                      fontSize: AppMeasures.mediumTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      color: messageColor ?? AppColors.grey,
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CommonClickableTextWidget(
-                            borderRadius: BorderRadius.circular(40),
-                            border: Border.all(color: AppColors.themeColor),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            title: noButtonName ?? AppStrings.cancel,
-                            textColor: AppColors.themeColor,
-                            onTap: onNoTap ??
-                                () {
-                                  Get.close(0);
-                                },
-                          ),
-                          CommonClickableTextWidget(
-                              title: yesButtonName ?? AppStrings.submit,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Container(
+                padding: const EdgeInsets.all(20.0),
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                  maxWidth: MediaQuery.of(context).size.width * 0.9,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 10),
+                      licenseKey == 2
+                          ? Lottie.asset('assets/animations/oops.json',
+                              width: 80, height: 80)
+                          : const SizedBox.shrink(),
+                      updatesAvailable == true
+                          ? Lottie.asset('assets/animations/update.json',
+                              width: 100, height: 100)
+                          : const SizedBox.shrink(),
+                      const SizedBox(height: 20),
+                      userType == 2
+                          ? CommonTextWidget(
+                              textAlign: TextAlign.center,
+                              text: AppStrings.licenseExpired,
+                              fontWeight: AppMeasures.mediumWeight,
+                              fontSize: 15,
+                              color: AppColors.black,
+                            )
+                          : licenseKey == 0
+                              ? CommonTextWidget(
+                                  textAlign: TextAlign.center,
+                                  text: message,
+                                  fontWeight: AppMeasures.mediumWeight,
+                                  fontSize: 18,
+                                  color: AppColors.black,
+                                )
+                              : Text.rich(
+                                  TextSpan(
+                                    text: licenseKey == 1
+                                        ? AppStrings.licenseWillExpireIn
+                                        : AppStrings.licenseExpired,
+                                    style: TextStyle(
+                                      fontWeight: AppMeasures.mediumWeight,
+                                      fontSize: 16,
+                                      color: AppColors.black,
+                                    ),
+                                    children: [
+                                      licenseKey == 2
+                                          ? TextSpan(
+                                              text: AppStrings.pleaseContact,
+                                              style: TextStyle(
+                                                fontWeight:
+                                                    AppMeasures.mediumWeight,
+                                                fontSize: 16,
+                                                color: AppColors.black,
+                                              ),
+                                            )
+                                          : const TextSpan(),
+                                      TextSpan(
+                                        text: licenseKey == 1
+                                            ? message
+                                            : AppStrings.developers,
+                                        style: TextStyle(
+                                          fontWeight: AppMeasures.mediumWeight,
+                                          fontSize: 16,
+                                          color: licenseKey == 1
+                                              ? AppColors.darkRed
+                                              : AppColors.blue,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {},
+                                      ),
+                                      TextSpan(
+                                        text: licenseKey == 1
+                                            ? AppStrings.pleaseRenew
+                                            : AppStrings.toUseService,
+                                        style: TextStyle(
+                                          fontWeight: AppMeasures.mediumWeight,
+                                          fontSize: 16,
+                                          color: AppColors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                      const SizedBox(height: 20),
+                      licenseKey == 1 || updatesAvailable == true
+                          ? CommonClickableTextWidget(
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(color: AppColors.themeColor),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 10),
-                              borderRadius: BorderRadius.circular(40),
-                              fillColor: AppColors.themeColor,
-                              textColor: AppColors.white,
-                              onTap: onYesTap)
-                        ],
-                      ),
-                    )
-                  ],
+                              title: updatesAvailable == true
+                                  ? AppStrings.update
+                                  : AppStrings.close,
+                              textColor: AppColors.themeColor,
+                              onTap: updatesAvailable == true
+                                  ? onNoTap!
+                                  : () {
+                                      Get.close(0);
+                                    },
+                            )
+                          : licenseKey == 2
+                              ? const SizedBox.shrink()
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 60.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonClickableTextWidget(
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                            color: AppColors.themeColor),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 10),
+                                        title:
+                                            noButtonName ?? AppStrings.cancel,
+                                        textColor: AppColors.themeColor,
+                                        onTap: onNoTap ??
+                                            () {
+                                              Get.close(0);
+                                            },
+                                      ),
+                                      CommonClickableTextWidget(
+                                          title: yesButtonName ??
+                                              AppStrings.submit,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 10),
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          fillColor: AppColors.themeColor,
+                                          textColor: AppColors.white,
+                                          onTap: onYesTap ?? () {})
+                                    ],
+                                  ),
+                                )
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                  top: -20,
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    alignment: Alignment.topCenter,
-                    decoration: BoxDecoration(
-                        color: AppColors.darkRed, shape: BoxShape.circle),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Get.close(0);
-                      },
-                    ),
-                  )),
-            ],
+              );
+            },
           ),
         );
       });

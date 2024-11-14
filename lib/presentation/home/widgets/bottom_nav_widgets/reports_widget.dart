@@ -398,7 +398,6 @@ class ReportsWidget extends StatelessWidget {
                     ),
                     onPressed: () {
                       showCommonDialog(context,
-                          title: AppStrings.warning,
                           message: AppStrings.areYouSureToDelete,
                           yesButtonName: AppStrings.delete,
                           messageColor: AppColors.darkRed,

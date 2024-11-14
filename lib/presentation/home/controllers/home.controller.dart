@@ -6,7 +6,9 @@ import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.d
 import 'package:mahall_manager/domain/listing/models/get_promises_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_reports_model.dart';
 import 'package:mahall_manager/infrastructure/dal/services/storage_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utilities.dart';
 import '../../../domain/listing/models/get_blood_model.dart';
 import '../../../domain/listing/models/get_expat_model.dart';
@@ -38,6 +40,7 @@ class HomeController extends GetxController {
   RxString selectedLanguage = 'English'.obs;
   DateTime? lastPressedAt;
   RxInt selectedNavIndex = 0.obs;
+  RxInt licenseExpiry = 0.obs;
   RxString fromDate = AppStrings.selectFromDate.obs;
   RxString toDate = AppStrings.selectToDate.obs;
 
@@ -75,6 +78,7 @@ class HomeController extends GetxController {
   final double incomePercent = 0.0;
   final double expensePercent = 0.0;
   var selectedSectionIndex = (-1).obs;
+  final String lastAppVersion = '1.0.0';
 
   final RxList<bool> isExpandedList = RxList([]);
 
@@ -84,6 +88,7 @@ class HomeController extends GetxController {
   var filteredBloodDetails = <BloodData>[].obs;
   var filteredExpatDetails = <ExpatData>[].obs;
   RxString searchQuery = ''.obs;
+  RxString versionCode = ''.obs;
 
   List<String> bottomNavTitles = [];
   List<Widget> bottomNavIcons = [];
@@ -658,12 +663,14 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    //userType = storageService.getUserType() ?? '';
-    userType = '2';
+    getVersionCode();
+    userType = storageService.getUserType() ?? '';
+    //userType = '2';
+    _showLicenseExpiryWarning();
 
     bottomNavIcons = userType == '2'
         ? [
-            Image.asset('assets/images/home.png',
+            Image.asset('assets/images/users.png',
                 width: 25, height: 25, color: AppColors.white),
             Image.asset('assets/images/blood.png',
                 width: 25, height: 25, color: AppColors.white),
@@ -686,7 +693,7 @@ class HomeController extends GetxController {
           ];
 
     bottomNavTitles = userType == '2'
-        ? [AppStrings.dashboard, AppStrings.blood, AppStrings.expat]
+        ? [AppStrings.users, AppStrings.blood, AppStrings.expat]
         : [
             AppStrings.dashboard,
             AppStrings.users,
@@ -734,6 +741,49 @@ class HomeController extends GetxController {
     }
 
     //Get.updateLocale(Locale(lang));
+  }
+
+  _showLicenseExpiryWarning() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (licenseExpiry.value == 1) {
+        showCommonDialog(
+          licenseKey: licenseExpiry.value,
+          Get.context!,
+          message: '3',
+        );
+      } else if (licenseExpiry.value == 2) {
+        showCommonDialog(
+          licenseKey: licenseExpiry.value,
+          userType: int.parse(userType),
+          Get.context!,
+          barrierDismissible: false,
+          message: '',
+        );
+      }
+    });
+  }
+
+  _showAppUpdateAlert(String versionCode) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (versionCode != lastAppVersion) {
+        showCommonDialog(
+          licenseKey: 0,
+          userType: 0,
+          updatesAvailable: true,
+          barrierDismissible: false,
+          onNoTap: () {},
+          Get.context!,
+          message: AppStrings.newUpdateAvailable,
+        );
+      }
+    });
+  }
+
+  Future<void> getVersionCode() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String buildNumber = packageInfo.version;
+    versionCode.value = 'V $buildNumber';
+    _showAppUpdateAlert(buildNumber);
   }
 
   Map<String, List<PeopleData>> groupedUsers() {

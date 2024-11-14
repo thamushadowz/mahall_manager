@@ -12,6 +12,7 @@ class AppStrings {
   static String expenses = 'Expenses';
   static String income = 'Income';
   static String date = 'Date';
+  static String promisedDate = 'Promised Date';
   static String description = 'Description';
   static String amount = 'Amount';
   static String submit = 'Submit';
@@ -81,12 +82,15 @@ class AppStrings {
   static String announcementManager = 'Announcement Manager';
   static String total = 'Total';
   static String promises = 'Promises';
+  static String vagdhanangal = 'വാഗ്ദാനങ്ങള്‍';
   static String addPromises = 'Add Promises';
   static String dashboard = 'Dashboard';
   static String users = 'Users';
   static String reports = 'Reports';
   static String blood = 'Blood Donors';
-  static String expat = 'Expats (Pravasi)';
+  static String expat = 'Expats (പ്രവാസികൾ)';
+  static String close = 'Close';
+  static String update = 'Update';
 
   ///Validation messages
 
@@ -107,4 +111,14 @@ class AppStrings {
   static String privacyPolicy = 'Privacy Policy';
   static String copyRight =
       '© 2024 AllerTempus Innovative. All rights reserved.';
+  static String licenseExpired = 'Your license expired.';
+  static String pleaseContact = 'Please contact ';
+  static String developers = 'Developers';
+  static String toUseService = ' to continue using our service.';
+  static String somethingWentWrong = 'Something Went Wrong';
+  static String licenseWillExpireIn = 'Your license will expire in ';
+  static String pleaseRenew =
+      ' days. Please renew to avoid service interruption.';
+  static String newUpdateAvailable =
+      'New version of the app available. Please update the app to continue.';
 }

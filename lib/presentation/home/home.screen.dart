@@ -68,7 +68,7 @@ class HomeScreen extends GetView<HomeController> {
                     index: controller.selectedNavIndex.value,
                     children: controller.userType == '2'
                         ? [
-                            DashboardWidget(controller: controller),
+                            UsersWidget(controller: controller),
                             BloodWidget(controller: controller),
                             ExpatsWidget(controller: controller),
                           ]

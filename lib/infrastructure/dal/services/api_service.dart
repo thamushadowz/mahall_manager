@@ -18,6 +18,7 @@ class ApiService extends GetConnect implements GetxService {
     Method method = Method.GET,
     Map<String, dynamic>? params,
     Map<String, dynamic>? queryParams,
+    String? authToken,
   }) async {
     Response response;
     try {
@@ -27,6 +28,7 @@ class ApiService extends GetConnect implements GetxService {
           response = await post(url, params,
               headers: {
                 'Content-Type': 'application/json',
+                'Authorization': authToken ?? '',
               },
               query: queryParams);
           break;

@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
 import 'package:mahall_manager/infrastructure/dal/services/notofication_services.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
+import 'package:toastification/toastification.dart';
 
-import '../../../domain/core/interfaces/snackbar_service.dart';
+import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
 import '../../../domain/listing/models/login_model.dart';
@@ -30,8 +31,6 @@ class LoginController extends GetxController {
 
   final mobileFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
-
-  final SnackbarService _snackbarService = Get.put(SnackbarService());
 
   @override
   void onInit() {
@@ -66,22 +65,34 @@ class LoginController extends GetxController {
 
   Future<void> performLogin() async {
     isLoading.value = true;
-    try {
-      LoginModel response = await listingService.loginCheck(
-          mobileController.text, passwordController.text);
-      if (response.status == true) {
-        _snackbarService.showSuccess(response.message.toString(),
-            AppLocalizations.of(Get.context!)!.log_in);
-        _storageService.saveToken(response.token ?? '');
-        _storageService.saveUserType(response.userType.toString());
-        Get.offAllNamed(Routes.HOME);
-      } else {
-        _snackbarService.showError(response.message.toString(),
-            AppLocalizations.of(Get.context!)!.log_in);
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        LoginModel response = await listingService.loginCheck(
+            mobileController.text, passwordController.text);
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+
+          _storageService.saveToken('Bearer ${response.token}');
+          _storageService.saveUserType(response.userType.toString());
+          _storageService.saveMahallName(response.mahallName ?? '');
+          Get.offAllNamed(Routes.HOME);
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
+        Get.snackbar('Error', 'Something went wrong');
+      } finally {
+        isLoading.value = false;
       }
-    } catch (e) {
-      Get.snackbar('Error', 'Something went wrong');
-    } finally {
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
       isLoading.value = false;
     }
   }

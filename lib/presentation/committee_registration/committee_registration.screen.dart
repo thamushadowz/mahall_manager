@@ -7,6 +7,7 @@ import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
 
 import '../../domain/core/interfaces/validator.dart';
+import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_button_widget.dart';
 import '../common_widgets/common_text_form_field.dart';
 import '../common_widgets/common_text_widget.dart';
@@ -66,9 +67,28 @@ class CommitteeRegistrationScreen
                         focusNode: controller.mahallNameFocusNode,
                         onFieldSubmitted: (value) {
                           FocusScope.of(context)
-                              .requestFocus(controller.mahallAddressFocusNode);
+                              .requestFocus(controller.mahallCodeFocusNode);
                         },
                         validator: Validators.validateMahallName),
+                    const SizedBox(height: 10),
+                    //Mahall code
+                    CommonTextFormField(
+                        disabledLabelColor: controller.isEditMode.value
+                            ? AppColors.themeColor
+                            : AppColors.grey,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(4),
+                        ],
+                        enabled: controller.isEditMode.value,
+                        label: AppStrings.mahallCode,
+                        keyboardType: TextInputType.name,
+                        textController: controller.mahallCodeController,
+                        focusNode: controller.mahallCodeFocusNode,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context)
+                              .requestFocus(controller.mahallAddressFocusNode);
+                        },
+                        validator: Validators.validateMahallCode),
                     const SizedBox(height: 10),
                     //Mahall address
                     CommonTextFormField(

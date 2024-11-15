@@ -11,6 +11,7 @@ import '../../../../domain/core/interfaces/common_alert.dart';
 import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
+import '../../../common_widgets/common_empty_result_widget.dart';
 import '../../../common_widgets/common_text_form_field.dart';
 import '../../controllers/home.controller.dart';
 
@@ -30,12 +31,11 @@ class ReportsWidget extends StatelessWidget {
             textController: controller.reportSearchController,
           ),
         ),
-        const SizedBox(height: 20),
         _buildFilterAndClearFilterOption(),
         Obx(() =>
-            SizedBox(height: controller.isReportFiltering.value ? 20 : 0)),
+            SizedBox(height: controller.isReportFiltering.value ? 10 : 0)),
         _buildFilterWidget(context),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildReportsList(context),
         _buildTotalWidget(),
         const SizedBox(height: 20)
@@ -69,24 +69,7 @@ class ReportsWidget extends StatelessWidget {
     return Expanded(
         child: Obx(
       () => controller.filteredReportsDetails.isEmpty
-          ? Center(
-              child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/empty_result.png',
-                    width: 350,
-                    height: 300,
-                    fit: BoxFit.fill,
-                  ),
-                  CommonTextWidget(
-                      text: 'No results',
-                      fontSize: AppMeasures.bigTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      color: AppColors.grey),
-                ],
-              ),
-            ))
+          ? const CommonEmptyResultWidget()
           : SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(

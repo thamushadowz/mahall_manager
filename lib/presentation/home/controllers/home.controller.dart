@@ -28,6 +28,7 @@ class HomeController extends GetxController {
   RxString appBarTitle = AppStrings.dashboard.obs;
   final StorageService storageService = StorageService();
   String userType = '';
+  String mahallName = '';
   final userSearchController = TextEditingController();
   final promisesSearchController = TextEditingController();
   final reportSearchController = TextEditingController();
@@ -661,11 +662,12 @@ class HomeController extends GetxController {
       ];
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     getVersionCode();
     userType = storageService.getUserType() ?? '';
     //userType = '2';
+    mahallName = storageService.getMahallName() ?? '';
     _showLicenseExpiryWarning();
 
     bottomNavIcons = userType == '2'
@@ -712,11 +714,12 @@ class HomeController extends GetxController {
     userSearchController.addListener(() {
       searchUser(userSearchController.text);
     });
+    calculatePromisesTotal();
     promisesSearchController.addListener(() {
       searchPromises(promisesSearchController.text);
     });
     calculateReportTotal();
-    calculatePromisesTotal();
+
     reportSearchController.addListener(() {
       searchReports(reportSearchController.text);
     });

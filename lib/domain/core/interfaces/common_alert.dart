@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_clickable_text_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
+import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../infrastructure/theme/measures/app_measures.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
@@ -102,7 +104,12 @@ showCommonDialog(BuildContext context,
                                               : AppColors.blue,
                                         ),
                                         recognizer: TapGestureRecognizer()
-                                          ..onTap = () {},
+                                          ..onTap = () {
+                                            if (licenseKey == 2) {
+                                              Get.toNamed(
+                                                  Routes.CONTACT_DEVELOPERS);
+                                            }
+                                          },
                                       ),
                                       TextSpan(
                                         text: licenseKey == 1
@@ -178,4 +185,15 @@ showCommonDialog(BuildContext context,
           ),
         );
       });
+}
+
+Future<bool> isInternetAvailable() async {
+  var connectivityResult = await Connectivity().checkConnectivity();
+  print('Connectivity ::: ${connectivityResult}');
+  if (connectivityResult.first == ConnectivityResult.mobile ||
+      connectivityResult.first == ConnectivityResult.wifi) {
+    return true;
+  } else {
+    return false;
+  }
 }

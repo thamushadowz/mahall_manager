@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/listing/models/common_response.dart';
+import 'package:mahall_manager/domain/listing/models/mahall_registration_input_model.dart';
 
 import '../../infrastructure/dal/services/api_service.dart';
 import 'listing_service.dart';
@@ -22,6 +24,25 @@ class ListingRepository implements ListingService {
       return loginModel;
     } catch (e) {
       return LoginModel();
+    }
+  }
+
+  @override
+  Future<CommonResponse> mahallRegistration(
+      String authToken, MahallRegistrationInputModel params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'create-masjid',
+      authToken: authToken,
+      method: Method.POST,
+      params: params.toJson(),
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
     }
   }
 }

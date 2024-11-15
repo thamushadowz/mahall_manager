@@ -6,6 +6,7 @@ class StorageService {
   final String _tokenKey = 'auth_token';
   final String _userTypeKey = 'user_type';
   final String _languageKey = 'preferred_language';
+  final String _mahallNameKey = 'mahall_name';
 
   void saveToken(String token) {
     _storage.write(_tokenKey, token);
@@ -19,11 +20,17 @@ class StorageService {
     _storage.write(_languageKey, preferredLanguage);
   }
 
+  void saveMahallName(String mahallName) {
+    _storage.write(_mahallNameKey, mahallName);
+  }
+
   String? getToken() => _storage.read(_tokenKey);
 
   String? getUserType() => _storage.read(_userTypeKey);
 
   String? getPreferredLanguage() => _storage.read(_languageKey);
+
+  String? getMahallName() => _storage.read(_mahallNameKey);
 
   bool isLoggedIn() => getToken() != null;
 

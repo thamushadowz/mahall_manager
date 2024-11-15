@@ -8,6 +8,7 @@ import '../../../../infrastructure/theme/measures/app_measures.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
 import '../../../common_widgets/common_button_widget.dart';
 import '../../../common_widgets/common_clickable_text_widget.dart';
+import '../../../common_widgets/common_empty_result_widget.dart';
 import '../../../common_widgets/common_text_form_field.dart';
 import '../../../common_widgets/common_text_widget.dart';
 import '../filter_and_clear_filter_widget.dart';
@@ -28,11 +29,10 @@ class BloodWidget extends StatelessWidget {
             textController: controller.bloodSearchController,
           ),
         ),
-        const SizedBox(height: 10),
         _buildFilterAndClearFilterOption(),
-        Obx(() => SizedBox(height: controller.isBloodFiltering.value ? 20 : 0)),
+        Obx(() => SizedBox(height: controller.isBloodFiltering.value ? 10 : 0)),
         _buildFilterWidget(context),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildBloodList(),
       ],
     );
@@ -181,26 +181,7 @@ class BloodWidget extends StatelessWidget {
     return Expanded(
       child: Obx(
         () => controller.filteredBloodDetails.isEmpty
-            ? Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/empty_result.png',
-                        width: 350,
-                        height: 300,
-                        fit: BoxFit.fill,
-                      ),
-                      CommonTextWidget(
-                        text: 'No results',
-                        fontSize: AppMeasures.bigTextSize,
-                        fontWeight: AppMeasures.mediumWeight,
-                        color: AppColors.grey,
-                      ),
-                    ],
-                  ),
-                ),
-              )
+            ? const CommonEmptyResultWidget()
             : SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: SingleChildScrollView(

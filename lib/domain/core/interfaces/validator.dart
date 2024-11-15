@@ -155,6 +155,16 @@ class Validators {
     return null;
   }
 
+  static String? validateMahallCode(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.mahallCodeReqd;
+    }
+    if (value.length != 4) {
+      return AppStrings.plzEnter4Chars;
+    }
+    return null;
+  }
+
   static String? validateMahallAddress(String? value) {
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(Get.context!)!.mahall_address_reqd;

@@ -10,6 +10,7 @@ class CommonClickableTextWidget extends StatelessWidget {
       required this.onTap,
       this.textColor,
       this.fillColor,
+      this.iconColor,
       this.fontWeight,
       this.image,
       this.fontSize,
@@ -20,6 +21,7 @@ class CommonClickableTextWidget extends StatelessWidget {
   final String title;
   final Color? textColor;
   final Color? fillColor;
+  final Color? iconColor;
   final Function() onTap;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -52,7 +54,7 @@ class CommonClickableTextWidget extends StatelessWidget {
                     image ?? '',
                     width: 20,
                     height: 20,
-                    color: AppColors.blueGrey,
+                    color: iconColor ?? AppColors.blueGrey,
                   ),
             image == null ? const SizedBox() : const SizedBox(width: 10),
             Text(

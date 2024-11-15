@@ -7,6 +7,7 @@ import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/measures/app_measures.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
 import '../../../common_widgets/common_clickable_text_widget.dart';
+import '../../../common_widgets/common_empty_result_widget.dart';
 import '../../../common_widgets/common_text_form_field.dart';
 import '../../../common_widgets/common_text_widget.dart';
 
@@ -26,8 +27,7 @@ class PromisesWidget extends StatelessWidget {
             textController: controller.promisesSearchController,
           ),
         ),
-        const SizedBox(height: 20),
-        _buildReportsList(),
+        _buildPromisesList(),
         _buildTotalWidget(),
         const SizedBox(height: 20)
       ],
@@ -56,28 +56,11 @@ class PromisesWidget extends StatelessWidget {
     );
   }
 
-  Expanded _buildReportsList() {
+  Expanded _buildPromisesList() {
     return Expanded(
         child: Obx(
       () => controller.filteredPromisesDetails.isEmpty
-          ? Center(
-              child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/empty_result.png',
-                    width: 350,
-                    height: 300,
-                    fit: BoxFit.fill,
-                  ),
-                  CommonTextWidget(
-                      text: 'No results',
-                      fontSize: AppMeasures.bigTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      color: AppColors.grey),
-                ],
-              ),
-            ))
+          ? const CommonEmptyResultWidget()
           : SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_empty_result_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_form_field.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
@@ -31,7 +32,6 @@ class UsersWidget extends StatelessWidget {
                   textController: controller.userSearchController,
                 ),
               ),
-              const SizedBox(height: 20),
               _buildUserList(),
             ],
           );
@@ -43,26 +43,7 @@ class UsersWidget extends StatelessWidget {
         () {
           final groupedUsers = controller.groupedUsers();
           return groupedUsers.isEmpty
-              ? Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/empty_result.png',
-                          width: 350,
-                          height: 300,
-                          fit: BoxFit.fill,
-                        ),
-                        CommonTextWidget(
-                          text: 'No results',
-                          fontSize: AppMeasures.bigTextSize,
-                          fontWeight: AppMeasures.mediumWeight,
-                          color: AppColors.grey,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
+              ? const CommonEmptyResultWidget()
               : ListView.builder(
                   shrinkWrap: true,
                   itemCount: groupedUsers.length,

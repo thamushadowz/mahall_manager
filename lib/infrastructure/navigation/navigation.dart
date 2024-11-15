@@ -98,5 +98,15 @@ class Nav {
       page: () => const ProfileScreen(),
       binding: ProfileControllerBinding(),
     ),
+    GetPage(
+      name: Routes.DELETE_ACCOUNT,
+      page: () => const DeleteAccountScreen(),
+      binding: DeleteAccountControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.CONTACT_DEVELOPERS,
+      page: () => const ContactDevelopersScreen(),
+      binding: ContactDevelopersControllerBinding(),
+    ),
   ];
 }

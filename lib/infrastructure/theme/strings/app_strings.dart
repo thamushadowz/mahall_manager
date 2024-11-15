@@ -17,6 +17,7 @@ class AppStrings {
   static String amount = 'Amount';
   static String submit = 'Submit';
   static String search = 'Search';
+  static String mahallCode = 'Mahall Code';
 
   static String warning = 'Warning!!';
   static String logout = 'Logout';
@@ -91,10 +92,20 @@ class AppStrings {
   static String expat = 'Expats (പ്രവാസികൾ)';
   static String close = 'Close';
   static String update = 'Update';
+  static String noInternetConnection = 'No Internet Connection!!!';
+  static String deleteAccount = 'Delete Account';
+  static String password = 'Password';
+  static String contactDevelopers = 'Contact Developers';
+  static String weAreAllerTempus = 'We are AllerTempus Innovative.';
+  static String howMayWeAssistYou =
+      'Thank you for using our service. It’s our pleasure to assist you, and we’re delighted to help.';
 
   ///Validation messages
 
   static String areYouSureToLogout = 'Are you sure to Logout?';
+  static String areYouSureToDeleteAccount =
+      'Are you sure to Delete this account? This action cannot be undone and you will lose all your data associated with this account.';
+
   static String areYouSureToPay = 'Are you sure to Pay now?';
   static String areYouSureToDelete =
       'Are you sure to Delete?\nThis process is irreversible!';
@@ -104,6 +115,8 @@ class AppStrings {
   static String descriptionReqd = 'Description Required';
   static String amountReqd = 'Amount Required';
   static String announcementReqd = 'Announcement Required';
+  static String mahallCodeReqd = 'Mahall Code Required';
+  static String plzEnter4Chars = 'Please enter 4 characters';
 
   ///Policy Related Strings
   static String craftedWithAllerTempus =

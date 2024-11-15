@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
 
 class Utilities {
-  static RxString mahallName = "".obs;
   static final List<Map<String, String>> languages = [
     {'name': 'English', 'code': 'en'},
     {'name': 'മലയാളം', 'code': 'ml'},

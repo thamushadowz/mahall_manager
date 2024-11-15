@@ -1,11 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
+import 'package:toastification/toastification.dart';
 
+import '../../../domain/core/interfaces/common_alert.dart';
+import '../../../domain/core/interfaces/utility_services.dart';
+import '../../../domain/listing/listing_repository.dart';
+import '../../../domain/listing/listing_service.dart';
+import '../../../domain/listing/models/common_response.dart';
+import '../../../domain/listing/models/mahall_registration_input_model.dart';
 import '../../../infrastructure/dal/services/storage_service.dart';
+import '../../../infrastructure/theme/strings/app_strings.dart';
 
 class CommitteeRegistrationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  ListingService listingService = Get.find<ListingRepository>();
+
   final StorageService _storageService = StorageService();
   final RxBool isEditMode = false.obs;
   final RxBool isLoading = false.obs;
@@ -23,6 +33,7 @@ class CommitteeRegistrationController extends GetxController {
   }
 
   final mahallNameFocusNode = FocusNode();
+  final mahallCodeFocusNode = FocusNode();
   final mahallAddressFocusNode = FocusNode();
   final mahallPinFocusNode = FocusNode();
 
@@ -43,6 +54,7 @@ class CommitteeRegistrationController extends GetxController {
   final treasurerPasswordFocusNode = FocusNode();
 
   final mahallNameController = TextEditingController();
+  final mahallCodeController = TextEditingController();
   final mahallAddressController = TextEditingController();
   final mahallPinController = TextEditingController();
 
@@ -62,8 +74,76 @@ class CommitteeRegistrationController extends GetxController {
   final secretaryPasswordController = TextEditingController();
   final treasurerPasswordController = TextEditingController();
 
-  performCommitteeRegistration() {
-    Utilities.mahallName.value = mahallNameController.text;
+  performCommitteeRegistration() async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        CommonResponse response = await listingService.mahallRegistration(
+            _storageService.getToken() ?? '',
+            MahallRegistrationInputModel(
+                name: mahallNameController.text.trim(),
+                code: mahallCodeController.text.trim(),
+                address: mahallAddressController.text.trim(),
+                pincode: int.parse(mahallPinController.text.trim()),
+                admins: [
+                  Admins(
+                      role: 0,
+                      firstName: presidentFNameController.text.trim(),
+                      lastName: presidentLNameController.text.trim(),
+                      phone: int.parse(presidentMobileController.text.trim())),
+                  Admins(
+                      role: 1,
+                      firstName: secretaryFNameController.text.trim(),
+                      lastName: secretaryLNameController.text.trim(),
+                      phone: int.parse(secretaryMobileController.text.trim())),
+                  Admins(
+                      role: 2,
+                      firstName: treasurerFNameController.text.trim(),
+                      lastName: treasurerLNameController.text.trim(),
+                      phone: int.parse(treasurerMobileController.text.trim())),
+                ]));
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+          if (adminCode.value == '0') {
+            clearAll();
+          }
+        } else {
+          if (response.message != null) {
+            showToast(
+                title: response.message.toString(),
+                type: ToastificationType.error);
+          } else {
+            showToast(
+                title: AppStrings.somethingWentWrong,
+                type: ToastificationType.error);
+          }
+        }
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  clearAll() {
+    mahallNameController.clear();
+    mahallCodeController.clear();
+    mahallAddressController.clear();
+    mahallPinController.clear();
+    clearPresidentDetails();
+    clearSecretaryDetails();
+    clearTreasurerDetails();
   }
 
   clearPresidentDetails() {

@@ -5,6 +5,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_button_widget.
 import 'package:mahall_manager/presentation/common_widgets/common_text_form_field.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 import 'package:mahall_manager/presentation/home/widgets/pie_chart_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/measures/app_measures.dart';
@@ -23,6 +24,7 @@ class DashboardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
+            _buildMahallName(),
             const SizedBox(height: 20),
             _generatePieChartView(),
             const SizedBox(height: 10),
@@ -30,6 +32,27 @@ class DashboardWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  _buildMahallName() {
+    return Column(
+      children: [
+        Shimmer.fromColors(
+          baseColor: Colors.green,
+          highlightColor: Colors.red,
+          child: CommonTextWidget(
+            text: controller.mahallName,
+            textAlign: TextAlign.center,
+            fontSize: AppMeasures.bigTextSize,
+          ),
+        ),
+        Shimmer.fromColors(
+          baseColor: Colors.green,
+          highlightColor: Colors.red,
+          child: const Divider(indent: 10, endIndent: 10),
+        )
+      ],
     );
   }
 

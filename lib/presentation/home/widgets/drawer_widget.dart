@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
-import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
@@ -31,13 +30,6 @@ class DrawerWidget extends StatelessWidget {
               radius: 80,
               child: Image.asset(
                 'assets/logo/Mahall_manager_trans_logo.png',
-              ),
-            ),
-            Obx(
-              () => CommonTextWidget(
-                text: Utilities.mahallName.value,
-                color: AppColors.themeColor,
-                fontSize: AppMeasures.bigTextSize,
               ),
             ),
             Divider(
@@ -136,6 +128,22 @@ class DrawerWidget extends StatelessWidget {
                 },
               ),
             ),*/
+            //Delete Account
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: CommonClickableTextWidget(
+                image: 'assets/images/delete-account.png',
+                fontSize: AppMeasures.normalTextSize,
+                fontWeight: AppMeasures.mediumWeight,
+                textColor: AppColors.darkRed,
+                iconColor: AppColors.darkRed,
+                title: AppStrings.deleteAccount,
+                onTap: () {
+                  Get.toNamed(Routes.DELETE_ACCOUNT);
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
             CommonTextWidget(
               text: controller.versionCode.value,
               fontSize: AppMeasures.mediumTextSize,

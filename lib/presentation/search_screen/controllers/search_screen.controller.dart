@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 
 class SearchScreenController extends GetxController {
   final searchController = TextEditingController();
-  late final List<String> itemList;
-  var filteredList = <String>[].obs;
+  List<dynamic> itemList = [];
+  var filteredList = <dynamic>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    itemList = List<String>.from(Get.arguments ?? []);
+    itemList = Get.arguments;
     filteredList.assignAll(itemList);
 
     searchController.addListener(() {
@@ -22,8 +22,8 @@ class SearchScreenController extends GetxController {
       filteredList.assignAll(itemList);
     } else {
       filteredList.assignAll(
-        itemList
-            .where((item) => item.toLowerCase().contains(query.toLowerCase())),
+        itemList.where(
+            (item) => item.name.toLowerCase().contains(query.toLowerCase())),
       );
     }
   }

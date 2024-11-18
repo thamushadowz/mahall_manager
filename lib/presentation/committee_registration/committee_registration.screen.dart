@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../domain/core/interfaces/validator.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
@@ -27,7 +29,6 @@ class CommitteeRegistrationScreen
               ? const SizedBox()
               : InkWell(
                   onTap: () {
-                    controller.performEdit();
                     controller.isEditMode.value = !controller.isEditMode.value;
                   },
                   child: Padding(
@@ -56,76 +57,89 @@ class CommitteeRegistrationScreen
                   children: [
                     const SizedBox(height: 5),
                     //Mahall name
-                    CommonTextFormField(
-                        disabledLabelColor: controller.isEditMode.value
-                            ? AppColors.themeColor
-                            : AppColors.grey,
-                        enabled: controller.isEditMode.value,
-                        label: AppLocalizations.of(context)!.mahall_name,
-                        keyboardType: TextInputType.name,
-                        textController: controller.mahallNameController,
-                        focusNode: controller.mahallNameFocusNode,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(controller.mahallCodeFocusNode);
-                        },
-                        validator: Validators.validateMahallName),
+                    controller.isLoading.value
+                        ? const CommonTextFieldShimmerWidget()
+                        : CommonTextFormField(
+                            disabledLabelColor: controller.isEditMode.value
+                                ? AppColors.themeColor
+                                : AppColors.grey,
+                            enabled: controller.isEditMode.value,
+                            label: AppLocalizations.of(context)!.mahall_name,
+                            keyboardType: TextInputType.name,
+                            textController: controller.mahallNameController,
+                            focusNode: controller.mahallNameFocusNode,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(controller.mahallCodeFocusNode);
+                            },
+                            validator: Validators.validateMahallName),
                     const SizedBox(height: 10),
                     //Mahall code
-                    CommonTextFormField(
-                        disabledLabelColor: controller.isEditMode.value
-                            ? AppColors.themeColor
-                            : AppColors.grey,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(4),
-                        ],
-                        enabled: controller.isEditMode.value,
-                        label: AppStrings.mahallCode,
-                        keyboardType: TextInputType.name,
-                        textController: controller.mahallCodeController,
-                        focusNode: controller.mahallCodeFocusNode,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(controller.mahallAddressFocusNode);
-                        },
-                        validator: Validators.validateMahallCode),
+                    controller.isLoading.value
+                        ? const CommonTextFieldShimmerWidget()
+                        : CommonTextFormField(
+                            inputFormatters: [
+                                LengthLimitingTextInputFormatter(4),
+                              ],
+                            disabledLabelColor:
+                                controller.adminCode.value == '0'
+                                    ? AppColors.themeColor
+                                    : AppColors.grey,
+                            enabled: controller.adminCode.value == '0'
+                                ? true
+                                : false,
+                            label: AppStrings.mahallCode,
+                            keyboardType: TextInputType.name,
+                            textController: controller.mahallCodeController,
+                            focusNode: controller.mahallCodeFocusNode,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.mahallAddressFocusNode);
+                            },
+                            validator: Validators.validateMahallCode),
                     const SizedBox(height: 10),
                     //Mahall address
-                    CommonTextFormField(
-                        disabledLabelColor: controller.isEditMode.value
-                            ? AppColors.themeColor
-                            : AppColors.grey,
-                        enabled: controller.isEditMode.value,
-                        label: AppLocalizations.of(context)!.mahall_address,
-                        keyboardType: TextInputType.name,
-                        textController: controller.mahallAddressController,
-                        focusNode: controller.mahallAddressFocusNode,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(controller.mahallPinFocusNode);
-                        },
-                        validator: Validators.validateMahallAddress),
+                    controller.isLoading.value
+                        ? const CommonTextFieldShimmerWidget()
+                        : CommonTextFormField(
+                            disabledLabelColor: controller.isEditMode.value
+                                ? AppColors.themeColor
+                                : AppColors.grey,
+                            enabled: controller.isEditMode.value,
+                            label: AppLocalizations.of(context)!.mahall_address,
+                            keyboardType: TextInputType.name,
+                            textController: controller.mahallAddressController,
+                            focusNode: controller.mahallAddressFocusNode,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(controller.mahallPinFocusNode);
+                            },
+                            validator: Validators.validateMahallAddress),
                     const SizedBox(height: 10),
                     //Mahall pin
-                    CommonTextFormField(
-                        disabledLabelColor: controller.adminCode.value == '0'
-                            ? AppColors.themeColor
-                            : AppColors.grey,
-                        enabled:
-                            controller.adminCode.value == '0' ? true : false,
-                        label: AppLocalizations.of(context)!.mahall_pin,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(6),
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        keyboardType: TextInputType.number,
-                        textController: controller.mahallPinController,
-                        focusNode: controller.mahallPinFocusNode,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(controller.presidentFNameFocusNode);
-                        },
-                        validator: Validators.validateMahallPin),
+                    controller.isLoading.value
+                        ? const CommonTextFieldShimmerWidget()
+                        : CommonTextFormField(
+                            disabledLabelColor:
+                                controller.adminCode.value == '0'
+                                    ? AppColors.themeColor
+                                    : AppColors.grey,
+                            enabled: controller.adminCode.value == '0'
+                                ? true
+                                : false,
+                            label: AppLocalizations.of(context)!.mahall_pin,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(6),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            keyboardType: TextInputType.number,
+                            textController: controller.mahallPinController,
+                            focusNode: controller.mahallPinFocusNode,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.presidentFNameFocusNode);
+                            },
+                            validator: Validators.validateMahallPin),
                     const SizedBox(height: 20),
                     // President Section
                     _buildPresidentWidget(context),
@@ -145,7 +159,11 @@ class CommitteeRegistrationScreen
                             isLoading: controller.isLoading,
                             onTap: () {
                               if (controller.formKey.currentState!.validate()) {
-                                controller.performCommitteeRegistration();
+                                if (controller.adminCode.value == '0') {
+                                  controller.performCommitteeRegistration();
+                                } else if (controller.adminCode.value == '1') {
+                                  controller.performEdit();
+                                }
                               }
                             },
                             label: AppLocalizations.of(context)!.submit)
@@ -157,6 +175,26 @@ class CommitteeRegistrationScreen
           ),
         ),
       ),
+    );
+  }
+
+  _buildIconShimmerWidget() {
+    return Shimmer.fromColors(
+      baseColor: AppColors.lightGrey.withOpacity(0.5),
+      highlightColor: AppColors.white.withOpacity(0.3),
+      child: Image.asset(
+        'assets/images/secretary.png',
+        width: 60,
+        height: 60,
+      ),
+    );
+  }
+
+  _buildHeadingShimmerWidget(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: AppColors.lightGrey.withOpacity(0.5),
+      highlightColor: AppColors.white.withOpacity(0.3),
+      child: buildCommonTextWidget(context: context, title: ''),
     );
   }
 
@@ -199,64 +237,75 @@ class CommitteeRegistrationScreen
                   ),
                 )
               : const SizedBox(),*/
-          Image.asset(
-            'assets/images/president.png',
-            width: 60,
-            height: 60,
-          ),
+          controller.isLoading.value
+              ? _buildIconShimmerWidget()
+              : Image.asset(
+                  'assets/images/president.png',
+                  width: 60,
+                  height: 60,
+                ),
           const SizedBox(height: 5),
-          buildCommonTextWidget(
-              context: context, title: AppLocalizations.of(context)!.president),
+          controller.isLoading.value
+              ? _buildHeadingShimmerWidget(context)
+              : buildCommonTextWidget(
+                  context: context,
+                  title: AppLocalizations.of(context)!.president),
           const SizedBox(height: 5),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.first_name,
-              keyboardType: TextInputType.name,
-              textController: controller.presidentFNameController,
-              focusNode: controller.presidentFNameFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.presidentLNameFocusNode);
-              },
-              validator: Validators.validateFName),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.first_name,
+                  keyboardType: TextInputType.name,
+                  textController: controller.presidentFNameController,
+                  focusNode: controller.presidentFNameFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.presidentLNameFocusNode);
+                  },
+                  validator: Validators.validateFName),
           const SizedBox(height: 10),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.last_name,
-              keyboardType: TextInputType.name,
-              textController: controller.presidentLNameController,
-              focusNode: controller.presidentLNameFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.presidentMobileFocusNode);
-              },
-              validator: Validators.validateLName),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.last_name,
+                  keyboardType: TextInputType.name,
+                  textController: controller.presidentLNameController,
+                  focusNode: controller.presidentLNameFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.presidentMobileFocusNode);
+                  },
+                  validator: Validators.validateLName),
           const SizedBox(height: 10),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.mobileNo,
-              prefixText: '+91 ',
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10),
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              keyboardType: TextInputType.phone,
-              textController: controller.presidentMobileController,
-              focusNode: controller.presidentMobileFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.presidentPasswordFocusNode);
-              },
-              validator: Validators.validateMobileNumber),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.mobileNo,
+                  prefixText: '+91 ',
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  keyboardType: TextInputType.phone,
+                  textController: controller.presidentMobileController,
+                  focusNode: controller.presidentMobileFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.presidentPasswordFocusNode);
+                  },
+                  validator: Validators.validateMobileNumber),
           const SizedBox(height: 10),
           /*CommonTextFormField(
               label: AppLocalizations.of(context)!.password,
@@ -294,64 +343,75 @@ class CommitteeRegistrationScreen
                     });
                   }))
               : const SizedBox(),*/
-          Image.asset(
-            'assets/images/secretary.png',
-            width: 60,
-            height: 60,
-          ),
+          controller.isLoading.value
+              ? _buildIconShimmerWidget()
+              : Image.asset(
+                  'assets/images/secretary.png',
+                  width: 60,
+                  height: 60,
+                ),
           const SizedBox(height: 5),
-          buildCommonTextWidget(
-              context: context, title: AppLocalizations.of(context)!.secretary),
+          controller.isLoading.value
+              ? _buildHeadingShimmerWidget(context)
+              : buildCommonTextWidget(
+                  context: context,
+                  title: AppLocalizations.of(context)!.secretary),
           const SizedBox(height: 5),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.first_name,
-              keyboardType: TextInputType.name,
-              textController: controller.secretaryFNameController,
-              focusNode: controller.secretaryFNameFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.secretaryLNameFocusNode);
-              },
-              validator: Validators.validateFName),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.first_name,
+                  keyboardType: TextInputType.name,
+                  textController: controller.secretaryFNameController,
+                  focusNode: controller.secretaryFNameFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.secretaryLNameFocusNode);
+                  },
+                  validator: Validators.validateFName),
           const SizedBox(height: 10),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.last_name,
-              keyboardType: TextInputType.name,
-              textController: controller.secretaryLNameController,
-              focusNode: controller.secretaryLNameFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.secretaryMobileFocusNode);
-              },
-              validator: Validators.validateLName),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.last_name,
+                  keyboardType: TextInputType.name,
+                  textController: controller.secretaryLNameController,
+                  focusNode: controller.secretaryLNameFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.secretaryMobileFocusNode);
+                  },
+                  validator: Validators.validateLName),
           const SizedBox(height: 10),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.mobileNo,
-              prefixText: '+91 ',
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10),
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              keyboardType: TextInputType.phone,
-              textController: controller.secretaryMobileController,
-              focusNode: controller.secretaryMobileFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.secretaryPasswordFocusNode);
-              },
-              validator: Validators.validateMobileNumber),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.mobileNo,
+                  prefixText: '+91 ',
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  keyboardType: TextInputType.phone,
+                  textController: controller.secretaryMobileController,
+                  focusNode: controller.secretaryMobileFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.secretaryPasswordFocusNode);
+                  },
+                  validator: Validators.validateMobileNumber),
           const SizedBox(height: 10),
           /*CommonTextFormField(
               label: AppLocalizations.of(context)!.password,
@@ -389,64 +449,75 @@ class CommitteeRegistrationScreen
                     });
                   }))
               : const SizedBox(),*/
-          Image.asset(
-            'assets/images/treasurer.png',
-            width: 60,
-            height: 60,
-          ),
+          controller.isLoading.value
+              ? _buildIconShimmerWidget()
+              : Image.asset(
+                  'assets/images/treasurer.png',
+                  width: 60,
+                  height: 60,
+                ),
           const SizedBox(height: 5),
-          buildCommonTextWidget(
-              context: context, title: AppLocalizations.of(context)!.treasurer),
+          controller.isLoading.value
+              ? _buildHeadingShimmerWidget(context)
+              : buildCommonTextWidget(
+                  context: context,
+                  title: AppLocalizations.of(context)!.treasurer),
           const SizedBox(height: 5),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.first_name,
-              keyboardType: TextInputType.name,
-              textController: controller.treasurerFNameController,
-              focusNode: controller.treasurerFNameFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.treasurerLNameFocusNode);
-              },
-              validator: Validators.validateFName),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.first_name,
+                  keyboardType: TextInputType.name,
+                  textController: controller.treasurerFNameController,
+                  focusNode: controller.treasurerFNameFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.treasurerLNameFocusNode);
+                  },
+                  validator: Validators.validateFName),
           const SizedBox(height: 10),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.last_name,
-              keyboardType: TextInputType.name,
-              textController: controller.treasurerLNameController,
-              focusNode: controller.treasurerLNameFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.treasurerMobileFocusNode);
-              },
-              validator: Validators.validateLName),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.last_name,
+                  keyboardType: TextInputType.name,
+                  textController: controller.treasurerLNameController,
+                  focusNode: controller.treasurerLNameFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.treasurerMobileFocusNode);
+                  },
+                  validator: Validators.validateLName),
           const SizedBox(height: 10),
-          CommonTextFormField(
-              disabledLabelColor: controller.isEditMode.value
-                  ? AppColors.themeColor
-                  : AppColors.grey,
-              enabled: controller.isEditMode.value,
-              label: AppLocalizations.of(context)!.mobileNo,
-              prefixText: '+91 ',
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10),
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              keyboardType: TextInputType.phone,
-              textController: controller.treasurerMobileController,
-              focusNode: controller.treasurerMobileFocusNode,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context)
-                    .requestFocus(controller.treasurerPasswordFocusNode);
-              },
-              validator: Validators.validateMobileNumber),
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.grey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.mobileNo,
+                  prefixText: '+91 ',
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  keyboardType: TextInputType.phone,
+                  textController: controller.treasurerMobileController,
+                  focusNode: controller.treasurerMobileFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.treasurerPasswordFocusNode);
+                  },
+                  validator: Validators.validateMobileNumber),
           const SizedBox(height: 10),
           /*CommonTextFormField(
               label: AppLocalizations.of(context)!.password,

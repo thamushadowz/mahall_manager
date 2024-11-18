@@ -8,6 +8,7 @@ export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/ho
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/house_registration.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/login.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/payment_screen.controller.binding.dart'; 
+export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/place_registration.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/profile.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/promises.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/registration.controller.binding.dart';

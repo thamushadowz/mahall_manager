@@ -68,6 +68,7 @@ String peopleToJson(PeopleData data) => json.encode(data.toJson());
 
 class PeopleData {
   PeopleData({
+    num? id,
     String? userRegNo,
     String? fName,
     String? lName,
@@ -89,6 +90,7 @@ class PeopleData {
     bool? isExpat,
     String? country,
   }) {
+    _id = id;
     _userRegNo = userRegNo;
     _fName = fName;
     _lName = lName;
@@ -112,6 +114,7 @@ class PeopleData {
   }
 
   PeopleData.fromJson(dynamic json) {
+    _id = json['id'];
     _userRegNo = json['user_reg_no'];
     _fName = json['f_name'];
     _lName = json['l_name'];
@@ -119,7 +122,7 @@ class PeopleData {
     _houseRegNo = json['house_reg_no'];
     _phone = json['phone'];
     _due = json['due'];
-    _totalDue = json['totalDue'];
+    _totalDue = json['total_due'];
     _place = json['place'];
     _state = json['state'];
     _district = json['district'];
@@ -134,6 +137,7 @@ class PeopleData {
     _country = json['country'];
   }
 
+  num? _id;
   String? _userRegNo;
   String? _fName;
   String? _lName;
@@ -156,6 +160,7 @@ class PeopleData {
   String? _country;
 
   PeopleData copyWith({
+    num? id,
     String? userRegNo,
     String? fName,
     String? lName,
@@ -178,6 +183,7 @@ class PeopleData {
     String? country,
   }) =>
       PeopleData(
+        id: id ?? _id,
         userRegNo: userRegNo ?? _userRegNo,
         fName: fName ?? _fName,
         lName: lName ?? _lName,
@@ -200,6 +206,7 @@ class PeopleData {
         country: country ?? _country,
       );
 
+  num? get id => _id;
   String? get userRegNo => _userRegNo;
   String? get fName => _fName;
   String? get lName => _lName;
@@ -223,6 +230,7 @@ class PeopleData {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['id'] = _id;
     map['user_reg_no'] = _userRegNo;
     map['f_name'] = _fName;
     map['l_name'] = _lName;
@@ -230,7 +238,7 @@ class PeopleData {
     map['house_reg_no'] = _houseRegNo;
     map['phone'] = _phone;
     map['due'] = _due;
-    map['totalDue'] = _totalDue;
+    map['total_due'] = _totalDue;
     map['place'] = _place;
     map['state'] = _state;
     map['district'] = _district;

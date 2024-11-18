@@ -58,6 +58,15 @@ class AppStrings {
   static String abneg = 'AB-ve';
   static String opos = 'O+ve';
   static String oneg = 'O-ve';
+  static String others = 'Others';
+
+  static String kerala = 'Kerala';
+  static String karnataka = 'Karnataka';
+  static String tamilNadu = 'Tamil Nadu';
+
+  static String placeRegistration = 'Place Registration';
+  static String placeCode = 'Place Code';
+  static String placeName = 'Place Name';
 
   static String bloodGroup = 'Blood Group';
   static String name = 'Name';
@@ -115,8 +124,10 @@ class AppStrings {
   static String descriptionReqd = 'Description Required';
   static String amountReqd = 'Amount Required';
   static String announcementReqd = 'Announcement Required';
+  static String placeCodeReqd = 'Place Code Required';
   static String mahallCodeReqd = 'Mahall Code Required';
   static String plzEnter4Chars = 'Please enter 4 characters';
+  static String placeRegistrationSuccess = 'Place Registration Successful';
 
   ///Policy Related Strings
   static String craftedWithAllerTempus =

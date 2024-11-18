@@ -198,6 +198,18 @@ class DrawerWidget extends StatelessWidget {
           },
         ),
         const SizedBox(height: 10),
+        //Place Registration
+        CommonClickableTextWidget(
+          image: 'assets/images/place.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppStrings.placeRegistration,
+          onTap: () {
+            Get.toNamed(Routes.PLACE_REGISTRATION);
+          },
+        ),
+        const SizedBox(height: 10),
         //House Registration
         CommonClickableTextWidget(
           image: 'assets/images/home.png',

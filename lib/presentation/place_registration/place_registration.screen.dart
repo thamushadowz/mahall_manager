@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
+import '../../domain/core/interfaces/utilities.dart';
 import '../../domain/core/interfaces/validator.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/colors/app_colors.dart';
@@ -9,35 +10,33 @@ import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
 import '../common_widgets/common_button_widget.dart';
 import '../common_widgets/common_registration_success_widget.dart';
-import '../common_widgets/common_text_field_shimmer_widget.dart';
 import '../common_widgets/common_text_form_field.dart';
-import 'controllers/house_registration.controller.dart';
+import 'controllers/place_registration.controller.dart';
 
-class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
-  const HouseRegistrationScreen({super.key});
+class PlaceRegistrationScreen extends GetView<PlaceRegistrationController> {
+  const PlaceRegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       appBar: CommonAppbarWidget(
-        title: AppLocalizations.of(context)!.house_registration,
+        title: AppStrings.placeRegistration,
       ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Obx(
-          () => controller.isHouseRegistrationSuccess.value
+          () => controller.isPlaceRegistrationSuccess.value
               ? CommonRegistrationSuccessWidget(
                   onRegAnotherTap: () {
-                    controller.isHouseRegistrationSuccess.value = false;
+                    controller.isPlaceRegistrationSuccess.value =
+                        !controller.isPlaceRegistrationSuccess.value;
                     controller.resetForm();
                   },
                   regAnotherTitle:
                       AppLocalizations.of(context)!.register_another,
-                  regSuccessMsg:
-                      AppLocalizations.of(context)!.house_reg_success,
+                  regSuccessMsg: AppStrings.placeRegistrationSuccess,
                 )
               : SizedBox.expand(
                   child: Container(
@@ -92,91 +91,93 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
       child: Form(
         key: controller.formKey,
         child: SingleChildScrollView(
-          child: _buildHouseRegWidget(context),
+          child: _buildPlaceRegWidget(context),
         ),
       ),
     );
   }
 
-  _buildHouseRegWidget(BuildContext context) {
+  _buildPlaceRegWidget(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        //Register Number
+        //Place Code
         CommonTextFormField(
-          enabled: !controller.isEditScreen,
-          disabledBorderColor:
-              controller.isEditScreen ? AppColors.grey : AppColors.themeColor,
-          disabledLabelColor:
-              controller.isEditScreen ? AppColors.grey : AppColors.themeColor,
-          label: AppLocalizations.of(context)!.reg_no,
-          keyboardType: TextInputType.name,
-          textController: controller.regNoController,
-          focusNode: controller.regNoFocusNode,
+            label: AppStrings.placeCode,
+            keyboardType: TextInputType.name,
+            textController: controller.placeCodeController,
+            focusNode: controller.placeCodeFocusNode,
+            onFieldSubmitted: (value) {
+              FocusScope.of(context)
+                  .requestFocus(controller.placeNameFocusNode);
+            },
+            validator: Validators.validatePlaceCode),
+        const SizedBox(height: 10),
+        //Place Name
+        CommonTextFormField(
+            label: AppStrings.placeName,
+            keyboardType: TextInputType.name,
+            textController: controller.placeNameController,
+            focusNode: controller.placeNameFocusNode,
+            onFieldSubmitted: (value) {},
+            validator: Validators.validatePlaceName),
+        const SizedBox(height: 10),
+        //State
+        CommonTextFormField(
+          disabledBorderColor: AppColors.blueGrey,
+          enabled: false,
+          label: AppLocalizations.of(context)!.state,
+          validator: Validators.validateState,
+          keyboardType: TextInputType.none,
+          textController: controller.stateController,
+          focusNode: controller.stateFocusNode,
           onFieldSubmitted: (value) {
-            FocusScope.of(context).requestFocus(controller.houseNameFocusNode);
+            FocusScope.of(context).requestFocus(controller.districtFocusNode);
+          },
+          onDateTap: () {
+            controller.districtController.clear();
+            Get.toNamed(Routes.SEARCH_SCREEN,
+                    arguments: Utilities.getStateList(context))
+                ?.then((onValue) {
+              controller.selectedState.value = onValue.id ?? 0;
+              controller.stateController.text =
+                  onValue.name != null ? onValue.name.toString() : '';
+            });
           },
         ),
         const SizedBox(height: 10),
-        //House Name
-        CommonTextFormField(
-            label: AppLocalizations.of(context)!.house_name,
-            keyboardType: TextInputType.name,
-            textController: controller.houseNameController,
-            focusNode: controller.houseNameFocusNode,
-            onFieldSubmitted: (value) {},
-            validator: Validators.validateHouseName),
-        const SizedBox(height: 10),
-        //Place Name
+        //District
         Obx(
-          () => controller.isDataLoading.value
-              ? const CommonTextFieldShimmerWidget()
-              : Row(
-                  children: [
-                    // Text Form Field for House Name
-                    Expanded(
-                      child: CommonTextFormField(
-                        disabledBorderColor: AppColors.blueGrey,
-                        enabled: false,
-                        label: AppStrings.placeName,
-                        validator: Validators.validatePlaceName,
-                        keyboardType: TextInputType.none,
-                        textController: controller.placeNameController,
-                        focusNode: controller.placeNameFocusNode,
-                        onDateTap: () {
-                          Get.toNamed(Routes.SEARCH_SCREEN,
-                                  arguments: controller.placeData)
-                              ?.then((onValue) {
-                            controller.placeNameController.text =
-                                onValue.name != null
-                                    ? onValue.name.toString()
-                                    : '';
-                            controller.placeId = onValue.id;
-                          });
-                        },
-                      ),
-                    ),
-                    Obx(() => !controller.isPlaceDataSuccessful.value
-                        ? IconButton(
-                            onPressed: () {
-                              controller.getPlaceDetailsList();
-                            },
-                            icon: Icon(
-                              Icons.refresh_rounded,
-                              size: 30,
-                              color: AppColors.darkRed,
-                            ),
-                          )
-                        : const SizedBox.shrink()),
-                  ],
-                ),
+          () => CommonTextFormField(
+            disabledBorderColor: AppColors.blueGrey,
+            enabled: false,
+            disabledLabelColor: controller.selectedState.value == 0
+                ? AppColors.blueGrey
+                : AppColors.themeColor,
+            label: AppLocalizations.of(context)!.district,
+            validator: Validators.validateDistrict,
+            keyboardType: TextInputType.none,
+            textController: controller.districtController,
+            focusNode: controller.districtFocusNode,
+            onDateTap: controller.selectedState.value == 0
+                ? () {}
+                : () {
+                    Get.toNamed(Routes.SEARCH_SCREEN,
+                            arguments: Utilities.getDistrictList(
+                                context, controller.selectedState.value))
+                        ?.then((onValue) {
+                      controller.districtController.text =
+                          onValue.name != null ? onValue.name.toString() : '';
+                    });
+                  },
+          ),
         ),
         const SizedBox(height: 20),
         CommonButtonWidget(
             isLoading: controller.isLoading,
             onTap: () {
               if (controller.formKey.currentState!.validate()) {
-                controller.performHouseRegistration();
+                controller.performPlaceRegistration();
               }
             },
             label: AppLocalizations.of(context)!.submit)

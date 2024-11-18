@@ -65,9 +65,7 @@ class PromisesWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Expanded(
-                  child: _buildDataTable(),
-                ),
+                child: _buildDataTable(),
               ),
             ),
     ));

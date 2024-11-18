@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
@@ -9,6 +8,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_button_widget.
 import 'package:mahall_manager/presentation/common_widgets/common_text_form_field.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
+import '../../domain/core/interfaces/custom_clipper.dart';
 import '../../domain/core/interfaces/validator.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
@@ -42,8 +42,9 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Lottie.asset('assets/animations/success.json',
-                      width: 220, height: 220),
+                  Image.asset('assets/images/payment_successful.png',
+                      color: AppColors.themeColor, width: 150, height: 150),
+                  const SizedBox(height: 20),
                   CommonTextWidget(
                     text: AppStrings.paymentSuccess,
                     fontSize: 25,
@@ -55,57 +56,65 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(30),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
-                ),
+            child: ClipPath(
+              clipper: TornEdgeClipper(),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(30),
                 color: AppColors.themeColor,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CommonTextWidget(
-                    text: AppStrings.paymentDetails,
-                    color: AppColors.white,
-                  ),
-                  const Divider(height: 25),
-                  controller.args['promises'] != null
-                      ? _buildPromisesPaymentSuccessDetailsWidget()
-                      : _buildUserPaymentSuccessDetailsWidget(),
-                  _buildDataRow(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 20),
+                    CommonTextWidget(
+                      text: 'Kayani Noor Juma Masjid',
                       color: AppColors.white,
-                      label: '${AppStrings.date} : ',
-                      text: controller.fetchFormattedDate()),
-                  const Divider(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          controller.takeScreenshotAndShare(
-                              controller.house.phone ?? '',
-                              controller.totalOrNot
-                                  ? '${controller.house.houseName}'
-                                  : '${controller.house.fName} ${controller.house.lName}');
-                        },
-                        icon: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(60),
-                              border: Border.all(color: AppColors.white)),
-                          child: Icon(
-                            Icons.share_outlined,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                    ),
+                    const SizedBox(height: 20),
+                    CommonTextWidget(
+                      text: AppStrings.paymentDetails,
+                      color: AppColors.white,
+                    ),
+                    const Divider(height: 25),
+                    controller.args['promises'] != null
+                        ? _buildPromisesPaymentSuccessDetailsWidget()
+                        : _buildUserPaymentSuccessDetailsWidget(),
+                    _buildDataRow(
+                        color: AppColors.white,
+                        label: '${AppStrings.date} : ',
+                        text: controller.fetchFormattedDate()),
+                    const Divider(height: 20),
+                    Obx(
+                      () => controller.isTakingScreenshot.value
+                          ? const SizedBox(height: 20)
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    controller.takeScreenshotAndShare(
+                                        controller.house.phone ?? '',
+                                        controller.totalOrNot
+                                            ? '${controller.house.houseName}'
+                                            : '${controller.house.fName} ${controller.house.lName}');
+                                  },
+                                  icon: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        border:
+                                            Border.all(color: AppColors.white)),
+                                    child: Icon(
+                                      Icons.share_outlined,
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

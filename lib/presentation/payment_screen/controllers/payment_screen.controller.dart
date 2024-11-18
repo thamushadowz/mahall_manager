@@ -46,6 +46,7 @@ class PaymentScreenController extends GetxController {
 
   Future<void> takeScreenshotAndShare(String phoneNo, String name) async {
     isTakingScreenshot.value = true;
+    await Future.delayed(const Duration(milliseconds: 200));
     try {
       RenderRepaintBoundary boundary = screenshotKey.currentContext!
           .findRenderObject() as RenderRepaintBoundary;

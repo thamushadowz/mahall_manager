@@ -122,41 +122,39 @@ class DashboardWidget extends StatelessWidget {
                     controller: controller,
                   ),
                 ),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            width: 15,
-                            height: 15,
-                            color: AppColors.themeColor,
-                          ),
-                          CommonTextWidget(
-                            text: AppStrings.income,
-                            fontSize: AppMeasures.smallTextSize,
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            width: 15,
-                            height: 15,
-                            color: AppColors.darkRed,
-                          ),
-                          CommonTextWidget(
-                            text: AppStrings.expenses,
-                            fontSize: AppMeasures.smallTextSize,
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 20),
+                          width: 15,
+                          height: 15,
+                          color: AppColors.themeColor,
+                        ),
+                        CommonTextWidget(
+                          text: AppStrings.income,
+                          fontSize: AppMeasures.smallTextSize,
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 20),
+                          width: 15,
+                          height: 15,
+                          color: AppColors.darkRed,
+                        ),
+                        CommonTextWidget(
+                          text: AppStrings.expenses,
+                          fontSize: AppMeasures.smallTextSize,
+                        )
+                      ],
+                    )
+                  ],
                 )
               ],
             ),

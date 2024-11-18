@@ -65,21 +65,20 @@ class ReportsWidget extends StatelessWidget {
     );
   }
 
-  Expanded _buildReportsList(BuildContext context) {
+  _buildReportsList(BuildContext context) {
     return Expanded(
-        child: Obx(
-      () => controller.filteredReportsDetails.isEmpty
-          ? const CommonEmptyResultWidget()
-          : SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Expanded(
+      child: Obx(
+        () => controller.filteredReportsDetails.isEmpty
+            ? const CommonEmptyResultWidget()
+            : SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: _buildDataTable(context),
                 ),
               ),
-            ),
-    ));
+      ),
+    );
   }
 
   Obx _buildFilterWidget(BuildContext context) {

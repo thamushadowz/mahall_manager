@@ -47,7 +47,10 @@ class ApiService extends GetConnect implements GetxService {
           );
           break;
         default:
-          response = await get(url, query: queryParams);
+          response = await get(url, query: queryParams, headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authToken ?? '',
+          });
           break;
       }
       return response;

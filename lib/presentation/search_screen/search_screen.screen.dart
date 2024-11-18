@@ -64,7 +64,7 @@ class SearchScreenScreen extends GetView<SearchScreenController> {
                       return _generateListItem(index);
                     },
                     separatorBuilder: (BuildContext context, int index) {
-                      return Divider();
+                      return const Divider();
                     },
                   );
                 }),
@@ -84,7 +84,7 @@ class SearchScreenScreen extends GetView<SearchScreenController> {
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: CommonTextWidget(
-          text: controller.filteredList[index],
+          text: controller.filteredList[index].name,
         ),
       ),
     );

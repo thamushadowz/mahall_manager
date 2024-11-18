@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../../config.dart';
 import '../../presentation/screens.dart';
+import '../../presentation/user_registration/registration.screen.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'routes.dart';
 
@@ -107,6 +107,11 @@ class Nav {
       name: Routes.CONTACT_DEVELOPERS,
       page: () => const ContactDevelopersScreen(),
       binding: ContactDevelopersControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PLACE_REGISTRATION,
+      page: () => const PlaceRegistrationScreen(),
+      binding: PlaceRegistrationControllerBinding(),
     ),
   ];
 }

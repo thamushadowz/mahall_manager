@@ -82,6 +82,13 @@ class Validators {
     return null;
   }
 
+  static String? validatePlaceCode(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.placeCodeReqd;
+    }
+    return null;
+  }
+
   static String? validateGender(String? value) {
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(Get.context!)!.gender_reqd;

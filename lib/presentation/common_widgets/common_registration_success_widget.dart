@@ -25,50 +25,52 @@ class CommonRegistrationSuccessWidget extends StatelessWidget {
       backgroundColor: AppColors.white,
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.verified,
-              size: 100,
-              color: AppColors.themeColor,
-            ),
-            CommonTextWidget(
-                text: AppLocalizations.of(context)!.thank_you,
-                fontSize: AppMeasures.textSize25,
-                fontWeight: AppMeasures.bigWeight,
-                color: AppColors.themeColor),
-            CommonTextWidget(
-                text: regSuccessMsg,
-                fontSize: AppMeasures.bigTextSize,
-                fontWeight: AppMeasures.normalWeight,
-                color: AppColors.themeColor),
-            Image.asset(
-              'assets/images/people_celebrating.png',
-              width: 200,
-              height: 200,
-            ),
-            CommonButtonWidget(
-              isLoading: false.obs,
-              border: Border.all(color: AppColors.themeColor),
-              onTap: onRegAnotherTap,
-              label: regAnotherTitle,
-              color: AppColors.white,
-              textColor: AppColors.themeColor,
-            ),
-            const SizedBox(height: 10),
-            CommonTextWidget(
-              text: AppLocalizations.of(context)!.or,
-            ),
-            const SizedBox(height: 10),
-            CommonButtonWidget(
-              isLoading: false.obs,
-              onTap: () {
-                Get.offAllNamed(Routes.HOME);
-              },
-              label: AppLocalizations.of(context)!.go_home,
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.verified,
+                size: 100,
+                color: AppColors.themeColor,
+              ),
+              CommonTextWidget(
+                  text: AppLocalizations.of(context)!.thank_you,
+                  fontSize: AppMeasures.textSize25,
+                  fontWeight: AppMeasures.bigWeight,
+                  color: AppColors.themeColor),
+              CommonTextWidget(
+                  text: regSuccessMsg,
+                  fontSize: AppMeasures.bigTextSize,
+                  fontWeight: AppMeasures.normalWeight,
+                  color: AppColors.themeColor),
+              Image.asset(
+                'assets/images/people_celebrating.png',
+                width: 200,
+                height: 200,
+              ),
+              CommonButtonWidget(
+                isLoading: false.obs,
+                border: Border.all(color: AppColors.themeColor),
+                onTap: onRegAnotherTap,
+                label: regAnotherTitle,
+                color: AppColors.white,
+                textColor: AppColors.themeColor,
+              ),
+              const SizedBox(height: 10),
+              CommonTextWidget(
+                text: AppLocalizations.of(context)!.or,
+              ),
+              const SizedBox(height: 10),
+              CommonButtonWidget(
+                isLoading: false.obs,
+                onTap: () {
+                  Get.offAllNamed(Routes.HOME);
+                },
+                label: AppLocalizations.of(context)!.go_home,
+              ),
+            ],
+          ),
         ),
       ),
     );

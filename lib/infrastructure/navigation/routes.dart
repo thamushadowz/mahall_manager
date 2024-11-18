@@ -7,6 +7,7 @@ class Routes {
   static const ADD_EXPENSES = '/add-expenses';
   static const ADD_INCOME = '/add-income';
   static const COMMITTEE_REGISTRATION = '/committee-registration';
+  static const CONTACT_DEVELOPERS = '/contact-developers';
   static const CONTACT_US = '/contact-us';
   static const DELETE_ACCOUNT = '/delete-account';
   static const HOME = '/home';
@@ -19,5 +20,5 @@ class Routes {
   static const RESET_PASSWORD = '/reset-password';
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
-  static const CONTACT_DEVELOPERS = '/contact-developers';
+  static const PLACE_REGISTRATION = '/place-registration';
 }

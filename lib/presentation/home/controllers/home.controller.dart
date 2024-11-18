@@ -7,9 +7,13 @@ import 'package:mahall_manager/domain/listing/models/get_promises_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_reports_model.dart';
 import 'package:mahall_manager/infrastructure/dal/services/storage_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utilities.dart';
+import '../../../domain/core/interfaces/utility_services.dart';
+import '../../../domain/listing/listing_repository.dart';
+import '../../../domain/listing/listing_service.dart';
 import '../../../domain/listing/models/get_blood_model.dart';
 import '../../../domain/listing/models/get_expat_model.dart';
 import '../../../infrastructure/dal/models/home/chart_data_model.dart';
@@ -37,6 +41,7 @@ class HomeController extends GetxController {
   final announcementController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  ListingService listingService = Get.find<ListingRepository>();
 
   RxString selectedLanguage = 'English'.obs;
   DateTime? lastPressedAt;
@@ -65,6 +70,7 @@ class HomeController extends GetxController {
   RxBool isABnegChecked = false.obs;
   RxBool isOposChecked = false.obs;
   RxBool isOnegChecked = false.obs;
+  RxBool isLoading = false.obs;
 
   Rxn<IncomeExpenseType> selectedIncomeExpType = Rxn<IncomeExpenseType>();
   Rxn<AdminType> selectedAdminType = Rxn<AdminType>();
@@ -94,7 +100,9 @@ class HomeController extends GetxController {
   List<String> bottomNavTitles = [];
   List<Widget> bottomNavIcons = [];
 
-  List<PeopleData> userDetails = [
+  List<PeopleData> userDetails = [];
+
+  /*List<PeopleData> userDetails = [
     PeopleData(
         userRegNo: "U01",
         fName: 'Kasim',
@@ -263,7 +271,7 @@ class HomeController extends GetxController {
       isExpat: true,
       country: 'Australia',
     ),
-  ];
+  ];*/
   List<PromisesData> promisesDetails = [
     PromisesData(
         description: 'Nabidinam - Navas T P',
@@ -664,6 +672,7 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    getUserDetails();
     getVersionCode();
     userType = storageService.getUserType() ?? '';
     //userType = '2';
@@ -705,7 +714,8 @@ class HomeController extends GetxController {
             AppStrings.expat
           ];
 
-    filteredUserDetails.assignAll(userDetails);
+    //filteredUserDetails.assignAll(userDetails);
+
     filteredPromisesDetails.assignAll(promisesDetails);
     filteredReportsDetails.assignAll(reportsDetails);
     filteredBloodDetails.assignAll(bloodDetails);
@@ -730,6 +740,7 @@ class HomeController extends GetxController {
       searchExpat(expatSearchController.text);
     });
     if (isExpandedList.isEmpty) {
+      print('userDetails length : ${userDetails.length}');
       isExpandedList.value = RxList.filled(userDetails.length, false);
     }
     final storage = GetStorage();
@@ -744,6 +755,36 @@ class HomeController extends GetxController {
     }
 
     //Get.updateLocale(Locale(lang));
+  }
+
+  getUserDetails() async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetHouseAndUsersModel response = await listingService
+            .getHouseAndUsersDetails(storageService.getToken() ?? '');
+        if (response.status == true ||
+            response.status.toString().toLowerCase() == 'true') {
+          userDetails.addAll(response.data!);
+          filteredUserDetails.assignAll(userDetails);
+          if (isExpandedList.isEmpty) {
+            isExpandedList.value = RxList.filled(userDetails.length, false);
+          }
+        } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
   }
 
   _showLicenseExpiryWarning() {

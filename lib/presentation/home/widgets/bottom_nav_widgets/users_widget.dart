@@ -4,6 +4,7 @@ import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_empty_result_widget.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_form_field.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
@@ -52,300 +53,344 @@ class UsersWidget extends StatelessWidget {
                     final houses = groupedUsers[keyName];
 
                     return Obx(
-                      () => GestureDetector(
-                        onTap: () {
-                          controller.toggleExpansion(index);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(15),
-                          margin: const EdgeInsets.only(
-                              left: 10, right: 10, top: 5, bottom: 5),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: AppColors.blueGrey),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  CommonTextWidget(
-                                    text: keyName, // Display house name
-                                    color: AppColors.blueGrey,
-                                  ),
-                                  const Spacer(),
-                                  Icon(
-                                    controller.isExpandedList[index]
-                                        ? Icons.expand_less
-                                        : Icons.expand_more,
-                                    color: AppColors.blueGrey,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete_outline_rounded,
-                                      color: AppColors.darkRed,
-                                    ),
-                                    onPressed: () {
-                                      showCommonDialog(context,
-                                          message:
-                                              AppStrings.areYouSureToDelete,
-                                          yesButtonName: AppStrings.delete,
-                                          messageColor: AppColors.darkRed,
-                                          onYesTap: () {});
-                                    },
-                                  ),
-                                ],
-                              ),
-                              if (controller.isExpandedList[index])
-                                Column(
+                      () => controller.isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : GestureDetector(
+                              onTap: () {
+                                controller.toggleExpansion(index);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(15),
+                                margin: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5, bottom: 5),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: AppColors.blueGrey),
+                                ),
+                                child: Column(
                                   children: [
-                                    const SizedBox(height: 10),
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: DataTable(
-                                        headingRowColor:
-                                            WidgetStateProperty.all(
-                                                AppColors.themeColor),
-                                        columns: [
-                                          DataColumn(
-                                            label: CommonTextWidget(
-                                              text: AppStrings.registerNo,
-                                              fontSize:
-                                                  AppMeasures.mediumTextSize,
-                                              color: AppColors.white,
-                                            ),
+                                    Row(
+                                      children: [
+                                        CommonTextWidget(
+                                          text: keyName, // Display house name
+                                          color: AppColors.blueGrey,
+                                        ),
+                                        const Spacer(),
+                                        Icon(
+                                          controller.isExpandedList[index]
+                                              ? Icons.expand_less
+                                              : Icons.expand_more,
+                                          color: AppColors.blueGrey,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.edit_note_rounded,
+                                            color: AppColors.blueGrey,
                                           ),
-                                          DataColumn(
-                                            label: CommonTextWidget(
-                                              text: AppStrings.name,
-                                              fontSize:
-                                                  AppMeasures.mediumTextSize,
-                                              color: AppColors.white,
-                                            ),
+                                          onPressed: () {
+                                            print('House Name : ${keyName}');
+                                            Get.toNamed(
+                                                Routes.HOUSE_REGISTRATION,
+                                                arguments: {
+                                                  'key_name': keyName,
+                                                  'is_from_edit': true
+                                                });
+                                          },
+                                        ),
+                                        const SizedBox(width: 10),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.delete_outline_rounded,
+                                            color: AppColors.darkRed,
                                           ),
-                                          DataColumn(
-                                            label: CommonTextWidget(
-                                              text: AppStrings.mobileNo,
-                                              fontSize:
-                                                  AppMeasures.mediumTextSize,
-                                              color: AppColors.white,
-                                            ),
-                                          ),
-                                          DataColumn(
-                                            label: CommonTextWidget(
-                                              text: AppStrings.currentDue,
-                                              fontSize:
-                                                  AppMeasures.mediumTextSize,
-                                              color: AppColors.white,
-                                            ),
-                                          ),
-                                          DataColumn(
-                                            label: CommonTextWidget(
-                                              text: AppStrings.collect,
-                                              fontSize:
-                                                  AppMeasures.mediumTextSize,
-                                              color: AppColors.white,
-                                            ),
-                                          ),
-                                          DataColumn(
-                                            label: CommonTextWidget(
-                                              text: AppStrings.actions,
-                                              fontSize:
-                                                  AppMeasures.mediumTextSize,
-                                              color: AppColors.white,
-                                            ),
-                                          ),
-                                        ],
-                                        rows: [
-                                          ...houses!.map((house) {
-                                            return DataRow(
-                                              cells: [
-                                                DataCell(CommonTextWidget(
-                                                  text: house.userRegNo ?? '',
-                                                  fontSize: AppMeasures
-                                                      .mediumTextSize,
-                                                  color: AppColors.black,
-                                                )),
-                                                DataCell(CommonTextWidget(
-                                                  text:
-                                                      '${house.fName} ${house.lName}',
-                                                  fontSize: AppMeasures
-                                                      .mediumTextSize,
-                                                  color: AppColors.black,
-                                                )),
-                                                DataCell(CommonTextWidget(
-                                                  text: house.phone ?? '',
-                                                  fontSize: AppMeasures
-                                                      .mediumTextSize,
-                                                  color: AppColors.black,
-                                                )),
-                                                DataCell(CommonTextWidget(
-                                                  text: house.due ?? '',
-                                                  fontSize: AppMeasures
-                                                      .mediumTextSize,
-                                                  color: AppColors.black,
-                                                )),
-                                                DataCell(int.parse(
-                                                            house.due ?? '0') >
-                                                        0
-                                                    ? CommonClickableTextWidget(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        border: Border.all(
-                                                            color: AppColors
-                                                                .darkRed),
-                                                        textColor:
-                                                            AppColors.darkRed,
-                                                        title: AppStrings
-                                                            .collectMoney,
-                                                        onTap: () {
-                                                          Get.toNamed(
-                                                              Routes
-                                                                  .PAYMENT_SCREEN,
-                                                              arguments: {
-                                                                'house': house,
-                                                                'totalOrNot':
-                                                                    false,
-                                                              });
-                                                        },
-                                                      )
-                                                    : CommonTextWidget(
-                                                        text: AppStrings
-                                                            .fullyPaid,
-                                                        color: AppColors
-                                                            .themeColor,
-                                                      )),
-                                                DataCell(
-                                                  Row(
-                                                    children: [
-                                                      IconButton(
-                                                        icon: Icon(
-                                                          Icons
-                                                              .edit_note_rounded,
-                                                          color: AppColors
-                                                              .blueGrey,
-                                                        ),
-                                                        onPressed: () async {
-                                                          final updatedUser =
-                                                              await Get.toNamed(
-                                                                  Routes
-                                                                      .REGISTRATION,
-                                                                  arguments:
-                                                                      house);
-                                                          if (updatedUser !=
-                                                              null) {
-                                                            //controller.updateReportItem(updatedUser);
-                                                          }
-                                                        },
-                                                      ),
-                                                      IconButton(
-                                                        icon: Icon(
-                                                          Icons
-                                                              .delete_outline_rounded,
-                                                          color:
-                                                              AppColors.darkRed,
-                                                        ),
-                                                        onPressed: () {
-                                                          showCommonDialog(
-                                                              context,
-                                                              message: AppStrings
-                                                                  .areYouSureToDelete,
-                                                              yesButtonName:
-                                                                  AppStrings
-                                                                      .delete,
-                                                              messageColor:
-                                                                  AppColors
-                                                                      .darkRed,
-                                                              onYesTap: () {});
-                                                        },
-                                                      ),
-                                                    ],
+                                          onPressed: () {
+                                            showCommonDialog(context,
+                                                message: AppStrings
+                                                    .areYouSureToDelete,
+                                                yesButtonName:
+                                                    AppStrings.delete,
+                                                messageColor: AppColors.darkRed,
+                                                onYesTap: () {});
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    if (controller.isExpandedList[index])
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 10),
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: DataTable(
+                                              headingRowColor:
+                                                  WidgetStateProperty.all(
+                                                      AppColors.themeColor),
+                                              columns: [
+                                                DataColumn(
+                                                  label: CommonTextWidget(
+                                                    text: AppStrings.registerNo,
+                                                    fontSize: AppMeasures
+                                                        .mediumTextSize,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                DataColumn(
+                                                  label: CommonTextWidget(
+                                                    text: AppStrings.name,
+                                                    fontSize: AppMeasures
+                                                        .mediumTextSize,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                DataColumn(
+                                                  label: CommonTextWidget(
+                                                    text: AppStrings.mobileNo,
+                                                    fontSize: AppMeasures
+                                                        .mediumTextSize,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                DataColumn(
+                                                  label: CommonTextWidget(
+                                                    text: AppStrings.currentDue,
+                                                    fontSize: AppMeasures
+                                                        .mediumTextSize,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                DataColumn(
+                                                  label: CommonTextWidget(
+                                                    text: AppStrings.collect,
+                                                    fontSize: AppMeasures
+                                                        .mediumTextSize,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                DataColumn(
+                                                  label: CommonTextWidget(
+                                                    text: AppStrings.actions,
+                                                    fontSize: AppMeasures
+                                                        .mediumTextSize,
+                                                    color: AppColors.white,
                                                   ),
                                                 ),
                                               ],
-                                              color: WidgetStateProperty.all(
-                                                int.parse(house.due ?? '0') >
-                                                        1000
-                                                    ? AppColors.darkRed
-                                                        .withOpacity(0.2)
-                                                    : AppColors.white,
-                                              ),
-                                            );
-                                          }),
-                                          const DataRow(cells: [
-                                            DataCell(SizedBox.shrink()),
-                                            DataCell(SizedBox.shrink()),
-                                            DataCell(SizedBox.shrink()),
-                                            DataCell(SizedBox.shrink()),
-                                            DataCell(SizedBox.shrink()),
-                                            DataCell(SizedBox.shrink()),
-                                          ]),
-                                          DataRow(
-                                            color: WidgetStateProperty.all(
-                                              AppColors.themeColor
-                                                  .withOpacity(0.2),
-                                            ),
-                                            cells: [
-                                              const DataCell(SizedBox.shrink()),
-                                              const DataCell(SizedBox.shrink()),
-                                              DataCell(CommonTextWidget(
-                                                text: houses[0].totalDue == '0'
-                                                    ? AppStrings.noDues
-                                                    : AppStrings.totalDue,
-                                                fontSize:
-                                                    AppMeasures.normalTextSize,
-                                                color: AppColors.themeColor,
-                                              )),
-                                              DataCell(houses[0].totalDue == '0'
-                                                  ? const SizedBox.shrink()
-                                                  : CommonTextWidget(
-                                                      text:
-                                                          houses[0].totalDue ??
-                                                              '',
+                                              rows: [
+                                                ...houses!.map((house) {
+                                                  return DataRow(
+                                                    cells: [
+                                                      DataCell(CommonTextWidget(
+                                                        text: house.userRegNo ??
+                                                            '',
+                                                        fontSize: AppMeasures
+                                                            .mediumTextSize,
+                                                        color: AppColors.black,
+                                                      )),
+                                                      DataCell(CommonTextWidget(
+                                                        text:
+                                                            '${house.fName} ${house.lName}',
+                                                        fontSize: AppMeasures
+                                                            .mediumTextSize,
+                                                        color: AppColors.black,
+                                                      )),
+                                                      DataCell(CommonTextWidget(
+                                                        text: house.phone ?? '',
+                                                        fontSize: AppMeasures
+                                                            .mediumTextSize,
+                                                        color: AppColors.black,
+                                                      )),
+                                                      DataCell(CommonTextWidget(
+                                                        text: house.due ?? '',
+                                                        fontSize: AppMeasures
+                                                            .mediumTextSize,
+                                                        color: AppColors.black,
+                                                      )),
+                                                      DataCell(int.parse(
+                                                                  house.due ??
+                                                                      '0') >
+                                                              0
+                                                          ? CommonClickableTextWidget(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              border: Border.all(
+                                                                  color: AppColors
+                                                                      .darkRed),
+                                                              textColor:
+                                                                  AppColors
+                                                                      .darkRed,
+                                                              title: AppStrings
+                                                                  .collectMoney,
+                                                              onTap: () {
+                                                                Get.toNamed(
+                                                                    Routes
+                                                                        .PAYMENT_SCREEN,
+                                                                    arguments: {
+                                                                      'house':
+                                                                          house,
+                                                                      'totalOrNot':
+                                                                          false,
+                                                                    });
+                                                              },
+                                                            )
+                                                          : CommonTextWidget(
+                                                              text: AppStrings
+                                                                  .fullyPaid,
+                                                              color: AppColors
+                                                                  .themeColor,
+                                                            )),
+                                                      DataCell(
+                                                        Row(
+                                                          children: [
+                                                            IconButton(
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .edit_note_rounded,
+                                                                color: AppColors
+                                                                    .blueGrey,
+                                                              ),
+                                                              onPressed:
+                                                                  () async {
+                                                                final updatedUser =
+                                                                    await Get.toNamed(
+                                                                        Routes
+                                                                            .REGISTRATION,
+                                                                        arguments:
+                                                                            house);
+                                                                if (updatedUser !=
+                                                                    null) {
+                                                                  //controller.updateReportItem(updatedUser);
+                                                                }
+                                                              },
+                                                            ),
+                                                            IconButton(
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .delete_outline_rounded,
+                                                                color: AppColors
+                                                                    .darkRed,
+                                                              ),
+                                                              onPressed: () {
+                                                                showCommonDialog(
+                                                                    context,
+                                                                    message:
+                                                                        AppStrings
+                                                                            .areYouSureToDelete,
+                                                                    yesButtonName:
+                                                                        AppStrings
+                                                                            .delete,
+                                                                    messageColor:
+                                                                        AppColors
+                                                                            .darkRed,
+                                                                    onYesTap:
+                                                                        () {});
+                                                              },
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                    color:
+                                                        WidgetStateProperty.all(
+                                                      int.parse(house.due ??
+                                                                  '0') >
+                                                              1000
+                                                          ? AppColors.darkRed
+                                                              .withOpacity(0.2)
+                                                          : AppColors.white,
+                                                    ),
+                                                  );
+                                                }),
+                                                const DataRow(cells: [
+                                                  DataCell(SizedBox.shrink()),
+                                                  DataCell(SizedBox.shrink()),
+                                                  DataCell(SizedBox.shrink()),
+                                                  DataCell(SizedBox.shrink()),
+                                                  DataCell(SizedBox.shrink()),
+                                                  DataCell(SizedBox.shrink()),
+                                                ]),
+                                                DataRow(
+                                                  color:
+                                                      WidgetStateProperty.all(
+                                                    AppColors.themeColor
+                                                        .withOpacity(0.2),
+                                                  ),
+                                                  cells: [
+                                                    const DataCell(
+                                                        SizedBox.shrink()),
+                                                    const DataCell(
+                                                        SizedBox.shrink()),
+                                                    DataCell(CommonTextWidget(
+                                                      text: houses[0]
+                                                                  .totalDue ==
+                                                              '0'
+                                                          ? AppStrings.noDues
+                                                          : AppStrings.totalDue,
                                                       fontSize: AppMeasures
-                                                          .mediumTextSize,
+                                                          .normalTextSize,
                                                       color:
                                                           AppColors.themeColor,
                                                     )),
-                                              DataCell(houses[0].totalDue == "0"
-                                                  ? const SizedBox.shrink()
-                                                  : CommonClickableTextWidget(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                          color: AppColors
-                                                              .themeColor),
-                                                      textColor:
-                                                          AppColors.themeColor,
-                                                      title: AppStrings
-                                                          .collectTotal,
-                                                      onTap: () {
-                                                        Get.toNamed(
-                                                            Routes
-                                                                .PAYMENT_SCREEN,
-                                                            arguments: {
-                                                              'house':
-                                                                  houses[0],
-                                                              'totalOrNot':
-                                                                  true,
-                                                            });
-                                                      },
-                                                    )),
-                                              const DataCell(SizedBox.shrink()),
-                                            ],
+                                                    DataCell(houses[0]
+                                                                .totalDue ==
+                                                            '0'
+                                                        ? const SizedBox
+                                                            .shrink()
+                                                        : CommonTextWidget(
+                                                            text: houses[0]
+                                                                    .totalDue ??
+                                                                '0',
+                                                            fontSize: AppMeasures
+                                                                .mediumTextSize,
+                                                            color: AppColors
+                                                                .themeColor,
+                                                          )),
+                                                    DataCell(houses[0]
+                                                                .totalDue ==
+                                                            "0"
+                                                        ? const SizedBox
+                                                            .shrink()
+                                                        : CommonClickableTextWidget(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            border: Border.all(
+                                                                color: AppColors
+                                                                    .themeColor),
+                                                            textColor: AppColors
+                                                                .themeColor,
+                                                            title: AppStrings
+                                                                .collectTotal,
+                                                            onTap: () {
+                                                              Get.toNamed(
+                                                                  Routes
+                                                                      .PAYMENT_SCREEN,
+                                                                  arguments: {
+                                                                    'house':
+                                                                        houses[
+                                                                            0],
+                                                                    'totalOrNot':
+                                                                        true,
+                                                                  });
+                                                            },
+                                                          )),
+                                                    const DataCell(
+                                                        SizedBox.shrink()),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
                                   ],
                                 ),
-                            ],
-                          ),
-                        ),
-                      ),
+                              ),
+                            ),
                     );
                   },
                 );

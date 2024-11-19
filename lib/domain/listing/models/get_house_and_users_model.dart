@@ -72,6 +72,7 @@ class PeopleData {
     String? userRegNo,
     String? fName,
     String? lName,
+    num? houseId,
     String? houseName,
     String? houseRegNo,
     String? phone,
@@ -94,6 +95,7 @@ class PeopleData {
     _userRegNo = userRegNo;
     _fName = fName;
     _lName = lName;
+    _houseId = houseId;
     _houseName = houseName;
     _houseRegNo = houseRegNo;
     _phone = phone;
@@ -118,6 +120,7 @@ class PeopleData {
     _userRegNo = json['user_reg_no'];
     _fName = json['f_name'];
     _lName = json['l_name'];
+    _houseId = json['house_id'];
     _houseName = json['house_name'];
     _houseRegNo = json['house_reg_no'];
     _phone = json['phone'];
@@ -141,6 +144,7 @@ class PeopleData {
   String? _userRegNo;
   String? _fName;
   String? _lName;
+  num? _houseId;
   String? _houseName;
   String? _houseRegNo;
   String? _phone;
@@ -164,6 +168,7 @@ class PeopleData {
     String? userRegNo,
     String? fName,
     String? lName,
+    num? houseId,
     String? houseName,
     String? houseRegNo,
     String? phone,
@@ -187,6 +192,7 @@ class PeopleData {
         userRegNo: userRegNo ?? _userRegNo,
         fName: fName ?? _fName,
         lName: lName ?? _lName,
+        houseId: houseId ?? _houseId,
         houseName: houseName ?? _houseName,
         houseRegNo: houseRegNo ?? _houseRegNo,
         phone: phone ?? _phone,
@@ -210,6 +216,7 @@ class PeopleData {
   String? get userRegNo => _userRegNo;
   String? get fName => _fName;
   String? get lName => _lName;
+  num? get houseId => _houseId;
   String? get houseName => _houseName;
   String? get houseRegNo => _houseRegNo;
   String? get phone => _phone;
@@ -234,6 +241,7 @@ class PeopleData {
     map['user_reg_no'] = _userRegNo;
     map['f_name'] = _fName;
     map['l_name'] = _lName;
+    map['house_id'] = _houseId;
     map['house_name'] = _houseName;
     map['house_reg_no'] = _houseRegNo;
     map['phone'] = _phone;

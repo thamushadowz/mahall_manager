@@ -22,6 +22,10 @@ abstract class ListingService {
 
   Future<HouseRegistrationModel> getHouseDetails(String authToken);
 
+  Future<CommonResponse> updateHouse(String authToken, dynamic params);
+
+  Future<CommonResponse> deleteHouse(String authToken, dynamic params);
+
   Future<CommonResponse> placeRegistration(String authToken, dynamic params);
 
   Future<GetPlaceModel> getPlaceDetails(String authToken);
@@ -31,4 +35,6 @@ abstract class ListingService {
   Future<GetHouseAndUsersModel> getHouseAndUsersDetails(String authToken);
 
   Future<CommonResponse> updateUser(String authToken, PeopleData params);
+
+  Future<CommonResponse> deleteUser(String authToken, dynamic params);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 
 import '../../domain/core/interfaces/validator.dart';
 import '../../infrastructure/theme/colors/app_colors.dart';
@@ -18,27 +19,35 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
     required this.dateController,
     required this.descriptionController,
     required this.amountController,
+    this.nameController,
     required this.dateFocusNode,
     required this.descriptionFocusNode,
     required this.amountFocusNode,
+    this.nameFocusNode,
     required this.onDateTap,
+    this.onNameTap,
     required this.onSubmitTap,
     required this.formKey,
     required this.isLoading,
+    this.isPromises = false,
   });
 
   final String heading;
   final Color color;
   final TextEditingController dateController;
   final TextEditingController descriptionController;
+  final TextEditingController? nameController;
   final TextEditingController amountController;
   final FocusNode dateFocusNode;
+  final FocusNode? nameFocusNode;
   final FocusNode descriptionFocusNode;
   final FocusNode amountFocusNode;
   final Function() onDateTap;
+  final Function()? onNameTap;
   final Function() onSubmitTap;
   final Key formKey;
   final RxBool isLoading;
+  final bool? isPromises;
 
   @override
   Widget build(BuildContext context) {
@@ -80,61 +89,93 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
               ),
               child: Form(
                 key: formKey,
-                child: Column(
-                  children: [
-                    // Date
-                    CommonTextFormField(
-                      disabledBorderColor: AppColors.blueGrey,
-                      enabled: false,
-                      label: AppStrings.date,
-                      keyboardType: TextInputType.none,
-                      textController: dateController,
-                      focusNode: dateFocusNode,
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context)
-                            .requestFocus(descriptionFocusNode);
-                      },
-                      onDateTap: onDateTap,
-                      validator: Validators.validateDate,
-                    ),
-                    const SizedBox(height: 10),
+                child: Obx(
+                  () => Column(
+                    children: [
+                      // Name
+                      isPromises!
+                          ? isLoading.value
+                              ? const CommonTextFieldShimmerWidget()
+                              : CommonTextFormField(
+                                  disabledBorderColor: AppColors.blueGrey,
+                                  enabled: false,
+                                  label: AppStrings.name,
+                                  textController: nameController!,
+                                  focusNode: nameFocusNode!,
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(context)
+                                        .requestFocus(dateFocusNode);
+                                  },
+                                  onDateTap: onNameTap,
+                                  keyboardType: TextInputType.none,
+                                  validator: Validators.validateFName,
+                                )
+                          : const SizedBox.shrink(),
+                      isPromises!
+                          ? const SizedBox(height: 10)
+                          : const SizedBox.shrink(),
 
-                    // Description
-                    CommonTextFormField(
-                      label: AppStrings.description,
-                      textController: descriptionController,
-                      focusNode: descriptionFocusNode,
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context).requestFocus(amountFocusNode);
-                      },
-                      keyboardType: TextInputType.text,
-                      validator: Validators.validateDescription,
-                    ),
-                    const SizedBox(height: 10),
+                      // Date
+                      isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : CommonTextFormField(
+                              disabledBorderColor: AppColors.blueGrey,
+                              enabled: false,
+                              label: AppStrings.date,
+                              keyboardType: TextInputType.none,
+                              textController: dateController,
+                              focusNode: dateFocusNode,
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context)
+                                    .requestFocus(descriptionFocusNode);
+                              },
+                              onDateTap: onDateTap,
+                              validator: Validators.validateDate,
+                            ),
+                      const SizedBox(height: 10),
 
-                    // Amount
-                    CommonTextFormField(
-                      label: AppStrings.amount,
-                      prefixText: '₹ ',
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      keyboardType: TextInputType.number,
-                      validator: Validators.validateAmount,
-                      textController: amountController,
-                      focusNode: amountFocusNode,
-                      onFieldSubmitted: (value) {},
-                    ),
-                    const SizedBox(height: 20),
+                      // Description
+                      isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : CommonTextFormField(
+                              label: AppStrings.description,
+                              textController: descriptionController,
+                              focusNode: descriptionFocusNode,
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context)
+                                    .requestFocus(amountFocusNode);
+                              },
+                              keyboardType: TextInputType.text,
+                              validator: Validators.validateDescription,
+                            ),
+                      const SizedBox(height: 10),
 
-                    // Submit button
-                    CommonButtonWidget(
-                      isLoading: isLoading,
-                      color: color,
-                      label: AppStrings.submit,
-                      onTap: onSubmitTap,
-                    ),
-                  ],
+                      // Amount
+                      isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : CommonTextFormField(
+                              label: AppStrings.amount,
+                              prefixText: '₹ ',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              keyboardType: TextInputType.number,
+                              validator: Validators.validateAmount,
+                              textController: amountController,
+                              focusNode: amountFocusNode,
+                              onFieldSubmitted: (value) {},
+                            ),
+                      const SizedBox(height: 20),
+
+                      // Submit button
+                      CommonButtonWidget(
+                        isLoading: isLoading,
+                        color: color,
+                        label: AppStrings.submit,
+                        onTap: onSubmitTap,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -6,7 +6,6 @@ import 'package:mahall_manager/domain/core/interfaces/validator.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
-import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
 import '../common_widgets/common_button_widget.dart';
@@ -40,56 +39,57 @@ class LoginScreen extends GetView<LoginController> {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Scaffold(
-          appBar:
-              CommonAppbarWidget(title: AppLocalizations.of(context)!.log_in),
-          body: SizedBox.expand(
-            child: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/lite_white_background.jpg'),
-                  fit: BoxFit.cover,
+        child: SafeArea(
+          child: Scaffold(
+            body: SizedBox.expand(
+              child: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image:
+                        AssetImage('assets/images/lite_white_background.jpg'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final keyboardHeight =
-                      MediaQuery.of(context).viewInsets.bottom;
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final keyboardHeight =
+                        MediaQuery.of(context).viewInsets.bottom;
 
-                  return Stack(
-                    children: [
-                      SingleChildScrollView(
-                        padding: EdgeInsets.only(
-                          top: keyboardHeight == 0
-                              ? constraints.maxHeight * 0.2
-                              : 20,
+                    return Stack(
+                      children: [
+                        SingleChildScrollView(
+                          padding: EdgeInsets.only(
+                            top: keyboardHeight == 0
+                                ? constraints.maxHeight * 0.2
+                                : 20,
+                            bottom: 20,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: keyboardHeight == 0
+                                ? MainAxisAlignment.center
+                                : MainAxisAlignment.start,
+                            children: [
+                              _loginWidget(context),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                        Positioned(
                           bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: CommonTextWidget(
+                            color: AppColors.blueGrey.withOpacity(0.8),
+                            fontSize: AppMeasures.smallTextSize,
+                            fontWeight: AppMeasures.mediumWeight,
+                            text: AppStrings.craftedWithAllerTempus,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: keyboardHeight == 0
-                              ? MainAxisAlignment.center
-                              : MainAxisAlignment.start,
-                          children: [
-                            _loginWidget(context),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 20,
-                        left: 0,
-                        right: 0,
-                        child: CommonTextWidget(
-                          color: AppColors.blueGrey.withOpacity(0.8),
-                          fontSize: AppMeasures.smallTextSize,
-                          fontWeight: AppMeasures.mediumWeight,
-                          text: AppStrings.craftedWithAllerTempus,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -114,6 +114,13 @@ class LoginScreen extends GetView<LoginController> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                CommonTextWidget(
+                  text: AppStrings.login,
+                  fontSize: AppMeasures.textSize25,
+                  textAlign: TextAlign.center,
+                  fontWeight: AppMeasures.normalWeight,
+                ),
+                const SizedBox(height: 20),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(

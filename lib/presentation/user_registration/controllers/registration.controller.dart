@@ -221,6 +221,7 @@ class RegistrationController extends GetxController {
           showToast(
               title: response.message.toString(),
               type: ToastificationType.success);
+          Get.back();
         } else {
           if (response.message != null) {
             showToast(

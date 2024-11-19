@@ -21,7 +21,9 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CommonAppbarWidget(
-        title: AppLocalizations.of(context)!.house_registration,
+        title: controller.isEditScreen
+            ? AppStrings.editHouse
+            : AppStrings.houseRegistration,
       ),
       body: GestureDetector(
         onTap: () {
@@ -128,55 +130,63 @@ class HouseRegistrationScreen extends GetView<HouseRegistrationController> {
             validator: Validators.validateHouseName),
         const SizedBox(height: 10),
         //Place Name
-        Obx(
-          () => controller.isDataLoading.value
-              ? const CommonTextFieldShimmerWidget()
-              : Row(
-                  children: [
-                    // Text Form Field for House Name
-                    Expanded(
-                      child: CommonTextFormField(
-                        disabledBorderColor: AppColors.blueGrey,
-                        enabled: false,
-                        label: AppStrings.placeName,
-                        validator: Validators.validatePlaceName,
-                        keyboardType: TextInputType.none,
-                        textController: controller.placeNameController,
-                        focusNode: controller.placeNameFocusNode,
-                        onDateTap: () {
-                          Get.toNamed(Routes.SEARCH_SCREEN,
-                                  arguments: controller.placeData)
-                              ?.then((onValue) {
-                            controller.placeNameController.text =
-                                onValue.name != null
-                                    ? onValue.name.toString()
-                                    : '';
-                            controller.placeId = onValue.id;
-                          });
-                        },
-                      ),
-                    ),
-                    Obx(() => !controller.isPlaceDataSuccessful.value
-                        ? IconButton(
-                            onPressed: () {
-                              controller.getPlaceDetailsList();
-                            },
-                            icon: Icon(
-                              Icons.refresh_rounded,
-                              size: 30,
-                              color: AppColors.darkRed,
+        controller.isEditScreen
+            ? const SizedBox.shrink()
+            : Obx(
+                () => controller.isDataLoading.value
+                    ? const CommonTextFieldShimmerWidget()
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: CommonTextFormField(
+                              disabledBorderColor: AppColors.blueGrey,
+                              enabled: false,
+                              label: AppStrings.placeName,
+                              validator: Validators.validatePlaceName,
+                              keyboardType: TextInputType.none,
+                              textController: controller.placeNameController,
+                              focusNode: controller.placeNameFocusNode,
+                              onDateTap: () {
+                                Get.toNamed(Routes.SEARCH_SCREEN,
+                                        arguments: controller.placeData)
+                                    ?.then((onValue) {
+                                  controller.placeNameController.text =
+                                      onValue.name != null
+                                          ? onValue.name.toString()
+                                          : '';
+                                  controller.placeId = onValue.id;
+                                });
+                              },
                             ),
-                          )
-                        : const SizedBox.shrink()),
-                  ],
-                ),
-        ),
+                          ),
+                          controller.isEditScreen
+                              ? const SizedBox.shrink()
+                              : Obx(
+                                  () => !controller.isPlaceDataSuccessful.value
+                                      ? IconButton(
+                                          onPressed: () {
+                                            controller.getPlaceDetailsList();
+                                          },
+                                          icon: Icon(
+                                            Icons.refresh_rounded,
+                                            size: 30,
+                                            color: AppColors.darkRed,
+                                          ),
+                                        )
+                                      : const SizedBox.shrink()),
+                        ],
+                      ),
+              ),
         const SizedBox(height: 20),
         CommonButtonWidget(
             isLoading: controller.isLoading,
             onTap: () {
               if (controller.formKey.currentState!.validate()) {
-                controller.performHouseRegistration();
+                if (controller.isEditScreen) {
+                  controller.updateHouseName();
+                } else {
+                  controller.performHouseRegistration();
+                }
               }
             },
             label: AppLocalizations.of(context)!.submit)

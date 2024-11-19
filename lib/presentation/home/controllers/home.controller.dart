@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:mahall_manager/domain/listing/models/common_response.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_promises_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_reports_model.dart';
@@ -672,10 +673,16 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    getUserDetails();
+
     getVersionCode();
     userType = storageService.getUserType() ?? '';
     //userType = '2';
+
+    if (userType == '2') {
+    } else {
+      getUserDetails();
+    }
+
     mahallName = storageService.getMahallName() ?? '';
     _showLicenseExpiryWarning();
 
@@ -759,19 +766,84 @@ class HomeController extends GetxController {
 
   getUserDetails() async {
     isLoading.value = true;
+    userDetails.clear();
+    filteredUserDetails.clear();
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
         GetHouseAndUsersModel response = await listingService
             .getHouseAndUsersDetails(storageService.getToken() ?? '');
-        if (response.status == true ||
-            response.status.toString().toLowerCase() == 'true') {
+        if (response.status == true) {
           userDetails.addAll(response.data!);
           filteredUserDetails.assignAll(userDetails);
           if (isExpandedList.isEmpty) {
             isExpandedList.value = RxList.filled(userDetails.length, false);
           }
         } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  deleteHouse(int houseId) async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        CommonResponse response = await listingService
+            .deleteHouse(storageService.getToken() ?? '', {'id': houseId});
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+          getUserDetails();
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  deleteUser(int userId) async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        CommonResponse response = await listingService
+            .deleteUser(storageService.getToken() ?? '', {'id': userId});
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+          getUserDetails();
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
       } catch (e) {
         showToast(
             title: AppStrings.somethingWentWrong,
@@ -833,7 +905,7 @@ class HomeController extends GetxController {
   Map<String, List<PeopleData>> groupedUsers() {
     Map<String, List<PeopleData>> grouped = {};
     for (var house in filteredUserDetails) {
-      final key = '${house.houseRegNo} - ${house.houseName}';
+      final key = '${house.houseRegNo} - ${house.houseName} : ${house.houseId}';
       if (!grouped.containsKey(key)) {
         grouped[key] = [];
       }
@@ -1166,7 +1238,13 @@ class HomeController extends GetxController {
       filteredUserDetails.value = userDetails;
     } else {
       filteredUserDetails.value = userDetails.where((house) {
-        return house.houseName!
+        return house.houseRegNo!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            house.houseName!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            house.userRegNo!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
             house.fName!

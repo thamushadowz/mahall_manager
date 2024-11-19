@@ -127,6 +127,42 @@ class ListingRepository implements ListingService {
   }
 
   @override
+  Future<CommonResponse> updateHouse(String authToken, params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'house/update',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> deleteHouse(String authToken, params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'house/delete',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
   Future<CommonResponse> placeRegistration(String authToken, params) async {
     CommonResponse commonResponse;
     final response = await apiService.reqst(
@@ -210,6 +246,24 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.POST,
       params: params.toJson(),
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> deleteUser(String authToken, params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'user/delete',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
     );
     print('Response::: ${response.body}');
     try {

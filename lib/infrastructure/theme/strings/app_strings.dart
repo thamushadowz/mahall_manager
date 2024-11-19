@@ -46,6 +46,11 @@ class AppStrings {
   static String age = 'Age';
   static String job = 'Job';
   static String annualIncome = 'Annual Income';
+  static String houseRegistration = 'House Registration';
+  static String editHouse = 'Edit House';
+  static String login = 'Login';
+  static String loginToContinue = 'Login to continue';
+  static String welcomeBack = 'Welcome Back';
 
   static String male = 'Male';
   static String female = 'Female';

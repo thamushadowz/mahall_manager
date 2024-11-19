@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 
 import '../../infrastructure/theme/colors/app_colors.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
@@ -10,6 +11,7 @@ import 'controllers/promises.controller.dart';
 
 class PromisesScreen extends GetView<PromisesController> {
   const PromisesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +51,14 @@ class PromisesScreen extends GetView<PromisesController> {
 
   CommonIncomeExpensesWidget _promisesWidget(BuildContext context) {
     return CommonIncomeExpensesWidget(
+      isPromises: true,
       heading: AppStrings.promises,
       color: AppColors.orange,
+      nameController: controller.nameController,
       dateController: controller.dateController,
       descriptionController: controller.descriptionController,
       amountController: controller.amountController,
+      nameFocusNode: controller.nameFocusNode,
       dateFocusNode: controller.dateFocusNode,
       descriptionFocusNode: controller.descriptionFocusNode,
       amountFocusNode: controller.amountFocusNode,
@@ -75,6 +80,14 @@ class PromisesScreen extends GetView<PromisesController> {
 
           controller.dateController.text = formattedDate;
         }
+      },
+      onNameTap: () {
+        Get.toNamed(Routes.SEARCH_SCREEN, arguments: controller.userDetails)
+            ?.then((onValue) {
+          if (onValue.name != null) {
+            controller.nameController.text = onValue.name.toString();
+          }
+        });
       },
       isLoading: controller.isLoading,
     );

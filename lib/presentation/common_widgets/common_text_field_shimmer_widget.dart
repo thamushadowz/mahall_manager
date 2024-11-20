@@ -19,7 +19,7 @@ class CommonTextFieldShimmerWidget extends StatelessWidget {
           child: Container(
             height: height ?? 60,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15), color: Colors.red),
+                borderRadius: BorderRadius.circular(15), color: Colors.white),
           )),
     );
   }

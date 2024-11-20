@@ -26,9 +26,14 @@ class LoginScreen extends GetView<LoginController> {
           controller.lastPressedAt = now;
           Get.showSnackbar(
             GetSnackBar(
-              snackPosition: SnackPosition.TOP,
-              message: AppStrings.pressBackExit,
+              snackPosition: SnackPosition.BOTTOM,
+              messageText: CommonTextWidget(
+                text: AppStrings.pressBackExit,
+                fontSize: AppMeasures.mediumTextSize,
+                color: AppColors.themeColor,
+              ),
               duration: const Duration(seconds: 2),
+              backgroundColor: AppColors.white,
             ),
           );
           return false;

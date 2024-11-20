@@ -82,7 +82,8 @@ class ProfileScreen extends GetView<ProfileController> {
 
   Widget _buildUserName() {
     return CommonTextWidget(
-      text: "Thameem Ali (U01)",
+      text:
+          '${controller.userDetails.first.fName} ${controller.userDetails.first.lName} (${controller.userDetails.first.userRegNo})',
       color: AppColors.white,
       fontSize: AppMeasures.textSize25,
       fontWeight: FontWeight.bold,
@@ -91,7 +92,8 @@ class ProfileScreen extends GetView<ProfileController> {
 
   Widget _buildUserAddress() {
     return CommonTextWidget(
-      text: "KNY01 • Sinan Manzil, Kayani, Kannur, Kerala",
+      text:
+          "${controller.userDetails.first.houseRegNo} • ${controller.userDetails.first.houseName}, ${controller.userDetails.first.place}, ${controller.userDetails.first.district}, ${controller.userDetails.first.state}.",
       color: AppColors.white.withOpacity(0.8),
       fontSize: AppMeasures.mediumTextSize,
       fontWeight: AppMeasures.mediumWeight,
@@ -112,19 +114,26 @@ class ProfileScreen extends GetView<ProfileController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailItem(AppStrings.mobileNo, "+91 9091929394"),
+              _buildDetailItem(AppStrings.mobileNo,
+                  "+91 ${controller.userDetails.first.phone}"),
               _buildDivider(),
-              _buildDetailItem(AppStrings.gender, "Male"),
+              _buildDetailItem(
+                  AppStrings.gender, "${controller.userDetails.first.gender}"),
               _buildDivider(),
-              _buildDetailItem(AppStrings.dob, "20/10/1995"),
+              _buildDetailItem(
+                  AppStrings.dob, "${controller.userDetails.first.dob}"),
               _buildDivider(),
-              _buildDetailItem(AppStrings.age, "29"),
+              _buildDetailItem(
+                  AppStrings.age, "${controller.userDetails.first.age}"),
               _buildDivider(),
-              _buildDetailItem(AppStrings.job, "Doctor"),
+              _buildDetailItem(
+                  AppStrings.job, "${controller.userDetails.first.job}"),
               _buildDivider(),
-              _buildDetailItem(AppStrings.annualIncome, "10 Lakhs and above"),
+              _buildDetailItem(AppStrings.annualIncome,
+                  "${controller.userDetails.first.annualIncome}"),
               _buildDivider(),
-              _buildDetailItem(AppStrings.bloodGroup, "O+ve"),
+              _buildDetailItem(AppStrings.bloodGroup,
+                  "${controller.userDetails.first.bloodGroup}"),
             ],
           ),
         ),

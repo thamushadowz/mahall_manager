@@ -51,6 +51,7 @@ class AppStrings {
   static String login = 'Login';
   static String loginToContinue = 'Login to continue';
   static String welcomeBack = 'Welcome Back';
+  static String deletingAccount = 'Deleting Account...';
 
   static String male = 'Male';
   static String female = 'Female';

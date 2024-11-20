@@ -37,4 +37,17 @@ abstract class ListingService {
   Future<CommonResponse> updateUser(String authToken, PeopleData params);
 
   Future<CommonResponse> deleteUser(String authToken, dynamic params);
+
+  Future<CommonResponse> addPromises(String authToken, dynamic params);
+
+  Future<CommonResponse> addIncomeOrExpense(
+      String url, String authToken, dynamic params);
+
+  Future<GetHouseAndUsersModel> getUserProfile(String authToken);
+
+  Future<CommonResponse> resetPassword(String authToken, dynamic params);
+
+  Future<CommonResponse> logout(String authToken);
+
+  Future<CommonResponse> deleteAccount(String authToken, dynamic params);
 }

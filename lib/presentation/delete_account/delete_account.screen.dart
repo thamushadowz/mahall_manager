@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
@@ -21,45 +22,66 @@ class DeleteAccountScreen extends GetView<DeleteAccountController> {
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: Scaffold(
-        appBar: CommonAppbarWidget(title: AppStrings.deleteAccount),
-        body: SizedBox.expand(
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/lite_white_background.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-
-                return Stack(
+      child: Obx(
+        () => controller.isLoading.value
+            ? Container(
+                color: AppColors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SingleChildScrollView(
-                      padding: EdgeInsets.only(
-                        top: keyboardHeight == 0
-                            ? constraints.maxHeight * 0.2
-                            : 20,
-                        bottom: 20,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: keyboardHeight == 0
-                            ? MainAxisAlignment.center
-                            : MainAxisAlignment.start,
-                        children: [
-                          _deleteAccountWidget(context),
-                          const SizedBox(height: 20),
-                        ],
+                    Lottie.asset('assets/animations/delete.json',
+                        width: 200, height: 200),
+                    const SizedBox(height: 20),
+                    Material(
+                        color: AppColors.white,
+                        child:
+                            CommonTextWidget(text: AppStrings.deletingAccount))
+                  ],
+                ),
+              )
+            : Scaffold(
+                appBar: CommonAppbarWidget(title: AppStrings.deleteAccount),
+                body: SizedBox.expand(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/images/lite_white_background.jpg'),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final keyboardHeight =
+                            MediaQuery.of(context).viewInsets.bottom;
+
+                        return Stack(
+                          children: [
+                            SingleChildScrollView(
+                              padding: EdgeInsets.only(
+                                top: keyboardHeight == 0
+                                    ? constraints.maxHeight * 0.2
+                                    : 20,
+                                bottom: 20,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: keyboardHeight == 0
+                                    ? MainAxisAlignment.center
+                                    : MainAxisAlignment.start,
+                                children: [
+                                  _deleteAccountWidget(context),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
       ),
     );
   }
@@ -124,7 +146,9 @@ class DeleteAccountScreen extends GetView<DeleteAccountController> {
                 isLoading: controller.isLoading,
                 label: AppStrings.delete,
                 onTap: () {
-                  if (controller.formKey.currentState!.validate()) {}
+                  if (controller.formKey.currentState!.validate()) {
+                    controller.deleteAccount();
+                  }
                 },
               )
             ],

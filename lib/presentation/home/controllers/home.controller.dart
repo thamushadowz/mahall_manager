@@ -18,6 +18,7 @@ import '../../../domain/listing/listing_service.dart';
 import '../../../domain/listing/models/get_blood_model.dart';
 import '../../../domain/listing/models/get_expat_model.dart';
 import '../../../infrastructure/dal/models/home/chart_data_model.dart';
+import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
 
@@ -72,6 +73,7 @@ class HomeController extends GetxController {
   RxBool isOposChecked = false.obs;
   RxBool isOnegChecked = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isLoggingOut = false.obs;
 
   Rxn<IncomeExpenseType> selectedIncomeExpType = Rxn<IncomeExpenseType>();
   Rxn<AdminType> selectedAdminType = Rxn<AdminType>();
@@ -1361,5 +1363,39 @@ class HomeController extends GetxController {
       int due = int.tryParse(person.due ?? '0') ?? 0;
       return sum + due;
     });
+  }
+
+  performLogout() async {
+    isLoggingOut.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        CommonResponse response = await listingService.logout(
+          storageService.getToken() ?? '',
+        );
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+          storageService.logout();
+          Get.offAllNamed(Routes.LOGIN);
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoggingOut.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoggingOut.value = false;
+    }
   }
 }

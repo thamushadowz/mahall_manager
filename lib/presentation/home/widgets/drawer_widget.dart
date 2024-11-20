@@ -106,8 +106,8 @@ class DrawerWidget extends StatelessWidget {
                             message: AppStrings.areYouSureToLogout,
                             yesButtonName: AppStrings.logout,
                             messageColor: AppColors.darkRed, onYesTap: () {
-                          controller.storageService.logout();
-                          Get.offAllNamed(Routes.LOGIN);
+                          Get.close(0);
+                          controller.performLogout();
                         });
                       },
                     ),

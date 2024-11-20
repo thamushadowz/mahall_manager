@@ -273,4 +273,116 @@ class ListingRepository implements ListingService {
       return CommonResponse();
     }
   }
+
+  @override
+  Future<CommonResponse> addPromises(String authToken, params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'promise/add',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> addIncomeOrExpense(
+      String url, String authToken, params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: url,
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<GetHouseAndUsersModel> getUserProfile(String authToken) async {
+    GetHouseAndUsersModel getHouseAndUsersModel;
+    final response = await apiService.reqst(
+      url: 'user/profile',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getHouseAndUsersModel = GetHouseAndUsersModel.fromJson(response.body);
+      return getHouseAndUsersModel;
+    } catch (e) {
+      print('Exception :::: $e');
+      return GetHouseAndUsersModel();
+    }
+  }
+
+  @override
+  Future<CommonResponse> resetPassword(String authToken, params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'password/reset',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> logout(String authToken) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'logout',
+      authToken: authToken,
+      method: Method.POST,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> deleteAccount(String authToken, params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'account/delete',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
 }

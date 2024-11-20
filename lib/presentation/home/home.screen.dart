@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
@@ -46,43 +47,55 @@ class HomeScreen extends GetView<HomeController> {
           return true;
         },
         child: Obx(
-          () => Scaffold(
-            backgroundColor: AppColors.white,
-            drawer: DrawerWidget(controller: controller),
-            bottomNavigationBar: BottomNavWidget(
-              controller: controller,
-              onTap: (index) {
-                controller.selectedNavIndex.value = index;
-                controller.appBarTitle.value =
-                    controller.bottomNavTitles[index];
-              },
-            ),
-            appBar: CommonAppbarWidget(
-              title: controller.appBarTitle.value,
-            ),
-            body: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: Obx(() => IndexedStack(
-                    index: controller.selectedNavIndex.value,
-                    children: controller.userType == '2'
-                        ? [
-                            UsersWidget(controller: controller),
-                            BloodWidget(controller: controller),
-                            ExpatsWidget(controller: controller),
-                          ]
-                        : [
-                            DashboardWidget(controller: controller),
-                            UsersWidget(controller: controller),
-                            PromisesWidget(controller: controller),
-                            ReportsWidget(controller: controller),
-                            BloodWidget(controller: controller),
-                            ExpatsWidget(controller: controller),
-                          ],
-                  )),
-            ),
-          ),
+          () => controller.isLoggingOut.value
+              ? Container(
+                  color: AppColors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Lottie.asset('assets/animations/logout.json',
+                          width: 200, height: 200),
+                    ],
+                  ),
+                )
+              : Scaffold(
+                  backgroundColor: AppColors.white,
+                  drawer: DrawerWidget(controller: controller),
+                  bottomNavigationBar: BottomNavWidget(
+                    controller: controller,
+                    onTap: (index) {
+                      controller.selectedNavIndex.value = index;
+                      controller.appBarTitle.value =
+                          controller.bottomNavTitles[index];
+                    },
+                  ),
+                  appBar: CommonAppbarWidget(
+                    title: controller.appBarTitle.value,
+                  ),
+                  body: GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    child: Obx(() => IndexedStack(
+                          index: controller.selectedNavIndex.value,
+                          children: controller.userType == '2'
+                              ? [
+                                  UsersWidget(controller: controller),
+                                  BloodWidget(controller: controller),
+                                  ExpatsWidget(controller: controller),
+                                ]
+                              : [
+                                  DashboardWidget(controller: controller),
+                                  UsersWidget(controller: controller),
+                                  PromisesWidget(controller: controller),
+                                  ReportsWidget(controller: controller),
+                                  BloodWidget(controller: controller),
+                                  ExpatsWidget(controller: controller),
+                                ],
+                        )),
+                  ),
+                ),
         ),
       ),
     );

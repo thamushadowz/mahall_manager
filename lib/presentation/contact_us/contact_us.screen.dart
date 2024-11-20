@@ -6,6 +6,7 @@ import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_clickable_text_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../common_widgets/common_appbar_widget.dart';
 import 'controllers/contact_us.controller.dart';
@@ -20,82 +21,115 @@ class ContactUsScreen extends GetView<ContactUsController> {
     return Scaffold(
       appBar:
           CommonAppbarWidget(title: AppLocalizations.of(context)!.contact_us),
-      body: Column(
+      body: SizedBox.expand(
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/lite_white_background.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+              return SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  top: keyboardHeight == 0 ? constraints.maxHeight * 0.2 : 20,
+                  bottom: 20,
+                ),
+                child: Column(
+                  mainAxisAlignment: keyboardHeight == 0
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.start,
+                  children: [
+                    _buildContactUsWidget(),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Obx _buildContactUsWidget() {
+    return Obx(
+      () => Column(
         children: [
           _detailsWidget(
               heading: 'President',
-              name: 'Mr. Abdullah P K',
-              number: '+91 9897969594',
+              name: controller.presidentName.value,
+              number: controller.presidentMobileNo.value,
               imageString: 'assets/images/president.png'),
           _detailsWidget(
               heading: 'Secretary',
-              name: 'Mr. Salman Faris',
-              number: '+91 9876543210',
+              name: controller.secretaryName.value,
+              number: controller.secretaryMobileNo.value,
               imageString: 'assets/images/secretary.png'),
           _detailsWidget(
               heading: 'Treasurer',
-              name: 'Mr. Abdul Azees',
-              number: '+91 9496317389',
+              name: controller.treasurerName.value,
+              number: controller.treasurerMobileNo.value,
               imageString: 'assets/images/treasurer.png'),
         ],
       ),
     );
   }
 
-  Container _detailsWidget({
+  /// Contact Details Card
+  Widget _detailsWidget({
     required String heading,
     required String name,
     required String number,
     required String imageString,
   }) {
     return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(10),
-      width: double.infinity,
-      height: 150,
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-          image: const DecorationImage(
-            image: AssetImage('assets/images/islamic_pattern.jpg'),
-            fit: BoxFit.fill,
+        color: AppColors.white,
+        image: const DecorationImage(
+          image: AssetImage('assets/images/islamic_pattern.jpg'),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: AppColors.blueGrey.withOpacity(0.5)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.grey.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.blueGrey)),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CommonTextWidget(text: heading),
+          CommonTextWidget(
+            text: heading,
+            fontSize: AppMeasures.bigTextSize,
+            fontWeight: FontWeight.w600,
+            color: AppColors.blueGrey,
+          ),
           Divider(
-            thickness: 1.5,
-            height: 30,
+            thickness: 1.2,
+            height: 20,
             color: AppColors.grey.withOpacity(0.5),
           ),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                imageString,
-                width: 60,
-                height: 60,
-              ),
+              _buildProfileImage(imageString),
               const SizedBox(width: 20),
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonTextWidget(
-                    text: name,
-                    fontWeight: AppMeasures.mediumWeight,
-                    color: AppColors.themeColor,
-                  ),
-                  const SizedBox(height: 10),
-                  CommonClickableTextWidget(
-                    title: number,
-                    fontWeight: AppMeasures.mediumWeight,
-                    textColor: AppColors.blue,
-                    onTap: () {
-                      _generateBottomSheet(number);
-                    },
-                  ),
+                  _buildNameOrShimmer(name),
+                  const SizedBox(height: 8),
+                  _buildContactNumber(number),
                 ],
               )
             ],
@@ -105,33 +139,110 @@ class ContactUsScreen extends GetView<ContactUsController> {
     );
   }
 
-  _generateBottomSheet(String number) {
-    Get.bottomSheet(
-        backgroundColor: AppColors.white,
-        SizedBox(
-          height: 120,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _generateContactButton(
-                  title: AppStrings.call,
-                  onTap: () {
-                    controller.launchDialer(number);
-                  },
-                  icon: 'assets/images/call_icon.png'),
-              const SizedBox(width: 40),
-              _generateContactButton(
-                  title: AppStrings.whatsapp,
-                  onTap: () {
-                    controller.launchWhatsApp(number);
-                  },
-                  icon: 'assets/images/whatsapp_icon.png')
-            ],
-          ),
-        ));
+  /// Profile Image with Shimmer
+  Widget _buildProfileImage(String imageString) {
+    return Obx(() {
+      return controller.isLoading.value
+          ? _buildIconShimmerWidget()
+          : Image.asset(
+              imageString,
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            );
+    });
   }
 
-  InkWell _generateContactButton({
+  /// Name Text or Shimmer
+  Widget _buildNameOrShimmer(String name) {
+    return Obx(() {
+      return controller.isLoading.value
+          ? _buildHeadingShimmerWidget()
+          : CommonTextWidget(
+              text: name,
+              fontWeight: FontWeight.w500,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.themeColor,
+            );
+    });
+  }
+
+  /// Contact Number with Clickable Action
+  Widget _buildContactNumber(String number) {
+    return Obx(() {
+      return controller.isLoading.value
+          ? _buildHeadingShimmerWidget()
+          : CommonClickableTextWidget(
+              title: number,
+              fontWeight: FontWeight.w500,
+              textColor: AppColors.blue,
+              onTap: () {
+                _generateBottomSheet(number);
+              },
+            );
+    });
+  }
+
+  /// Shimmer for Heading
+  Widget _buildHeadingShimmerWidget() {
+    return Shimmer.fromColors(
+      baseColor: AppColors.lightGrey,
+      highlightColor: AppColors.white,
+      child: CommonTextWidget(
+        text: 'Loading...',
+        fontWeight: FontWeight.w500,
+        color: AppColors.lightGrey,
+      ),
+    );
+  }
+
+  /// Shimmer for Icon
+  Widget _buildIconShimmerWidget() {
+    return Shimmer.fromColors(
+      baseColor: AppColors.lightGrey.withOpacity(0.5),
+      highlightColor: AppColors.white.withOpacity(0.3),
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: AppColors.lightGrey.withOpacity(0.3),
+          shape: BoxShape.circle,
+        ),
+      ),
+    );
+  }
+
+  /// Bottom Sheet for Actions
+  void _generateBottomSheet(String number) {
+    Get.bottomSheet(
+      backgroundColor: AppColors.white,
+      SizedBox(
+        height: 140,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _generateContactButton(
+              title: AppStrings.call,
+              onTap: () {
+                controller.launchDialer(number);
+              },
+              icon: 'assets/images/call_icon.png',
+            ),
+            _generateContactButton(
+              title: AppStrings.whatsapp,
+              onTap: () {
+                controller.launchWhatsApp(number);
+              },
+              icon: 'assets/images/whatsapp_icon.png',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Action Button Widget
+  Widget _generateContactButton({
     required String title,
     required Function() onTap,
     required String icon,
@@ -142,22 +253,25 @@ class ContactUsScreen extends GetView<ContactUsController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: AppColors.grey.withOpacity(0.5),
-                border: Border.all(color: AppColors.blueGrey),
-                borderRadius: BorderRadius.circular(30)),
+              color: AppColors.lightGrey.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(color: AppColors.blueGrey),
+            ),
             child: Image.asset(
               icon,
-              height: 30,
-              width: 30,
+              height: 40,
+              width: 40,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           CommonTextWidget(
             text: title,
+            fontSize: AppMeasures.smallTextSize,
+            fontWeight: FontWeight.w500,
             color: AppColors.black,
-          )
+          ),
         ],
       ),
     );

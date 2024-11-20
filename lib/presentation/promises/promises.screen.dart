@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 
 import '../../infrastructure/theme/colors/app_colors.dart';
@@ -49,47 +48,37 @@ class PromisesScreen extends GetView<PromisesController> {
     );
   }
 
-  CommonIncomeExpensesWidget _promisesWidget(BuildContext context) {
-    return CommonIncomeExpensesWidget(
-      isPromises: true,
-      heading: AppStrings.promises,
-      color: AppColors.orange,
-      nameController: controller.nameController,
-      dateController: controller.dateController,
-      descriptionController: controller.descriptionController,
-      amountController: controller.amountController,
-      nameFocusNode: controller.nameFocusNode,
-      dateFocusNode: controller.dateFocusNode,
-      descriptionFocusNode: controller.descriptionFocusNode,
-      amountFocusNode: controller.amountFocusNode,
-      formKey: controller.formKey,
-      onSubmitTap: () {
-        if (controller.formKey.currentState!.validate()) {}
-      },
-      onDateTap: () async {
-        FocusScope.of(context).requestFocus(FocusNode());
-        DateTime? pickedDate = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1900),
-          lastDate: DateTime(2050),
-        );
-
-        if (pickedDate != null) {
-          String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-
-          controller.dateController.text = formattedDate;
-        }
-      },
-      onNameTap: () {
-        Get.toNamed(Routes.SEARCH_SCREEN, arguments: controller.userDetails)
-            ?.then((onValue) {
-          if (onValue.name != null) {
-            controller.nameController.text = onValue.name.toString();
+  _promisesWidget(BuildContext context) {
+    return Obx(
+      () => CommonIncomeExpensesWidget(
+        isPromises: true,
+        heading: AppStrings.promises,
+        color: AppColors.orange,
+        nameController: controller.nameController,
+        descriptionController: controller.descriptionController,
+        amountController: controller.amountController,
+        nameFocusNode: controller.nameFocusNode,
+        descriptionFocusNode: controller.descriptionFocusNode,
+        amountFocusNode: controller.amountFocusNode,
+        formKey: controller.formKey,
+        onSubmitTap: () {
+          if (controller.formKey.currentState!.validate()) {
+            controller.addPromises();
           }
-        });
-      },
-      isLoading: controller.isLoading,
+        },
+        onNameTap: () {
+          Get.toNamed(Routes.SEARCH_SCREEN, arguments: controller.userDetails)
+              ?.then((onValue) {
+            if (onValue.name != null) {
+              controller.nameController.text = onValue.name.toString();
+              controller.userId = onValue.id;
+              print('userId ::: ${controller.userId}');
+            }
+          });
+        },
+        isLoading: controller.isLoading,
+        isDataLoading: controller.isDataLoading.value,
+      ),
     );
   }
 }

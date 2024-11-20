@@ -7,6 +7,7 @@ import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
+import '../../../domain/listing/models/common_response.dart';
 import '../../../domain/listing/models/get_house_and_users_model.dart';
 import '../../../infrastructure/dal/services/storage_service.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
@@ -17,6 +18,8 @@ class PromisesController extends GetxController {
   final StorageService storageService = StorageService();
   ListingService listingService = Get.find<ListingRepository>();
 
+  int userId = 0;
+  final RxBool isDataLoading = false.obs;
   final RxBool isLoading = false.obs;
   final dateController = TextEditingController();
   final nameController = TextEditingController();
@@ -50,7 +53,7 @@ class PromisesController extends GetxController {
   }
 
   getUserDetails() async {
-    isLoading.value = true;
+    isDataLoading.value = true;
     userDetails.clear();
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
@@ -59,13 +62,50 @@ class PromisesController extends GetxController {
             .getHouseAndUsersDetails(storageService.getToken() ?? '');
         if (response.status == true) {
           userDetails.addAll(response.data!.map((person) => IdNameModel(
-              id: person.id, name: '${person.fName} ${person.lName}')));
-          isLoading.value = false;
+              id: person.id,
+              name: '${person.userRegNo} - ${person.fName} ${person.lName}')));
+          isDataLoading.value = false;
         } else {
-          isLoading.value = false;
+          isDataLoading.value = false;
         }
       } catch (e) {
-        isLoading.value = false;
+        isDataLoading.value = false;
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isDataLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isDataLoading.value = false;
+    }
+  }
+
+  addPromises() async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        CommonResponse response =
+            await listingService.addPromises(storageService.getToken() ?? '', {
+          "id": userId,
+          "date": getCurrentDate(),
+          "description": descriptionController.text.trim(),
+          "promised_amount": num.parse(amountController.text.trim())
+        });
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
         showToast(
             title: AppStrings.somethingWentWrong,
             type: ToastificationType.error);

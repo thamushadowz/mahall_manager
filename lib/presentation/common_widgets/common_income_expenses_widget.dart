@@ -16,37 +16,33 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
     super.key,
     required this.heading,
     required this.color,
-    required this.dateController,
     required this.descriptionController,
     required this.amountController,
     this.nameController,
-    required this.dateFocusNode,
     required this.descriptionFocusNode,
     required this.amountFocusNode,
     this.nameFocusNode,
-    required this.onDateTap,
     this.onNameTap,
     required this.onSubmitTap,
     required this.formKey,
     required this.isLoading,
+    this.isDataLoading = false,
     this.isPromises = false,
   });
 
   final String heading;
   final Color color;
-  final TextEditingController dateController;
   final TextEditingController descriptionController;
   final TextEditingController? nameController;
   final TextEditingController amountController;
-  final FocusNode dateFocusNode;
   final FocusNode? nameFocusNode;
   final FocusNode descriptionFocusNode;
   final FocusNode amountFocusNode;
-  final Function() onDateTap;
   final Function()? onNameTap;
   final Function() onSubmitTap;
   final Key formKey;
   final RxBool isLoading;
+  final bool? isDataLoading;
   final bool? isPromises;
 
   @override
@@ -89,93 +85,88 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
               ),
               child: Form(
                 key: formKey,
-                child: Obx(
-                  () => Column(
-                    children: [
-                      // Name
-                      isPromises!
+                child: Column(
+                  children: [
+                    // Name
+                    isPromises!
+                        ? isDataLoading!
+                            ? const CommonTextFieldShimmerWidget()
+                            : CommonTextFormField(
+                                disabledBorderColor: AppColors.blueGrey,
+                                enabled: false,
+                                label: AppStrings.name,
+                                textController: nameController!,
+                                focusNode: nameFocusNode!,
+                                onFieldSubmitted: (value) {
+                                  FocusScope.of(context)
+                                      .requestFocus(descriptionFocusNode);
+                                },
+                                onDateTap: onNameTap,
+                                keyboardType: TextInputType.none,
+                                validator: Validators.validateFName,
+                              )
+                        : const SizedBox.shrink(),
+                    isPromises!
+                        ? const SizedBox(height: 10)
+                        : const SizedBox.shrink(),
+
+                    // Date
+                    /*isPromises!
                           ? isLoading.value
                               ? const CommonTextFieldShimmerWidget()
                               : CommonTextFormField(
                                   disabledBorderColor: AppColors.blueGrey,
                                   enabled: false,
-                                  label: AppStrings.name,
-                                  textController: nameController!,
-                                  focusNode: nameFocusNode!,
+                                  label: AppStrings.date,
+                                  keyboardType: TextInputType.none,
+                                  textController: dateController,
+                                  focusNode: dateFocusNode,
                                   onFieldSubmitted: (value) {
                                     FocusScope.of(context)
-                                        .requestFocus(dateFocusNode);
+                                        .requestFocus(descriptionFocusNode);
                                   },
-                                  onDateTap: onNameTap,
-                                  keyboardType: TextInputType.none,
-                                  validator: Validators.validateFName,
+                                  onDateTap: onDateTap,
+                                  validator: Validators.validateDate,
                                 )
                           : const SizedBox.shrink(),
-                      isPromises!
-                          ? const SizedBox(height: 10)
-                          : const SizedBox.shrink(),
+                      const SizedBox(height: 10),*/
 
-                      // Date
-                      isLoading.value
-                          ? const CommonTextFieldShimmerWidget()
-                          : CommonTextFormField(
-                              disabledBorderColor: AppColors.blueGrey,
-                              enabled: false,
-                              label: AppStrings.date,
-                              keyboardType: TextInputType.none,
-                              textController: dateController,
-                              focusNode: dateFocusNode,
-                              onFieldSubmitted: (value) {
-                                FocusScope.of(context)
-                                    .requestFocus(descriptionFocusNode);
-                              },
-                              onDateTap: onDateTap,
-                              validator: Validators.validateDate,
-                            ),
-                      const SizedBox(height: 10),
+                    // Description
+                    CommonTextFormField(
+                      label: AppStrings.description,
+                      textController: descriptionController,
+                      focusNode: descriptionFocusNode,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(context).requestFocus(amountFocusNode);
+                      },
+                      keyboardType: TextInputType.text,
+                      validator: Validators.validateDescription,
+                    ),
+                    const SizedBox(height: 10),
 
-                      // Description
-                      isLoading.value
-                          ? const CommonTextFieldShimmerWidget()
-                          : CommonTextFormField(
-                              label: AppStrings.description,
-                              textController: descriptionController,
-                              focusNode: descriptionFocusNode,
-                              onFieldSubmitted: (value) {
-                                FocusScope.of(context)
-                                    .requestFocus(amountFocusNode);
-                              },
-                              keyboardType: TextInputType.text,
-                              validator: Validators.validateDescription,
-                            ),
-                      const SizedBox(height: 10),
+                    // Amount
+                    CommonTextFormField(
+                      label: AppStrings.amount,
+                      prefixText: '₹ ',
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      keyboardType: TextInputType.number,
+                      validator: Validators.validateAmount,
+                      textController: amountController,
+                      focusNode: amountFocusNode,
+                      onFieldSubmitted: (value) {},
+                    ),
+                    const SizedBox(height: 20),
 
-                      // Amount
-                      isLoading.value
-                          ? const CommonTextFieldShimmerWidget()
-                          : CommonTextFormField(
-                              label: AppStrings.amount,
-                              prefixText: '₹ ',
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              keyboardType: TextInputType.number,
-                              validator: Validators.validateAmount,
-                              textController: amountController,
-                              focusNode: amountFocusNode,
-                              onFieldSubmitted: (value) {},
-                            ),
-                      const SizedBox(height: 20),
-
-                      // Submit button
-                      CommonButtonWidget(
-                        isLoading: isLoading,
-                        color: color,
-                        label: AppStrings.submit,
-                        onTap: onSubmitTap,
-                      ),
-                    ],
-                  ),
+                    // Submit button
+                    CommonButtonWidget(
+                      isLoading: isLoading,
+                      color: color,
+                      label: AppStrings.submit,
+                      onTap: onSubmitTap,
+                    ),
+                  ],
                 ),
               ),
             ),

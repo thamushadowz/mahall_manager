@@ -99,11 +99,17 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                                         onPressed: () {
                                           controller.takeScreenshotAndShare(
                                               controller.house.phone ?? '',
-                                              controller.paymentFor == 2
-                                                  ? "${controller.promises.fName} ${controller.promises.lName}"
-                                                  : controller.totalOrNot
-                                                      ? '${controller.house.houseName}'
-                                                      : '${controller.house.fName} ${controller.house.lName}');
+                                              controller.args['report'] != null
+                                                  ? controller
+                                                      .report.description!
+                                                      .split(' - ')
+                                                      .last
+                                                      .trim()
+                                                  : controller.paymentFor == 2
+                                                      ? "${controller.promises.fName} ${controller.promises.lName}"
+                                                      : controller.totalOrNot
+                                                          ? '${controller.house.houseName}'
+                                                          : '${controller.house.fName} ${controller.house.lName}');
                                         },
                                         icon: Container(
                                           padding: const EdgeInsets.all(10),

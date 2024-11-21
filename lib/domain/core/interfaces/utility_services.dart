@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../infrastructure/theme/colors/app_colors.dart';
@@ -26,5 +27,6 @@ void showToast(
 
 String getCurrentDate() {
   final DateTime now = DateTime.now();
-  return '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}';
+  String formattedDate = DateFormat('dd/MM/yyyy').format(now);
+  return formattedDate;
 }

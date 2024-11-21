@@ -348,46 +348,61 @@ class ReportsWidget extends StatelessWidget {
               fontSize: AppMeasures.mediumTextSize,
             )),
             DataCell(
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.edit_note_rounded,
-                      color: AppColors.blueGrey,
+              //Details
+              report.isSharable ?? false
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.share_rounded,
+                        size: 20,
+                        color: AppColors.blueGrey,
+                      ),
+                      onPressed: () async {
+                        Get.toNamed(Routes.PAYMENT_SCREEN,
+                            arguments: {'report': report});
+                      },
+                    )
+                  : Row(
+                      children: [
+                        //Edit
+                        IconButton(
+                          icon: Icon(
+                            Icons.edit_note_rounded,
+                            color: AppColors.blueGrey,
+                          ),
+                          onPressed: () async {
+                            if (report.incomeOrExpense == '0') {
+                              final updatedReport = await Get.toNamed(
+                                  Routes.ADD_INCOME,
+                                  arguments: report);
+                              if (updatedReport != null) {
+                                controller.updateReportItem(updatedReport);
+                              }
+                            } else {
+                              final updatedReport = await Get.toNamed(
+                                  Routes.ADD_EXPENSES,
+                                  arguments: report);
+                              if (updatedReport != null) {
+                                controller.updateReportItem(updatedReport);
+                              }
+                            }
+                          },
+                        ),
+                        //Delete
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete_outline_rounded,
+                            color: AppColors.darkRed,
+                          ),
+                          onPressed: () {
+                            showCommonDialog(context,
+                                message: AppStrings.areYouSureToDelete,
+                                yesButtonName: AppStrings.delete,
+                                messageColor: AppColors.darkRed,
+                                onYesTap: () {});
+                          },
+                        ),
+                      ],
                     ),
-                    onPressed: () async {
-                      if (report.incomeOrExpense == '0') {
-                        final updatedReport = await Get.toNamed(
-                            Routes.ADD_INCOME,
-                            arguments: report);
-                        if (updatedReport != null) {
-                          controller.updateReportItem(updatedReport);
-                        }
-                      } else {
-                        final updatedReport = await Get.toNamed(
-                            Routes.ADD_EXPENSES,
-                            arguments: report);
-                        if (updatedReport != null) {
-                          controller.updateReportItem(updatedReport);
-                        }
-                      }
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete_outline_rounded,
-                      color: AppColors.darkRed,
-                    ),
-                    onPressed: () {
-                      showCommonDialog(context,
-                          message: AppStrings.areYouSureToDelete,
-                          yesButtonName: AppStrings.delete,
-                          messageColor: AppColors.darkRed,
-                          onYesTap: () {});
-                    },
-                  ),
-                ],
-              ),
             ),
           ],
         );

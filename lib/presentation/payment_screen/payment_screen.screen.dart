@@ -9,6 +9,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_text_form_fiel
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
 import '../../domain/core/interfaces/custom_clipper.dart';
+import '../../domain/core/interfaces/utility_services.dart';
 import '../../domain/core/interfaces/validator.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
@@ -35,86 +36,96 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
           Expanded(
             child: Container(
               width: double.infinity,
-              height: controller.totalOrNot
-                  ? MediaQuery.of(context).size.height * 0.6
-                  : MediaQuery.of(context).size.height * 0.5,
               color: AppColors.white,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset('assets/images/payment_successful.png',
-                      color: AppColors.themeColor, width: 150, height: 150),
-                  const SizedBox(height: 20),
-                  CommonTextWidget(
-                    text: AppStrings.paymentSuccess,
-                    fontSize: 25,
-                    color: AppColors.themeColor,
+                  SizedBox(
+                    height: 300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Image.asset('assets/images/payment_successful.png',
+                            color: AppColors.themeColor,
+                            width: 150,
+                            height: 150),
+                        const SizedBox(height: 20),
+                        CommonTextWidget(
+                          text: AppStrings.paymentSuccess,
+                          fontSize: 25,
+                          color: AppColors.themeColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                  ClipPath(
+                    clipper: TornEdgeClipper(),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(30),
+                      color: AppColors.themeColor,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 20),
+                          CommonTextWidget(
+                            text:
+                                controller.storageService.getMahallName() ?? '',
+                            color: AppColors.white,
+                          ),
+                          const SizedBox(height: 20),
+                          CommonTextWidget(
+                            text: AppStrings.paymentDetails,
+                            color: AppColors.white,
+                          ),
+                          const Divider(height: 25),
+                          controller.args['report'] != null
+                              ? _buildUserPaymentSuccessDetailsWidget()
+                              : controller.args['promises'] != null
+                                  ? _buildPromisesPaymentSuccessDetailsWidget()
+                                  : _buildUserPaymentSuccessDetailsWidget(),
+                          _buildDataRow(
+                              color: AppColors.white,
+                              label: '${AppStrings.date} : ',
+                              text: getCurrentDate()),
+                          const Divider(height: 20),
+                          Obx(
+                            () => controller.isTakingScreenshot.value
+                                ? const SizedBox(height: 20)
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          controller.takeScreenshotAndShare(
+                                              controller.house.phone ?? '',
+                                              controller.paymentFor == 2
+                                                  ? "${controller.promises.fName} ${controller.promises.lName}"
+                                                  : controller.totalOrNot
+                                                      ? '${controller.house.houseName}'
+                                                      : '${controller.house.fName} ${controller.house.lName}');
+                                        },
+                                        icon: Container(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
+                                              border: Border.all(
+                                                  color: AppColors.white)),
+                                          child: Icon(
+                                            Icons.share_outlined,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ClipPath(
-              clipper: TornEdgeClipper(),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(30),
-                color: AppColors.themeColor,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 20),
-                    CommonTextWidget(
-                      text: 'Kayani Noor Juma Masjid',
-                      color: AppColors.white,
-                    ),
-                    const SizedBox(height: 20),
-                    CommonTextWidget(
-                      text: AppStrings.paymentDetails,
-                      color: AppColors.white,
-                    ),
-                    const Divider(height: 25),
-                    controller.args['promises'] != null
-                        ? _buildPromisesPaymentSuccessDetailsWidget()
-                        : _buildUserPaymentSuccessDetailsWidget(),
-                    _buildDataRow(
-                        color: AppColors.white,
-                        label: '${AppStrings.date} : ',
-                        text: controller.fetchFormattedDate()),
-                    const Divider(height: 20),
-                    Obx(
-                      () => controller.isTakingScreenshot.value
-                          ? const SizedBox(height: 20)
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    controller.takeScreenshotAndShare(
-                                        controller.house.phone ?? '',
-                                        controller.totalOrNot
-                                            ? '${controller.house.houseName}'
-                                            : '${controller.house.fName} ${controller.house.lName}');
-                                  },
-                                  icon: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(60),
-                                        border:
-                                            Border.all(color: AppColors.white)),
-                                    child: Icon(
-                                      Icons.share_outlined,
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                    )
-                  ],
-                ),
               ),
             ),
           ),
@@ -129,35 +140,52 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         _buildDataRow(
             color: AppColors.white,
             label: '${AppStrings.referenceNo} : ',
-            text: controller.referenceNo),
+            text: controller.args['report'] != null
+                ? controller.report.id.toString()
+                : controller.referenceNo),
         const Divider(height: 20),
-        controller.totalOrNot
+        controller.args['report'] != null || controller.totalOrNot
             ? const SizedBox()
             : _buildDataRow(
                 color: AppColors.white,
                 label: '${AppStrings.name} : ',
                 text:
                     '${controller.house.userRegNo} - ${controller.house.fName} ${controller.house.lName}'),
-        controller.totalOrNot ? const SizedBox() : const Divider(height: 20),
+        controller.args['report'] != null || controller.totalOrNot
+            ? const SizedBox()
+            : const Divider(height: 20),
         _buildDataRow(
             color: AppColors.white,
-            label: '${AppStrings.houseName} : ',
-            text:
-                '${controller.house.houseRegNo} - ${controller.house.houseName}'),
+            label:
+                '${controller.args['report'] != null ? AppStrings.description : AppStrings.houseName} : ',
+            text: controller.args['report'] != null
+                ? controller.report.description.toString()
+                : '${controller.house.houseRegNo} - ${controller.house.houseName}'),
         const Divider(height: 20),
         _buildDataRow(
             color: AppColors.white,
             label: '${AppStrings.paidAmount} : ',
-            text: '₹ ${controller.textController.text}'),
+            text:
+                '₹ ${controller.args['report'] != null ? controller.report.amount : controller.textController.text}'),
         const Divider(height: 20),
         controller.totalOrNot
             ? const SizedBox()
-            : _buildDataRow(
-                color: AppColors.white,
-                label: '${AppStrings.currentDue} : ',
-                text:
-                    '₹ ${int.parse(controller.house.due ?? '') - int.parse(controller.textController.text)}'),
-        controller.totalOrNot ? const SizedBox() : const Divider(height: 20),
+            : controller.args['report'] != null
+                ? controller.report.currentDue == null
+                    ? const SizedBox()
+                    : _buildDataRow(
+                        color: AppColors.white,
+                        label: '${AppStrings.currentDue} : ',
+                        text: '₹ ${controller.currentDue}')
+                : _buildDataRow(
+                    color: AppColors.white,
+                    label: '${AppStrings.currentDue} : ',
+                    text: '₹ ${controller.currentDue}'),
+        controller.args['report'] != null
+            ? controller.report.currentDue == null || controller.totalOrNot
+                ? const SizedBox()
+                : const Divider(height: 20)
+            : const Divider(height: 20),
       ],
     );
   }
@@ -173,7 +201,8 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         _buildDataRow(
             color: AppColors.white,
             label: '${AppStrings.description} : ',
-            text: '${controller.promises.description}'),
+            text:
+                '${controller.promises.description} - ${controller.promises.fName} ${controller.promises.lName}'),
         const Divider(height: 20),
         _buildDataRow(
             color: AppColors.white,
@@ -237,7 +266,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         _buildDataRow(
             color: AppColors.black,
             label: '${AppStrings.date} : ',
-            text: controller.fetchFormattedDate()),
+            text: getCurrentDate()),
         const Divider(height: 25),
         controller.totalOrNot
             ? const SizedBox()
@@ -259,6 +288,20 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                   message: AppStrings.areYouSureToPay,
                   yesButtonName: AppStrings.payNow,
                   messageColor: AppColors.darkRed, onYesTap: () {
+                controller.collectPayment({
+                  "id": controller.house.id,
+                  "house_id": controller.paymentFor == 1
+                      ? controller.house.houseId
+                      : null,
+                  "description": !controller.totalOrNot
+                      ? "Varisamkhya : ${controller.house.userRegNo} - ${controller.house.fName} ${controller.house.lName}"
+                      : "Varisamkhya : ${controller.house.houseRegNo} - ${controller.house.houseName}",
+                  "amount": !controller.totalOrNot
+                      ? controller.house.due
+                      : controller.house.totalDue,
+                  "date": getCurrentDate(),
+                  "payment_for": controller.paymentFor,
+                });
                 controller.paymentSuccess.value = true;
                 Get.close(0);
               });
@@ -279,7 +322,8 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         _buildDataRow(
             color: AppColors.black,
             label: '${AppStrings.description} : ',
-            text: controller.promises.description ?? ''),
+            text:
+                '${controller.promises.description} - ${controller.promises.fName} ${controller.promises.lName}'),
         const Divider(height: 25),
         _buildDataRow(
             color: AppColors.black,
@@ -298,6 +342,14 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                   message: AppStrings.areYouSureToPay,
                   yesButtonName: AppStrings.payNow,
                   messageColor: AppColors.darkRed, onYesTap: () {
+                controller.collectPayment({
+                  "id": controller.promises.id,
+                  "description":
+                      '${controller.promises.description} - ${controller.promises.fName} ${controller.promises.lName}',
+                  "amount": controller.promises.amount,
+                  "date": getCurrentDate(),
+                  "payment_for": controller.paymentFor,
+                });
                 controller.paymentSuccess.value = true;
                 Get.close(0);
               });

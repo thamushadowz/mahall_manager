@@ -10,7 +10,7 @@ import 'routes.dart';
 class EnvironmentsBadge extends StatelessWidget {
   final Widget child;
 
-  EnvironmentsBadge({required this.child});
+  const EnvironmentsBadge({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

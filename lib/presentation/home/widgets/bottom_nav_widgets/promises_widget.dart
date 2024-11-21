@@ -78,6 +78,14 @@ class PromisesWidget extends StatelessWidget {
       columns: [
         DataColumn(
           label: CommonTextWidget(
+            text: AppStrings.name,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
             text: AppStrings.description,
             fontWeight: AppMeasures.mediumWeight,
             fontSize: AppMeasures.mediumTextSize,
@@ -120,6 +128,12 @@ class PromisesWidget extends StatelessWidget {
       rows: controller.filteredPromisesDetails.map((promises) {
         return DataRow(
           cells: [
+            DataCell(CommonTextWidget(
+              text:
+                  '${promises.userRegNo} - ${promises.fName} ${promises.lName}',
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+            )),
             DataCell(CommonTextWidget(
               text: promises.description ?? '',
               fontWeight: AppMeasures.mediumWeight,

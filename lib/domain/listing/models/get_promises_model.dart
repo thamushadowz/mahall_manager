@@ -69,11 +69,19 @@ String dataToJson(PromisesData data) => json.encode(data.toJson());
 
 class PromisesData {
   PromisesData({
+    num? id,
+    String? userRegNo,
+    String? fName,
+    String? lName,
     String? description,
     String? date,
     String? amount,
     String? addedBy,
   }) {
+    _id = id;
+    _userRegNo = userRegNo;
+    _fName = fName;
+    _lName = lName;
     _description = description;
     _date = date;
     _amount = amount;
@@ -81,27 +89,47 @@ class PromisesData {
   }
 
   PromisesData.fromJson(dynamic json) {
+    _id = json['id'];
+    _userRegNo = json['user_reg_no'];
+    _fName = json['f_name'];
+    _lName = json['l_name'];
     _description = json['description'];
     _date = json['date'];
     _amount = json['amount'];
     _addedBy = json['added_by'];
   }
+  num? _id;
+  String? _userRegNo;
+  String? _fName;
+  String? _lName;
   String? _description;
   String? _date;
   String? _amount;
   String? _addedBy;
   PromisesData copyWith({
+    num? id,
+    String? userRegNo,
+    String? fName,
+    String? lName,
     String? description,
     String? date,
     String? amount,
     String? addedBy,
   }) =>
       PromisesData(
+        id: id ?? _id,
+        userRegNo: userRegNo ?? _userRegNo,
+        fName: fName ?? _fName,
+        lName: lName ?? _lName,
         description: description ?? _description,
         date: date ?? _date,
         amount: amount ?? _amount,
         addedBy: addedBy ?? _addedBy,
       );
+  num? get id => _id;
+  String? get userRegNo => _userRegNo;
+  String? get fName => _fName;
+  String? get lName => _lName;
   String? get description => _description;
   String? get date => _date;
   String? get amount => _amount;
@@ -109,6 +137,10 @@ class PromisesData {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['user_reg_no'] = _userRegNo;
+    map['f_name'] = _fName;
+    map['l_name'] = _lName;
     map['description'] = _description;
     map['date'] = _date;
     map['amount'] = _amount;

@@ -277,37 +277,58 @@ class HomeController extends GetxController {
   ];*/
   List<PromisesData> promisesDetails = [
     PromisesData(
-        description: 'Nabidinam - Navas T P',
+        userRegNo: 'KNY01',
+        fName: 'Navas',
+        lName: 'T P',
+        description: 'Nabidinam',
         amount: '3000',
         date: '10/06/2024',
         addedBy: 'Treasurer'),
     PromisesData(
-        description: 'Nabidinam - Thameem Ali',
+        userRegNo: 'KNY02',
+        fName: 'Thameem',
+        lName: 'Ali',
+        description: 'Nabidinam',
         amount: '2000',
         date: '10/07/2024',
         addedBy: 'President'),
     PromisesData(
-        description: 'Badreengal aand - Musthafa N K',
+        userRegNo: 'KNY03',
+        fName: 'Musthafa',
+        lName: 'N K',
+        description: 'Badreengal aand',
         amount: '5000',
         date: '27/03/2024',
         addedBy: 'Treasurer'),
     PromisesData(
-        description: 'Badreengal aand - Navas T P',
+        userRegNo: 'KNY01',
+        fName: 'Navas',
+        lName: 'T P',
+        description: 'Badreengal aand',
         amount: '1000',
         date: '27/03/2024',
         addedBy: 'Treasurer'),
     PromisesData(
-        description: 'Nabidinam - Musthafa N K',
+        userRegNo: 'KNY03',
+        fName: 'Musthafa',
+        lName: 'N K',
+        description: 'Nabidinam',
         amount: '1000',
         date: '10/06/2024',
         addedBy: 'Treasurer'),
     PromisesData(
-        description: 'prabhashanam - Navas T P',
+        userRegNo: 'KNY01',
+        fName: 'Navas',
+        lName: 'T P',
+        description: 'prabhashanam',
         amount: '2000',
         date: '03/09/2024',
         addedBy: 'Secretary'),
     PromisesData(
-        description: 'prabhashanam - Thameem Ali',
+        userRegNo: 'KNY02',
+        fName: 'Thameem',
+        lName: 'Ali',
+        description: 'prabhashanam',
         amount: '1000',
         date: '02/09/2024',
         addedBy: 'Secretary'),
@@ -318,6 +339,7 @@ class HomeController extends GetxController {
         description: "Honey Auction",
         date: "01/11/2024",
         amount: '3000',
+        isSharable: false,
         incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
@@ -325,12 +347,14 @@ class HomeController extends GetxController {
         description: "Banana Auction",
         date: "04/11/2024",
         amount: '1000',
+        isSharable: false,
         incomeOrExpense: '0',
         addedBy: "Treasurer"),
     ReportsData(
         id: '1002',
         description: "Electricity Bill",
         date: "11/11/2024",
+        isSharable: false,
         amount: '14500',
         incomeOrExpense: '1',
         addedBy: "Secretary"),
@@ -339,13 +363,16 @@ class HomeController extends GetxController {
         description: "Ustad Salary",
         date: "10/11/2024",
         amount: '21000',
+        isSharable: false,
         incomeOrExpense: '1',
         addedBy: "Treasurer"),
     ReportsData(
         id: '1004',
-        description: "Friday Bucket",
+        description: "Badreengal aand : KNY04 - Musthafa N K",
         date: "14/11/2024",
         amount: '1500',
+        isSharable: true,
+        currentDue: null,
         incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
@@ -353,6 +380,7 @@ class HomeController extends GetxController {
         description: "Maulid vaka",
         date: "01/10/2024",
         amount: '245000',
+        isSharable: false,
         incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
@@ -360,6 +388,7 @@ class HomeController extends GetxController {
         description: "Moulid nercha food",
         date: "01/10/2024",
         amount: '198000',
+        isSharable: false,
         incomeOrExpense: '1',
         addedBy: "President"),
     ReportsData(
@@ -367,6 +396,7 @@ class HomeController extends GetxController {
         description: "Badreengal aand nercha vaka",
         date: "25/10/2024",
         amount: '150000',
+        isSharable: false,
         incomeOrExpense: '0',
         addedBy: "Treasurer"),
     ReportsData(
@@ -374,34 +404,42 @@ class HomeController extends GetxController {
         description: "Badreengal aand nercha food",
         date: "01/11/2024",
         amount: '97000',
+        isSharable: false,
         incomeOrExpense: '1',
         addedBy: "Treasurer"),
     ReportsData(
-        id: '1000',
-        description: "Honey Auction",
-        date: "01/11/2024",
+        id: '1009',
+        description: "Varisanmkhya : KNY01 - Navas T P",
+        date: "21/11/2024",
+        amount: '2000',
+        isSharable: true,
+        currentDue: 1000,
+        incomeOrExpense: '0',
+        addedBy: "Treasurer"),
+    ReportsData(
+        id: '1010',
+        description: "Varisanmkhya : KNY02 - Thameem Ali",
+        date: "21/11/2024",
         amount: '3000',
-        incomeOrExpense: '0',
-        addedBy: "President"),
-    ReportsData(
-        id: '1001',
-        description: "Banana Auction",
-        date: "04/11/2024",
-        amount: '1000',
+        isSharable: true,
+        currentDue: 2000,
         incomeOrExpense: '0',
         addedBy: "Treasurer"),
     ReportsData(
-        id: '1002',
-        description: "Electricity Bill",
-        date: "11/11/2024",
-        amount: '14500',
-        incomeOrExpense: '1',
+        id: '1011',
+        description: "Prabhashanam : KNY03 - Rubais V",
+        date: "21/11/2024",
+        amount: '2000',
+        isSharable: true,
+        currentDue: null,
+        incomeOrExpense: '0',
         addedBy: "Secretary"),
     ReportsData(
         id: '1003',
         description: "Ustad Salary",
         date: "10/11/2024",
         amount: '21000',
+        isSharable: false,
         incomeOrExpense: '1',
         addedBy: "Treasurer"),
     ReportsData(
@@ -409,6 +447,7 @@ class HomeController extends GetxController {
         description: "Friday Bucket",
         date: "14/11/2024",
         amount: '1500',
+        isSharable: false,
         incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
@@ -416,6 +455,7 @@ class HomeController extends GetxController {
         description: "Maulid vaka",
         date: "01/10/2024",
         amount: '245000',
+        isSharable: false,
         incomeOrExpense: '0',
         addedBy: "President"),
     ReportsData(
@@ -423,6 +463,7 @@ class HomeController extends GetxController {
         description: "Moulid nercha food",
         date: "01/10/2024",
         amount: '198000',
+        isSharable: false,
         incomeOrExpense: '1',
         addedBy: "President"),
     ReportsData(
@@ -430,6 +471,7 @@ class HomeController extends GetxController {
         description: "Badreengal aand nercha vaka",
         date: "25/10/2024",
         amount: '150000',
+        isSharable: false,
         incomeOrExpense: '0',
         addedBy: "Treasurer"),
     ReportsData(
@@ -437,9 +479,10 @@ class HomeController extends GetxController {
         description: "Badreengal aand nercha food",
         date: "01/11/2024",
         amount: '97000',
+        isSharable: false,
         incomeOrExpense: '1',
         addedBy: "Treasurer"),
-  ];
+  ]; //incomeOrExpense 0 - income, 1 - expense, 2 - others
   List<BloodData> bloodDetails = [
     BloodData(
         userRegNo: 'U01',
@@ -742,6 +785,7 @@ class HomeController extends GetxController {
     reportSearchController.addListener(() {
       searchReports(reportSearchController.text);
     });
+
     bloodSearchController.addListener(() {
       searchBlood(bloodSearchController.text);
     });
@@ -1263,12 +1307,22 @@ class HomeController extends GetxController {
     searchQuery.value = query.toLowerCase();
     if (searchQuery.isEmpty) {
       filteredPromisesDetails.value = promisesDetails;
+      calculatePromisesTotal();
     } else {
       filteredPromisesDetails.value = promisesDetails.where((reports) {
         return reports.description!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
             reports.addedBy!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            reports.userRegNo!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            reports.fName!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            reports.lName!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase());
       }).toList();
@@ -1278,20 +1332,14 @@ class HomeController extends GetxController {
 
   searchReports(String query) {
     searchQuery.value = query.toLowerCase();
-    if (searchQuery.isEmpty) {
+    if (searchQuery.value.isEmpty) {
       filteredReportsDetails.value = reportsDetails;
+      calculateReportTotal();
     } else {
       filteredReportsDetails.value = reportsDetails.where((reports) {
-        return reports.description!
-                .toLowerCase()
-                .contains(searchQuery.value.toLowerCase()) ||
-            reports.addedBy!
-                .toLowerCase()
-                .contains(searchQuery.value.toLowerCase()) ||
-            reports.id
-                .toString()
-                .toLowerCase()
-                .contains(searchQuery.value.toLowerCase());
+        return reports.description!.toLowerCase().contains(searchQuery.value) ||
+            reports.addedBy!.toLowerCase().contains(searchQuery.value) ||
+            reports.id.toString().toLowerCase().contains(searchQuery.value);
       }).toList();
       calculateReportTotal();
     }

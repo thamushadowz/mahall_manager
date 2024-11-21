@@ -61,6 +61,7 @@ class GetReportsModel {
 ///id : 1
 /// description : "Electricity Bill Payment"
 /// date : "2024/11/01"
+/// isSharable : true
 /// incomeOrExpense : 0/1
 /// amount : 100
 /// addedBy : "Admin"
@@ -73,6 +74,8 @@ class ReportsData {
     String? id,
     String? description,
     String? date,
+    bool? isSharable,
+    int? currentDue,
     String? incomeOrExpense,
     String? amount,
     String? addedBy,
@@ -80,6 +83,8 @@ class ReportsData {
     _id = id;
     _description = description;
     _date = date;
+    _isSharable = isSharable;
+    _currentDue = currentDue;
     _incomeOrExpense = incomeOrExpense;
     _amount = amount;
     _addedBy = addedBy;
@@ -89,6 +94,8 @@ class ReportsData {
     _id = json['id'];
     _description = json['description'];
     _date = json['date'];
+    _isSharable = json['isSharable'];
+    _currentDue = json['currentDue'];
     _incomeOrExpense = json['incomeOrExpense'];
     _amount = json['amount'];
     _addedBy = json['addedBy'];
@@ -96,6 +103,8 @@ class ReportsData {
   String? _id;
   String? _description;
   String? _date;
+  bool? _isSharable;
+  int? _currentDue;
   String? _incomeOrExpense;
   String? _amount;
   String? _addedBy;
@@ -103,6 +112,8 @@ class ReportsData {
     String? id,
     String? description,
     String? date,
+    bool? isSharable,
+    int? currentDue,
     String? incomeOrExpense,
     String? amount,
     String? addedBy,
@@ -111,6 +122,8 @@ class ReportsData {
         id: id ?? _id,
         description: description ?? _description,
         date: date ?? _date,
+        isSharable: isSharable ?? _isSharable,
+        currentDue: currentDue ?? _currentDue,
         incomeOrExpense: incomeOrExpense ?? _incomeOrExpense,
         amount: amount ?? _amount,
         addedBy: addedBy ?? _addedBy,
@@ -118,6 +131,8 @@ class ReportsData {
   String? get id => _id;
   String? get description => _description;
   String? get date => _date;
+  bool? get isSharable => _isSharable;
+  int? get currentDue => _currentDue;
   String? get incomeOrExpense => _incomeOrExpense;
   String? get amount => _amount;
   String? get addedBy => _addedBy;
@@ -127,6 +142,8 @@ class ReportsData {
     map['id'] = _id;
     map['description'] = _description;
     map['date'] = _date;
+    map['isSharable'] = _isSharable;
+    map['currentDue'] = _currentDue;
     map['incomeOrExpense'] = _incomeOrExpense;
     map['amount'] = _amount;
     map['addedBy'] = _addedBy;

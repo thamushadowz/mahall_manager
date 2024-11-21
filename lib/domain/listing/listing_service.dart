@@ -6,6 +6,7 @@ import 'package:mahall_manager/domain/listing/models/mahall_registration_or_deta
 
 import 'models/house_registration_model.dart';
 import 'models/login_model.dart';
+import 'models/payment_success_model.dart';
 
 abstract class ListingService {
   Future<LoginModel> loginCheck(String mobileNo, String password);
@@ -50,4 +51,6 @@ abstract class ListingService {
   Future<CommonResponse> logout(String authToken);
 
   Future<CommonResponse> deleteAccount(String authToken, dynamic params);
+
+  Future<PaymentSuccessModel> payment(String authToken, dynamic params);
 }

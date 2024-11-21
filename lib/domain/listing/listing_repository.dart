@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:mahall_manager/domain/listing/models/common_response.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
 import 'package:mahall_manager/domain/listing/models/house_registration_model.dart';
+import 'package:mahall_manager/domain/listing/models/payment_success_model.dart';
 
 import '../../infrastructure/dal/services/api_service.dart';
 import 'listing_service.dart';
@@ -383,6 +384,25 @@ class ListingRepository implements ListingService {
       return commonResponse;
     } catch (e) {
       return CommonResponse();
+    }
+  }
+
+  @override
+  Future<PaymentSuccessModel> payment(String authToken, params) async {
+    PaymentSuccessModel paymentSuccessModel;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'payment',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      paymentSuccessModel = PaymentSuccessModel.fromJson(response.body);
+      return paymentSuccessModel;
+    } catch (e) {
+      return PaymentSuccessModel();
     }
   }
 }

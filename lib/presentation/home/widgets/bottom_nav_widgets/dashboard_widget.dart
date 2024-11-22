@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mahall_manager/domain/core/interfaces/validator.dart';
-import 'package:mahall_manager/presentation/common_widgets/common_button_widget.dart';
-import 'package:mahall_manager/presentation/common_widgets/common_text_form_field.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 import 'package:mahall_manager/presentation/home/widgets/pie_chart_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/measures/app_measures.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
@@ -28,7 +26,7 @@ class DashboardWidget extends StatelessWidget {
             const SizedBox(height: 20),
             _generatePieChartView(),
             const SizedBox(height: 10),
-            _generateAnnouncementView()
+            _buildClickableIcons(),
           ],
         ),
       ),
@@ -53,47 +51,6 @@ class DashboardWidget extends StatelessWidget {
           child: const Divider(indent: 10, endIndent: 10),
         )
       ],
-    );
-  }
-
-  Material _generateAnnouncementView() {
-    return Material(
-      elevation: 10,
-      borderRadius: BorderRadius.circular(20),
-      color: AppColors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: controller.formKey,
-          child: Column(
-            children: [
-              CommonTextWidget(text: AppStrings.announcementManager),
-              const SizedBox(height: 10),
-              CommonTextFormField(
-                textController: controller.announcementController,
-                minLines: 10,
-                maxLines: 30,
-                hint: AppStrings.typeHere,
-                validator: Validators.validateAnnouncement,
-                suffixIcon: Icons.delete_sweep_outlined,
-                onSuffixTap: () {
-                  controller.announcementController.clear();
-                },
-              ),
-              const SizedBox(height: 10),
-              CommonButtonWidget(
-                onTap: () {
-                  if (controller.formKey.currentState!.validate()) {
-                    // Handle form submission
-                  }
-                },
-                label: AppStrings.submit,
-                isLoading: false.obs,
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -159,6 +116,60 @@ class DashboardWidget extends StatelessWidget {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  _buildClickableIcons() {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        _buildIconWithText(
+            title: AppStrings.announcement,
+            image: 'assets/images/announcement.png',
+            onTap: () {
+              Get.toNamed(Routes.ANNOUNCEMENT);
+            }),
+        _buildIconWithText(
+            title: AppStrings.marriageCertificates,
+            image: 'assets/images/marriage.png',
+            onTap: () {
+              Get.toNamed(Routes.MARRIAGE_CERTIFICATES);
+            }),
+      ],
+    );
+  }
+
+  _buildIconWithText(
+      {required String title,
+      required String image,
+      required Function() onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Material(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(20),
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Image.asset(
+                image,
+                width: 30,
+                height: 30,
+                color: AppColors.themeColor,
+              ),
+              const SizedBox(height: 10),
+              CommonTextWidget(
+                text: title,
+                fontSize: 10,
+                color: AppColors.themeColor,
+              )
+            ],
+          ),
         ),
       ),
     );

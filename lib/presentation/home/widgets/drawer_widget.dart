@@ -234,6 +234,18 @@ class DrawerWidget extends StatelessWidget {
           },
         ),
         const SizedBox(height: 10),
+        //Marriage Registration
+        CommonClickableTextWidget(
+          image: 'assets/images/marriage.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppStrings.marriageRegistration,
+          onTap: () {
+            Get.toNamed(Routes.MARRIAGE_REGISTRATION);
+          },
+        ),
+        const SizedBox(height: 10),
         //Add Promises
         CommonClickableTextWidget(
           image: 'assets/images/promises.png',

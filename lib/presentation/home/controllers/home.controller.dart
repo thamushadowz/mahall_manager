@@ -40,9 +40,7 @@ class HomeController extends GetxController {
   final reportSearchController = TextEditingController();
   final bloodSearchController = TextEditingController();
   final expatSearchController = TextEditingController();
-  final announcementController = TextEditingController();
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   ListingService listingService = Get.find<ListingRepository>();
 
   RxString selectedLanguage = 'English'.obs;

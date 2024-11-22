@@ -78,6 +78,7 @@ class ResetPasswordScreen extends GetView<ResetPasswordController> {
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(15),
                         ],
+                        textCapitalization: TextCapitalization.none,
                         keyboardType: TextInputType.name,
                         textController: controller.currentPswdController,
                         focusNode: controller.currentPswdFocusNode,
@@ -93,6 +94,7 @@ class ResetPasswordScreen extends GetView<ResetPasswordController> {
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(15),
                       ],
+                      textCapitalization: TextCapitalization.none,
                       keyboardType: TextInputType.name,
                       textController: controller.newPswdController,
                       focusNode: controller.newPswdFocusNode,
@@ -110,6 +112,7 @@ class ResetPasswordScreen extends GetView<ResetPasswordController> {
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(15),
                       ],
+                      textCapitalization: TextCapitalization.none,
                       keyboardType: TextInputType.name,
                       textController: controller.confirmPswdController,
                       focusNode: controller.confirmPswdFocusNode,

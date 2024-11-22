@@ -18,6 +18,8 @@ class AppStrings {
   static String submit = 'Submit';
   static String search = 'Search';
   static String mahallCode = 'Mahall Code';
+  static String mahallName = 'Mahall Name';
+  static String committeeName = 'Committee Name';
 
   static String warning = 'Warning!!';
   static String logout = 'Logout';
@@ -52,6 +54,22 @@ class AppStrings {
   static String loginToContinue = 'Login to continue';
   static String welcomeBack = 'Welcome Back';
   static String deletingAccount = 'Deleting Account...';
+  static String marriageRegistration = 'Marriage Registration';
+  static String marriageCertificates = 'Marriage Certificates';
+  static String mahallDetails = 'Mahall Details';
+  static String marriageDetails = 'Marriage Details';
+  static String required = 'Required';
+  static String nameOfBride = 'Name Of Bride';
+  static String nameOfGroom = 'Name Of Groom';
+  static String nameOfFather = 'Name Of Father';
+  static String nameOfMother = 'Name Of Mother';
+  static String nameOfWitness1 = 'Name Of Witness 1';
+  static String nameOfWitness2 = 'Name Of Witness 2';
+  static String isFromOurMahall = 'Is From Our Mahall?';
+  static String groomDetails = 'Groom Details';
+  static String brideDetails = 'Bride Details';
+  static String witnessDetails = 'Witness Details';
+  static String register = 'Register';
 
   static String male = 'Male';
   static String female = 'Female';
@@ -96,6 +114,7 @@ class AppStrings {
   static String delete = 'Delete';
   static String typeHere = 'Type Here....';
   static String announcementManager = 'Announcement Manager';
+  static String announcement = 'Announcement';
   static String total = 'Total';
   static String promises = 'Promises';
   static String vagdhanangal = 'വാഗ്ദാനങ്ങള്‍';
@@ -134,6 +153,8 @@ class AppStrings {
   static String mahallCodeReqd = 'Mahall Code Required';
   static String plzEnter4Chars = 'Please enter 4 characters';
   static String placeRegistrationSuccess = 'Place Registration Successful';
+  static String addressReqd = 'Address Required';
+  static String nameReqd = 'Name Required';
 
   ///Policy Related Strings
   static String craftedWithAllerTempus =

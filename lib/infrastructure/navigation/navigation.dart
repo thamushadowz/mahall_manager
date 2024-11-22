@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 
 import '../../config.dart';
@@ -112,6 +113,21 @@ class Nav {
       name: Routes.PLACE_REGISTRATION,
       page: () => const PlaceRegistrationScreen(),
       binding: PlaceRegistrationControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.MARRIAGE_REGISTRATION,
+      page: () => const MarriageRegistrationScreen(),
+      binding: MarriageRegistrationControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ANNOUNCEMENT,
+      page: () => const AnnouncementScreen(),
+      binding: AnnouncementControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.MARRIAGE_CERTIFICATES,
+      page: () => const MarriageCertificatesScreen(),
+      binding: MarriageCertificatesControllerBinding(),
     ),
   ];
 }

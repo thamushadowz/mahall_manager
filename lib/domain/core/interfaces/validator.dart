@@ -4,8 +4,15 @@ import 'package:get/get.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
 
 class Validators {
+  static String? required(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return AppStrings.required;
+    }
+    return null;
+  }
+
   static String? validateMobileNumber(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.mobile_reqd;
     }
     if (value.length != 10 || !RegExp(r'^[0-9]+$').hasMatch(value)) {
@@ -15,7 +22,7 @@ class Validators {
   }
 
   static String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.password_reqd;
     }
     if (value.length < 8) {
@@ -25,7 +32,7 @@ class Validators {
   }
 
   static String? validateNewPassword(String? value, String? oldPassword) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.password_reqd;
     }
     if (value.length < 8) {
@@ -38,7 +45,7 @@ class Validators {
   }
 
   static String? validateConfirmPassword(String? value, String? password) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.password_reqd;
     }
     if (value != password) {
@@ -48,56 +55,70 @@ class Validators {
   }
 
   static String? validateRegNo(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.reg_no_reqd;
     }
     return null;
   }
 
   static String? validateFName(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.fname_reqd;
     }
     return null;
   }
 
+  static String? validateName(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return AppStrings.nameReqd;
+    }
+    return null;
+  }
+
   static String? validateLName(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.lname_reqd;
     }
     return null;
   }
 
   static String? validateHouseName(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.house_name_reqd;
     }
     return null;
   }
 
+  static String? validateAddress(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return AppStrings.addressReqd;
+    }
+    return null;
+  }
+
   static String? validatePlaceName(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.place_reqd;
     }
     return null;
   }
 
   static String? validatePlaceCode(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppStrings.placeCodeReqd;
     }
     return null;
   }
 
   static String? validateGender(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.gender_reqd;
     }
     return null;
   }
 
   static String? validateAge(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.age_reqd;
     }
     if (int.parse(value) < 1 || int.parse(value) > 130) {
@@ -107,63 +128,63 @@ class Validators {
   }
 
   static String? validateJob(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.job_reqd;
     }
     return null;
   }
 
   static String? validateIncome(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.income_reqd;
     }
     return null;
   }
 
   static String? validateBlood(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.blood_reqd;
     }
     return null;
   }
 
   static String? validateDistrict(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.district_reqd;
     }
     return null;
   }
 
   static String? validateState(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.state_reqd;
     }
     return null;
   }
 
   static String? validateCountry(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.country_reqd;
     }
     return null;
   }
 
   static String? validateHouseholderName(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.house_holder_name_reqd;
     }
     return null;
   }
 
   static String? validateMahallName(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.mahall_name_reqd;
     }
     return null;
   }
 
   static String? validateMahallCode(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppStrings.mahallCodeReqd;
     }
     if (value.length != 4) {
@@ -173,14 +194,14 @@ class Validators {
   }
 
   static String? validateMahallAddress(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.mahall_address_reqd;
     }
     return null;
   }
 
   static String? validateMahallPin(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(Get.context!)!.pin_code_reqd;
     }
     return null;
@@ -189,28 +210,28 @@ class Validators {
   ///Localization needed for texts
 
   static String? validateDate(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppStrings.dateReqd;
     }
     return null;
   }
 
   static String? validateDescription(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return AppStrings.descriptionReqd;
     }
     return null;
   }
 
   static String? validateAmount(String? value) {
-    if (value == null || value.isEmpty || int.parse(value) == 0) {
+    if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
       return AppStrings.amountReqd;
     }
     return null;
   }
 
   static String? validateAnnouncement(String? value) {
-    if (value == null || value.isEmpty || int.parse(value) == 0) {
+    if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
       return AppStrings.announcementReqd;
     }
     return null;

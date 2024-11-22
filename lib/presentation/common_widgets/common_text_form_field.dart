@@ -25,7 +25,8 @@ class CommonTextFormField extends StatelessWidget {
       this.fillColor,
       this.onDateTap,
       this.minLines,
-      this.maxLines});
+      this.maxLines,
+      this.textCapitalization});
 
   final String? label;
   final String? hint;
@@ -46,6 +47,7 @@ class CommonTextFormField extends StatelessWidget {
   final Color? fillColor;
   final int? minLines;
   final int? maxLines;
+  final TextCapitalization? textCapitalization;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,7 @@ class CommonTextFormField extends StatelessWidget {
             fontSize: AppMeasures.mediumTextSize,
             fontWeight: AppMeasures.mediumWeight),
         minLines: minLines,
+        textCapitalization: textCapitalization ?? TextCapitalization.sentences,
         maxLines: maxLines,
         enabled: enabled,
         validator: validator,

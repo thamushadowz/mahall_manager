@@ -159,6 +159,7 @@ class LoginScreen extends GetView<LoginController> {
                       textController: controller.passwordController,
                       obscureText: !controller.showPassword.value,
                       maxLines: 1,
+                      textCapitalization: TextCapitalization.none,
                       label: AppLocalizations.of(context)!.password,
                       suffixIcon: controller.showPassword.value
                           ? Icons.remove_red_eye_outlined

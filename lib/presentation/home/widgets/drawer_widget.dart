@@ -50,22 +50,6 @@ class DrawerWidget extends StatelessWidget {
                         ? const SizedBox()
                         : _buildAdminDrawer(context),
                     const SizedBox(height: 10),
-                    //Profile
-                    controller.userType == "1"
-                        ? const SizedBox.shrink()
-                        : CommonClickableTextWidget(
-                            image: 'assets/images/profile.png',
-                            fontSize: AppMeasures.normalTextSize,
-                            fontWeight: AppMeasures.mediumWeight,
-                            textColor: AppColors.blueGrey,
-                            title: AppStrings.profile,
-                            onTap: () {
-                              Get.toNamed(Routes.PROFILE);
-                            },
-                          ),
-                    controller.userType == "1"
-                        ? const SizedBox.shrink()
-                        : const SizedBox(height: 10),
                     //Contact Us
                     controller.userType == "1"
                         ? const SizedBox.shrink()

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../../config.dart';
@@ -93,11 +92,6 @@ class Nav {
       name: Routes.PROMISES,
       page: () => const PromisesScreen(),
       binding: PromisesControllerBinding(),
-    ),
-    GetPage(
-      name: Routes.PROFILE,
-      page: () => const ProfileScreen(),
-      binding: ProfileControllerBinding(),
     ),
     GetPage(
       name: Routes.DELETE_ACCOUNT,

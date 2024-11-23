@@ -22,30 +22,32 @@ class ReportsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        controller.reportsDetails.isEmpty
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CommonTextFormField(
-                  suffixIcon: Icons.search,
-                  textController: controller.reportSearchController,
+    return Obx(
+      () => Column(
+        children: [
+          controller.reportsDetails.isEmpty
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CommonTextFormField(
+                    suffixIcon: Icons.search,
+                    textController: controller.reportSearchController,
+                  ),
                 ),
-              ),
-        controller.reportsDetails.isEmpty
-            ? const SizedBox.shrink()
-            : _buildFilterAndClearFilterOption(),
-        Obx(() =>
-            SizedBox(height: controller.isReportFiltering.value ? 10 : 0)),
-        _buildFilterWidget(context),
-        const SizedBox(height: 10),
-        _buildReportsList(context),
-        controller.reportsDetails.isEmpty
-            ? const SizedBox.shrink()
-            : _buildTotalWidget(),
-        const SizedBox(height: 20)
-      ],
+          controller.reportsDetails.isEmpty
+              ? const SizedBox.shrink()
+              : _buildFilterAndClearFilterOption(),
+          Obx(() =>
+              SizedBox(height: controller.isReportFiltering.value ? 10 : 0)),
+          _buildFilterWidget(context),
+          const SizedBox(height: 10),
+          _buildReportsList(context),
+          controller.reportsDetails.isEmpty
+              ? const SizedBox.shrink()
+              : _buildTotalWidget(),
+          const SizedBox(height: 20)
+        ],
+      ),
     );
   }
 
@@ -73,16 +75,26 @@ class ReportsWidget extends StatelessWidget {
 
   _buildReportsList(BuildContext context) {
     return Expanded(
-      child: Obx(
-        () => controller.filteredReportsDetails.isEmpty
-            ? const CommonEmptyResultWidget()
-            : SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: _buildDataTable(context),
-                ),
-              ),
+      child: RefreshIndicator(
+        onRefresh: () {
+          return controller.getReportsDetails();
+        },
+        child: Obx(
+          () => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: controller.filteredReportsDetails.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: const CommonEmptyResultWidget())
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: _buildDataTable(context),
+                    ),
+                  ),
+          ),
+        ),
       ),
     );
   }

@@ -21,15 +21,17 @@ class PromisesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        controller.promisesDetails.isEmpty
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CommonTextFormField(
-                  suffixIcon: Icons.search,
-                  textController: controller.promisesSearchController,
+        Obx(
+          () => controller.promisesDetails.isEmpty
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CommonTextFormField(
+                    suffixIcon: Icons.search,
+                    textController: controller.promisesSearchController,
+                  ),
                 ),
-              ),
+        ),
         _buildPromisesList(context),
         controller.promisesDetails.isEmpty
             ? const SizedBox.shrink()
@@ -63,16 +65,26 @@ class PromisesWidget extends StatelessWidget {
 
   Expanded _buildPromisesList(BuildContext context) {
     return Expanded(
-        child: Obx(
-      () => controller.filteredPromisesDetails.isEmpty
-          ? const CommonEmptyResultWidget()
-          : SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: _buildDataTable(context),
-              ),
-            ),
+        child: RefreshIndicator(
+      onRefresh: () {
+        return controller.getPromisesDetails();
+      },
+      child: Obx(
+        () => SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: controller.filteredPromisesDetails.isEmpty
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: const CommonEmptyResultWidget())
+              : SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: _buildDataTable(context),
+                  ),
+                ),
+        ),
+      ),
     ));
   }
 

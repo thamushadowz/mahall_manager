@@ -181,11 +181,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                 label: '${AppStrings.currentDue} : ',
                 text: '₹ ${controller.currentDue}',
               ),
-        controller.args['report'] != null
-            ? controller.report.currentDue == null || controller.totalOrNot
-                ? const SizedBox()
-                : const Divider(height: 20)
-            : const Divider(height: 20),
+        controller.totalOrNot ? const SizedBox() : const Divider(height: 20),
       ],
     );
   }

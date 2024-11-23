@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/presentation/home/widgets/user_profile_widget.dart';
 
 import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/colors/app_colors.dart';
@@ -18,20 +19,22 @@ class ExpatsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        controller.expatDetails.isEmpty
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CommonTextFormField(
-                  suffixIcon: Icons.search,
-                  textController: controller.expatSearchController,
-                ),
-              ),
-        _buildExpatsList(),
-      ],
-    );
+    return controller.userType == '2'
+        ? UserProfileWidget(controller: controller)
+        : Column(
+            children: [
+              controller.expatDetails.isEmpty
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: CommonTextFormField(
+                        suffixIcon: Icons.search,
+                        textController: controller.expatSearchController,
+                      ),
+                    ),
+              _buildExpatsList(),
+            ],
+          );
   }
 
   Expanded _buildExpatsList() {

@@ -15,7 +15,6 @@ export 'package:mahall_manager/presentation/marriage_certificates/marriage_certi
 export 'package:mahall_manager/presentation/marriage_registration/marriage_registration.screen.dart';
 export 'package:mahall_manager/presentation/payment_screen/payment_screen.screen.dart';
 export 'package:mahall_manager/presentation/place_registration/place_registration.screen.dart';
-export 'package:mahall_manager/presentation/profile/profile.screen.dart';
 export 'package:mahall_manager/presentation/promises/promises.screen.dart';
 export 'package:mahall_manager/presentation/reset_password/reset_password.screen.dart';
 export 'package:mahall_manager/presentation/search_screen/search_screen.screen.dart';

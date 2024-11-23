@@ -25,14 +25,16 @@ class UsersWidget extends StatelessWidget {
         ? SingleUserWidget(controller: controller)
         : Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CommonTextFormField(
-                  suffixIcon: Icons.search,
-                  hint: AppStrings.search,
-                  textController: controller.userSearchController,
-                ),
-              ),
+              controller.userDetails.isEmpty
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: CommonTextFormField(
+                        suffixIcon: Icons.search,
+                        hint: AppStrings.search,
+                        textController: controller.userSearchController,
+                      ),
+                    ),
               _buildUserList(),
             ],
           );

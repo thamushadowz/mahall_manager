@@ -60,16 +60,9 @@ class AddIncomeScreen extends GetView<AddIncomeController> {
       onSubmitTap: () {
         if (controller.formKey.currentState!.validate()) {
           if (controller.mainHeading == AppStrings.editIncome) {
-            final updatedReport = {
-              'id': controller.report.id,
-              'description': controller.descriptionController.text,
-              'amount': controller.amountController.text,
-              'addedBy': controller.report.addedBy,
-              'incomeOrExpense': controller.report.incomeOrExpense
-            };
-            Get.back(result: updatedReport);
+            controller.addOrEditIncome(true);
           } else {
-            controller.addIncome();
+            controller.addOrEditIncome(false);
           }
         }
       },

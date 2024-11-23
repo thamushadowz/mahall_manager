@@ -129,5 +129,15 @@ class Nav {
       page: () => const MarriageCertificatesScreen(),
       binding: MarriageCertificatesControllerBinding(),
     ),
+    GetPage(
+      name: Routes.DEATH_REGISTRATION,
+      page: () => const DeathRegistrationScreen(),
+      binding: DeathRegistrationControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.DEATH_LIST,
+      page: () => const DeathListScreen(),
+      binding: DeathListControllerBinding(),
+    ),
   ];
 }

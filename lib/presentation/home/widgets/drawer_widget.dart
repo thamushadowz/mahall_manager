@@ -51,36 +51,46 @@ class DrawerWidget extends StatelessWidget {
                         : _buildAdminDrawer(context),
                     const SizedBox(height: 10),
                     //Profile
-                    CommonClickableTextWidget(
-                      image: 'assets/images/profile.png',
-                      fontSize: AppMeasures.normalTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
-                      title: AppStrings.profile,
-                      onTap: () {
-                        Get.toNamed(Routes.PROFILE);
-                      },
-                    ),
-                    const SizedBox(height: 10),
+                    controller.userType == "1"
+                        ? const SizedBox.shrink()
+                        : CommonClickableTextWidget(
+                            image: 'assets/images/profile.png',
+                            fontSize: AppMeasures.normalTextSize,
+                            fontWeight: AppMeasures.mediumWeight,
+                            textColor: AppColors.blueGrey,
+                            title: AppStrings.profile,
+                            onTap: () {
+                              Get.toNamed(Routes.PROFILE);
+                            },
+                          ),
+                    controller.userType == "1"
+                        ? const SizedBox.shrink()
+                        : const SizedBox(height: 10),
                     //Contact Us
-                    CommonClickableTextWidget(
-                      image: 'assets/images/contact_us.png',
-                      fontSize: AppMeasures.normalTextSize,
-                      fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
-                      title: AppLocalizations.of(context)!.contact_us,
-                      onTap: () {
-                        Get.toNamed(Routes.CONTACT_US);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      height: 30,
-                      thickness: 2,
-                      indent: 15,
-                      endIndent: 15,
-                      color: AppColors.lightGrey,
-                    ),
+                    controller.userType == "1"
+                        ? const SizedBox.shrink()
+                        : CommonClickableTextWidget(
+                            image: 'assets/images/contact_us.png',
+                            fontSize: AppMeasures.normalTextSize,
+                            fontWeight: AppMeasures.mediumWeight,
+                            textColor: AppColors.blueGrey,
+                            title: AppLocalizations.of(context)!.contact_us,
+                            onTap: () {
+                              Get.toNamed(Routes.CONTACT_US);
+                            },
+                          ),
+                    controller.userType == "1"
+                        ? const SizedBox.shrink()
+                        : const SizedBox(height: 10),
+                    controller.userType == "1"
+                        ? const SizedBox.shrink()
+                        : Divider(
+                            height: 30,
+                            thickness: 2,
+                            indent: 15,
+                            endIndent: 15,
+                            color: AppColors.lightGrey,
+                          ),
                     const SizedBox(height: 10),
                     //Reset Password
                     CommonClickableTextWidget(
@@ -246,6 +256,18 @@ class DrawerWidget extends StatelessWidget {
           },
         ),
         const SizedBox(height: 10),
+        //Death Registration
+        CommonClickableTextWidget(
+          image: 'assets/images/deceased.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.blueGrey,
+          title: AppStrings.deathRegistration,
+          onTap: () {
+            Get.toNamed(Routes.DEATH_REGISTRATION);
+          },
+        ),
+        const SizedBox(height: 10),
         //Add Promises
         CommonClickableTextWidget(
           image: 'assets/images/promises.png',
@@ -254,7 +276,9 @@ class DrawerWidget extends StatelessWidget {
           textColor: AppColors.blueGrey,
           title: AppStrings.addPromises,
           onTap: () {
-            Get.toNamed(Routes.PROMISES);
+            Get.toNamed(Routes.PROMISES)?.then((onValue) {
+              controller.getPromisesDetails();
+            });
           },
         ),
         const SizedBox(height: 10),
@@ -266,7 +290,9 @@ class DrawerWidget extends StatelessWidget {
           textColor: AppColors.blueGrey,
           title: AppStrings.addIncome,
           onTap: () {
-            Get.toNamed(Routes.ADD_INCOME);
+            Get.toNamed(Routes.ADD_INCOME)?.then((onValue) {
+              controller.getReportsDetails();
+            });
           },
         ),
         const SizedBox(height: 10),
@@ -278,7 +304,9 @@ class DrawerWidget extends StatelessWidget {
           textColor: AppColors.blueGrey,
           title: AppStrings.addExpenses,
           onTap: () {
-            Get.toNamed(Routes.ADD_EXPENSES);
+            Get.toNamed(Routes.ADD_EXPENSES)?.then((onValue) {
+              controller.getReportsDetails();
+            });
           },
         ),
         const SizedBox(height: 10),

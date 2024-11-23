@@ -71,14 +71,14 @@ String dataToJson(ReportsData data) => json.encode(data.toJson());
 
 class ReportsData {
   ReportsData({
-    String? id,
+    num? id,
     String? description,
     String? date,
     bool? isSharable,
-    int? currentDue,
+    String? currentDue,
     String? incomeOrExpense,
     String? amount,
-    String? addedBy,
+    num? addedBy,
   }) {
     _id = id;
     _description = description;
@@ -98,25 +98,25 @@ class ReportsData {
     _currentDue = json['currentDue'];
     _incomeOrExpense = json['incomeOrExpense'];
     _amount = json['amount'];
-    _addedBy = json['addedBy'];
+    _addedBy = json['added_by'];
   }
-  String? _id;
+  num? _id;
   String? _description;
   String? _date;
   bool? _isSharable;
-  int? _currentDue;
+  String? _currentDue;
   String? _incomeOrExpense;
   String? _amount;
-  String? _addedBy;
+  num? _addedBy;
   ReportsData copyWith({
-    String? id,
+    num? id,
     String? description,
     String? date,
     bool? isSharable,
-    int? currentDue,
+    String? currentDue,
     String? incomeOrExpense,
     String? amount,
-    String? addedBy,
+    num? addedBy,
   }) =>
       ReportsData(
         id: id ?? _id,
@@ -128,14 +128,14 @@ class ReportsData {
         amount: amount ?? _amount,
         addedBy: addedBy ?? _addedBy,
       );
-  String? get id => _id;
+  num? get id => _id;
   String? get description => _description;
   String? get date => _date;
   bool? get isSharable => _isSharable;
-  int? get currentDue => _currentDue;
+  String? get currentDue => _currentDue;
   String? get incomeOrExpense => _incomeOrExpense;
   String? get amount => _amount;
-  String? get addedBy => _addedBy;
+  num? get addedBy => _addedBy;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -146,7 +146,7 @@ class ReportsData {
     map['currentDue'] = _currentDue;
     map['incomeOrExpense'] = _incomeOrExpense;
     map['amount'] = _amount;
-    map['addedBy'] = _addedBy;
+    map['added_by'] = _addedBy;
     return map;
   }
 }

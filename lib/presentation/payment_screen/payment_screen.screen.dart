@@ -176,17 +176,11 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         const Divider(height: 20),
         controller.totalOrNot
             ? const SizedBox()
-            : controller.args['report'] != null
-                ? controller.report.currentDue == null
-                    ? const SizedBox()
-                    : _buildDataRow(
-                        color: AppColors.white,
-                        label: '${AppStrings.currentDue} : ',
-                        text: '₹ ${controller.currentDue}')
-                : _buildDataRow(
-                    color: AppColors.white,
-                    label: '${AppStrings.currentDue} : ',
-                    text: '₹ ${controller.currentDue}'),
+            : _buildDataRow(
+                color: AppColors.white,
+                label: '${AppStrings.currentDue} : ',
+                text: '₹ ${controller.currentDue}',
+              ),
         controller.args['report'] != null
             ? controller.report.currentDue == null || controller.totalOrNot
                 ? const SizedBox()

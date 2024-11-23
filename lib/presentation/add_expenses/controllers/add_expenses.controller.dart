@@ -36,13 +36,15 @@ class AddExpensesController extends GetxController {
     super.onInit();
   }
 
-  addExpense() async {
+  addOrEditExpense(bool isEdit) async {
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
-        CommonResponse response = await listingService.addIncomeOrExpense(
-            'expense/add', storageService.getToken() ?? '', {
+        CommonResponse response = await listingService.addOrEditIncomeOrExpense(
+            isEdit ? 'expense/edit' : 'expense/add',
+            storageService.getToken() ?? '', {
+          "id": isEdit ? report.id : null,
           "date": getCurrentDate(),
           "description": descriptionController.text.trim(),
           "amount": num.parse(amountController.text.trim())

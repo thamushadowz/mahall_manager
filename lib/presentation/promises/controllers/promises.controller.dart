@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/listing/models/get_promises_model.dart';
 import 'package:mahall_manager/domain/listing/models/id_name_model.dart';
 import 'package:toastification/toastification.dart';
 
@@ -32,11 +33,22 @@ class PromisesController extends GetxController {
   final amountFocusNode = FocusNode();
 
   List<IdNameModel> userDetails = [];
+  String mainHeading = AppStrings.promises;
+  PromisesData promises = PromisesData();
+  final args = Get.arguments;
 
   @override
   void onInit() {
     super.onInit();
     getUserDetails();
+    if (Get.arguments != null) {
+      mainHeading = AppStrings.editPromises;
+      promises = args;
+      nameController.text =
+          '${promises.userRegNo} - ${promises.fName} ${promises.lName}';
+      descriptionController.text = promises.description ?? '';
+      amountController.text = promises.amount.toString();
+    }
   }
 
   @override
@@ -84,14 +96,16 @@ class PromisesController extends GetxController {
     }
   }
 
-  addPromises() async {
+  addPromises(bool isEdit) async {
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
-        CommonResponse response =
-            await listingService.addPromises(storageService.getToken() ?? '', {
-          "id": userId,
+        CommonResponse response = await listingService.addOrEditPromises(
+            isEdit ? 'promise/edit' : 'promise/add',
+            storageService.getToken() ?? '', {
+          "id": isEdit ? promises.id : null,
+          "user_id": userId,
           "date": getCurrentDate(),
           "description": descriptionController.text.trim(),
           "promised_amount": num.parse(amountController.text.trim())
@@ -100,6 +114,7 @@ class PromisesController extends GetxController {
           showToast(
               title: response.message.toString(),
               type: ToastificationType.success);
+          Get.back();
         } else {
           showToast(
               title: response.message.toString(),

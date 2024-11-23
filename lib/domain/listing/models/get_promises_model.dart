@@ -11,7 +11,7 @@ String getPromisesModelToJson(GetPromisesModel data) =>
 
 class GetPromisesModel {
   GetPromisesModel({
-    String? status,
+    bool? status,
     String? message,
     List<PromisesData>? data,
   }) {
@@ -30,11 +30,11 @@ class GetPromisesModel {
       });
     }
   }
-  String? _status;
+  bool? _status;
   String? _message;
   List<PromisesData>? _data;
   GetPromisesModel copyWith({
-    String? status,
+    bool? status,
     String? message,
     List<PromisesData>? data,
   }) =>
@@ -43,7 +43,7 @@ class GetPromisesModel {
         message: message ?? _message,
         data: data ?? _data,
       );
-  String? get status => _status;
+  bool? get status => _status;
   String? get message => _message;
   List<PromisesData>? get data => _data;
 
@@ -76,7 +76,7 @@ class PromisesData {
     String? description,
     String? date,
     String? amount,
-    String? addedBy,
+    num? addedBy,
   }) {
     _id = id;
     _userRegNo = userRegNo;
@@ -105,7 +105,7 @@ class PromisesData {
   String? _description;
   String? _date;
   String? _amount;
-  String? _addedBy;
+  num? _addedBy;
   PromisesData copyWith({
     num? id,
     String? userRegNo,
@@ -114,7 +114,7 @@ class PromisesData {
     String? description,
     String? date,
     String? amount,
-    String? addedBy,
+    num? addedBy,
   }) =>
       PromisesData(
         id: id ?? _id,
@@ -133,7 +133,7 @@ class PromisesData {
   String? get description => _description;
   String? get date => _date;
   String? get amount => _amount;
-  String? get addedBy => _addedBy;
+  num? get addedBy => _addedBy;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

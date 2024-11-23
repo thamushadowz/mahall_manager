@@ -1,9 +1,13 @@
 import 'package:mahall_manager/domain/listing/models/common_response.dart';
+import 'package:mahall_manager/domain/listing/models/get_blood_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_place_model.dart';
+import 'package:mahall_manager/domain/listing/models/get_promises_model.dart';
+import 'package:mahall_manager/domain/listing/models/get_reports_model.dart';
 import 'package:mahall_manager/domain/listing/models/input_models/mahall_registration_input_model.dart';
 import 'package:mahall_manager/domain/listing/models/mahall_registration_or_details_model.dart';
 
+import 'models/get_expat_model.dart';
 import 'models/house_registration_model.dart';
 import 'models/login_model.dart';
 import 'models/payment_success_model.dart';
@@ -39,10 +43,23 @@ abstract class ListingService {
 
   Future<CommonResponse> deleteUser(String authToken, dynamic params);
 
-  Future<CommonResponse> addPromises(String authToken, dynamic params);
-
-  Future<CommonResponse> addIncomeOrExpense(
+  Future<CommonResponse> addOrEditPromises(
       String url, String authToken, dynamic params);
+
+  Future<CommonResponse> deletePromises(String authToken, dynamic params);
+
+  Future<GetPromisesModel> getPromises(String authToken);
+
+  Future<CommonResponse> addOrEditIncomeOrExpense(
+      String url, String authToken, dynamic params);
+
+  Future<CommonResponse> deleteReport(String authToken, dynamic params);
+
+  Future<GetReportsModel> getReports(String authToken);
+
+  Future<GetBloodModel> getBloodGroups(String authToken);
+
+  Future<GetExpatModel> getExpats(String authToken);
 
   Future<GetHouseAndUsersModel> getUserProfile(String authToken);
 

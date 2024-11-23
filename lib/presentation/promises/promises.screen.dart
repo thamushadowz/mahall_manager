@@ -14,7 +14,7 @@ class PromisesScreen extends GetView<PromisesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonAppbarWidget(title: AppStrings.promises),
+      appBar: CommonAppbarWidget(title: controller.mainHeading),
       body: SizedBox.expand(
         child: Container(
           decoration: const BoxDecoration(
@@ -63,19 +63,26 @@ class PromisesScreen extends GetView<PromisesController> {
         formKey: controller.formKey,
         onSubmitTap: () {
           if (controller.formKey.currentState!.validate()) {
-            controller.addPromises();
+            if (controller.mainHeading == AppStrings.promises) {
+              controller.addPromises(false);
+            } else {
+              controller.addPromises(true);
+            }
           }
         },
-        onNameTap: () {
-          Get.toNamed(Routes.SEARCH_SCREEN, arguments: controller.userDetails)
-              ?.then((onValue) {
-            if (onValue.name != null) {
-              controller.nameController.text = onValue.name.toString();
-              controller.userId = onValue.id;
-              print('userId ::: ${controller.userId}');
-            }
-          });
-        },
+        onNameTap: controller.args != null
+            ? () {}
+            : () {
+                Get.toNamed(Routes.SEARCH_SCREEN,
+                        arguments: controller.userDetails)
+                    ?.then((onValue) {
+                  if (onValue.name != null) {
+                    controller.nameController.text = onValue.name.toString();
+                    controller.userId = onValue.id;
+                    print('userId ::: ${controller.userId}');
+                  }
+                });
+              },
         isLoading: controller.isLoading,
         isDataLoading: controller.isDataLoading.value,
       ),

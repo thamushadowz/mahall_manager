@@ -36,13 +36,15 @@ class AddIncomeController extends GetxController {
     super.onInit();
   }
 
-  addIncome() async {
+  addOrEditIncome(bool isEdit) async {
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
-        CommonResponse response = await listingService
-            .addIncomeOrExpense('income/add', storageService.getToken() ?? '', {
+        CommonResponse response = await listingService.addOrEditIncomeOrExpense(
+            isEdit ? 'income/edit' : 'income/add',
+            storageService.getToken() ?? '', {
+          "id": isEdit ? report.id : null,
           "date": getCurrentDate(),
           "description": descriptionController.text.trim(),
           "amount": num.parse(amountController.text.trim())

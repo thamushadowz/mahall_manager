@@ -25,7 +25,7 @@ class DashboardWidget extends StatelessWidget {
             _buildMahallName(),
             const SizedBox(height: 20),
             _generatePieChartView(),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             _buildClickableIcons(),
           ],
         ),
@@ -137,6 +137,12 @@ class DashboardWidget extends StatelessWidget {
             image: 'assets/images/marriage.png',
             onTap: () {
               Get.toNamed(Routes.MARRIAGE_CERTIFICATES);
+            }),
+        _buildIconWithText(
+            title: AppStrings.listOfDeceased,
+            image: 'assets/images/deceased.png',
+            onTap: () {
+              Get.toNamed(Routes.DEATH_LIST);
             }),
       ],
     );

@@ -14,31 +14,39 @@ class ProfileScreen extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [const Color(0xFF00796B), AppColors.themeColor],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                _buildAppBar(),
-                const SizedBox(height: 20),
-                _buildProfileImage(),
-                const SizedBox(height: 20),
-                _buildUserName(),
-                const SizedBox(height: 10),
-                _buildUserAddress(),
-                const SizedBox(height: 20),
-                Expanded(child: _buildDetailsCard()),
-              ],
-            ),
-          ),
-        ),
+        body: Obx(() => Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [const Color(0xFF00796B), AppColors.themeColor],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: controller.isLoading.value
+                  ? SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: AppColors.white,
+                      )))
+                  : Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          _buildAppBar(),
+                          const SizedBox(height: 20),
+                          _buildProfileImage(),
+                          const SizedBox(height: 20),
+                          _buildUserName(),
+                          const SizedBox(height: 10),
+                          _buildUserAddress(),
+                          const SizedBox(height: 20),
+                          Expanded(child: _buildDetailsCard()),
+                        ],
+                      ),
+                    ),
+            )),
       ),
     );
   }

@@ -5,6 +5,8 @@ export 'package:mahall_manager/presentation/committee_registration/committee_reg
 export 'package:mahall_manager/presentation/common_widgets/common_registration_success_widget.dart';
 export 'package:mahall_manager/presentation/contact_developers/contact_developers.screen.dart';
 export 'package:mahall_manager/presentation/contact_us/contact_us.screen.dart';
+export 'package:mahall_manager/presentation/death_list/death_list.screen.dart';
+export 'package:mahall_manager/presentation/death_registration/death_registration.screen.dart';
 export 'package:mahall_manager/presentation/delete_account/delete_account.screen.dart';
 export 'package:mahall_manager/presentation/home/home.screen.dart';
 export 'package:mahall_manager/presentation/house_registration/house_registration.screen.dart';

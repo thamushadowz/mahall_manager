@@ -22,14 +22,18 @@ class BloodWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CommonTextFormField(
-            suffixIcon: Icons.search,
-            textController: controller.bloodSearchController,
-          ),
-        ),
-        _buildFilterAndClearFilterOption(),
+        controller.bloodDetails.isEmpty
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CommonTextFormField(
+                  suffixIcon: Icons.search,
+                  textController: controller.bloodSearchController,
+                ),
+              ),
+        controller.bloodDetails.isEmpty
+            ? const SizedBox.shrink()
+            : _buildFilterAndClearFilterOption(),
         Obx(() => SizedBox(height: controller.isBloodFiltering.value ? 10 : 0)),
         _buildFilterWidget(context),
         const SizedBox(height: 10),

@@ -10,10 +10,12 @@ class Routes {
   static const COMMITTEE_REGISTRATION = '/committee-registration';
   static const CONTACT_DEVELOPERS = '/contact-developers';
   static const CONTACT_US = '/contact-us';
+  static const DEATH_REGISTRATION = '/death-registration';
   static const DELETE_ACCOUNT = '/delete-account';
   static const HOME = '/home';
   static const HOUSE_REGISTRATION = '/house-registration';
   static const LOGIN = '/login';
+  static const MARRIAGE_CERTIFICATES = '/marriage-certificates';
   static const MARRIAGE_REGISTRATION = '/marriage-registration';
   static const PAYMENT_SCREEN = '/payment-screen';
   static const PLACE_REGISTRATION = '/place-registration';
@@ -23,5 +25,5 @@ class Routes {
   static const RESET_PASSWORD = '/reset-password';
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
-  static const MARRIAGE_CERTIFICATES = '/marriage-certificates';
+  static const DEATH_LIST = '/death-list';
 }

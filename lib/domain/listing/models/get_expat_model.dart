@@ -4,13 +4,14 @@ import 'dart:convert';
 /// message : "Data fetched successfully"
 /// data : [{"user_reg_no":"KNY01","country":"UAE","name":"John Doe","mobile_no":"9876543210","house_name":"White House","place":"Kannur"},{"user_reg_no":"KNY02","country":"Saudi Arabia","name":"Jane Smith","mobile_no":"8765432109","house_name":"Blue House","place":"Thalassery"},{"user_reg_no":"KNY03","country":"Saudi Arabia","name":"Alex Brown","mobile_no":"7654321098","house_name":"Green House","place":"Payyannur"},{"user_reg_no":"KNY04","country":"Saudi Arabia","name":"Maria Garcia","mobile_no":"6543210987","house_name":"Red House","place":"Taliparamba"},{"user_reg_no":"KNY05","country":"Saudi Arabia","name":"Mohammed Ali","mobile_no":"5432109876","house_name":"Yellow House","place":"Iritty"}]
 
-GetBloodModel getBloodModelFromJson(String str) =>
-    GetBloodModel.fromJson(json.decode(str));
-String getBloodModelToJson(GetBloodModel data) => json.encode(data.toJson());
+GetExpatModel getExpatModelFromJson(String str) =>
+    GetExpatModel.fromJson(json.decode(str));
 
-class GetBloodModel {
-  GetBloodModel({
-    String? status,
+String getExpatModelToJson(GetExpatModel data) => json.encode(data.toJson());
+
+class GetExpatModel {
+  GetExpatModel({
+    bool? status,
     String? message,
     List<ExpatData>? data,
   }) {
@@ -19,7 +20,7 @@ class GetBloodModel {
     _data = data;
   }
 
-  GetBloodModel.fromJson(dynamic json) {
+  GetExpatModel.fromJson(dynamic json) {
     _status = json['status'];
     _message = json['message'];
     if (json['data'] != null) {
@@ -29,21 +30,26 @@ class GetBloodModel {
       });
     }
   }
-  String? _status;
+
+  bool? _status;
   String? _message;
   List<ExpatData>? _data;
-  GetBloodModel copyWith({
-    String? status,
+
+  GetExpatModel copyWith({
+    bool? status,
     String? message,
     List<ExpatData>? data,
   }) =>
-      GetBloodModel(
+      GetExpatModel(
         status: status ?? _status,
         message: message ?? _message,
         data: data ?? _data,
       );
-  String? get status => _status;
+
+  bool? get status => _status;
+
   String? get message => _message;
+
   List<ExpatData>? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -66,20 +72,23 @@ class GetBloodModel {
 /// place : "Kannur"
 
 ExpatData dataFromJson(String str) => ExpatData.fromJson(json.decode(str));
+
 String dataToJson(ExpatData data) => json.encode(data.toJson());
 
 class ExpatData {
   ExpatData({
     String? userRegNo,
     String? country,
-    String? name,
+    String? fName,
+    String? lName,
     String? mobileNo,
     String? houseName,
     String? place,
   }) {
     _userRegNo = userRegNo;
     _country = country;
-    _name = name;
+    _fName = fName;
+    _lName = lName;
     _mobileNo = mobileNo;
     _houseName = houseName;
     _place = place;
@@ -88,21 +97,26 @@ class ExpatData {
   ExpatData.fromJson(dynamic json) {
     _userRegNo = json['user_reg_no'];
     _country = json['country'];
-    _name = json['name'];
-    _mobileNo = json['mobile_no'];
+    _fName = json['f_name'];
+    _lName = json['l_name'];
+    _mobileNo = json['phone'];
     _houseName = json['house_name'];
     _place = json['place'];
   }
+
   String? _userRegNo;
   String? _country;
-  String? _name;
+  String? _fName;
+  String? _lName;
   String? _mobileNo;
   String? _houseName;
   String? _place;
+
   ExpatData copyWith({
     String? userRegNo,
     String? country,
-    String? name,
+    String? fName,
+    String? lName,
     String? mobileNo,
     String? houseName,
     String? place,
@@ -110,24 +124,34 @@ class ExpatData {
       ExpatData(
         userRegNo: userRegNo ?? _userRegNo,
         country: country ?? _country,
-        name: name ?? _name,
+        fName: fName ?? _fName,
+        lName: lName ?? _lName,
         mobileNo: mobileNo ?? _mobileNo,
         houseName: houseName ?? _houseName,
         place: place ?? _place,
       );
+
   String? get userRegNo => _userRegNo;
+
   String? get country => _country;
-  String? get name => _name;
+
+  String? get fName => _fName;
+
+  String? get lName => _lName;
+
   String? get mobileNo => _mobileNo;
+
   String? get houseName => _houseName;
+
   String? get place => _place;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['user_reg_no'] = _userRegNo;
     map['country'] = _country;
-    map['name'] = _name;
-    map['mobile_no'] = _mobileNo;
+    map['f_name'] = _fName;
+    map['l_name'] = _lName;
+    map['phone'] = _mobileNo;
     map['house_name'] = _houseName;
     map['place'] = _place;
     return map;

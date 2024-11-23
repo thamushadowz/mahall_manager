@@ -55,6 +55,7 @@ class AppStrings {
   static String welcomeBack = 'Welcome Back';
   static String deletingAccount = 'Deleting Account...';
   static String marriageRegistration = 'Marriage Registration';
+  static String deathRegistration = 'Death Registration';
   static String marriageCertificates = 'Marriage Certificates';
   static String mahallDetails = 'Mahall Details';
   static String marriageDetails = 'Marriage Details';
@@ -70,9 +71,17 @@ class AppStrings {
   static String brideDetails = 'Bride Details';
   static String witnessDetails = 'Witness Details';
   static String register = 'Register';
+  static String download = 'Download';
+  static String listOfDeceased = 'List Of Deceased';
+  static String nameOfDeceased = 'Name Of Deceased';
+  static String notInTheList = 'Not in the list? Add name Here';
 
   static String male = 'Male';
   static String female = 'Female';
+
+  static String president = 'President';
+  static String secretary = 'Secretary';
+  static String treasurer = 'Treasurer';
 
   static String apos = 'A+ve';
   static String aneg = 'A-ve';
@@ -117,6 +126,7 @@ class AppStrings {
   static String announcement = 'Announcement';
   static String total = 'Total';
   static String promises = 'Promises';
+  static String editPromises = 'Edit Promises';
   static String vagdhanangal = 'വാഗ്ദാനങ്ങള്‍';
   static String addPromises = 'Add Promises';
   static String dashboard = 'Dashboard';

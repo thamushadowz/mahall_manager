@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 
+import '../../../../domain/core/interfaces/common_alert.dart';
 import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/measures/app_measures.dart';
@@ -20,15 +21,19 @@ class PromisesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CommonTextFormField(
-            suffixIcon: Icons.search,
-            textController: controller.promisesSearchController,
-          ),
-        ),
-        _buildPromisesList(),
-        _buildTotalWidget(),
+        controller.promisesDetails.isEmpty
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CommonTextFormField(
+                  suffixIcon: Icons.search,
+                  textController: controller.promisesSearchController,
+                ),
+              ),
+        _buildPromisesList(context),
+        controller.promisesDetails.isEmpty
+            ? const SizedBox.shrink()
+            : _buildTotalWidget(),
         const SizedBox(height: 20)
       ],
     );
@@ -56,7 +61,7 @@ class PromisesWidget extends StatelessWidget {
     );
   }
 
-  Expanded _buildPromisesList() {
+  Expanded _buildPromisesList(BuildContext context) {
     return Expanded(
         child: Obx(
       () => controller.filteredPromisesDetails.isEmpty
@@ -65,13 +70,13 @@ class PromisesWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: _buildDataTable(),
+                child: _buildDataTable(context),
               ),
             ),
     ));
   }
 
-  Widget _buildDataTable() {
+  Widget _buildDataTable(BuildContext context) {
     return DataTable(
       columnSpacing: 20,
       headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
@@ -151,7 +156,7 @@ class PromisesWidget extends StatelessWidget {
               fontSize: AppMeasures.mediumTextSize,
             )),
             DataCell(CommonTextWidget(
-              text: promises.addedBy ?? '',
+              text: controller.getAddedBy(promises.addedBy.toString()),
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
             )),
@@ -166,6 +171,34 @@ class PromisesWidget extends StatelessWidget {
                     onTap: () {
                       Get.toNamed(Routes.PAYMENT_SCREEN,
                           arguments: {'promises': promises});
+                    },
+                  ),
+                  //Edit
+                  IconButton(
+                    icon: Icon(
+                      Icons.edit_note_rounded,
+                      color: AppColors.blueGrey,
+                    ),
+                    onPressed: () async {
+                      Get.toNamed(Routes.PROMISES, arguments: promises)
+                          ?.then((onValue) {
+                        controller.getPromisesDetails();
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      color: AppColors.darkRed,
+                    ),
+                    onPressed: () {
+                      showCommonDialog(context,
+                          message: AppStrings.areYouSureToDelete,
+                          yesButtonName: AppStrings.delete,
+                          messageColor: AppColors.darkRed, onYesTap: () {
+                        controller.deletePromises(promises.id!);
+                        Get.close(0);
+                      });
                     },
                   ),
                 ],

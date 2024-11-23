@@ -6,7 +6,11 @@ import 'package:mahall_manager/domain/listing/models/payment_success_model.dart'
 
 import '../../infrastructure/dal/services/api_service.dart';
 import 'listing_service.dart';
+import 'models/get_blood_model.dart';
+import 'models/get_expat_model.dart';
 import 'models/get_place_model.dart';
+import 'models/get_promises_model.dart';
+import 'models/get_reports_model.dart';
 import 'models/input_models/mahall_registration_input_model.dart';
 import 'models/login_model.dart';
 import 'models/mahall_registration_or_details_model.dart';
@@ -276,26 +280,7 @@ class ListingRepository implements ListingService {
   }
 
   @override
-  Future<CommonResponse> addPromises(String authToken, params) async {
-    CommonResponse commonResponse;
-    print('Input : $params');
-    final response = await apiService.reqst(
-      url: 'promise/add',
-      authToken: authToken,
-      method: Method.POST,
-      params: params,
-    );
-    print('Response::: ${response.body}');
-    try {
-      commonResponse = CommonResponse.fromJson(response.body);
-      return commonResponse;
-    } catch (e) {
-      return CommonResponse();
-    }
-  }
-
-  @override
-  Future<CommonResponse> addIncomeOrExpense(
+  Future<CommonResponse> addOrEditPromises(
       String url, String authToken, params) async {
     CommonResponse commonResponse;
     print('Input : $params');
@@ -311,6 +296,137 @@ class ListingRepository implements ListingService {
       return commonResponse;
     } catch (e) {
       return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> deletePromises(
+      String authToken, dynamic params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'promise/delete',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<GetPromisesModel> getPromises(String authToken) async {
+    GetPromisesModel getPromisesModel;
+    final response = await apiService.reqst(
+      url: 'promise/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getPromisesModel = GetPromisesModel.fromJson(response.body);
+      return getPromisesModel;
+    } catch (e) {
+      print('Exception :::: $e');
+      return GetPromisesModel();
+    }
+  }
+
+  @override
+  Future<CommonResponse> addOrEditIncomeOrExpense(
+      String url, String authToken, params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: url,
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> deleteReport(String authToken, dynamic params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'reports/delete',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<GetReportsModel> getReports(String authToken) async {
+    GetReportsModel getReportsModel;
+    final response = await apiService.reqst(
+      url: 'reports/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getReportsModel = GetReportsModel.fromJson(response.body);
+      return getReportsModel;
+    } catch (e) {
+      print('Exception :::: $e');
+      return GetReportsModel();
+    }
+  }
+
+  @override
+  Future<GetBloodModel> getBloodGroups(String authToken) async {
+    GetBloodModel getBloodModel;
+    final response = await apiService.reqst(
+      url: 'blood/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getBloodModel = GetBloodModel.fromJson(response.body);
+      return getBloodModel;
+    } catch (e) {
+      print('Exception :::: $e');
+      return GetBloodModel();
+    }
+  }
+
+  @override
+  Future<GetExpatModel> getExpats(String authToken) async {
+    GetExpatModel getExpatModel;
+    final response = await apiService.reqst(
+      url: 'expat/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getExpatModel = GetExpatModel.fromJson(response.body);
+      return getExpatModel;
+    } catch (e) {
+      print('Exception :::: $e');
+      return GetExpatModel();
     }
   }
 

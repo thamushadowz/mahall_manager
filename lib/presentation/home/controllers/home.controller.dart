@@ -102,6 +102,10 @@ class HomeController extends GetxController {
   List<Widget> bottomNavIcons = [];
 
   List<PeopleData> userDetails = [];
+  List<PromisesData> promisesDetails = [];
+  List<ReportsData> reportsDetails = [];
+  List<BloodData> bloodDetails = [];
+  List<ExpatData> expatDetails = [];
 
   /*List<PeopleData> userDetails = [
     PeopleData(
@@ -273,7 +277,7 @@ class HomeController extends GetxController {
       country: 'Australia',
     ),
   ];*/
-  List<PromisesData> promisesDetails = [
+  /*List<PromisesData> promisesDetails = [
     PromisesData(
         userRegNo: 'KNY01',
         fName: 'Navas',
@@ -330,8 +334,8 @@ class HomeController extends GetxController {
         amount: '1000',
         date: '02/09/2024',
         addedBy: 'Secretary'),
-  ];
-  List<ReportsData> reportsDetails = [
+  ];*/
+  /*List<ReportsData> reportsDetails = [
     ReportsData(
         id: '1000',
         description: "Honey Auction",
@@ -480,8 +484,8 @@ class HomeController extends GetxController {
         isSharable: false,
         incomeOrExpense: '1',
         addedBy: "Treasurer"),
-  ]; //incomeOrExpense 0 - income, 1 - expense, 2 - others
-  List<BloodData> bloodDetails = [
+  ];*/ //incomeOrExpense 0 - income, 1 - expense, 2 - others
+  /*List<BloodData> bloodDetails = [
     BloodData(
         userRegNo: 'U01',
         bloodGroup: 'A+ve',
@@ -599,8 +603,8 @@ class HomeController extends GetxController {
         gender: "Female",
         houseName: 'Safa Mahal',
         place: 'Perinchery'),
-  ];
-  List<ExpatData> expatDetails = [
+  ];*/
+  /*List<ExpatData> expatDetails = [
     ExpatData(
         userRegNo: 'U01',
         country: 'UAE',
@@ -706,7 +710,7 @@ class HomeController extends GetxController {
         mobileNo: '+913384848840',
         houseName: 'Kolikkeel House',
         place: 'Manakkayi'),
-  ];
+  ];*/
 
   List<ChartDataModel> get chartData => [
         ChartDataModel(category: "Income", amount: income.value),
@@ -724,6 +728,10 @@ class HomeController extends GetxController {
     if (userType == '2') {
     } else {
       getUserDetails();
+      getPromisesDetails();
+      getReportsDetails();
+      getBloodGroupDetails();
+      getExpatsDetails();
     }
 
     mahallName = storageService.getMahallName() ?? '';
@@ -764,21 +772,12 @@ class HomeController extends GetxController {
             AppStrings.expat
           ];
 
-    //filteredUserDetails.assignAll(userDetails);
-
-    filteredPromisesDetails.assignAll(promisesDetails);
-    filteredReportsDetails.assignAll(reportsDetails);
-    filteredBloodDetails.assignAll(bloodDetails);
-    filteredExpatDetails.assignAll(expatDetails);
-
     userSearchController.addListener(() {
       searchUser(userSearchController.text);
     });
-    calculatePromisesTotal();
     promisesSearchController.addListener(() {
       searchPromises(promisesSearchController.text);
     });
-    calculateReportTotal();
 
     reportSearchController.addListener(() {
       searchReports(reportSearchController.text);
@@ -823,6 +822,120 @@ class HomeController extends GetxController {
           if (isExpandedList.isEmpty) {
             isExpandedList.value = RxList.filled(userDetails.length, false);
           }
+        } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  getPromisesDetails() async {
+    isLoading.value = true;
+    promisesDetails.clear();
+    filteredPromisesDetails.clear();
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetPromisesModel response =
+            await listingService.getPromises(storageService.getToken() ?? '');
+        if (response.status == true) {
+          promisesDetails.addAll(response.data!);
+          filteredPromisesDetails.assignAll(promisesDetails);
+          calculatePromisesTotal();
+        } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  getReportsDetails() async {
+    isLoading.value = true;
+    reportsDetails.clear();
+    filteredReportsDetails.clear();
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetReportsModel response =
+            await listingService.getReports(storageService.getToken() ?? '');
+        if (response.status == true) {
+          reportsDetails.addAll(response.data!);
+          filteredReportsDetails.assignAll(reportsDetails);
+          calculateReportTotal();
+        } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  getBloodGroupDetails() async {
+    isLoading.value = true;
+    bloodDetails.clear();
+    filteredBloodDetails.clear();
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetBloodModel response = await listingService
+            .getBloodGroups(storageService.getToken() ?? '');
+        if (response.status == true) {
+          bloodDetails.addAll(response.data!);
+          filteredBloodDetails.assignAll(bloodDetails);
+        } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  getExpatsDetails() async {
+    isLoading.value = true;
+    expatDetails.clear();
+    filteredExpatDetails.clear();
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetExpatModel response =
+            await listingService.getExpats(storageService.getToken() ?? '');
+        if (response.status == true) {
+          expatDetails.addAll(response.data!);
+          filteredExpatDetails.assignAll(expatDetails);
         } else {}
       } catch (e) {
         showToast(
@@ -1015,9 +1128,9 @@ class HomeController extends GetxController {
 
       // Role Filter (addedBy)
       bool isRoleMatched =
-          (isPresidentChecked.value && report.addedBy == 'President') ||
-              (isSecretaryChecked.value && report.addedBy == 'Secretary') ||
-              (isTreasurerChecked.value && report.addedBy == 'Treasurer') ||
+          (isPresidentChecked.value && report.addedBy.toString() == '0') ||
+              (isSecretaryChecked.value && report.addedBy.toString() == '1') ||
+              (isTreasurerChecked.value && report.addedBy.toString() == '2') ||
               (!isPresidentChecked.value &&
                   !isSecretaryChecked.value &&
                   !isTreasurerChecked.value);
@@ -1025,7 +1138,6 @@ class HomeController extends GetxController {
       // Search Filter
       bool isSearchMatched = searchText.isEmpty ||
           (report.description?.toLowerCase().contains(searchText) ?? false) ||
-          (report.addedBy?.toLowerCase().contains(searchText) ?? false) ||
           (report.amount.toString().contains(searchText)) ||
           (report.id.toString().contains(searchText));
 
@@ -1311,9 +1423,6 @@ class HomeController extends GetxController {
         return reports.description!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
-            reports.addedBy!
-                .toLowerCase()
-                .contains(searchQuery.value.toLowerCase()) ||
             reports.userRegNo!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
@@ -1336,7 +1445,6 @@ class HomeController extends GetxController {
     } else {
       filteredReportsDetails.value = reportsDetails.where((reports) {
         return reports.description!.toLowerCase().contains(searchQuery.value) ||
-            reports.addedBy!.toLowerCase().contains(searchQuery.value) ||
             reports.id.toString().toLowerCase().contains(searchQuery.value);
       }).toList();
       calculateReportTotal();
@@ -1376,7 +1484,10 @@ class HomeController extends GetxController {
         return reports.country!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
-            reports.name!
+            reports.fName!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            reports.lName!
                 .toLowerCase()
                 .contains(searchQuery.value.toLowerCase()) ||
             reports.userRegNo
@@ -1409,6 +1520,80 @@ class HomeController extends GetxController {
       int due = int.tryParse(person.due ?? '0') ?? 0;
       return sum + due;
     });
+  }
+
+  String getAddedBy(String addedBy) {
+    if (addedBy == '0') {
+      return AppStrings.president;
+    } else if (addedBy == '1') {
+      return AppStrings.secretary;
+    } else {
+      return AppStrings.treasurer;
+    }
+  }
+
+  deleteReport(num id) async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        CommonResponse response = await listingService
+            .deleteReport(storageService.getToken() ?? '', {"id": id});
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+          getReportsDetails();
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  deletePromises(num id) async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        CommonResponse response = await listingService
+            .deletePromises(storageService.getToken() ?? '', {"id": id});
+        if (response.status == true) {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
+          getPromisesDetails();
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
   }
 
   performLogout() async {

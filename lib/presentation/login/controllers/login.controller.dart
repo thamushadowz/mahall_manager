@@ -51,7 +51,7 @@ class LoginController extends GetxController {
       _storageService.savePreferredLanguage('en');
     }
 
-    Get.updateLocale(Locale(lang));
+    //Get.updateLocale(Locale(lang));
   }
 
   void changeLanguage(String lang) {

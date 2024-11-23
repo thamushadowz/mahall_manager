@@ -10,7 +10,7 @@ String getBloodModelToJson(GetBloodModel data) => json.encode(data.toJson());
 
 class GetBloodModel {
   GetBloodModel({
-    String? status,
+    bool? status,
     String? message,
     List<BloodData>? data,
   }) {
@@ -29,11 +29,11 @@ class GetBloodModel {
       });
     }
   }
-  String? _status;
+  bool? _status;
   String? _message;
   List<BloodData>? _data;
   GetBloodModel copyWith({
-    String? status,
+    bool? status,
     String? message,
     List<BloodData>? data,
   }) =>
@@ -42,7 +42,7 @@ class GetBloodModel {
         message: message ?? _message,
         data: data ?? _data,
       );
-  String? get status => _status;
+  bool? get status => _status;
   String? get message => _message;
   List<BloodData>? get data => _data;
 
@@ -92,9 +92,9 @@ class BloodData {
   BloodData.fromJson(dynamic json) {
     _userRegNo = json['user_reg_no'];
     _bloodGroup = json['blood_group'];
-    _fName = json['first_name'];
-    _lName = json['last_name'];
-    _mobileNo = json['mobile_no'];
+    _fName = json['f_name'];
+    _lName = json['l_name'];
+    _mobileNo = json['phone'];
     _gender = json['gender'];
     _houseName = json['house_name'];
     _place = json['place'];
@@ -140,9 +140,9 @@ class BloodData {
     final map = <String, dynamic>{};
     map['user_reg_no'] = _userRegNo;
     map['blood_group'] = _bloodGroup;
-    map['first_name'] = _fName;
-    map['last_name'] = _lName;
-    map['mobile_no'] = _mobileNo;
+    map['f_name'] = _fName;
+    map['l_name'] = _lName;
+    map['phone'] = _mobileNo;
     map['gender'] = _gender;
     map['house_fName'] = _houseName;
     map['place'] = _place;

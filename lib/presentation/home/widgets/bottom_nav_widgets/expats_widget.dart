@@ -20,13 +20,15 @@ class ExpatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CommonTextFormField(
-            suffixIcon: Icons.search,
-            textController: controller.expatSearchController,
-          ),
-        ),
+        controller.expatDetails.isEmpty
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CommonTextFormField(
+                  suffixIcon: Icons.search,
+                  textController: controller.expatSearchController,
+                ),
+              ),
         _buildExpatsList(),
       ],
     );
@@ -111,7 +113,7 @@ class ExpatsWidget extends StatelessWidget {
               ),
               DataCell(
                 CommonTextWidget(
-                  text: expat.name ?? '',
+                  text: '${expat.fName} ${expat.lName}',
                   fontWeight: AppMeasures.mediumWeight,
                   fontSize: AppMeasures.mediumTextSize,
                 ),

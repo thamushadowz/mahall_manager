@@ -24,20 +24,26 @@ class ReportsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CommonTextFormField(
-            suffixIcon: Icons.search,
-            textController: controller.reportSearchController,
-          ),
-        ),
-        _buildFilterAndClearFilterOption(),
+        controller.reportsDetails.isEmpty
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CommonTextFormField(
+                  suffixIcon: Icons.search,
+                  textController: controller.reportSearchController,
+                ),
+              ),
+        controller.reportsDetails.isEmpty
+            ? const SizedBox.shrink()
+            : _buildFilterAndClearFilterOption(),
         Obx(() =>
             SizedBox(height: controller.isReportFiltering.value ? 10 : 0)),
         _buildFilterWidget(context),
         const SizedBox(height: 10),
         _buildReportsList(context),
-        _buildTotalWidget(),
+        controller.reportsDetails.isEmpty
+            ? const SizedBox.shrink()
+            : _buildTotalWidget(),
         const SizedBox(height: 20)
       ],
     );
@@ -343,7 +349,7 @@ class ReportsWidget extends StatelessWidget {
               fontSize: AppMeasures.mediumTextSize,
             )),
             DataCell(CommonTextWidget(
-              text: report.addedBy ?? '',
+              text: controller.getAddedBy(report.addedBy.toString()),
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
             )),
@@ -371,19 +377,16 @@ class ReportsWidget extends StatelessWidget {
                           ),
                           onPressed: () async {
                             if (report.incomeOrExpense == '0') {
-                              final updatedReport = await Get.toNamed(
-                                  Routes.ADD_INCOME,
-                                  arguments: report);
-                              if (updatedReport != null) {
-                                controller.updateReportItem(updatedReport);
-                              }
+                              Get.toNamed(Routes.ADD_INCOME, arguments: report)
+                                  ?.then((onValue) {
+                                controller.getReportsDetails();
+                              });
                             } else {
-                              final updatedReport = await Get.toNamed(
-                                  Routes.ADD_EXPENSES,
-                                  arguments: report);
-                              if (updatedReport != null) {
-                                controller.updateReportItem(updatedReport);
-                              }
+                              Get.toNamed(Routes.ADD_EXPENSES,
+                                      arguments: report)
+                                  ?.then((onValue) {
+                                controller.getReportsDetails();
+                              });
                             }
                           },
                         ),
@@ -397,8 +400,10 @@ class ReportsWidget extends StatelessWidget {
                             showCommonDialog(context,
                                 message: AppStrings.areYouSureToDelete,
                                 yesButtonName: AppStrings.delete,
-                                messageColor: AppColors.darkRed,
-                                onYesTap: () {});
+                                messageColor: AppColors.darkRed, onYesTap: () {
+                              controller.deleteReport(report.id!);
+                              Get.close(0);
+                            });
                           },
                         ),
                       ],

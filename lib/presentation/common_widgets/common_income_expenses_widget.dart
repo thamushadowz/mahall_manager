@@ -103,7 +103,7 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
                                 },
                                 onDateTap: onNameTap,
                                 keyboardType: TextInputType.none,
-                                validator: Validators.validateFName,
+                                validator: Validators.validateName,
                               )
                         : const SizedBox.shrink(),
                     isPromises!

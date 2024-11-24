@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../infrastructure/theme/colors/app_colors.dart';
+import 'common_text_widget.dart';
 
 class CommonAppbarWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -16,9 +17,9 @@ class CommonAppbarWidget extends StatelessWidget
       actions: actions,
       iconTheme: IconThemeData(color: AppColors.white),
       backgroundColor: AppColors.themeColor,
-      title: Text(
-        title,
-        style: TextStyle(color: AppColors.white),
+      title: CommonTextWidget(
+        text: title,
+        color: AppColors.white,
       ),
       centerTitle: true,
     );

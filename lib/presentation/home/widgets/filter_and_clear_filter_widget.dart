@@ -12,17 +12,35 @@ class FilterAndClearFilterWidget extends StatelessWidget {
     required this.isFilterSubmitted,
     required this.onClearFilterTap,
     required this.onFilterTap,
+    this.isFromReports = false,
+    this.onGenerateTap,
   });
 
   final bool isFilterSubmitted;
+  final bool? isFromReports;
   final Function() onClearFilterTap;
   final Function() onFilterTap;
+  final Function()? onGenerateTap;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        isFromReports! ? const SizedBox(width: 10) : const SizedBox.shrink(),
+        isFromReports!
+            ? CommonClickableTextWidget(
+                title: AppStrings.generateReport,
+                textColor: AppColors.darkRed,
+                fontSize: AppMeasures.mediumTextSize,
+                fontWeight: AppMeasures.mediumWeight,
+                padding: const EdgeInsets.all(5),
+                border: Border.all(color: AppColors.darkRed),
+                borderRadius: BorderRadius.circular(10),
+                onTap: onGenerateTap ?? () {},
+              )
+            : const SizedBox.shrink(),
+        isFromReports! ? const Spacer() : const SizedBox.shrink(),
         isFilterSubmitted
             ? CommonClickableTextWidget(
                 title: AppStrings.clearFilters,

@@ -38,7 +38,8 @@ class SingleUserWidget extends StatelessWidget {
             width: 2,
           )),
           child: CommonTextWidget(
-            text: 'KNY01 - White House',
+            text:
+                '${controller.userDetails.first.houseRegNo ?? 'KNY01'} - ${controller.userDetails.first.houseName ?? 'White House'}',
             fontSize: AppMeasures.bigTextSize,
             color: AppColors.themeColor,
           ),
@@ -94,29 +95,31 @@ class SingleUserWidget extends StatelessWidget {
                 ),*/
             ],
             rows: [
-              DataRow(
-                cells: [
-                  DataCell(CommonTextWidget(
-                    text: 'U01',
-                    fontSize: AppMeasures.mediumTextSize,
-                    color: AppColors.black,
-                  )),
-                  DataCell(CommonTextWidget(
-                    text: 'Shameer Muhammed',
-                    fontSize: AppMeasures.mediumTextSize,
-                    color: AppColors.black,
-                  )),
-                  DataCell(CommonTextWidget(
-                    text: '+918745632712',
-                    fontSize: AppMeasures.mediumTextSize,
-                    color: AppColors.black,
-                  )),
-                  DataCell(CommonTextWidget(
-                    text: '5600',
-                    fontSize: AppMeasures.mediumTextSize,
-                    color: AppColors.black,
-                  )),
-                  /*DataCell(int.parse(
+              ...controller.userDetails.map((user) {
+                return DataRow(
+                  cells: [
+                    DataCell(CommonTextWidget(
+                      text: user.userRegNo ?? 'U01',
+                      fontSize: AppMeasures.mediumTextSize,
+                      color: AppColors.black,
+                    )),
+                    DataCell(CommonTextWidget(
+                      text:
+                          '${user.fName ?? 'Shameer'} ${user.lName ?? 'Muhammed'}',
+                      fontSize: AppMeasures.mediumTextSize,
+                      color: AppColors.black,
+                    )),
+                    DataCell(CommonTextWidget(
+                      text: user.phone ?? '+918745632712',
+                      fontSize: AppMeasures.mediumTextSize,
+                      color: AppColors.black,
+                    )),
+                    DataCell(CommonTextWidget(
+                      text: user.due ?? '5600',
+                      fontSize: AppMeasures.mediumTextSize,
+                      color: AppColors.black,
+                    )),
+                    /*DataCell(int.parse(
                         house.due ?? '0') >
                         0
                         ? CommonClickableTextWidget(
@@ -147,7 +150,7 @@ class SingleUserWidget extends StatelessWidget {
                       color: AppColors
                           .themeColor,
                     )),*/
-                  /*DataCell(
+                    /*DataCell(
                       Row(
                         children: [
                           IconButton(
@@ -196,11 +199,12 @@ class SingleUserWidget extends StatelessWidget {
                         ],
                       ),
                     ),*/
-                ],
-                color: WidgetStateProperty.all(
-                  AppColors.white,
-                ),
-              ),
+                  ],
+                  color: WidgetStateProperty.all(
+                    AppColors.white,
+                  ),
+                );
+              }),
               const DataRow(cells: [
                 DataCell(SizedBox.shrink()),
                 DataCell(SizedBox.shrink()),

@@ -20,25 +20,28 @@ class BloodWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        controller.bloodDetails.isEmpty
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CommonTextFormField(
-                  suffixIcon: Icons.search,
-                  textController: controller.bloodSearchController,
+    return Obx(
+      () => Column(
+        children: [
+          controller.bloodDetails.isEmpty
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CommonTextFormField(
+                    suffixIcon: Icons.search,
+                    textController: controller.bloodSearchController,
+                  ),
                 ),
-              ),
-        controller.bloodDetails.isEmpty
-            ? const SizedBox.shrink()
-            : _buildFilterAndClearFilterOption(),
-        Obx(() => SizedBox(height: controller.isBloodFiltering.value ? 10 : 0)),
-        _buildFilterWidget(context),
-        const SizedBox(height: 10),
-        _buildBloodList(),
-      ],
+          controller.bloodDetails.isEmpty
+              ? const SizedBox.shrink()
+              : _buildFilterAndClearFilterOption(),
+          Obx(() =>
+              SizedBox(height: controller.isBloodFiltering.value ? 10 : 0)),
+          _buildFilterWidget(context),
+          const SizedBox(height: 10),
+          _buildBloodList(context),
+        ],
+      ),
     );
   }
 
@@ -181,18 +184,30 @@ class BloodWidget extends StatelessWidget {
     );
   }
 
-  Expanded _buildBloodList() {
+  Expanded _buildBloodList(BuildContext context) {
     return Expanded(
-      child: Obx(
-        () => controller.filteredBloodDetails.isEmpty
-            ? const CommonEmptyResultWidget()
-            : SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: _buildDataTable(),
-                ),
-              ),
+      child: RefreshIndicator(
+        color: AppColors.themeColor,
+        backgroundColor: AppColors.white,
+        onRefresh: () {
+          return controller.getBloodGroupDetails();
+        },
+        child: Obx(
+          () => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: controller.filteredBloodDetails.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: const CommonEmptyResultWidget())
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: _buildDataTable(),
+                    ),
+                  ),
+          ),
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mahall_manager/domain/core/interfaces/validator.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
@@ -29,32 +30,38 @@ class MarriageRegistrationScreen
         appBar: CommonAppbarWidget(title: AppStrings.marriageRegistration),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Form(
-              key: controller.detailsKey,
-              child: Column(
-                children: [
-                  _buildHeadingWidget(context),
-                  _buildDataWidget(context),
-                  const SizedBox(height: 10),
-                  _buildWitnessWidget(context),
-                  const SizedBox(height: 20),
-                  CommonButtonWidget(
-                    onTap: () async {
-                      controller.isExpanded.value = true;
-                      controller.isGroomDetailsExpanded.value = true;
-                      controller.isBrideDetailsExpanded.value = true;
-                      controller.isWitnessDetailsExpanded.value = true;
-                      await Future.delayed(const Duration(milliseconds: 50));
-                      if (controller.detailsKey.currentState!.validate()) {}
-                    },
-                    label: AppStrings.register,
-                    isLoading: false.obs,
+          child: Obx(
+            () => controller.isRegistrationSuccess.value
+                ? _buildSuccessWidget()
+                : SingleChildScrollView(
+                    child: Form(
+                      key: controller.detailsKey,
+                      child: Column(
+                        children: [
+                          _buildHeadingWidget(context),
+                          _buildDataWidget(context),
+                          const SizedBox(height: 10),
+                          _buildWitnessWidget(context),
+                          const SizedBox(height: 20),
+                          CommonButtonWidget(
+                            onTap: () async {
+                              controller.isExpanded.value = true;
+                              controller.isGroomDetailsExpanded.value = true;
+                              controller.isBrideDetailsExpanded.value = true;
+                              controller.isWitnessDetailsExpanded.value = true;
+                              await Future.delayed(
+                                  const Duration(milliseconds: 50));
+                              if (controller.detailsKey.currentState!
+                                  .validate()) {}
+                            },
+                            label: AppStrings.register,
+                            isLoading: false.obs,
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                ],
-              ),
-            ),
           ),
         ),
       ),
@@ -87,10 +94,7 @@ class MarriageRegistrationScreen
               ),
             ),
             !controller.isExpanded.value
-                ? controller.mahallNameController.text.trim().isEmpty ||
-                        controller.mahallAddressController.text
-                            .trim()
-                            .isEmpty ||
+                ? controller.mahallAddressController.text.trim().isEmpty ||
                         controller.committeeNameController.text.trim().isEmpty
                     ? const SizedBox.shrink()
                     : CommonTextWidget(
@@ -98,37 +102,42 @@ class MarriageRegistrationScreen
                         fontWeight: AppMeasures.smallWeight,
                         color: AppColors.blueGrey,
                         text:
-                            '${controller.mahallNameController.text.trim()}, ${controller.committeeNameController.text.trim()}, ${controller.mahallAddressController.text.trim()}')
+                            '${controller.committeeNameController.text.trim()}, ${controller.mahallAddressController.text.trim()}')
                 : Column(
                     children: [
                       const SizedBox(height: 10),
-                      CommonTextFormField(
-                        textController: controller.mahallNameController,
-                        focusNode: controller.mahallNameFocusNode,
-                        label: AppStrings.mahallName,
-                        validator: Validators.required,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(controller.committeeNameFocusNode);
-                        },
+                      Obx(
+                        () => controller.isDataLoading.value
+                            ? const CommonTextFieldShimmerWidget()
+                            : CommonTextFormField(
+                                enabled: false,
+                                disabledBorderColor: AppColors.blueGrey,
+                                disabledLabelColor: AppColors.blueGrey,
+                                textController:
+                                    controller.committeeNameController,
+                                focusNode: controller.committeeNameFocusNode,
+                                label: AppStrings.committeeName,
+                                validator: Validators.required,
+                                onFieldSubmitted: (value) {
+                                  FocusScope.of(context).requestFocus(
+                                      controller.mahallAddressFocusNode);
+                                },
+                              ),
                       ),
                       const SizedBox(height: 10),
-                      CommonTextFormField(
-                        textController: controller.committeeNameController,
-                        focusNode: controller.committeeNameFocusNode,
-                        label: AppStrings.committeeName,
-                        validator: Validators.required,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(controller.mahallAddressFocusNode);
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      CommonTextFormField(
-                        textController: controller.mahallAddressController,
-                        focusNode: controller.mahallAddressFocusNode,
-                        label: AppStrings.address,
-                        validator: Validators.required,
+                      Obx(
+                        () => controller.isDataLoading.value
+                            ? const CommonTextFieldShimmerWidget()
+                            : CommonTextFormField(
+                                enabled: false,
+                                disabledBorderColor: AppColors.blueGrey,
+                                disabledLabelColor: AppColors.blueGrey,
+                                textController:
+                                    controller.mahallAddressController,
+                                focusNode: controller.mahallAddressFocusNode,
+                                label: AppStrings.address,
+                                validator: Validators.required,
+                              ),
                       ),
                     ],
                   )
@@ -652,6 +661,116 @@ class MarriageRegistrationScreen
                     )
             ],
           )),
+    );
+  }
+
+  _buildSuccessWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Lottie.asset('assets/animations/congratulation.json',
+                width: 300, height: 300, fit: BoxFit.cover),
+            CommonTextWidget(
+              text: AppStrings.marriageRegistrationSuccessful,
+              fontSize: AppMeasures.textSize25,
+            ),
+            const SizedBox(height: 20),
+            CommonTextWidget(
+              textAlign: TextAlign.center,
+              text: AppStrings.clickToDownload,
+              color: AppColors.blueGrey.withOpacity(0.7),
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              borderRadius: BorderRadius.circular(10),
+              onTap: () {
+                _generateBottomSheet();
+              },
+              child: CommonTextWidget(
+                text: 'Sample.pdf',
+                color: AppColors.blue,
+              ),
+            )
+
+            //${controller.marriageDetails.first.groomName} - ${controller.marriageDetails.first.brideName} [${controller.marriageDetails.first.marriageRegNo}].pdf
+          ]),
+    );
+  }
+
+  void _generateBottomSheet() {
+    Get.bottomSheet(
+      backgroundColor: AppColors.white,
+      SizedBox(
+        height: 140,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _generateContactButton(
+              iconColor: AppColors.themeColor,
+              title: AppStrings.viewPdf,
+              onTap: () {
+                Get.toNamed(Routes.PDF_VIEWER,
+                        arguments:
+                            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
+                    ?.then((onValue) {
+                  Get.close(0);
+                });
+              },
+              icon: Icons.picture_as_pdf_rounded,
+            ),
+            _generateContactButton(
+              iconColor: AppColors.blue,
+              title: AppStrings.download,
+              onTap: () {
+                controller.savePdf();
+              },
+              icon: Icons.download_rounded,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Action Button Widget
+  Widget _generateContactButton({
+    required String title,
+    required Function() onTap,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.lightGrey.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(color: AppColors.blueGrey),
+            ),
+            child: Icon(
+              icon,
+              color: iconColor,
+              size: 30,
+            ),
+          ),
+          const SizedBox(height: 8),
+          CommonTextWidget(
+            text: title,
+            fontSize: AppMeasures.smallTextSize,
+            fontWeight: FontWeight.w500,
+            color: AppColors.black,
+          ),
+        ],
+      ),
     );
   }
 }

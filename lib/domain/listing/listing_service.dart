@@ -1,3 +1,7 @@
+import 'package:mahall_manager/domain/listing/models/ChartDataModel.dart';
+import 'package:mahall_manager/domain/listing/models/GetDeceasedListModel.dart';
+import 'package:mahall_manager/domain/listing/models/GetReportPdfModel.dart';
+import 'package:mahall_manager/domain/listing/models/MarriageRegistrationModel.dart';
 import 'package:mahall_manager/domain/listing/models/common_response.dart';
 import 'package:mahall_manager/domain/listing/models/get_blood_model.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
@@ -9,6 +13,7 @@ import 'package:mahall_manager/domain/listing/models/mahall_registration_or_deta
 
 import 'models/get_expat_model.dart';
 import 'models/house_registration_model.dart';
+import 'models/input_models/MarriageRegistrationInputModel.dart';
 import 'models/login_model.dart';
 import 'models/payment_success_model.dart';
 
@@ -63,6 +68,8 @@ abstract class ListingService {
 
   Future<GetHouseAndUsersModel> getUserProfile(String authToken);
 
+  Future<GetHouseAndUsersModel> getSingleHouseAndUsers(String authToken);
+
   Future<CommonResponse> resetPassword(String authToken, dynamic params);
 
   Future<CommonResponse> logout(String authToken);
@@ -70,4 +77,20 @@ abstract class ListingService {
   Future<CommonResponse> deleteAccount(String authToken, dynamic params);
 
   Future<PaymentSuccessModel> payment(String authToken, dynamic params);
+
+  Future<GetReportPdfModel> generateReportPdf(String authToken, dynamic params);
+
+  Future<GetReportPdfModel> getReportsPdfList(String authToken);
+
+  Future<CommonResponse> registerDeath(String authToken, dynamic params);
+
+  Future<GetDeceasedListModel> getDeceasedList(String authToken);
+
+  Future<MarriageRegistrationModel> registerMarriage(
+      String authToken, MarriageRegistrationInputModel params);
+
+  Future<MarriageRegistrationModel> getMarriageCertificateList(
+      String authToken);
+
+  Future<ChartDataModel> getChartData(String authToken);
 }

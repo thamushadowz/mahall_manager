@@ -15,9 +15,10 @@ import '../../../domain/core/interfaces/utilities.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
+import '../../../domain/listing/models/ChartDataModel.dart';
+import '../../../domain/listing/models/GetReportPdfModel.dart';
 import '../../../domain/listing/models/get_blood_model.dart';
 import '../../../domain/listing/models/get_expat_model.dart';
-import '../../../infrastructure/dal/models/home/chart_data_model.dart';
 import '../../../infrastructure/navigation/routes.dart';
 import '../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
@@ -34,7 +35,7 @@ class HomeController extends GetxController {
   RxString appBarTitle = AppStrings.dashboard.obs;
   final StorageService storageService = StorageService();
   String userType = '';
-  String mahallName = '';
+
   final userSearchController = TextEditingController();
   final promisesSearchController = TextEditingController();
   final reportSearchController = TextEditingController();
@@ -44,11 +45,14 @@ class HomeController extends GetxController {
   ListingService listingService = Get.find<ListingRepository>();
 
   RxString selectedLanguage = 'English'.obs;
+  RxString mahallName = ''.obs;
   DateTime? lastPressedAt;
   RxInt selectedNavIndex = 0.obs;
   RxInt licenseExpiry = 0.obs;
   RxString fromDate = AppStrings.selectFromDate.obs;
   RxString toDate = AppStrings.selectToDate.obs;
+  RxString reportPdfUrl = 'kjhgfdsth dgfdfghh  dgh '.obs;
+  RxString reportPdfName = '12/08/2024 - 14/08/2024.pdf'.obs;
 
   RxBool isReportFiltering = false.obs;
   RxBool isBloodFiltering = false.obs;
@@ -71,7 +75,9 @@ class HomeController extends GetxController {
   RxBool isOposChecked = false.obs;
   RxBool isOnegChecked = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isReportLoading = false.obs;
   RxBool isLoggingOut = false.obs;
+  RxBool isGenerateReport = false.obs;
 
   Rxn<IncomeExpenseType> selectedIncomeExpType = Rxn<IncomeExpenseType>();
   Rxn<AdminType> selectedAdminType = Rxn<AdminType>();
@@ -104,14 +110,11 @@ class HomeController extends GetxController {
   List<PeopleData> userDetails = [];
   RxList<PromisesData> promisesDetails = RxList([]);
   RxList<ReportsData> reportsDetails = RxList([]);
-  List<BloodData> bloodDetails = [];
-  List<ExpatData> expatDetails = [];
+  RxList<BloodData> bloodDetails = RxList([]);
+  RxList<ExpatData> expatDetails = RxList([]);
   List<PeopleData> userProfile = [];
 
-  List<ChartDataModel> get chartData => [
-        ChartDataModel(category: "Income", amount: income.value),
-        ChartDataModel(category: "Expense", amount: expense.value),
-      ];
+  ChartData chartData = ChartData(totalExpense: '35000', totalIncome: '147000');
 
   @override
   Future<void> onInit() async {
@@ -123,15 +126,17 @@ class HomeController extends GetxController {
 
     if (userType == '2') {
       getUserProfile();
+      getSingleHouseAndUsers();
     } else {
+      getChartData();
       getUserDetails();
       getPromisesDetails();
-      //getReportsDetails();
+      getReportsDetails();
       getExpatsDetails();
     }
     getBloodGroupDetails();
 
-    mahallName = storageService.getMahallName() ?? '';
+    mahallName.value = storageService.getMahallName() ?? '';
     _showLicenseExpiryWarning();
 
     bottomNavIcons = userType == '2'
@@ -359,6 +364,32 @@ class HomeController extends GetxController {
             .getUserProfile(storageService.getToken() ?? '');
         if (response.status == true) {
           userProfile.addAll(response.data!);
+        } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  getSingleHouseAndUsers() async {
+    isLoading.value = true;
+    userDetails.clear();
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetHouseAndUsersModel response = await listingService
+            .getSingleHouseAndUsers(storageService.getToken() ?? '');
+        if (response.status == true) {
+          userDetails.addAll(response.data!);
         } else {}
       } catch (e) {
         showToast(
@@ -999,6 +1030,84 @@ class HomeController extends GetxController {
               title: response.message.toString(),
               type: ToastificationType.success);
           getPromisesDetails();
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  generateReportsPdf(dynamic params) async {
+    isReportLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetReportPdfModel response = await listingService.generateReportPdf(
+            storageService.getToken() ?? '', params);
+        if (response.status == true) {
+          reportPdfUrl.value = response.data!.first.urlLink.toString();
+          reportPdfName.value =
+              '${response.data!.first.fromDate} - ${response.data!.first.toDate}';
+        } else {
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.error);
+        }
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isReportLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isReportLoading.value = false;
+    }
+  }
+
+  void savePdf() async {
+    const pdfUrl =
+        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+    const fileName = 'sample.pdf';
+
+    String? path = await downloadPdfToExternal(pdfUrl, fileName);
+    if (path != null) {
+      print("PDF saved at: $path");
+      Get.close(0);
+      reportPdfName.value = '';
+      reportPdfUrl.value = '';
+      isGenerateReport.value = false;
+    } else {
+      print("Failed to save PDF.");
+    }
+  }
+
+  getChartData() async {
+    isLoading.value = true;
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        ChartDataModel response =
+            await listingService.getChartData(storageService.getToken() ?? '');
+        if (response.status == true) {
+          chartData = response.data!;
+          storageService.saveMahallName(response.data!.mahallName ?? '');
         } else {
           showToast(
               title: response.message.toString(),

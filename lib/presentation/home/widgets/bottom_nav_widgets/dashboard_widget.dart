@@ -17,17 +17,23 @@ class DashboardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            _buildMahallName(),
-            const SizedBox(height: 20),
-            _generatePieChartView(),
-            const SizedBox(height: 20),
-            _buildClickableIcons(),
-          ],
+    return RefreshIndicator(
+      onRefresh: () {
+        return controller.getChartData();
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              _buildMahallName(),
+              const SizedBox(height: 20),
+              _generatePieChartView(),
+              const SizedBox(height: 20),
+              _buildClickableIcons(),
+            ],
+          ),
         ),
       ),
     );
@@ -39,10 +45,12 @@ class DashboardWidget extends StatelessWidget {
         Shimmer.fromColors(
           baseColor: Colors.green,
           highlightColor: Colors.red,
-          child: CommonTextWidget(
-            text: controller.mahallName,
-            textAlign: TextAlign.center,
-            fontSize: AppMeasures.bigTextSize,
+          child: Obx(
+            () => CommonTextWidget(
+              text: controller.mahallName.value,
+              textAlign: TextAlign.center,
+              fontSize: AppMeasures.bigTextSize,
+            ),
           ),
         ),
         Shimmer.fromColors(
@@ -143,6 +151,12 @@ class DashboardWidget extends StatelessWidget {
             image: 'assets/images/deceased.png',
             onTap: () {
               Get.toNamed(Routes.DEATH_LIST);
+            }),
+        _buildIconWithText(
+            title: AppStrings.listOfReports,
+            image: 'assets/images/report.png',
+            onTap: () {
+              Get.toNamed(Routes.REPORTS_LIST);
             }),
       ],
     );

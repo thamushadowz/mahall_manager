@@ -43,6 +43,8 @@ class UsersWidget extends StatelessWidget {
   Expanded _buildUserList(BuildContext context) {
     return Expanded(
       child: RefreshIndicator(
+        color: AppColors.themeColor,
+        backgroundColor: AppColors.white,
         onRefresh: () {
           return controller.getUserDetails();
         },

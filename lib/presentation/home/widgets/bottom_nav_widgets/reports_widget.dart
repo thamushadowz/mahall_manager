@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mahall_manager/domain/core/interfaces/utility_services.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_button_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_clickable_text_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/filter_and_clear_filter_widget.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../../domain/core/interfaces/common_alert.dart';
 import '../../../../infrastructure/navigation/routes.dart';
@@ -65,7 +67,7 @@ class ReportsWidget extends StatelessWidget {
           const SizedBox(width: 50),
           Obx(
             () => CommonTextWidget(
-                text: controller.reportTotal.value.toStringAsFixed(0),
+                text: '₹ ${controller.reportTotal.value.toStringAsFixed(0)}',
                 color: AppColors.white),
           ),
         ],
@@ -76,6 +78,8 @@ class ReportsWidget extends StatelessWidget {
   _buildReportsList(BuildContext context) {
     return Expanded(
       child: RefreshIndicator(
+        color: AppColors.themeColor,
+        backgroundColor: AppColors.white,
         onRefresh: () {
           return controller.getReportsDetails();
         },
@@ -108,160 +112,326 @@ class ReportsWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CommonClickableTextWidget(
-                          padding: const EdgeInsets.all(5),
-                          fontSize: AppMeasures.mediumTextSize,
-                          borderRadius: BorderRadius.circular(10),
-                          title: controller.fromDate.value,
-                          onTap: () async {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now(),
-                            );
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  transitionBuilder: (child, animation) {
+                    final flipAnimation = Tween(begin: 1.0, end: 0.0)
+                        .chain(CurveTween(curve: Curves.easeInOut))
+                        .animate(animation);
 
-                            if (pickedDate != null) {
-                              controller.fromDate.value =
-                                  DateFormat('dd/MM/yyyy').format(pickedDate);
-                              // Automatically set toDate if it's not set or invalid
-                              if (controller.toDate.value !=
-                                  AppStrings.selectToDate) {
-                                DateTime selectedToDate =
-                                    DateFormat('dd/MM/yyyy')
-                                        .parse(controller.toDate.value);
-                                if (pickedDate.isAfter(selectedToDate)) {
-                                  controller.toDate.value =
-                                      ''; // Clear toDate if it's less than fromDate
-                                }
-                              }
-                            }
-                          },
-                          textColor: AppColors.themeColor,
-                          border: Border.all(color: AppColors.themeColor),
-                        ),
-                        const SizedBox(width: 30),
-                        CommonClickableTextWidget(
-                          title: controller.toDate.value,
-                          onTap: () async {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            DateTime? fromPicked = controller.fromDate.value !=
-                                    AppStrings.selectFromDate
-                                ? DateFormat('dd/MM/yyyy')
-                                    .parse(controller.fromDate.value)
-                                : null;
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: fromPicked ?? DateTime.now(),
-                              firstDate: fromPicked ?? DateTime(1900),
-                              lastDate: DateTime.now(),
-                            );
+                    return AnimatedBuilder(
+                      animation: flipAnimation,
+                      builder: (context, child) {
+                        final angle =
+                            flipAnimation.value * 3.14159; // Convert to radians
+                        return Transform(
+                          transform: Matrix4.identity()
+                            ..setEntry(3, 2, 0.001) // Perspective
+                            ..rotateY(angle),
+                          alignment: Alignment.center,
+                          child: flipAnimation.value <= 0.5
+                              ? child
+                              : const Opacity(
+                                  opacity: 0,
+                                  child: SizedBox(), // Prevent flickering
+                                ),
+                        );
+                      },
+                      child: child,
+                    );
+                  },
+                  child: controller.isReportLoading.value
+                      ? SizedBox(
+                          key: const ValueKey('loading'),
+                          width: double.infinity,
+                          height: 100,
+                          child: Image.asset(
+                            'assets/images/spin_loader.gif',
+                            color: AppColors.themeColor,
+                            fit: BoxFit.fitHeight,
+                            width: 30,
+                            height: 30,
+                          ),
+                        )
+                      : controller.reportPdfUrl.value.isNotEmpty
+                          ? Row(
+                              key: const ValueKey('reportGenerated'),
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      CommonTextWidget(
+                                        text: AppStrings.reportGenerated,
+                                        fontSize: AppMeasures.mediumTextSize,
+                                        fontWeight: AppMeasures.smallWeight,
+                                        color: AppColors.blueGrey,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      GestureDetector(
+                                        onTap: () {
+                                          _generateBottomSheet();
+                                        },
+                                        child: CommonTextWidget(
+                                          text: controller.reportPdfName.value,
+                                          color: AppColors.blue,
+                                          fontWeight: AppMeasures.mediumWeight,
+                                          fontSize: AppMeasures.mediumTextSize,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      controller.reportPdfUrl.value = '';
+                                    },
+                                    icon: Material(
+                                        color: AppColors.darkRed,
+                                        elevation: 3,
+                                        borderRadius: BorderRadius.circular(40),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Icon(
+                                            Icons.close,
+                                            color: AppColors.white,
+                                          ),
+                                        ))),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                //Date Filter
+                                Row(
+                                  children: [
+                                    CommonClickableTextWidget(
+                                      padding: const EdgeInsets.all(5),
+                                      fontSize: AppMeasures.mediumTextSize,
+                                      borderRadius: BorderRadius.circular(10),
+                                      title: controller.fromDate.value,
+                                      onTap: () async {
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
+                                        DateTime? pickedDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime.now(),
+                                        );
 
-                            if (pickedDate != null) {
-                              String formattedDate =
-                                  DateFormat('dd/MM/yyyy').format(pickedDate);
+                                        if (pickedDate != null) {
+                                          controller.fromDate.value =
+                                              DateFormat('dd/MM/yyyy')
+                                                  .format(pickedDate);
+                                          // Automatically set toDate if it's not set or invalid
+                                          if (controller.toDate.value !=
+                                              AppStrings.selectToDate) {
+                                            DateTime selectedToDate =
+                                                DateFormat('dd/MM/yyyy').parse(
+                                                    controller.toDate.value);
+                                            if (pickedDate
+                                                .isAfter(selectedToDate)) {
+                                              controller.toDate.value =
+                                                  ''; // Clear toDate if it's less than fromDate
+                                            }
+                                          }
+                                        }
+                                      },
+                                      textColor: AppColors.themeColor,
+                                      border: Border.all(
+                                          color: AppColors.themeColor),
+                                    ),
+                                    controller.fromDate.value ==
+                                            AppStrings.selectFromDate
+                                        ? const SizedBox.shrink()
+                                        : const SizedBox(width: 30),
+                                    Obx(
+                                      () => controller.fromDate.value ==
+                                              AppStrings.selectFromDate
+                                          ? const SizedBox.shrink()
+                                          : CommonClickableTextWidget(
+                                              title: controller.toDate.value,
+                                              onTap: () async {
+                                                FocusScope.of(context)
+                                                    .requestFocus(FocusNode());
+                                                DateTime? fromPicked =
+                                                    controller.fromDate.value !=
+                                                            AppStrings
+                                                                .selectFromDate
+                                                        ? DateFormat(
+                                                                'dd/MM/yyyy')
+                                                            .parse(controller
+                                                                .fromDate.value)
+                                                        : null;
+                                                DateTime? pickedDate =
+                                                    await showDatePicker(
+                                                  context: context,
+                                                  initialDate: fromPicked ??
+                                                      DateTime.now(),
+                                                  firstDate: fromPicked ??
+                                                      DateTime(1900),
+                                                  lastDate: DateTime.now(),
+                                                );
 
-                              controller.toDate.value = formattedDate;
-                            }
-                          },
-                          fontSize: AppMeasures.mediumTextSize,
-                          padding: const EdgeInsets.all(5),
-                          borderRadius: BorderRadius.circular(10),
-                          textColor: AppColors.themeColor,
-                          border: Border.all(color: AppColors.themeColor),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const Divider(),
-                    Obx(() => Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Checkbox(
-                              value: controller.isIncomeChecked.value,
-                              activeColor: AppColors.themeColor,
-                              onChanged: (value) {
-                                controller.toggleIncomeCheckbox();
-                              },
+                                                if (pickedDate != null) {
+                                                  String formattedDate =
+                                                      DateFormat('dd/MM/yyyy')
+                                                          .format(pickedDate);
+
+                                                  controller.toDate.value =
+                                                      formattedDate;
+                                                }
+                                              },
+                                              fontSize:
+                                                  AppMeasures.mediumTextSize,
+                                              padding: const EdgeInsets.all(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              textColor: AppColors.themeColor,
+                                              border: Border.all(
+                                                  color: AppColors.themeColor),
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                const Divider(),
+                                //Income Expense Filter
+                                controller.isGenerateReport.value
+                                    ? const SizedBox.shrink()
+                                    : Obx(() => Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Checkbox(
+                                              value: controller
+                                                  .isIncomeChecked.value,
+                                              activeColor: AppColors.themeColor,
+                                              onChanged: (value) {
+                                                controller
+                                                    .toggleIncomeCheckbox();
+                                              },
+                                            ),
+                                            CommonTextWidget(
+                                              text: 'Income',
+                                              fontSize:
+                                                  AppMeasures.mediumTextSize,
+                                            ),
+                                            Checkbox(
+                                              value: controller
+                                                  .isExpenseChecked.value,
+                                              activeColor: AppColors.themeColor,
+                                              onChanged: (value) {
+                                                controller
+                                                    .toggleExpenseCheckbox();
+                                              },
+                                            ),
+                                            CommonTextWidget(
+                                              text: 'Expense',
+                                              fontSize:
+                                                  AppMeasures.mediumTextSize,
+                                            ),
+                                          ],
+                                        )),
+                                controller.isGenerateReport.value
+                                    ? const SizedBox.shrink()
+                                    : const Divider(),
+                                //Admin Filter
+                                controller.isGenerateReport.value
+                                    ? const SizedBox.shrink()
+                                    : Obx(() => Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Checkbox(
+                                              value: controller
+                                                  .isPresidentChecked.value,
+                                              activeColor: AppColors.themeColor,
+                                              onChanged: (value) {
+                                                controller
+                                                    .togglePresidentCheckbox();
+                                              },
+                                            ),
+                                            CommonTextWidget(
+                                              text: 'President',
+                                              fontSize:
+                                                  AppMeasures.mediumTextSize,
+                                            ),
+                                            Checkbox(
+                                              value: controller
+                                                  .isSecretaryChecked.value,
+                                              activeColor: AppColors.themeColor,
+                                              onChanged: (value) {
+                                                controller
+                                                    .toggleSecretaryCheckbox();
+                                              },
+                                            ),
+                                            CommonTextWidget(
+                                              text: 'Secretary',
+                                              fontSize:
+                                                  AppMeasures.mediumTextSize,
+                                            ),
+                                            Checkbox(
+                                              value: controller
+                                                  .isTreasurerChecked.value,
+                                              activeColor: AppColors.themeColor,
+                                              onChanged: (value) {
+                                                controller
+                                                    .toggleTreasurerCheckbox();
+                                              },
+                                            ),
+                                            CommonTextWidget(
+                                              text: 'Treasurer',
+                                              fontSize:
+                                                  AppMeasures.mediumTextSize,
+                                            ),
+                                          ],
+                                        )),
+                                controller.isGenerateReport.value
+                                    ? const SizedBox.shrink()
+                                    : const Divider(),
+                                const SizedBox(height: 10),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: CommonButtonWidget(
+                                    width: 120,
+                                    onTap: () {
+                                      if (controller.isGenerateReport.value) {
+                                        if (controller.fromDate.value ==
+                                            AppStrings.selectFromDate) {
+                                          showToast(
+                                              title: AppStrings
+                                                  .selectDateToGenerate,
+                                              type: ToastificationType.error);
+                                        } else {
+                                          controller.generateReportsPdf({
+                                            "from_date":
+                                                controller.fromDate.value,
+                                            "to_date":
+                                                controller.toDate.value ==
+                                                        AppStrings.selectToDate
+                                                    ? controller.fromDate.value
+                                                    : controller.toDate.value
+                                          });
+                                        }
+                                      } else {
+                                        controller
+                                                .isReportFilterSubmitted.value =
+                                            controller.checkReportFilters();
+                                        controller.applyFilters();
+                                        controller.isReportFiltering.value =
+                                            false;
+                                      }
+                                    },
+                                    label: AppStrings.submit,
+                                    isLoading: false.obs,
+                                  ),
+                                )
+                              ],
                             ),
-                            CommonTextWidget(
-                              text: 'Income',
-                              fontSize: AppMeasures.mediumTextSize,
-                            ),
-                            Checkbox(
-                              value: controller.isExpenseChecked.value,
-                              activeColor: AppColors.themeColor,
-                              onChanged: (value) {
-                                controller.toggleExpenseCheckbox();
-                              },
-                            ),
-                            CommonTextWidget(
-                              text: 'Expense',
-                              fontSize: AppMeasures.mediumTextSize,
-                            ),
-                          ],
-                        )),
-                    const Divider(),
-                    Obx(() => Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Checkbox(
-                              value: controller.isPresidentChecked.value,
-                              activeColor: AppColors.themeColor,
-                              onChanged: (value) {
-                                controller.togglePresidentCheckbox();
-                              },
-                            ),
-                            CommonTextWidget(
-                              text: 'President',
-                              fontSize: AppMeasures.mediumTextSize,
-                            ),
-                            Checkbox(
-                              value: controller.isSecretaryChecked.value,
-                              activeColor: AppColors.themeColor,
-                              onChanged: (value) {
-                                controller.toggleSecretaryCheckbox();
-                              },
-                            ),
-                            CommonTextWidget(
-                              text: 'Secretary',
-                              fontSize: AppMeasures.mediumTextSize,
-                            ),
-                            Checkbox(
-                              value: controller.isTreasurerChecked.value,
-                              activeColor: AppColors.themeColor,
-                              onChanged: (value) {
-                                controller.toggleTreasurerCheckbox();
-                              },
-                            ),
-                            CommonTextWidget(
-                              text: 'Treasurer',
-                              fontSize: AppMeasures.mediumTextSize,
-                            ),
-                          ],
-                        )),
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: CommonButtonWidget(
-                        width: 120,
-                        onTap: () {
-                          controller.isReportFilterSubmitted.value =
-                              controller.checkReportFilters();
-                          controller.applyFilters();
-                          controller.isReportFiltering.value = false;
-                        },
-                        label: AppStrings.submit,
-                        isLoading: false.obs,
-                      ),
-                    )
-                  ],
                 ),
               ),
             )
@@ -270,13 +440,24 @@ class ReportsWidget extends StatelessWidget {
   }
 
   _buildFilterAndClearFilterOption() {
-    return Obx(() => FilterAndClearFilterWidget(
+    return Obx(
+      () => FilterAndClearFilterWidget(
+        isFromReports: true,
         isFilterSubmitted: controller.isReportFilterSubmitted.value,
         onClearFilterTap: controller.clearReportFilters,
         onFilterTap: () {
           controller.isReportFiltering.value =
               !controller.isReportFiltering.value;
-        }));
+          controller.isGenerateReport.value = false;
+          controller.reportPdfUrl.value = '';
+          controller.reportPdfName.value = '';
+        },
+        onGenerateTap: () {
+          controller.isReportFiltering.value = true;
+          controller.isGenerateReport.value = true;
+        },
+      ),
+    );
   }
 
   Widget _buildDataTable(BuildContext context) {
@@ -424,6 +605,78 @@ class ReportsWidget extends StatelessWidget {
           ],
         );
       }).toList(),
+    );
+  }
+
+  void _generateBottomSheet() {
+    Get.bottomSheet(
+      backgroundColor: AppColors.white,
+      SizedBox(
+        height: 140,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _generateContactButton(
+              iconColor: AppColors.themeColor,
+              title: AppStrings.viewPdf,
+              onTap: () {
+                Get.toNamed(Routes.PDF_VIEWER,
+                        arguments: /*controller.reportPdfUrl.value*/
+                            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
+                    ?.then((onValue) {
+                  Get.close(0);
+                });
+              },
+              icon: Icons.picture_as_pdf_rounded,
+            ),
+            _generateContactButton(
+              iconColor: AppColors.blue,
+              title: AppStrings.download,
+              onTap: () {
+                controller.savePdf();
+              },
+              icon: Icons.download_rounded,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Action Button Widget
+  Widget _generateContactButton({
+    required String title,
+    required Function() onTap,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.lightGrey.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(color: AppColors.blueGrey),
+            ),
+            child: Icon(
+              icon,
+              color: iconColor,
+              size: 30,
+            ),
+          ),
+          const SizedBox(height: 8),
+          CommonTextWidget(
+            text: title,
+            fontSize: AppMeasures.smallTextSize,
+            fontWeight: FontWeight.w500,
+            color: AppColors.black,
+          ),
+        ],
+      ),
     );
   }
 }

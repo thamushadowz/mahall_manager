@@ -55,7 +55,7 @@ class PromisesWidget extends StatelessWidget {
           const SizedBox(width: 50),
           Obx(
             () => CommonTextWidget(
-                text: controller.promisesTotal.value.toStringAsFixed(0),
+                text: '₹ ${controller.promisesTotal.value.toStringAsFixed(0)}',
                 color: AppColors.white),
           ),
         ],
@@ -66,6 +66,8 @@ class PromisesWidget extends StatelessWidget {
   Expanded _buildPromisesList(BuildContext context) {
     return Expanded(
         child: RefreshIndicator(
+      color: AppColors.themeColor,
+      backgroundColor: AppColors.white,
       onRefresh: () {
         return controller.getPromisesDetails();
       },

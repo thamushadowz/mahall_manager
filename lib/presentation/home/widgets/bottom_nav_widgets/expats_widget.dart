@@ -21,34 +21,46 @@ class ExpatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return controller.userType == '2'
         ? UserProfileWidget(controller: controller)
-        : Column(
-            children: [
-              controller.expatDetails.isEmpty
-                  ? const SizedBox.shrink()
-                  : Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: CommonTextFormField(
-                        suffixIcon: Icons.search,
-                        textController: controller.expatSearchController,
+        : Obx(
+            () => Column(
+              children: [
+                controller.expatDetails.isEmpty
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CommonTextFormField(
+                          suffixIcon: Icons.search,
+                          textController: controller.expatSearchController,
+                        ),
                       ),
-                    ),
-              _buildExpatsList(),
-            ],
+                _buildExpatsList(context),
+              ],
+            ),
           );
   }
 
-  Expanded _buildExpatsList() {
+  Expanded _buildExpatsList(BuildContext context) {
     return Expanded(
-      child: Obx(
-        () => controller.filteredExpatDetails.isEmpty
-            ? const CommonEmptyResultWidget()
-            : SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: _buildDataTable(),
-                ),
-              ),
+      child: RefreshIndicator(
+        color: AppColors.themeColor,
+        backgroundColor: AppColors.white,
+        onRefresh: () {
+          return controller.getExpatsDetails();
+        },
+        child: Obx(() => SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: controller.filteredExpatDetails.isEmpty
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: const CommonEmptyResultWidget())
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: _buildDataTable(),
+                      ),
+                    ),
+            )),
       ),
     );
   }

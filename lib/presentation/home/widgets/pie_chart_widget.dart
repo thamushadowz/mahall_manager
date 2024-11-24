@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
@@ -11,45 +10,47 @@ class PieChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => PieChart(
-          PieChartData(
-            sections: controller.chartData.asMap().entries.map((entry) {
-              int index = entry.key;
-              final data = entry.value;
-              final isIncome = data.category == "Income";
-              final isSelected = index == controller.selectedSectionIndex.value;
-
-              final titleText = isSelected
-                  ? "₹${data.amount.toStringAsFixed(1)}"
-                  : "${((data.amount / (controller.income.value + controller.expense.value)) * 100).toStringAsFixed(1)}%";
-
-              return PieChartSectionData(
-                color: isIncome ? AppColors.themeColor : AppColors.darkRed,
-                value: data.amount,
-                title: titleText,
-                radius: isSelected ? 80 : 70, // Expanded radius if selected
-                titleStyle: TextStyle(
-                  fontSize: AppMeasures.mediumTextSize,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.white,
-                ),
-              );
-            }).toList(),
-            centerSpaceRadius: 40,
-            sectionsSpace: 2,
-            pieTouchData: PieTouchData(
-              touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                if (!event.isInterestedForInteractions ||
-                    pieTouchResponse == null ||
-                    pieTouchResponse.touchedSection == null) {
-                  controller.selectedSectionIndex.value = -1;
-                  return;
-                }
-                controller.selectedSectionIndex.value =
-                    pieTouchResponse.touchedSection!.touchedSectionIndex;
-              },
+    return PieChart(
+      PieChartData(
+        sections: [
+          PieChartSectionData(
+            color: AppColors.themeColor,
+            value: double.parse(controller.chartData.totalIncome ?? ''),
+            title: '₹ ${controller.chartData.totalIncome}',
+            radius: 80,
+            titleStyle: TextStyle(
+              fontSize: AppMeasures.mediumTextSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.white,
             ),
           ),
-        ));
+          PieChartSectionData(
+            color: AppColors.darkRed,
+            value: double.parse(controller.chartData.totalExpense ?? ''),
+            title: '₹ ${controller.chartData.totalExpense}',
+            radius: 70,
+            titleStyle: TextStyle(
+              fontSize: AppMeasures.mediumTextSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.white,
+            ),
+          )
+        ],
+        centerSpaceRadius: 40,
+        sectionsSpace: 2,
+        pieTouchData: PieTouchData(
+          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+            if (!event.isInterestedForInteractions ||
+                pieTouchResponse == null ||
+                pieTouchResponse.touchedSection == null) {
+              controller.selectedSectionIndex.value = -1;
+              return;
+            }
+            controller.selectedSectionIndex.value =
+                pieTouchResponse.touchedSection!.touchedSectionIndex;
+          },
+        ),
+      ),
+    );
   }
 }

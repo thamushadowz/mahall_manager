@@ -4,15 +4,14 @@ import 'package:mahall_manager/presentation/common_widgets/common_empty_result_w
 import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 
 import '../../infrastructure/theme/colors/app_colors.dart';
-import '../../infrastructure/theme/measures/app_measures.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_appbar_widget.dart';
+import '../common_widgets/common_download_item_widget.dart';
 import '../common_widgets/common_text_form_field.dart';
-import '../common_widgets/common_text_widget.dart';
-import 'controllers/death_list.controller.dart';
+import 'controllers/reports_list.controller.dart';
 
-class DeathListScreen extends GetView<DeathListController> {
-  const DeathListScreen({super.key});
+class ReportsListScreen extends GetView<ReportsListController> {
+  const ReportsListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +22,10 @@ class DeathListScreen extends GetView<DeathListController> {
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: CommonAppbarWidget(
-          title: AppStrings.listOfDeceased,
+          title: AppStrings.listOfReports,
         ),
-        body: Obx(
-            () => !controller.isLoading.value && controller.deathList.isEmpty
+        body:
+            Obx(() => !controller.isLoading.value && controller.pdfList.isEmpty
                 ? const CommonEmptyResultWidget()
                 : Column(
                     children: [
@@ -34,50 +33,40 @@ class DeathListScreen extends GetView<DeathListController> {
                         padding: const EdgeInsets.all(10.0),
                         child: CommonTextFormField(
                           suffixIcon: Icons.search,
-                          textController: controller.deathSearchController,
+                          textController: controller.reportSearchController,
                         ),
                       ),
-                      _buildDeceasedList(),
+                      _buildReportsList(),
                     ],
                   )),
       ),
     );
   }
 
-  _buildDeceasedList() {
+  _buildReportsList() {
     return Obx(
       () => Expanded(
-        child: ListView.separated(
-            separatorBuilder: (context, index) {
-              return const Divider();
-            },
+        child: ListView.builder(
             padding: const EdgeInsets.all(10),
             itemCount:
-                controller.isLoading.value ? 20 : controller.deathList.length,
+                controller.isLoading.value ? 20 : controller.pdfList.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return controller.isLoading.value
                   ? const Padding(
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 10.0),
                       child: CommonTextFieldShimmerWidget(),
                     )
-                  : _buildItemView(index);
+                  : CommonDownloadItemWidget(
+                      name:
+                          '${controller.pdfList[index].fromDate} - ${controller.pdfList[index].toDate}',
+                      onDownloadTap: () {
+                        print('Tapped on Report ${index + 1}');
+                        controller.savePdf(
+                            '${controller.pdfList[index].fromDate} - ${controller.pdfList[index].toDate}.pdf',
+                            controller.pdfList[index].urlLink ?? '');
+                      });
             }),
-      ),
-    );
-  }
-
-  _buildItemView(int index) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: AppColors.lightGrey.withOpacity(0.2)),
-      child: CommonTextWidget(
-        text:
-            '${controller.deathList[index].personName} : ${controller.deathList[index].houseRegNo} - ${controller.deathList[index].houseName}',
-        fontSize: AppMeasures.mediumTextSize,
-        fontWeight: AppMeasures.mediumWeight,
       ),
     );
   }

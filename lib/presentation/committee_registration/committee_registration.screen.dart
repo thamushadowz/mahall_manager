@@ -27,19 +27,17 @@ class CommitteeRegistrationScreen
         actions: [
           controller.adminCode.value != '1'
               ? const SizedBox()
-              : InkWell(
-                  onTap: () {
+              : IconButton(
+                  onPressed: () {
                     controller.isEditMode.value = !controller.isEditMode.value;
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Obx(
-                      () => Icon(controller.isEditMode.value
-                          ? Icons.edit_off_outlined
-                          : Icons.edit),
-                    ),
+                  icon: Obx(
+                    () => Icon(controller.isEditMode.value
+                        ? Icons.edit_off_outlined
+                        : Icons.edit),
                   ),
-                )
+                ),
+          const SizedBox(width: 10),
         ],
         title: AppLocalizations.of(context)!.committee_registration,
       ),

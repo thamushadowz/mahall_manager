@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/listing/models/GetReportPdfModel.dart';
 import 'package:mahall_manager/domain/listing/models/common_response.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
 import 'package:mahall_manager/domain/listing/models/house_registration_model.dart';
@@ -6,11 +7,15 @@ import 'package:mahall_manager/domain/listing/models/payment_success_model.dart'
 
 import '../../infrastructure/dal/services/api_service.dart';
 import 'listing_service.dart';
+import 'models/ChartDataModel.dart';
+import 'models/GetDeceasedListModel.dart';
+import 'models/MarriageRegistrationModel.dart';
 import 'models/get_blood_model.dart';
 import 'models/get_expat_model.dart';
 import 'models/get_place_model.dart';
 import 'models/get_promises_model.dart';
 import 'models/get_reports_model.dart';
+import 'models/input_models/MarriageRegistrationInputModel.dart';
 import 'models/input_models/mahall_registration_input_model.dart';
 import 'models/login_model.dart';
 import 'models/mahall_registration_or_details_model.dart';
@@ -449,6 +454,24 @@ class ListingRepository implements ListingService {
   }
 
   @override
+  Future<GetHouseAndUsersModel> getSingleHouseAndUsers(String authToken) async {
+    GetHouseAndUsersModel getHouseAndUsersModel;
+    final response = await apiService.reqst(
+      url: 'house/user/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getHouseAndUsersModel = GetHouseAndUsersModel.fromJson(response.body);
+      return getHouseAndUsersModel;
+    } catch (e) {
+      print('Exception :::: $e');
+      return GetHouseAndUsersModel();
+    }
+  }
+
+  @override
   Future<CommonResponse> resetPassword(String authToken, params) async {
     CommonResponse commonResponse;
     print('Input : $params');
@@ -519,6 +542,135 @@ class ListingRepository implements ListingService {
       return paymentSuccessModel;
     } catch (e) {
       return PaymentSuccessModel();
+    }
+  }
+
+  @override
+  Future<GetReportPdfModel> generateReportPdf(String authToken, params) async {
+    GetReportPdfModel getReportPdfModel;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'reports/generate-pdf',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getReportPdfModel = GetReportPdfModel.fromJson(response.body);
+      return getReportPdfModel;
+    } catch (e) {
+      return GetReportPdfModel();
+    }
+  }
+
+  @override
+  Future<GetReportPdfModel> getReportsPdfList(String authToken) async {
+    GetReportPdfModel getReportPdfModel;
+    final response = await apiService.reqst(
+      url: 'reports/generate-pdf/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getReportPdfModel = GetReportPdfModel.fromJson(response.body);
+      return getReportPdfModel;
+    } catch (e) {
+      return GetReportPdfModel();
+    }
+  }
+
+  @override
+  Future<CommonResponse> registerDeath(String authToken, dynamic params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'death/add',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<GetDeceasedListModel> getDeceasedList(String authToken) async {
+    GetDeceasedListModel getDeceasedListModel;
+    final response = await apiService.reqst(
+      url: 'death/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getDeceasedListModel = GetDeceasedListModel.fromJson(response.body);
+      return getDeceasedListModel;
+    } catch (e) {
+      return GetDeceasedListModel();
+    }
+  }
+
+  @override
+  Future<MarriageRegistrationModel> registerMarriage(
+      String authToken, MarriageRegistrationInputModel params) async {
+    MarriageRegistrationModel marriageRegistrationModel;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'marriage/add',
+      authToken: authToken,
+      method: Method.POST,
+      params: params.toJson(),
+    );
+    print('Response::: ${response.body}');
+    try {
+      marriageRegistrationModel =
+          MarriageRegistrationModel.fromJson(response.body);
+      return marriageRegistrationModel;
+    } catch (e) {
+      return MarriageRegistrationModel();
+    }
+  }
+
+  @override
+  Future<MarriageRegistrationModel> getMarriageCertificateList(
+      String authToken) async {
+    MarriageRegistrationModel marriageRegistrationModel;
+    final response = await apiService.reqst(
+      url: 'marriage/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      marriageRegistrationModel =
+          MarriageRegistrationModel.fromJson(response.body);
+      return marriageRegistrationModel;
+    } catch (e) {
+      return MarriageRegistrationModel();
+    }
+  }
+
+  @override
+  Future<ChartDataModel> getChartData(String authToken) async {
+    ChartDataModel chartDataModel;
+    final response = await apiService.reqst(
+      url: 'chart-data',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      chartDataModel = ChartDataModel.fromJson(response.body);
+      return chartDataModel;
+    } catch (e) {
+      return ChartDataModel();
     }
   }
 }

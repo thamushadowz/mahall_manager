@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 
 import '../../config.dart';
@@ -132,6 +133,16 @@ class Nav {
       name: Routes.DEATH_LIST,
       page: () => const DeathListScreen(),
       binding: DeathListControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PDF_VIEWER,
+      page: () => const PdfViewerScreen(),
+      binding: PdfViewerControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.REPORTS_LIST,
+      page: () => const ReportsListScreen(),
+      binding: ReportsListControllerBinding(),
     ),
   ];
 }

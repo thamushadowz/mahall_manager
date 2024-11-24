@@ -131,7 +131,9 @@ class DeathRegistrationScreen extends GetView<DeathRegistrationController> {
                 const SizedBox(height: 20),
                 CommonButtonWidget(
                     onTap: () {
-                      if (controller.formKey.currentState!.validate()) {}
+                      if (controller.formKey.currentState!.validate()) {
+                        controller.registerDeath();
+                      }
                     },
                     label: AppStrings.submit,
                     isLoading: controller.isLoading),

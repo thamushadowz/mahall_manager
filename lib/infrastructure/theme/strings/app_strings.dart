@@ -74,7 +74,10 @@ class AppStrings {
   static String download = 'Download';
   static String listOfDeceased = 'List Of Deceased';
   static String nameOfDeceased = 'Name Of Deceased';
+  static String listOfReports = 'List of Reports';
   static String notInTheList = 'Not in the list? Add name Here';
+  static String generateReport = 'Generate Report';
+  static String viewPdf = 'View PDF';
 
   static String male = 'Male';
   static String female = 'Female';
@@ -165,6 +168,14 @@ class AppStrings {
   static String placeRegistrationSuccess = 'Place Registration Successful';
   static String addressReqd = 'Address Required';
   static String nameReqd = 'Name Required';
+  static String marriageRegistrationSuccessful =
+      'Marriage registration successful';
+  static String selectDateToGenerate =
+      'Please Select the date to generate report!';
+  static String reportGenerated =
+      'Report generated. Click to view or download the PDF. It\'s also available in the \'List of Reports\' on the Dashboard.';
+  static String clickToDownload =
+      'Click below to view or download PDF. It\'s also available in the \'Marriage Certificates\' on the Dashboard.';
 
   ///Policy Related Strings
   static String craftedWithAllerTempus =

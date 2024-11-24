@@ -118,6 +118,7 @@ class CommitteeRegistrationController extends GetxController {
           showToast(
               title: response.message.toString(),
               type: ToastificationType.success);
+          _storageService.saveMahallName(mahallNameController.text.trim());
           if (adminCode.value == '0') {
             clearAll();
           }
@@ -314,6 +315,7 @@ class CommitteeRegistrationController extends GetxController {
           showToast(
               title: response.message.toString(),
               type: ToastificationType.success);
+          _storageService.saveMahallName(mahallNameController.text.trim());
           if (adminCode.value == '0') {
             clearAll();
           }

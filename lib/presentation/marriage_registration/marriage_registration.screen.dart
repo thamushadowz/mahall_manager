@@ -52,10 +52,12 @@ class MarriageRegistrationScreen
                               await Future.delayed(
                                   const Duration(milliseconds: 50));
                               if (controller.detailsKey.currentState!
-                                  .validate()) {}
+                                  .validate()) {
+                                controller.registerMarriage();
+                              }
                             },
                             label: AppStrings.register,
-                            isLoading: false.obs,
+                            isLoading: controller.isLoading,
                           ),
                           const SizedBox(height: 10),
                         ],

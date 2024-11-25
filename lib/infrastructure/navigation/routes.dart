@@ -24,8 +24,9 @@ class Routes {
   static const PROFILE = '/profile';
   static const PROMISES = '/promises';
   static const REGISTRATION = '/registration';
+  static const REPORTS_LIST = '/reports-list';
   static const RESET_PASSWORD = '/reset-password';
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
-  static const REPORTS_LIST = '/reports-list';
+  static const QIBLA_FINDER = '/qibla-finder';
 }

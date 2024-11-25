@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
+import 'package:mahall_manager/presentation/common_widgets/common_empty_result_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 
@@ -13,15 +15,30 @@ class SingleUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _buildUserTable(),
-          const SizedBox(height: 30),
-        ],
-      ),
+    return Obx(
+      () => controller.isLoading.value
+          ? Center(
+              child: CircularProgressIndicator(
+                color: AppColors.themeColor,
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: controller.userDetails.isEmpty
+                  ? const CommonEmptyResultWidget()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _buildUserTable(),
+                        controller.promisesDetails.isEmpty
+                            ? const SizedBox.shrink()
+                            : const SizedBox(height: 50),
+                        controller.promisesDetails.isEmpty
+                            ? const SizedBox.shrink()
+                            : _buildPromisesWidget(context),
+                      ],
+                    ),
+            ),
     );
   }
 
@@ -99,23 +116,22 @@ class SingleUserWidget extends StatelessWidget {
                 return DataRow(
                   cells: [
                     DataCell(CommonTextWidget(
-                      text: user.userRegNo ?? 'U01',
+                      text: user.userRegNo ?? '',
                       fontSize: AppMeasures.mediumTextSize,
                       color: AppColors.black,
                     )),
                     DataCell(CommonTextWidget(
-                      text:
-                          '${user.fName ?? 'Shameer'} ${user.lName ?? 'Muhammed'}',
+                      text: '${user.fName ?? ''} ${user.lName ?? ''}',
                       fontSize: AppMeasures.mediumTextSize,
                       color: AppColors.black,
                     )),
                     DataCell(CommonTextWidget(
-                      text: user.phone ?? '+918745632712',
+                      text: user.phone ?? '',
                       fontSize: AppMeasures.mediumTextSize,
                       color: AppColors.black,
                     )),
                     DataCell(CommonTextWidget(
-                      text: user.due ?? '5600',
+                      text: user.due ?? '',
                       fontSize: AppMeasures.mediumTextSize,
                       color: AppColors.black,
                     )),
@@ -233,9 +249,7 @@ class SingleUserWidget extends StatelessWidget {
                         ? const SizedBox.shrink()
                         : */
                       CommonTextWidget(
-                    text:
-                        /*houses[0].totalDue ??*/
-                        '5600',
+                    text: controller.userDetails.first.totalDue ?? '5600',
                     fontSize: AppMeasures.mediumTextSize,
                     color: AppColors.themeColor,
                   )),
@@ -271,6 +285,151 @@ class SingleUserWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  _buildPromisesWidget(BuildContext context) {
+    return Column(
+      children: [
+        CommonTextWidget(
+            text: '${AppStrings.promises} (${AppStrings.vagdhanangal})'),
+        const Divider(),
+        _buildDataTable(context),
+      ],
+    );
+  }
+
+  Widget _buildDataTable(BuildContext context) {
+    return DataTable(
+      columnSpacing: 20,
+      headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+      columns: [
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.name,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.description,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.date,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.amount,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.addedBy,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),
+        /*DataColumn(
+          label: CommonTextWidget(
+            text: AppStrings.actions,
+            fontWeight: AppMeasures.mediumWeight,
+            fontSize: AppMeasures.mediumTextSize,
+            color: AppColors.white,
+          ),
+        ),*/
+      ],
+      rows: controller.promisesDetails.map((promises) {
+        return DataRow(
+          cells: [
+            DataCell(CommonTextWidget(
+              text:
+                  '${promises.userRegNo} - ${promises.fName} ${promises.lName}',
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+            )),
+            DataCell(CommonTextWidget(
+              text: promises.description ?? '',
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+            )),
+            DataCell(CommonTextWidget(
+              text: promises.date ?? '',
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.smallTextSize,
+              color: AppColors.darkRed.withOpacity(0.6),
+            )),
+            DataCell(CommonTextWidget(
+              text: promises.amount.toString(),
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+            )),
+            DataCell(CommonTextWidget(
+              text: controller.getAddedBy(promises.addedBy.toString()),
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+            )),
+            /*DataCell(
+              Row(
+                children: [
+                  CommonClickableTextWidget(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: AppColors.themeColor),
+                    textColor: AppColors.themeColor,
+                    title: AppStrings.collectMoney,
+                    onTap: () {
+                      Get.toNamed(Routes.PAYMENT_SCREEN,
+                          arguments: {'promises': promises});
+                    },
+                  ),
+                  //Edit
+                  IconButton(
+                    icon: Icon(
+                      Icons.edit_note_rounded,
+                      color: AppColors.blueGrey,
+                    ),
+                    onPressed: () async {
+                      Get.toNamed(Routes.PROMISES, arguments: promises)
+                          ?.then((onValue) {
+                        controller.getPromisesDetails();
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      color: AppColors.darkRed,
+                    ),
+                    onPressed: () {
+                      showCommonDialog(context,
+                          message: AppStrings.areYouSureToDelete,
+                          yesButtonName: AppStrings.delete,
+                          messageColor: AppColors.darkRed, onYesTap: () {
+                            controller.deletePromises(promises.id!);
+                            Get.close(0);
+                          });
+                    },
+                  ),
+                ],
+              ),
+            ),*/
+          ],
+        );
+      }).toList(),
     );
   }
 }

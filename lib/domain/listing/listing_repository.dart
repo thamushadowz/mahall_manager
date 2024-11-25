@@ -472,6 +472,24 @@ class ListingRepository implements ListingService {
   }
 
   @override
+  Future<GetPromisesModel> getSingleHousePromises(String authToken) async {
+    GetPromisesModel getPromisesModel;
+    final response = await apiService.reqst(
+      url: 'house/promises/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      getPromisesModel = GetPromisesModel.fromJson(response.body);
+      return getPromisesModel;
+    } catch (e) {
+      print('Exception :::: $e');
+      return GetPromisesModel();
+    }
+  }
+
+  @override
   Future<CommonResponse> resetPassword(String authToken, params) async {
     CommonResponse commonResponse;
     print('Input : $params');

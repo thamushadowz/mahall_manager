@@ -136,6 +136,8 @@ class AppStrings {
   static String users = 'Users';
   static String reports = 'Reports';
   static String blood = 'Blood Donors';
+  static String islamic = 'Islamic';
+  static String qiblaFinder = 'Qibla Finder';
   static String expat = 'Expats (പ്രവാസികൾ)';
   static String close = 'Close';
   static String update = 'Update';

@@ -107,14 +107,14 @@ class HomeController extends GetxController {
   List<String> bottomNavTitles = [];
   List<Widget> bottomNavIcons = [];
 
-  List<PeopleData> userDetails = [];
+  RxList<PeopleData> userDetails = RxList([]);
   RxList<PromisesData> promisesDetails = RxList([]);
   RxList<ReportsData> reportsDetails = RxList([]);
   RxList<BloodData> bloodDetails = RxList([]);
   RxList<ExpatData> expatDetails = RxList([]);
   List<PeopleData> userProfile = [];
 
-  ChartData chartData = ChartData(totalExpense: '35000', totalIncome: '147000');
+  ChartData chartData = ChartData();
 
   @override
   Future<void> onInit() async {
@@ -127,6 +127,7 @@ class HomeController extends GetxController {
     if (userType == '2') {
       getUserProfile();
       getSingleHouseAndUsers();
+      getSingleHousePromises();
     } else {
       getChartData();
       getUserDetails();
@@ -142,6 +143,8 @@ class HomeController extends GetxController {
     bottomNavIcons = userType == '2'
         ? [
             Image.asset('assets/images/home.png',
+                width: 25, height: 25, color: AppColors.white),
+            Image.asset('assets/images/ramadan.png',
                 width: 25, height: 25, color: AppColors.white),
             Image.asset('assets/images/blood.png',
                 width: 25, height: 25, color: AppColors.white),
@@ -164,7 +167,12 @@ class HomeController extends GetxController {
           ];
 
     bottomNavTitles = userType == '2'
-        ? [AppStrings.users, AppStrings.blood, AppStrings.profile]
+        ? [
+            AppStrings.users,
+            AppStrings.islamic,
+            AppStrings.blood,
+            AppStrings.profile
+          ]
         : [
             AppStrings.dashboard,
             AppStrings.users,
@@ -388,8 +396,36 @@ class HomeController extends GetxController {
       try {
         GetHouseAndUsersModel response = await listingService
             .getSingleHouseAndUsers(storageService.getToken() ?? '');
+        print('RESSSS :: ${response.data}');
         if (response.status == true) {
           userDetails.addAll(response.data!);
+          print('userDetails : ${userDetails.first}');
+        } else {}
+      } catch (e) {
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
+  getSingleHousePromises() async {
+    isLoading.value = true;
+    promisesDetails.clear();
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetPromisesModel response = await listingService
+            .getSingleHousePromises(storageService.getToken() ?? '');
+        if (response.status == true) {
+          promisesDetails.addAll(response.data!);
         } else {}
       } catch (e) {
         showToast(

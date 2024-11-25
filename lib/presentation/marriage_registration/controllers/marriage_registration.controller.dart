@@ -28,7 +28,7 @@ class MarriageRegistrationController extends GetxController {
   RxBool isDataLoading = false.obs;
   RxBool isLoading = false.obs;
   RxBool isHouseDataSuccessful = false.obs;
-  RxBool isRegistrationSuccess = true.obs;
+  RxBool isRegistrationSuccess = false.obs;
 
   int groomHouseId = 0;
   int brideHouseId = 0;
@@ -118,7 +118,8 @@ class MarriageRegistrationController extends GetxController {
         print('token is : ${_storageService.getToken()}');
         if (response.status == true) {
           committeeNameController.text = response.masjid!.name ?? '';
-          mahallAddressController.text = response.masjid!.address ?? '';
+          mahallAddressController.text =
+              '${response.masjid!.address}, PIN : ${response.masjid!.pincode}';
         } else {
           if (response.message != null) {
             showToast(

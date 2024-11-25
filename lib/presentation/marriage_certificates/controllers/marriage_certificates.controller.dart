@@ -25,7 +25,7 @@ class MarriageCertificatesController extends GetxController {
     getMarriageCertificatesList();
   }
 
-  void savePdf() async {
+  void savePdf(String url, String name) async {
     const pdfUrl =
         'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
     const fileName = 'sample.pdf';
@@ -65,5 +65,9 @@ class MarriageCertificatesController extends GetxController {
           type: ToastificationType.error);
       isLoading.value = false;
     }
+  }
+
+  String generateName(int index) {
+    return '${marriageCertificatesList[index].marriageRegNo} : ${marriageCertificatesList[index].groomName} - ${marriageCertificatesList[index].brideName}';
   }
 }

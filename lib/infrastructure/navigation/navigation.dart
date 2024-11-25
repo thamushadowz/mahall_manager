@@ -144,5 +144,10 @@ class Nav {
       page: () => const ReportsListScreen(),
       binding: ReportsListControllerBinding(),
     ),
+    GetPage(
+      name: Routes.QIBLA_FINDER,
+      page: () => const QiblaFinderScreen(),
+      binding: QiblaFinderControllerBinding(),
+    ),
   ];
 }

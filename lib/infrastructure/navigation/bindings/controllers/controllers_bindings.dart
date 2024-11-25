@@ -16,6 +16,7 @@ export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/pa
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/pdf_viewer.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/place_registration.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/promises.controller.binding.dart';
+export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/qibla_finder.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/registration.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/reports_list.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/reset_password.controller.binding.dart';

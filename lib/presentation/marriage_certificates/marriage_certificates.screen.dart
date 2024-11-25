@@ -62,9 +62,13 @@ class MarriageCertificatesScreen
                       child: CommonTextFieldShimmerWidget(),
                     )
                   : CommonDownloadItemWidget(
-                      name: 'Certificate ${index + 1}',
+                      name: controller.generateName(index),
                       onDownloadTap: () {
-                        print('Tapped on Certificate ${index + 1}');
+                        controller.savePdf(
+                            controller.marriageCertificatesList[index]
+                                    .certificateUrl ??
+                                '',
+                            controller.generateName(index));
                       });
             }),
       ),

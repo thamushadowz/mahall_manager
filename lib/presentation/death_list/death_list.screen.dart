@@ -52,8 +52,9 @@ class DeathListScreen extends GetView<DeathListController> {
               return const Divider();
             },
             padding: const EdgeInsets.all(10),
-            itemCount:
-                controller.isLoading.value ? 20 : controller.deathList.length,
+            itemCount: controller.isLoading.value
+                ? 20
+                : controller.filteredDeathList.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return controller.isLoading.value
@@ -75,7 +76,7 @@ class DeathListScreen extends GetView<DeathListController> {
           color: AppColors.lightGrey.withOpacity(0.2)),
       child: CommonTextWidget(
         text:
-            '${controller.deathList[index].personName} : ${controller.deathList[index].houseRegNo} - ${controller.deathList[index].houseName}',
+            '${controller.filteredDeathList[index].personName} : ${controller.filteredDeathList[index].houseRegNo} - ${controller.filteredDeathList[index].houseName}',
         fontSize: AppMeasures.mediumTextSize,
         fontWeight: AppMeasures.mediumWeight,
       ),

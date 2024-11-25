@@ -15,14 +15,20 @@ class DeathListController extends GetxController {
   ListingService listingService = Get.find<ListingRepository>();
 
   RxList<DeceasedData> deathList = RxList([]);
+  RxList<DeceasedData> filteredDeathList = RxList([]);
 
   final deathSearchController = TextEditingController();
   RxBool isLoading = false.obs;
+  RxString searchQuery = ''.obs;
 
   @override
   onInit() {
     super.onInit();
     getDeceasedList();
+
+    deathSearchController.addListener(() {
+      searchUser(deathSearchController.text);
+    });
   }
 
   getDeceasedList() async {
@@ -34,6 +40,7 @@ class DeathListController extends GetxController {
             .getDeceasedList(storageService.getToken() ?? '');
         if (response.status == true) {
           deathList.addAll(response.data!);
+          filteredDeathList.assignAll(deathList);
         } else {
           showToast(
               title: response.message.toString(),
@@ -51,6 +58,25 @@ class DeathListController extends GetxController {
           title: AppStrings.noInternetConnection,
           type: ToastificationType.error);
       isLoading.value = false;
+    }
+  }
+
+  searchUser(String query) {
+    searchQuery.value = query.toLowerCase();
+    if (searchQuery.isEmpty) {
+      filteredDeathList.value = deathList;
+    } else {
+      filteredDeathList.value = deathList.where((dead) {
+        return dead.houseRegNo!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            dead.houseName!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase()) ||
+            dead.personName!
+                .toLowerCase()
+                .contains(searchQuery.value.toLowerCase());
+      }).toList();
     }
   }
 }

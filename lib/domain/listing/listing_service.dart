@@ -70,6 +70,8 @@ abstract class ListingService {
 
   Future<GetHouseAndUsersModel> getSingleHouseAndUsers(String authToken);
 
+  Future<GetPromisesModel> getSingleHousePromises(String authToken);
+
   Future<CommonResponse> resetPassword(String authToken, dynamic params);
 
   Future<CommonResponse> logout(String authToken);

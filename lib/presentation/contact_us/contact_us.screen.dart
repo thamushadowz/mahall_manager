@@ -24,11 +24,9 @@ class ContactUsScreen extends GetView<ContactUsController> {
       body: SizedBox.expand(
         child: Container(
           decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/lite_white_background.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
+              image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover)),
           child: LayoutBuilder(
             builder: (context, constraints) {
               final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
@@ -90,11 +88,10 @@ class ContactUsScreen extends GetView<ContactUsController> {
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.white,
         image: const DecorationImage(
-          image: AssetImage('assets/images/islamic_pattern.jpg'),
-          fit: BoxFit.cover,
-        ),
+            image: AssetImage('assets/images/islamic_pattern.jpg'),
+            fit: BoxFit.cover,
+            opacity: 0.7),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: AppColors.blueGrey.withOpacity(0.5)),
         boxShadow: [
@@ -117,7 +114,8 @@ class ContactUsScreen extends GetView<ContactUsController> {
           Divider(
             thickness: 1.2,
             height: 20,
-            color: AppColors.grey.withOpacity(0.5),
+            indent: 60,
+            color: AppColors.black.withOpacity(0.3),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

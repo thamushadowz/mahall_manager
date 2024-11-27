@@ -14,8 +14,10 @@ class BottomNavWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      backgroundColor: AppColors.white,
+      index: controller.selectedNavIndex.value,
+      backgroundColor: Colors.transparent,
       color: AppColors.themeColor,
+      buttonBackgroundColor: AppColors.themeColor,
       items: controller.bottomNavIcons,
       onTap: onTap,
     );

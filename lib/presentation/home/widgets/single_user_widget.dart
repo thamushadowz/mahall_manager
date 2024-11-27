@@ -4,6 +4,7 @@ import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_empty_result_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
@@ -15,30 +16,71 @@ class SingleUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => controller.isLoading.value
-          ? Center(
-              child: CircularProgressIndicator(
-                color: AppColors.themeColor,
-              ),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: controller.userDetails.isEmpty
-                  ? const CommonEmptyResultWidget()
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        _buildUserTable(),
-                        controller.promisesDetails.isEmpty
-                            ? const SizedBox.shrink()
-                            : const SizedBox(height: 50),
-                        controller.promisesDetails.isEmpty
-                            ? const SizedBox.shrink()
-                            : _buildPromisesWidget(context),
-                      ],
-                    ),
+    return Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/dark_background.png'),
+              fit: BoxFit.cover)),
+      child: Obx(
+        () => controller.isLoading.value
+            ? Center(
+                child: Image.asset(
+                  'assets/images/spin_loader.gif',
+                  width: 70,
+                  height: 70,
+                ),
+              )
+            : RefreshIndicator(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: controller.userDetails.isEmpty
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: const CommonEmptyResultWidget())
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20),
+                            _buildMahallName(),
+                            const SizedBox(height: 20),
+                            _buildUserTable(),
+                            controller.promisesDetails.isEmpty
+                                ? const SizedBox.shrink()
+                                : const SizedBox(height: 50),
+                            controller.promisesDetails.isEmpty
+                                ? const SizedBox.shrink()
+                                : _buildPromisesWidget(context),
+                          ],
+                        ),
+                ),
+                onRefresh: () {
+                  controller.getSingleHousePromises();
+                  return controller.getSingleHouseAndUsers();
+                }),
+      ),
+    );
+  }
+
+  _buildMahallName() {
+    return Column(
+      children: [
+        Shimmer.fromColors(
+          baseColor: Colors.green,
+          highlightColor: Colors.red,
+          child: Obx(
+            () => CommonTextWidget(
+              text: controller.mahallName.value,
+              textAlign: TextAlign.center,
+              fontSize: AppMeasures.bigTextSize,
             ),
+          ),
+        ),
+        Shimmer.fromColors(
+          baseColor: Colors.green,
+          highlightColor: Colors.red,
+          child: const Divider(indent: 10, endIndent: 10),
+        )
+      ],
     );
   }
 
@@ -58,13 +100,15 @@ class SingleUserWidget extends StatelessWidget {
             text:
                 '${controller.userDetails.first.houseRegNo ?? 'KNY01'} - ${controller.userDetails.first.houseName ?? 'White House'}',
             fontSize: AppMeasures.bigTextSize,
-            color: AppColors.themeColor,
+            color: AppColors.white,
           ),
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
             headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+            dataRowColor:
+                WidgetStateProperty.all(AppColors.white.withOpacity(0.8)),
             columns: [
               DataColumn(
                 label: CommonTextWidget(
@@ -114,6 +158,8 @@ class SingleUserWidget extends StatelessWidget {
             rows: [
               ...controller.userDetails.map((user) {
                 return DataRow(
+                  color:
+                      WidgetStateProperty.all(AppColors.white.withOpacity(0.8)),
                   cells: [
                     DataCell(CommonTextWidget(
                       text: user.userRegNo ?? '',
@@ -216,9 +262,6 @@ class SingleUserWidget extends StatelessWidget {
                       ),
                     ),*/
                   ],
-                  color: WidgetStateProperty.all(
-                    AppColors.white,
-                  ),
                 );
               }),
               const DataRow(cells: [
@@ -231,7 +274,7 @@ class SingleUserWidget extends StatelessWidget {
               ]),
               DataRow(
                 color: WidgetStateProperty.all(
-                  AppColors.themeColor.withOpacity(0.2),
+                  AppColors.themeColor,
                 ),
                 cells: [
                   const DataCell(SizedBox.shrink()),
@@ -242,7 +285,7 @@ class SingleUserWidget extends StatelessWidget {
                           : */
                         AppStrings.totalDue,
                     fontSize: AppMeasures.normalTextSize,
-                    color: AppColors.themeColor,
+                    color: AppColors.white,
                   )),
                   DataCell(
                       /*houses[0].totalDue == '0'
@@ -251,7 +294,7 @@ class SingleUserWidget extends StatelessWidget {
                       CommonTextWidget(
                     text: controller.userDetails.first.totalDue ?? '5600',
                     fontSize: AppMeasures.mediumTextSize,
-                    color: AppColors.themeColor,
+                    color: AppColors.white,
                   )),
                   /*DataCell(houses[0].totalDue == "0"
                         ? const SizedBox.shrink()
@@ -292,6 +335,7 @@ class SingleUserWidget extends StatelessWidget {
     return Column(
       children: [
         CommonTextWidget(
+            color: AppColors.white,
             text: '${AppStrings.promises} (${AppStrings.vagdhanangal})'),
         const Divider(),
         _buildDataTable(context),
@@ -300,136 +344,140 @@ class SingleUserWidget extends StatelessWidget {
   }
 
   Widget _buildDataTable(BuildContext context) {
-    return DataTable(
-      columnSpacing: 20,
-      headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
-      columns: [
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.name,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.description,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.date,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.amount,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.addedBy,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        /*DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.actions,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),*/
-      ],
-      rows: controller.promisesDetails.map((promises) {
-        return DataRow(
-          cells: [
-            DataCell(CommonTextWidget(
-              text:
-                  '${promises.userRegNo} - ${promises.fName} ${promises.lName}',
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: 20,
+        headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+        dataRowColor: WidgetStateProperty.all(AppColors.white.withOpacity(0.8)),
+        columns: [
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.name,
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-            )),
-            DataCell(CommonTextWidget(
-              text: promises.description ?? '',
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.description,
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-            )),
-            DataCell(CommonTextWidget(
-              text: promises.date ?? '',
-              fontWeight: AppMeasures.mediumWeight,
-              fontSize: AppMeasures.smallTextSize,
-              color: AppColors.darkRed.withOpacity(0.6),
-            )),
-            DataCell(CommonTextWidget(
-              text: promises.amount.toString(),
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.date,
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-            )),
-            DataCell(CommonTextWidget(
-              text: controller.getAddedBy(promises.addedBy.toString()),
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.amount,
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-            )),
-            /*DataCell(
-              Row(
-                children: [
-                  CommonClickableTextWidget(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.themeColor),
-                    textColor: AppColors.themeColor,
-                    title: AppStrings.collectMoney,
-                    onTap: () {
-                      Get.toNamed(Routes.PAYMENT_SCREEN,
-                          arguments: {'promises': promises});
-                    },
-                  ),
-                  //Edit
-                  IconButton(
-                    icon: Icon(
-                      Icons.edit_note_rounded,
-                      color: AppColors.blueGrey,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.addedBy,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          /*DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.actions,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),*/
+        ],
+        rows: controller.promisesDetails.map((promises) {
+          return DataRow(
+            cells: [
+              DataCell(CommonTextWidget(
+                text:
+                    '${promises.userRegNo} - ${promises.fName} ${promises.lName}',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: promises.description ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: promises.date ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.smallTextSize,
+                color: AppColors.darkRed.withOpacity(0.6),
+              )),
+              DataCell(CommonTextWidget(
+                text: promises.amount.toString(),
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: controller.getAddedBy(promises.addedBy.toString()),
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              /*DataCell(
+                Row(
+                  children: [
+                    CommonClickableTextWidget(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.themeColor),
+                      textColor: AppColors.themeColor,
+                      title: AppStrings.collectMoney,
+                      onTap: () {
+                        Get.toNamed(Routes.PAYMENT_SCREEN,
+                            arguments: {'promises': promises});
+                      },
                     ),
-                    onPressed: () async {
-                      Get.toNamed(Routes.PROMISES, arguments: promises)
-                          ?.then((onValue) {
-                        controller.getPromisesDetails();
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete_outline_rounded,
-                      color: AppColors.darkRed,
+                    //Edit
+                    IconButton(
+                      icon: Icon(
+                        Icons.edit_note_rounded,
+                        color: AppColors.blueGrey,
+                      ),
+                      onPressed: () async {
+                        Get.toNamed(Routes.PROMISES, arguments: promises)
+                            ?.then((onValue) {
+                          controller.getPromisesDetails();
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      showCommonDialog(context,
-                          message: AppStrings.areYouSureToDelete,
-                          yesButtonName: AppStrings.delete,
-                          messageColor: AppColors.darkRed, onYesTap: () {
-                            controller.deletePromises(promises.id!);
-                            Get.close(0);
-                          });
-                    },
-                  ),
-                ],
-              ),
-            ),*/
-          ],
-        );
-      }).toList(),
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete_outline_rounded,
+                        color: AppColors.darkRed,
+                      ),
+                      onPressed: () {
+                        showCommonDialog(context,
+                            message: AppStrings.areYouSureToDelete,
+                            yesButtonName: AppStrings.delete,
+                            messageColor: AppColors.darkRed, onYesTap: () {
+                              controller.deletePromises(promises.id!);
+                              Get.close(0);
+                            });
+                      },
+                    ),
+                  ],
+                ),
+              ),*/
+            ],
+          );
+        }).toList(),
+      ),
     );
   }
 }

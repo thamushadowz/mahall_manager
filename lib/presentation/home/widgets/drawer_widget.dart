@@ -20,13 +20,14 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.grey.shade900,
       child: Container(
-        color: AppColors.white,
+        color: Colors.transparent,
         padding: const EdgeInsets.only(top: 30),
         child: Column(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.white,
+              backgroundColor: Colors.transparent,
               radius: 80,
               child: Image.asset(
                 'assets/logo/Mahall_manager_trans_logo.png',
@@ -57,7 +58,7 @@ class DrawerWidget extends StatelessWidget {
                             image: 'assets/images/contact_us.png',
                             fontSize: AppMeasures.normalTextSize,
                             fontWeight: AppMeasures.mediumWeight,
-                            textColor: AppColors.blueGrey,
+                            textColor: AppColors.white,
                             title: AppLocalizations.of(context)!.contact_us,
                             onTap: () {
                               Get.toNamed(Routes.CONTACT_US);
@@ -81,7 +82,7 @@ class DrawerWidget extends StatelessWidget {
                       image: 'assets/images/reset_password.png',
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
+                      textColor: AppColors.white,
                       title: AppLocalizations.of(context)!.reset_password,
                       onTap: () {
                         Get.toNamed(Routes.RESET_PASSWORD);
@@ -93,7 +94,7 @@ class DrawerWidget extends StatelessWidget {
                       image: 'assets/images/logout.png',
                       fontSize: AppMeasures.normalTextSize,
                       fontWeight: AppMeasures.mediumWeight,
-                      textColor: AppColors.blueGrey,
+                      textColor: AppColors.white,
                       title: AppLocalizations.of(context)!.log_out,
                       onTap: () {
                         showCommonDialog(context,
@@ -142,7 +143,7 @@ class DrawerWidget extends StatelessWidget {
               text: controller.versionCode.value,
               fontSize: AppMeasures.mediumTextSize,
               fontWeight: AppMeasures.mediumWeight,
-              color: AppColors.blueGrey.withOpacity(0.5),
+              color: AppColors.white.withOpacity(0.5),
             ),
             const Divider(thickness: 1, endIndent: 10, indent: 10),
             Padding(
@@ -185,7 +186,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/committee.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppLocalizations.of(context)!.committee_registration,
           onTap: () {
             Get.toNamed(Routes.COMMITTEE_REGISTRATION);
@@ -197,7 +198,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/place.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppStrings.placeRegistration,
           onTap: () {
             Get.toNamed(Routes.PLACE_REGISTRATION);
@@ -209,7 +210,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/home.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppLocalizations.of(context)!.house_registration,
           onTap: () {
             Get.toNamed(Routes.HOUSE_REGISTRATION);
@@ -221,7 +222,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/user.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppLocalizations.of(context)!.user_registration,
           onTap: () {
             Get.toNamed(Routes.REGISTRATION);
@@ -233,7 +234,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/marriage.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppStrings.marriageRegistration,
           onTap: () {
             Get.toNamed(Routes.MARRIAGE_REGISTRATION);
@@ -245,7 +246,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/deceased.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppStrings.deathRegistration,
           onTap: () {
             Get.toNamed(Routes.DEATH_REGISTRATION);
@@ -257,7 +258,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/promises.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppStrings.addPromises,
           onTap: () {
             Get.toNamed(Routes.PROMISES)?.then((onValue) {
@@ -271,7 +272,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/income.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppStrings.addIncome,
           onTap: () {
             Get.toNamed(Routes.ADD_INCOME)?.then((onValue) {
@@ -285,7 +286,7 @@ class DrawerWidget extends StatelessWidget {
           image: 'assets/images/expense.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
-          textColor: AppColors.blueGrey,
+          textColor: AppColors.white,
           title: AppStrings.addExpenses,
           onTap: () {
             Get.toNamed(Routes.ADD_EXPENSES)?.then((onValue) {

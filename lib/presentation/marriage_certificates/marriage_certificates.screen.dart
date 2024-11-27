@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_download_item_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
@@ -21,26 +20,32 @@ class MarriageCertificatesScreen
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        backgroundColor: AppColors.white,
         appBar: CommonAppbarWidget(
           title: AppStrings.marriageCertificates,
         ),
-        body: Obx(
-          () => !controller.isLoading.value &&
-                  controller.marriageCertificatesList.isEmpty
-              ? const CommonEmptyResultWidget()
-              : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: CommonTextFormField(
-                        suffixIcon: Icons.search,
-                        textController: controller.certificateSearchController,
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover)),
+          child: Obx(
+            () => !controller.isLoading.value &&
+                    controller.marriageCertificatesList.isEmpty
+                ? const CommonEmptyResultWidget()
+                : Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CommonTextFormField(
+                          suffixIcon: Icons.search,
+                          textController:
+                              controller.certificateSearchController,
+                        ),
                       ),
-                    ),
-                    _buildCertificateList(),
-                  ],
-                ),
+                      _buildCertificateList(),
+                    ],
+                  ),
+          ),
         ),
       ),
     );

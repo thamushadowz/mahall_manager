@@ -20,18 +20,16 @@ class AnnouncementScreen extends GetView<AnnouncementController> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: Colors.transparent,
         appBar: CommonAppbarWidget(
           title: AppStrings.announcementManager,
         ),
         body: SizedBox.expand(
           child: Container(
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/lite_white_background.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
+                image: DecorationImage(
+                    image: AssetImage('assets/images/dark_background.png'),
+                    fit: BoxFit.cover)),
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
@@ -63,7 +61,7 @@ class AnnouncementScreen extends GetView<AnnouncementController> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Material(
-        color: AppColors.white,
+        color: AppColors.white.withOpacity(0.8),
         elevation: 10,
         borderRadius: BorderRadius.circular(20),
         child: Padding(
@@ -76,6 +74,7 @@ class AnnouncementScreen extends GetView<AnnouncementController> {
                 CommonTextWidget(text: AppStrings.announcementManager),
                 const SizedBox(height: 10),
                 CommonTextFormField(
+                  fillColor: AppColors.white.withOpacity(0.6),
                   textController: controller.announcementController,
                   minLines: 3,
                   maxLines: 30,

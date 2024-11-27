@@ -149,5 +149,10 @@ class Nav {
       page: () => const QiblaFinderScreen(),
       binding: QiblaFinderControllerBinding(),
     ),
+    GetPage(
+      name: Routes.PRAYER_TIME,
+      page: () => const PrayerTimeScreen(),
+      binding: PrayerTimeControllerBinding(),
+    ),
   ];
 }

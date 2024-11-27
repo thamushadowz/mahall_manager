@@ -64,7 +64,7 @@ class DashboardWidget extends StatelessWidget {
 
   Material _generatePieChartView() {
     return Material(
-      color: AppColors.white,
+      color: AppColors.white.withOpacity(0.8),
       elevation: 10,
       borderRadius: BorderRadius.circular(20),
       child: Container(
@@ -169,7 +169,7 @@ class DashboardWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Material(
-        color: AppColors.white,
+        color: AppColors.white.withOpacity(0.8),
         borderRadius: BorderRadius.circular(20),
         elevation: 10,
         child: Padding(

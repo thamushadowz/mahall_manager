@@ -78,6 +78,9 @@ class AppStrings {
   static String notInTheList = 'Not in the list? Add name Here';
   static String generateReport = 'Generate Report';
   static String viewPdf = 'View PDF';
+  static String retry = 'Retry';
+  static String failedToFetchLocation =
+      'Failed to get Qibla direction. Please check your location settings.';
 
   static String male = 'Male';
   static String female = 'Female';
@@ -103,6 +106,8 @@ class AppStrings {
   static String placeRegistration = 'Place Registration';
   static String placeCode = 'Place Code';
   static String placeName = 'Place Name';
+  static String selectCalculationMethod = 'Select Calculation Method';
+  static String selectMadhab = 'Select Mad-hab';
 
   static String bloodGroup = 'Blood Group';
   static String name = 'Name';
@@ -138,6 +143,9 @@ class AppStrings {
   static String blood = 'Blood Donors';
   static String islamic = 'Islamic';
   static String qiblaFinder = 'Qibla Finder';
+  static String prayerTime = 'Prayer Time';
+  static String dua = 'Duas';
+  static String azkar = 'Azkar';
   static String expat = 'Expats (പ്രവാസികൾ)';
   static String close = 'Close';
   static String update = 'Update';
@@ -170,6 +178,9 @@ class AppStrings {
   static String placeRegistrationSuccess = 'Place Registration Successful';
   static String addressReqd = 'Address Required';
   static String nameReqd = 'Name Required';
+  static String locationPermissionReqd = 'Location permission is required.';
+  static String enableLocationPermission =
+      'Please enable location permission in app settings.';
   static String marriageRegistrationSuccessful =
       'Marriage registration successful';
   static String selectDateToGenerate =

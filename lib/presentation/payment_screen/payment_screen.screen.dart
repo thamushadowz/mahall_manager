@@ -23,9 +23,19 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
     return Scaffold(
         backgroundColor: AppColors.white,
         appBar: CommonAppbarWidget(title: AppStrings.paymentDetails),
-        body: Obx(() => controller.paymentSuccess.value
-            ? _buildSuccessWidget(context)
-            : _buildMainWidget(context)));
+        body: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/dark_background.png'),
+                      fit: BoxFit.cover)),
+            ),
+            Obx(() => controller.paymentSuccess.value
+                ? _buildSuccessWidget(context)
+                : _buildMainWidget(context)),
+          ],
+        ));
   }
 
   _buildSuccessWidget(BuildContext context) {
@@ -220,7 +230,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
       child: Material(
         elevation: 10,
         borderRadius: BorderRadius.circular(20),
-        color: AppColors.white,
+        color: AppColors.white.withOpacity(0.8),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Form(

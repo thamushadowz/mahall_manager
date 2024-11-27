@@ -475,7 +475,7 @@ class ListingRepository implements ListingService {
   Future<GetPromisesModel> getSingleHousePromises(String authToken) async {
     GetPromisesModel getPromisesModel;
     final response = await apiService.reqst(
-      url: 'house/promises/all',
+      url: 'house/promise/all',
       authToken: authToken,
       method: Method.GET,
     );

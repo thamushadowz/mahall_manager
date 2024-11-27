@@ -47,6 +47,8 @@ class CommonDropdownFormFieldWidget extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: AppColors.blueGrey),
             borderRadius: BorderRadius.circular(10)),
+        fillColor: AppColors.white.withOpacity(0.8),
+        filled: true,
       ),
       value: selectedValue,
       borderRadius: BorderRadius.circular(20),

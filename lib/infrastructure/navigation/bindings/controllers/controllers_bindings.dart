@@ -15,6 +15,7 @@ export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/ma
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/payment_screen.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/pdf_viewer.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/place_registration.controller.binding.dart';
+export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/prayer_time.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/promises.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/qibla_finder.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/registration.controller.binding.dart';

@@ -108,7 +108,7 @@ class ReportsWidget extends StatelessWidget {
       () => controller.isReportFiltering.value
           ? Material(
               elevation: 10,
-              color: AppColors.white,
+              color: AppColors.white.withOpacity(0.8),
               borderRadius: BorderRadius.circular(20),
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -461,150 +461,155 @@ class ReportsWidget extends StatelessWidget {
   }
 
   Widget _buildDataTable(BuildContext context) {
-    return DataTable(
-      columnSpacing: 20,
-      headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
-      columns: [
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.id,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.description,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.date,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.amount,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.addedBy,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-        DataColumn(
-          label: CommonTextWidget(
-            text: AppStrings.actions,
-            fontWeight: AppMeasures.mediumWeight,
-            fontSize: AppMeasures.mediumTextSize,
-            color: AppColors.white,
-          ),
-        ),
-      ],
-      rows: controller.filteredReportsDetails.map((report) {
-        return DataRow(
-          color: WidgetStateProperty.all(report.incomeOrExpense == '0'
-              ? AppColors.themeColor.withOpacity(0.1)
-              : AppColors.darkRed.withOpacity(0.1)),
-          cells: [
-            DataCell(CommonTextWidget(
-              text: report.id.toString(),
+    return Container(
+      color: AppColors.white.withOpacity(0.8),
+      child: DataTable(
+        columnSpacing: 20,
+        headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+        columns: [
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.id,
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
-            )),
-            DataCell(CommonTextWidget(
-              text: report.description ?? '',
-              fontWeight: AppMeasures.mediumWeight,
-              fontSize: AppMeasures.mediumTextSize,
-            )),
-            DataCell(CommonTextWidget(
-              text: report.date ?? '',
-              fontWeight: AppMeasures.mediumWeight,
-              fontSize: AppMeasures.smallTextSize,
-              color: AppColors.darkRed.withOpacity(0.6),
-            )),
-            DataCell(CommonTextWidget(
-              text: report.amount.toString(),
-              fontWeight: AppMeasures.mediumWeight,
-              fontSize: AppMeasures.mediumTextSize,
-            )),
-            DataCell(CommonTextWidget(
-              text: controller.getAddedBy(report.addedBy.toString()),
-              fontWeight: AppMeasures.mediumWeight,
-              fontSize: AppMeasures.mediumTextSize,
-            )),
-            DataCell(
-              //Details
-              report.isSharable ?? false
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.share_rounded,
-                        size: 20,
-                        color: AppColors.blueGrey,
-                      ),
-                      onPressed: () async {
-                        Get.toNamed(Routes.PAYMENT_SCREEN,
-                            arguments: {'report': report});
-                      },
-                    )
-                  : Row(
-                      children: [
-                        //Edit
-                        IconButton(
-                          icon: Icon(
-                            Icons.edit_note_rounded,
-                            color: AppColors.blueGrey,
-                          ),
-                          onPressed: () async {
-                            if (report.incomeOrExpense == '0') {
-                              Get.toNamed(Routes.ADD_INCOME, arguments: report)
-                                  ?.then((onValue) {
-                                controller.getReportsDetails();
-                              });
-                            } else {
-                              Get.toNamed(Routes.ADD_EXPENSES,
-                                      arguments: report)
-                                  ?.then((onValue) {
-                                controller.getReportsDetails();
-                              });
-                            }
-                          },
-                        ),
-                        //Delete
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete_outline_rounded,
-                            color: AppColors.darkRed,
-                          ),
-                          onPressed: () {
-                            showCommonDialog(context,
-                                message: AppStrings.areYouSureToDelete,
-                                yesButtonName: AppStrings.delete,
-                                messageColor: AppColors.darkRed, onYesTap: () {
-                              controller.deleteReport(report.id!);
-                              Get.close(0);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+              color: AppColors.white,
             ),
-          ],
-        );
-      }).toList(),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.description,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.date,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.amount,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.addedBy,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+          DataColumn(
+            label: CommonTextWidget(
+              text: AppStrings.actions,
+              fontWeight: AppMeasures.mediumWeight,
+              fontSize: AppMeasures.mediumTextSize,
+              color: AppColors.white,
+            ),
+          ),
+        ],
+        rows: controller.filteredReportsDetails.map((report) {
+          return DataRow(
+            color: WidgetStateProperty.all(report.incomeOrExpense == '0'
+                ? AppColors.themeColor.withOpacity(0.2)
+                : AppColors.darkRed.withOpacity(0.2)),
+            cells: [
+              DataCell(CommonTextWidget(
+                text: report.id.toString(),
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: report.description ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: report.date ?? '',
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.smallTextSize,
+                color: AppColors.darkRed.withOpacity(0.6),
+              )),
+              DataCell(CommonTextWidget(
+                text: report.amount.toString(),
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(CommonTextWidget(
+                text: controller.getAddedBy(report.addedBy.toString()),
+                fontWeight: AppMeasures.mediumWeight,
+                fontSize: AppMeasures.mediumTextSize,
+              )),
+              DataCell(
+                //Details
+                report.isSharable ?? false
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.share_rounded,
+                          size: 20,
+                          color: AppColors.blueGrey,
+                        ),
+                        onPressed: () async {
+                          Get.toNamed(Routes.PAYMENT_SCREEN,
+                              arguments: {'report': report});
+                        },
+                      )
+                    : Row(
+                        children: [
+                          //Edit
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit_note_rounded,
+                              color: AppColors.blueGrey,
+                            ),
+                            onPressed: () async {
+                              if (report.incomeOrExpense == '0') {
+                                Get.toNamed(Routes.ADD_INCOME,
+                                        arguments: report)
+                                    ?.then((onValue) {
+                                  controller.getReportsDetails();
+                                });
+                              } else {
+                                Get.toNamed(Routes.ADD_EXPENSES,
+                                        arguments: report)
+                                    ?.then((onValue) {
+                                  controller.getReportsDetails();
+                                });
+                              }
+                            },
+                          ),
+                          //Delete
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete_outline_rounded,
+                              color: AppColors.darkRed,
+                            ),
+                            onPressed: () {
+                              showCommonDialog(context,
+                                  message: AppStrings.areYouSureToDelete,
+                                  yesButtonName: AppStrings.delete,
+                                  messageColor: AppColors.darkRed,
+                                  onYesTap: () {
+                                controller.deleteReport(report.id!);
+                                Get.close(0);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
     );
   }
 

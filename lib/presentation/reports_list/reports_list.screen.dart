@@ -24,21 +24,27 @@ class ReportsListScreen extends GetView<ReportsListController> {
         appBar: CommonAppbarWidget(
           title: AppStrings.listOfReports,
         ),
-        body:
-            Obx(() => !controller.isLoading.value && controller.pdfList.isEmpty
-                ? const CommonEmptyResultWidget()
-                : Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CommonTextFormField(
-                          suffixIcon: Icons.search,
-                          textController: controller.reportSearchController,
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover)),
+          child: Obx(
+              () => !controller.isLoading.value && controller.pdfList.isEmpty
+                  ? const CommonEmptyResultWidget()
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: CommonTextFormField(
+                            suffixIcon: Icons.search,
+                            textController: controller.reportSearchController,
+                          ),
                         ),
-                      ),
-                      _buildReportsList(),
-                    ],
-                  )),
+                        _buildReportsList(),
+                      ],
+                    )),
+        ),
       ),
     );
   }

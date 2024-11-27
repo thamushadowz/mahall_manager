@@ -28,7 +28,12 @@ class MarriageRegistrationScreen
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: CommonAppbarWidget(title: AppStrings.marriageRegistration),
-        body: Padding(
+        body: Container(
+          height: double.infinity,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover)),
           padding: const EdgeInsets.all(20.0),
           child: Obx(
             () => controller.isRegistrationSuccess.value
@@ -75,8 +80,9 @@ class MarriageRegistrationScreen
       () => Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.blueGrey)),
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.white.withOpacity(0.8),
+        ),
         child: Column(
           children: [
             GestureDetector(
@@ -154,7 +160,8 @@ class MarriageRegistrationScreen
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
-        CommonTextWidget(text: AppStrings.marriageDetails),
+        CommonTextWidget(
+            text: AppStrings.marriageDetails, color: AppColors.white),
         const SizedBox(height: 20),
         CommonTextFormField(
           textController: controller.regNoController,
@@ -171,19 +178,20 @@ class MarriageRegistrationScreen
 
   _buildGroomWidget(BuildContext context) {
     return Obx(
-      () => Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
+      () => GestureDetector(
+        onTap: () {
+          controller.isGroomDetailsExpanded.value =
+              !controller.isGroomDetailsExpanded.value;
+        },
+        child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.blueGrey)),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  controller.isGroomDetailsExpanded.value =
-                      !controller.isGroomDetailsExpanded.value;
-                },
-                child: SizedBox(
+              color: AppColors.white.withOpacity(0.8),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
                   child: Row(
                     children: [
                       CommonTextWidget(text: AppStrings.groomDetails),
@@ -194,191 +202,197 @@ class MarriageRegistrationScreen
                     ],
                   ),
                 ),
-              ),
-              !controller.isGroomDetailsExpanded.value
-                  ? controller.groomNameController.text.trim().isEmpty ||
-                          controller.groomFatherNameController.text
-                              .trim()
-                              .isEmpty ||
-                          controller.groomAddressController.text.trim().isEmpty
-                      ? const SizedBox.shrink()
-                      : CommonTextWidget(
-                          fontSize: AppMeasures.mediumTextSize,
-                          fontWeight: AppMeasures.smallWeight,
-                          color: AppColors.blueGrey,
-                          text:
-                              '${controller.groomNameController.text.trim()}, (S/O) ${controller.groomFatherNameController.text.trim()},${controller.groomMotherNameController.text.trim().isNotEmpty ? '${controller.groomMotherNameController.text.trim()},' : ''} ${controller.groomPhoneController.text.trim().isNotEmpty ? '${controller.groomPhoneController.text.trim()},' : ''} ${controller.groomAddressController.text.trim()}')
-                  : Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        //Groom Name
-                        CommonTextFormField(
-                          textController: controller.groomNameController,
-                          focusNode: controller.groomNameFocusNode,
-                          label: AppStrings.nameOfGroom,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context).requestFocus(
-                                controller.groomFatherNameFocusNode);
-                          },
-                          validator: Validators.validateName,
-                        ),
-                        const SizedBox(height: 10),
-                        //Father Name
-                        CommonTextFormField(
-                          textController: controller.groomFatherNameController,
-                          focusNode: controller.groomFatherNameFocusNode,
-                          label: AppStrings.nameOfFather,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context).requestFocus(
-                                controller.groomMotherNameFocusNode);
-                          },
-                          validator: Validators.validateName,
-                        ),
-                        const SizedBox(height: 10),
-                        //Mother Name
-                        CommonTextFormField(
-                          textController: controller.groomMotherNameController,
-                          focusNode: controller.groomMotherNameFocusNode,
-                          label: AppStrings.nameOfMother,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context)
-                                .requestFocus(controller.groomAddressFocusNode);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Obx(
-                              () => Checkbox(
-                                activeColor: AppColors.themeColor,
-                                value: controller.isGroomOurMahall.value,
-                                onChanged: (bool? value) {
-                                  controller.isGroomOurMahall.value =
-                                      value ?? false;
-                                  controller.groomAddressController.clear();
-                                },
-                              ),
-                            ),
-                            CommonTextWidget(
-                              text: AppStrings.isFromOurMahall,
-                              fontSize: AppMeasures.mediumTextSize,
-                              fontWeight: AppMeasures.mediumWeight,
-                            ),
-                          ],
-                        ),
-                        //Address
-                        Obx(
-                          () => controller.isGroomOurMahall.value
-                              ? controller.isDataLoading.value
-                                  ? const CommonTextFieldShimmerWidget()
-                                  : Row(
-                                      children: [
-                                        Expanded(
-                                          child: CommonTextFormField(
-                                            disabledBorderColor:
-                                                AppColors.blueGrey,
-                                            disabledLabelColor:
-                                                AppColors.themeColor,
-                                            enabled: false,
-                                            label: AppStrings.address,
-                                            validator:
-                                                Validators.validateAddress,
-                                            keyboardType: TextInputType.none,
-                                            textController: controller
-                                                .groomAddressController,
-                                            focusNode: controller
-                                                .groomAddressFocusNode,
-                                            onFieldSubmitted: (value) {
-                                              FocusScope.of(context)
-                                                  .requestFocus(controller
-                                                      .groomPhoneFocusNode);
-                                            },
-                                            onDateTap: () {
-                                              Get.toNamed(Routes.SEARCH_SCREEN,
-                                                      arguments:
-                                                          controller.houseData)
-                                                  ?.then((onValue) {
-                                                controller
-                                                    .groomAddressController
-                                                    .text = onValue.name !=
-                                                        null
-                                                    ? '${onValue.name}, ${onValue.place}, ${onValue.district}, ${onValue.state}.'
-                                                    : '';
-                                                controller.groomHouseId =
-                                                    onValue.id ?? 0;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                        Obx(() => !controller
-                                                .isHouseDataSuccessful.value
-                                            ? IconButton(
-                                                onPressed: () {
-                                                  controller
-                                                      .getHouseDetailsList();
-                                                },
-                                                icon: Icon(
-                                                  Icons.refresh_rounded,
-                                                  size: 30,
-                                                  color: AppColors.darkRed,
-                                                ),
-                                              )
-                                            : const SizedBox.shrink()),
-                                      ],
-                                    )
-                              : CommonTextFormField(
-                                  textController:
-                                      controller.groomAddressController,
-                                  focusNode: controller.groomAddressFocusNode,
-                                  label: AppStrings.address,
-                                  onFieldSubmitted: (value) {
-                                    FocusScope.of(context).requestFocus(
-                                        controller.groomPhoneFocusNode);
+                !controller.isGroomDetailsExpanded.value
+                    ? controller.groomNameController.text.trim().isEmpty ||
+                            controller.groomFatherNameController.text
+                                .trim()
+                                .isEmpty ||
+                            controller.groomAddressController.text
+                                .trim()
+                                .isEmpty
+                        ? const SizedBox.shrink()
+                        : CommonTextWidget(
+                            fontSize: AppMeasures.mediumTextSize,
+                            fontWeight: AppMeasures.smallWeight,
+                            color: AppColors.blueGrey,
+                            text:
+                                '${controller.groomNameController.text.trim()}, (S/O) ${controller.groomFatherNameController.text.trim()},${controller.groomMotherNameController.text.trim().isNotEmpty ? '${controller.groomMotherNameController.text.trim()},' : ''} ${controller.groomPhoneController.text.trim().isNotEmpty ? '${controller.groomPhoneController.text.trim()},' : ''} ${controller.groomAddressController.text.trim()}')
+                    : Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          //Groom Name
+                          CommonTextFormField(
+                            textController: controller.groomNameController,
+                            focusNode: controller.groomNameFocusNode,
+                            label: AppStrings.nameOfGroom,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.groomFatherNameFocusNode);
+                            },
+                            validator: Validators.validateName,
+                          ),
+                          const SizedBox(height: 10),
+                          //Father Name
+                          CommonTextFormField(
+                            textController:
+                                controller.groomFatherNameController,
+                            focusNode: controller.groomFatherNameFocusNode,
+                            label: AppStrings.nameOfFather,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.groomMotherNameFocusNode);
+                            },
+                            validator: Validators.validateName,
+                          ),
+                          const SizedBox(height: 10),
+                          //Mother Name
+                          CommonTextFormField(
+                            textController:
+                                controller.groomMotherNameController,
+                            focusNode: controller.groomMotherNameFocusNode,
+                            label: AppStrings.nameOfMother,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.groomAddressFocusNode);
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Obx(
+                                () => Checkbox(
+                                  activeColor: AppColors.themeColor,
+                                  value: controller.isGroomOurMahall.value,
+                                  onChanged: (bool? value) {
+                                    controller.isGroomOurMahall.value =
+                                        value ?? false;
+                                    controller.groomAddressController.clear();
                                   },
-                                  validator: Validators.validateAddress,
                                 ),
-                        ),
-                        const SizedBox(height: 10),
-                        //Mobile Number
-                        CommonTextFormField(
-                          textController: controller.groomPhoneController,
-                          focusNode: controller.groomPhoneFocusNode,
-                          label: AppStrings.mobileNo,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context)
-                                .requestFocus(controller.brideNameFocusNode);
-                          },
-                          prefixText: '+91 ',
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          keyboardType: TextInputType.number,
-                          validator: Validators.validateMobileNumber,
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    )
-            ],
-          )),
+                              ),
+                              CommonTextWidget(
+                                text: AppStrings.isFromOurMahall,
+                                fontSize: AppMeasures.mediumTextSize,
+                                fontWeight: AppMeasures.mediumWeight,
+                              ),
+                            ],
+                          ),
+                          //Address
+                          Obx(
+                            () => controller.isGroomOurMahall.value
+                                ? controller.isDataLoading.value
+                                    ? const CommonTextFieldShimmerWidget()
+                                    : Row(
+                                        children: [
+                                          Expanded(
+                                            child: CommonTextFormField(
+                                              disabledBorderColor:
+                                                  AppColors.blueGrey,
+                                              disabledLabelColor:
+                                                  AppColors.themeColor,
+                                              enabled: false,
+                                              label: AppStrings.address,
+                                              validator:
+                                                  Validators.validateAddress,
+                                              keyboardType: TextInputType.none,
+                                              textController: controller
+                                                  .groomAddressController,
+                                              focusNode: controller
+                                                  .groomAddressFocusNode,
+                                              onFieldSubmitted: (value) {
+                                                FocusScope.of(context)
+                                                    .requestFocus(controller
+                                                        .groomPhoneFocusNode);
+                                              },
+                                              onDateTap: () {
+                                                Get.toNamed(
+                                                        Routes.SEARCH_SCREEN,
+                                                        arguments: controller
+                                                            .houseData)
+                                                    ?.then((onValue) {
+                                                  controller
+                                                      .groomAddressController
+                                                      .text = onValue.name !=
+                                                          null
+                                                      ? '${onValue.name}, ${onValue.place}, ${onValue.district}, ${onValue.state}.'
+                                                      : '';
+                                                  controller.groomHouseId =
+                                                      onValue.id ?? 0;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                          Obx(() => !controller
+                                                  .isHouseDataSuccessful.value
+                                              ? IconButton(
+                                                  onPressed: () {
+                                                    controller
+                                                        .getHouseDetailsList();
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.refresh_rounded,
+                                                    size: 30,
+                                                    color: AppColors.darkRed,
+                                                  ),
+                                                )
+                                              : const SizedBox.shrink()),
+                                        ],
+                                      )
+                                : CommonTextFormField(
+                                    textController:
+                                        controller.groomAddressController,
+                                    focusNode: controller.groomAddressFocusNode,
+                                    label: AppStrings.address,
+                                    onFieldSubmitted: (value) {
+                                      FocusScope.of(context).requestFocus(
+                                          controller.groomPhoneFocusNode);
+                                    },
+                                    validator: Validators.validateAddress,
+                                  ),
+                          ),
+                          const SizedBox(height: 10),
+                          //Mobile Number
+                          CommonTextFormField(
+                            textController: controller.groomPhoneController,
+                            focusNode: controller.groomPhoneFocusNode,
+                            label: AppStrings.mobileNo,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(controller.brideNameFocusNode);
+                            },
+                            prefixText: '+91 ',
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            keyboardType: TextInputType.number,
+                            validator: Validators.validateMobileNumber,
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      )
+              ],
+            )),
+      ),
     );
   }
 
   _buildBrideWidget(BuildContext context) {
     return Obx(
-      () => Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
+      () => GestureDetector(
+        onTap: () {
+          controller.isBrideDetailsExpanded.value =
+              !controller.isBrideDetailsExpanded.value;
+        },
+        child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.blueGrey)),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  controller.isBrideDetailsExpanded.value =
-                      !controller.isBrideDetailsExpanded.value;
-                },
-                child: SizedBox(
+              color: AppColors.white.withOpacity(0.8),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
                   child: Row(
                     children: [
                       CommonTextWidget(text: AppStrings.brideDetails),
@@ -389,189 +403,195 @@ class MarriageRegistrationScreen
                     ],
                   ),
                 ),
-              ),
-              !controller.isBrideDetailsExpanded.value
-                  ? controller.brideNameController.text.trim().isEmpty ||
-                          controller.brideFatherNameController.text
-                              .trim()
-                              .isEmpty ||
-                          controller.brideAddressController.text.trim().isEmpty
-                      ? const SizedBox.shrink()
-                      : CommonTextWidget(
-                          fontSize: AppMeasures.mediumTextSize,
-                          fontWeight: AppMeasures.smallWeight,
-                          color: AppColors.blueGrey,
-                          text:
-                              '${controller.brideNameController.text.trim()}, (D/O) ${controller.brideFatherNameController.text.trim()},${controller.brideMotherNameController.text.trim().isNotEmpty ? '${controller.brideMotherNameController.text.trim()},' : ''} ${controller.bridePhoneController.text.trim().isNotEmpty ? '${controller.bridePhoneController.text.trim()},' : ''} ${controller.brideAddressController.text.trim()} ')
-                  : Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        //Bride Name
-                        CommonTextFormField(
-                          textController: controller.brideNameController,
-                          focusNode: controller.brideNameFocusNode,
-                          label: AppStrings.nameOfBride,
-                          validator: Validators.validateName,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context).requestFocus(
-                                controller.brideFatherNameFocusNode);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        //Father Name
-                        CommonTextFormField(
-                          textController: controller.brideFatherNameController,
-                          focusNode: controller.brideFatherNameFocusNode,
-                          label: AppStrings.nameOfFather,
-                          validator: Validators.validateName,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context).requestFocus(
-                                controller.brideMotherNameFocusNode);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        //Mother Name
-                        CommonTextFormField(
-                          textController: controller.brideMotherNameController,
-                          focusNode: controller.brideMotherNameFocusNode,
-                          label: AppStrings.nameOfMother,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context)
-                                .requestFocus(controller.brideAddressFocusNode);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Obx(
-                              () => Checkbox(
-                                activeColor: AppColors.themeColor,
-                                value: controller.isBrideOurMahall.value,
-                                onChanged: (bool? value) {
-                                  controller.isBrideOurMahall.value =
-                                      value ?? false;
-                                  controller.brideAddressController.clear();
-                                },
-                              ),
-                            ),
-                            CommonTextWidget(
-                              text: AppStrings.isFromOurMahall,
-                              fontSize: AppMeasures.mediumTextSize,
-                              fontWeight: AppMeasures.mediumWeight,
-                            ),
-                          ],
-                        ),
-                        //Address
-                        Obx(
-                          () => controller.isBrideOurMahall.value
-                              ? controller.isDataLoading.value
-                                  ? const CommonTextFieldShimmerWidget()
-                                  : Row(
-                                      children: [
-                                        Expanded(
-                                          child: CommonTextFormField(
-                                            disabledBorderColor:
-                                                AppColors.blueGrey,
-                                            disabledLabelColor:
-                                                AppColors.themeColor,
-                                            enabled: false,
-                                            label: AppStrings.address,
-                                            validator:
-                                                Validators.validateAddress,
-                                            keyboardType: TextInputType.none,
-                                            textController: controller
-                                                .brideAddressController,
-                                            focusNode: controller
-                                                .brideAddressFocusNode,
-                                            onFieldSubmitted: (value) {
-                                              FocusScope.of(context)
-                                                  .requestFocus(controller
-                                                      .bridePhoneFocusNode);
-                                            },
-                                            onDateTap: () {
-                                              Get.toNamed(Routes.SEARCH_SCREEN,
-                                                      arguments:
-                                                          controller.houseData)
-                                                  ?.then((onValue) {
-                                                controller
-                                                    .brideAddressController
-                                                    .text = onValue.name !=
-                                                        null
-                                                    ? '${onValue.name}, ${onValue.place}, ${onValue.district}, ${onValue.state}.'
-                                                    : '';
-                                                controller.brideHouseId =
-                                                    onValue.id ?? 0;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                        Obx(() => !controller
-                                                .isHouseDataSuccessful.value
-                                            ? IconButton(
-                                                onPressed: () {
-                                                  controller
-                                                      .getHouseDetailsList();
-                                                },
-                                                icon: Icon(
-                                                  Icons.refresh_rounded,
-                                                  size: 30,
-                                                  color: AppColors.darkRed,
-                                                ),
-                                              )
-                                            : const SizedBox.shrink()),
-                                      ],
-                                    )
-                              : CommonTextFormField(
-                                  textController:
-                                      controller.brideAddressController,
-                                  focusNode: controller.brideAddressFocusNode,
-                                  label: AppStrings.address,
-                                  validator: Validators.validateAddress,
-                                  onFieldSubmitted: (val) {
-                                    FocusScope.of(context).requestFocus(
-                                        controller.bridePhoneFocusNode);
+                !controller.isBrideDetailsExpanded.value
+                    ? controller.brideNameController.text.trim().isEmpty ||
+                            controller.brideFatherNameController.text
+                                .trim()
+                                .isEmpty ||
+                            controller.brideAddressController.text
+                                .trim()
+                                .isEmpty
+                        ? const SizedBox.shrink()
+                        : CommonTextWidget(
+                            fontSize: AppMeasures.mediumTextSize,
+                            fontWeight: AppMeasures.smallWeight,
+                            color: AppColors.blueGrey,
+                            text:
+                                '${controller.brideNameController.text.trim()}, (D/O) ${controller.brideFatherNameController.text.trim()},${controller.brideMotherNameController.text.trim().isNotEmpty ? '${controller.brideMotherNameController.text.trim()},' : ''} ${controller.bridePhoneController.text.trim().isNotEmpty ? '${controller.bridePhoneController.text.trim()},' : ''} ${controller.brideAddressController.text.trim()} ')
+                    : Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          //Bride Name
+                          CommonTextFormField(
+                            textController: controller.brideNameController,
+                            focusNode: controller.brideNameFocusNode,
+                            label: AppStrings.nameOfBride,
+                            validator: Validators.validateName,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.brideFatherNameFocusNode);
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          //Father Name
+                          CommonTextFormField(
+                            textController:
+                                controller.brideFatherNameController,
+                            focusNode: controller.brideFatherNameFocusNode,
+                            label: AppStrings.nameOfFather,
+                            validator: Validators.validateName,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.brideMotherNameFocusNode);
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          //Mother Name
+                          CommonTextFormField(
+                            textController:
+                                controller.brideMotherNameController,
+                            focusNode: controller.brideMotherNameFocusNode,
+                            label: AppStrings.nameOfMother,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.brideAddressFocusNode);
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Obx(
+                                () => Checkbox(
+                                  activeColor: AppColors.themeColor,
+                                  value: controller.isBrideOurMahall.value,
+                                  onChanged: (bool? value) {
+                                    controller.isBrideOurMahall.value =
+                                        value ?? false;
+                                    controller.brideAddressController.clear();
                                   },
                                 ),
-                        ),
-                        const SizedBox(height: 10),
-                        //Mobile Number
-                        CommonTextFormField(
-                          textController: controller.bridePhoneController,
-                          focusNode: controller.bridePhoneFocusNode,
-                          prefixText: '+91 ',
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          keyboardType: TextInputType.number,
-                          label: AppStrings.mobileNo,
-                          onFieldSubmitted: (value) {},
-                          validator: Validators.validateMobileNumber,
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    )
-            ],
-          )),
+                              ),
+                              CommonTextWidget(
+                                text: AppStrings.isFromOurMahall,
+                                fontSize: AppMeasures.mediumTextSize,
+                                fontWeight: AppMeasures.mediumWeight,
+                              ),
+                            ],
+                          ),
+                          //Address
+                          Obx(
+                            () => controller.isBrideOurMahall.value
+                                ? controller.isDataLoading.value
+                                    ? const CommonTextFieldShimmerWidget()
+                                    : Row(
+                                        children: [
+                                          Expanded(
+                                            child: CommonTextFormField(
+                                              disabledBorderColor:
+                                                  AppColors.blueGrey,
+                                              disabledLabelColor:
+                                                  AppColors.themeColor,
+                                              enabled: false,
+                                              label: AppStrings.address,
+                                              validator:
+                                                  Validators.validateAddress,
+                                              keyboardType: TextInputType.none,
+                                              textController: controller
+                                                  .brideAddressController,
+                                              focusNode: controller
+                                                  .brideAddressFocusNode,
+                                              onFieldSubmitted: (value) {
+                                                FocusScope.of(context)
+                                                    .requestFocus(controller
+                                                        .bridePhoneFocusNode);
+                                              },
+                                              onDateTap: () {
+                                                Get.toNamed(
+                                                        Routes.SEARCH_SCREEN,
+                                                        arguments: controller
+                                                            .houseData)
+                                                    ?.then((onValue) {
+                                                  controller
+                                                      .brideAddressController
+                                                      .text = onValue.name !=
+                                                          null
+                                                      ? '${onValue.name}, ${onValue.place}, ${onValue.district}, ${onValue.state}.'
+                                                      : '';
+                                                  controller.brideHouseId =
+                                                      onValue.id ?? 0;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                          Obx(() => !controller
+                                                  .isHouseDataSuccessful.value
+                                              ? IconButton(
+                                                  onPressed: () {
+                                                    controller
+                                                        .getHouseDetailsList();
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.refresh_rounded,
+                                                    size: 30,
+                                                    color: AppColors.darkRed,
+                                                  ),
+                                                )
+                                              : const SizedBox.shrink()),
+                                        ],
+                                      )
+                                : CommonTextFormField(
+                                    textController:
+                                        controller.brideAddressController,
+                                    focusNode: controller.brideAddressFocusNode,
+                                    label: AppStrings.address,
+                                    validator: Validators.validateAddress,
+                                    onFieldSubmitted: (val) {
+                                      FocusScope.of(context).requestFocus(
+                                          controller.bridePhoneFocusNode);
+                                    },
+                                  ),
+                          ),
+                          const SizedBox(height: 10),
+                          //Mobile Number
+                          CommonTextFormField(
+                            textController: controller.bridePhoneController,
+                            focusNode: controller.bridePhoneFocusNode,
+                            prefixText: '+91 ',
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            keyboardType: TextInputType.number,
+                            label: AppStrings.mobileNo,
+                            onFieldSubmitted: (value) {},
+                            validator: Validators.validateMobileNumber,
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      )
+              ],
+            )),
+      ),
     );
   }
 
   _buildWitnessWidget(BuildContext context) {
     return Obx(
-      () => Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
+      () => GestureDetector(
+        onTap: () {
+          controller.isWitnessDetailsExpanded.value =
+              !controller.isWitnessDetailsExpanded.value;
+        },
+        child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.blueGrey)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  controller.isWitnessDetailsExpanded.value =
-                      !controller.isWitnessDetailsExpanded.value;
-                },
-                child: SizedBox(
+              color: AppColors.white.withOpacity(0.8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
                   child: Row(
                     children: [
                       CommonTextWidget(text: AppStrings.witnessDetails),
@@ -582,87 +602,89 @@ class MarriageRegistrationScreen
                     ],
                   ),
                 ),
-              ),
-              !controller.isWitnessDetailsExpanded.value
-                  ? controller.witness1NameController.text.trim().isEmpty ||
-                          controller.witness1PhoneController.text
-                              .trim()
-                              .isEmpty ||
-                          controller.witness2NameController.text
-                              .trim()
-                              .isEmpty ||
-                          controller.witness2PhoneController.text.trim().isEmpty
-                      ? const SizedBox.shrink()
-                      : CommonTextWidget(
-                          fontSize: AppMeasures.mediumTextSize,
-                          fontWeight: AppMeasures.smallWeight,
-                          color: AppColors.blueGrey,
-                          text:
-                              '${controller.witness1NameController.text.trim()} (${controller.witness1PhoneController.text.trim()}), ${controller.witness2NameController.text.trim()} (${controller.witness2PhoneController.text.trim()})')
-                  : Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        //Witness1 Name
-                        CommonTextFormField(
-                          textController: controller.witness1NameController,
-                          focusNode: controller.witness1NameFocusNode,
-                          label: AppStrings.nameOfWitness1,
-                          validator: Validators.validateName,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context).requestFocus(
-                                controller.witness1PhoneFocusNode);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        //Witness1 Mobile Number
-                        CommonTextFormField(
-                          textController: controller.witness1PhoneController,
-                          focusNode: controller.witness1PhoneFocusNode,
-                          label: AppStrings.mobileNo,
-                          prefixText: '+91 ',
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          keyboardType: TextInputType.number,
-                          validator: Validators.validateMobileNumber,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context)
-                                .requestFocus(controller.witness2NameFocusNode);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        //Witness2 Name
-                        CommonTextFormField(
-                          textController: controller.witness2NameController,
-                          focusNode: controller.witness2NameFocusNode,
-                          label: AppStrings.nameOfWitness2,
-                          validator: Validators.validateName,
-                          onFieldSubmitted: (value) {
-                            FocusScope.of(context).requestFocus(
-                                controller.witness2PhoneFocusNode);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        //Witness2 Mobile Number
-                        CommonTextFormField(
-                          textController: controller.witness2PhoneController,
-                          focusNode: controller.witness2PhoneFocusNode,
-                          prefixText: '+91 ',
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          keyboardType: TextInputType.number,
-                          label: AppStrings.mobileNo,
-                          onFieldSubmitted: (value) {},
-                          validator: Validators.validateMobileNumber,
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    )
-            ],
-          )),
+                !controller.isWitnessDetailsExpanded.value
+                    ? controller.witness1NameController.text.trim().isEmpty ||
+                            controller.witness1PhoneController.text
+                                .trim()
+                                .isEmpty ||
+                            controller.witness2NameController.text
+                                .trim()
+                                .isEmpty ||
+                            controller.witness2PhoneController.text
+                                .trim()
+                                .isEmpty
+                        ? const SizedBox.shrink()
+                        : CommonTextWidget(
+                            fontSize: AppMeasures.mediumTextSize,
+                            fontWeight: AppMeasures.smallWeight,
+                            color: AppColors.blueGrey,
+                            text:
+                                '${controller.witness1NameController.text.trim()} (${controller.witness1PhoneController.text.trim()}), ${controller.witness2NameController.text.trim()} (${controller.witness2PhoneController.text.trim()})')
+                    : Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          //Witness1 Name
+                          CommonTextFormField(
+                            textController: controller.witness1NameController,
+                            focusNode: controller.witness1NameFocusNode,
+                            label: AppStrings.nameOfWitness1,
+                            validator: Validators.validateName,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.witness1PhoneFocusNode);
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          //Witness1 Mobile Number
+                          CommonTextFormField(
+                            textController: controller.witness1PhoneController,
+                            focusNode: controller.witness1PhoneFocusNode,
+                            label: AppStrings.mobileNo,
+                            prefixText: '+91 ',
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            keyboardType: TextInputType.number,
+                            validator: Validators.validateMobileNumber,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.witness2NameFocusNode);
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          //Witness2 Name
+                          CommonTextFormField(
+                            textController: controller.witness2NameController,
+                            focusNode: controller.witness2NameFocusNode,
+                            label: AppStrings.nameOfWitness2,
+                            validator: Validators.validateName,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context).requestFocus(
+                                  controller.witness2PhoneFocusNode);
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          //Witness2 Mobile Number
+                          CommonTextFormField(
+                            textController: controller.witness2PhoneController,
+                            focusNode: controller.witness2PhoneFocusNode,
+                            prefixText: '+91 ',
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            keyboardType: TextInputType.number,
+                            label: AppStrings.mobileNo,
+                            onFieldSubmitted: (value) {},
+                            validator: Validators.validateMobileNumber,
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      )
+              ],
+            )),
+      ),
     );
   }
 

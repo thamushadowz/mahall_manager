@@ -87,9 +87,8 @@ class UsersWidget extends StatelessWidget {
                                       left: 10, right: 10, top: 5, bottom: 5),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
+                                    color: AppColors.white.withOpacity(0.8),
                                     borderRadius: BorderRadius.circular(10),
-                                    border:
-                                        Border.all(color: AppColors.blueGrey),
                                   ),
                                   child: Column(
                                     children: [
@@ -97,20 +96,20 @@ class UsersWidget extends StatelessWidget {
                                         children: [
                                           CommonTextWidget(
                                             text: keyName.split(' : ').first,
-                                            color: AppColors.blueGrey,
+                                            color: AppColors.black,
                                           ),
                                           const Spacer(),
                                           Icon(
                                             controller.isExpandedList[index]
                                                 ? Icons.expand_less
                                                 : Icons.expand_more,
-                                            color: AppColors.blueGrey,
+                                            color: AppColors.black,
                                           ),
                                           const SizedBox(width: 10),
                                           IconButton(
                                             icon: Icon(
                                               Icons.edit_note_rounded,
-                                              color: AppColors.blueGrey,
+                                              color: AppColors.black,
                                             ),
                                             onPressed: () {
                                               Get.toNamed(
@@ -355,7 +354,9 @@ class UsersWidget extends StatelessWidget {
                                                             ? AppColors.darkRed
                                                                 .withOpacity(
                                                                     0.2)
-                                                            : AppColors.white,
+                                                            : AppColors.white
+                                                                .withOpacity(
+                                                                    0.2),
                                                       ),
                                                     );
                                                   }),

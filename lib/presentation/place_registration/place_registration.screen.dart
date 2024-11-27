@@ -41,12 +41,10 @@ class PlaceRegistrationScreen extends GetView<PlaceRegistrationController> {
               : SizedBox.expand(
                   child: Container(
                     decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                            'assets/images/lite_white_background.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                        image: DecorationImage(
+                            image:
+                                AssetImage('assets/images/dark_background.png'),
+                            fit: BoxFit.cover)),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         final keyboardHeight =
@@ -85,7 +83,8 @@ class PlaceRegistrationScreen extends GetView<PlaceRegistrationController> {
   _buildSuccessOrMainWidget(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: AppColors.white),
+          borderRadius: BorderRadius.circular(20),
+          color: AppColors.white.withOpacity(0.8)),
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Form(

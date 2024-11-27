@@ -114,7 +114,7 @@ class HomeController extends GetxController {
   RxList<ExpatData> expatDetails = RxList([]);
   List<PeopleData> userProfile = [];
 
-  ChartData chartData = ChartData();
+  ChartData chartData = ChartData(totalIncome: '0', totalExpense: '0');
 
   @override
   Future<void> onInit() async {
@@ -125,6 +125,7 @@ class HomeController extends GetxController {
     //userType = '2';
 
     if (userType == '2') {
+      selectedNavIndex.value = 1;
       getUserProfile();
       getSingleHouseAndUsers();
       getSingleHousePromises();

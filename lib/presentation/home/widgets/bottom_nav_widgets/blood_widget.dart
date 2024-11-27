@@ -21,26 +21,33 @@ class BloodWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Column(
-        children: [
-          controller.bloodDetails.isEmpty
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: CommonTextFormField(
-                    suffixIcon: Icons.search,
-                    textController: controller.bloodSearchController,
+      () => Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/dark_background.png'),
+                fit: BoxFit.cover)),
+        child: Column(
+          children: [
+            controller.bloodDetails.isEmpty
+                ? const SizedBox.shrink()
+                : Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CommonTextFormField(
+                      fillColor: AppColors.white.withOpacity(0.8),
+                      suffixIcon: Icons.search,
+                      textController: controller.bloodSearchController,
+                    ),
                   ),
-                ),
-          controller.bloodDetails.isEmpty
-              ? const SizedBox.shrink()
-              : _buildFilterAndClearFilterOption(),
-          Obx(() =>
-              SizedBox(height: controller.isBloodFiltering.value ? 10 : 0)),
-          _buildFilterWidget(context),
-          const SizedBox(height: 10),
-          _buildBloodList(context),
-        ],
+            controller.bloodDetails.isEmpty
+                ? const SizedBox.shrink()
+                : _buildFilterAndClearFilterOption(),
+            Obx(() =>
+                SizedBox(height: controller.isBloodFiltering.value ? 10 : 0)),
+            _buildFilterWidget(context),
+            const SizedBox(height: 10),
+            _buildBloodList(context),
+          ],
+        ),
       ),
     );
   }
@@ -60,7 +67,7 @@ class BloodWidget extends StatelessWidget {
       () => controller.isBloodFiltering.value
           ? Material(
               elevation: 10,
-              color: AppColors.white,
+              color: AppColors.white.withOpacity(0.8),
               borderRadius: BorderRadius.circular(20),
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -216,6 +223,7 @@ class BloodWidget extends StatelessWidget {
     return DataTable(
         columnSpacing: 30,
         headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+        dataRowColor: WidgetStateProperty.all(AppColors.white.withOpacity(0.8)),
         columns: [
           DataColumn(
             label: CommonTextWidget(

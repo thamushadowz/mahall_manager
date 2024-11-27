@@ -23,10 +23,11 @@ class Routes {
   static const PLACE_REGISTRATION = '/place-registration';
   static const PROFILE = '/profile';
   static const PROMISES = '/promises';
+  static const QIBLA_FINDER = '/qibla-finder';
   static const REGISTRATION = '/registration';
   static const REPORTS_LIST = '/reports-list';
   static const RESET_PASSWORD = '/reset-password';
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
-  static const QIBLA_FINDER = '/qibla-finder';
+  static const PRAYER_TIME = '/prayer-time';
 }

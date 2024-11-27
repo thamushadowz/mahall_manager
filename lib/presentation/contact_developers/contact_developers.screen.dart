@@ -19,10 +19,8 @@ class ContactDevelopersScreen extends GetView<ContactDevelopersController> {
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-          image: AssetImage('assets/images/pattern_background.jpg'),
-          fit: BoxFit.cover,
-          opacity: 0.7,
-        )),
+                image: AssetImage('assets/images/dark_background.png'),
+                fit: BoxFit.cover)),
         child: Column(
           children: [
             Padding(
@@ -32,6 +30,7 @@ class ContactDevelopersScreen extends GetView<ContactDevelopersController> {
                 text: AppStrings.weAreAllerTempus,
                 fontSize: AppMeasures.textSize25,
                 textAlign: TextAlign.center,
+                color: AppColors.white,
               ),
             ),
             Padding(
@@ -41,6 +40,7 @@ class ContactDevelopersScreen extends GetView<ContactDevelopersController> {
                 text: AppStrings.howMayWeAssistYou,
                 fontSize: AppMeasures.bigTextSize,
                 textAlign: TextAlign.center,
+                color: AppColors.white,
               ),
             ),
             _detailsWidget(
@@ -56,6 +56,7 @@ class ContactDevelopersScreen extends GetView<ContactDevelopersController> {
               'assets/images/thank_you.png',
               width: 150,
               height: 150,
+              color: AppColors.white,
             ),
           ],
         ),
@@ -75,9 +76,9 @@ class ContactDevelopersScreen extends GetView<ContactDevelopersController> {
       height: 120,
       decoration: BoxDecoration(
           image: const DecorationImage(
-            image: AssetImage('assets/images/islamic_pattern.jpg'),
-            fit: BoxFit.fill,
-          ),
+              image: AssetImage('assets/images/islamic_pattern.jpg'),
+              fit: BoxFit.fill,
+              opacity: 0.8),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColors.blueGrey)),
       child: Column(

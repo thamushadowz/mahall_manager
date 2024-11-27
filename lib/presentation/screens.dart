@@ -16,6 +16,7 @@ export 'package:mahall_manager/presentation/marriage_registration/marriage_regis
 export 'package:mahall_manager/presentation/payment_screen/payment_screen.screen.dart';
 export 'package:mahall_manager/presentation/pdf_viewer/pdf_viewer.screen.dart';
 export 'package:mahall_manager/presentation/place_registration/place_registration.screen.dart';
+export 'package:mahall_manager/presentation/prayer_time/prayer_time.screen.dart';
 export 'package:mahall_manager/presentation/promises/promises.screen.dart';
 export 'package:mahall_manager/presentation/qibla_finder/qibla_finder.screen.dart';
 export 'package:mahall_manager/presentation/reports_list/reports_list.screen.dart';

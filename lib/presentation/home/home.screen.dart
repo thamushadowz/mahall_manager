@@ -61,7 +61,8 @@ class HomeScreen extends GetView<HomeController> {
                   ),
                 )
               : Scaffold(
-                  backgroundColor: AppColors.white,
+                  backgroundColor: Colors.transparent,
+                  drawerScrimColor: Colors.black87,
                   drawer: DrawerWidget(controller: controller),
                   bottomNavigationBar: BottomNavWidget(
                     controller: controller,
@@ -78,24 +79,31 @@ class HomeScreen extends GetView<HomeController> {
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                     },
-                    child: Obx(() => IndexedStack(
-                          index: controller.selectedNavIndex.value,
-                          children: controller.userType == '2'
-                              ? [
-                                  UsersWidget(controller: controller),
-                                  const IslamicWidget(),
-                                  BloodWidget(controller: controller),
-                                  ExpatsWidget(controller: controller),
-                                ]
-                              : [
-                                  DashboardWidget(controller: controller),
-                                  UsersWidget(controller: controller),
-                                  PromisesWidget(controller: controller),
-                                  ReportsWidget(controller: controller),
-                                  BloodWidget(controller: controller),
-                                  ExpatsWidget(controller: controller),
-                                ],
-                        )),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/dark_background.png'),
+                              fit: BoxFit.cover)),
+                      child: Obx(() => IndexedStack(
+                            index: controller.selectedNavIndex.value,
+                            children: controller.userType == '2'
+                                ? [
+                                    UsersWidget(controller: controller),
+                                    const IslamicWidget(),
+                                    BloodWidget(controller: controller),
+                                    ExpatsWidget(controller: controller),
+                                  ]
+                                : [
+                                    DashboardWidget(controller: controller),
+                                    UsersWidget(controller: controller),
+                                    PromisesWidget(controller: controller),
+                                    ReportsWidget(controller: controller),
+                                    BloodWidget(controller: controller),
+                                    ExpatsWidget(controller: controller),
+                                  ],
+                          )),
+                    ),
                   ),
                 ),
         ),

@@ -55,7 +55,7 @@ class CommonClickableTextWidget extends StatelessWidget {
                     image ?? '',
                     width: 20,
                     height: 20,
-                    color: iconColor ?? AppColors.blueGrey,
+                    color: iconColor ?? AppColors.white,
                   ),
             image == null ? const SizedBox() : const SizedBox(width: 10),
             Text(

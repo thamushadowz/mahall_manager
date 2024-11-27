@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:toastification/toastification.dart';
 
 import '../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../infrastructure/theme/measures/app_measures.dart';
+import '../../../infrastructure/theme/strings/app_strings.dart';
 import '../../../presentation/common_widgets/common_text_widget.dart';
 
 void showToast(
@@ -73,36 +75,34 @@ Future<String?> downloadPdfToExternal(String url, String fileName) async {
 }
 
 Future<bool> requestStoragePermission() async {
-  // Check for Android version (Android 11 and above)
   if (Platform.isAndroid) {
-    if (Platform.version.contains("10") || Platform.version.contains("11")) {
-      // Check for Android 10 and above
+    var androidInfo = await DeviceInfoPlugin().androidInfo;
+    var release = androidInfo.version.release;
+    var sdkInt = androidInfo.version.sdkInt;
+    print('android version ::: $release, $sdkInt');
+    if (release == "10" || release == "11") {
       if (await Permission.manageExternalStorage.isGranted) {
-        return true; // Permission is already granted
+        return true;
       }
 
-      // Request broad storage access (Android 10 and above)
       final status = await Permission.manageExternalStorage.request();
       if (status.isGranted) {
         return true;
       } else {
-        // If permission is permanently denied, open app settings
         if (status.isPermanentlyDenied) {
           openAppSettings();
         }
         return false;
       }
     } else {
-      // For Android versions below 10 (Android 9 and below), request READ/WRITE permissions
       if (await Permission.storage.isGranted) {
-        return true; // Permission is already granted
+        return true;
       }
 
       final status = await Permission.storage.request();
       if (status.isGranted) {
         return true;
       } else {
-        // If permission is permanently denied, open app settings
         if (status.isPermanentlyDenied) {
           openAppSettings();
         }
@@ -110,5 +110,99 @@ Future<bool> requestStoragePermission() async {
       }
     }
   }
-  return false; // Not an Android device
+  return false;
+}
+
+Future<bool> requestLocationPermission() async {
+  if (Platform.isAndroid) {
+    var androidInfo = await DeviceInfoPlugin().androidInfo;
+    var release = androidInfo.version.release;
+    var sdkInt = androidInfo.version.sdkInt;
+    print('android version ::: $release, $sdkInt');
+
+    if (sdkInt >= 30) {
+      return await _handleAndroid11AndAbovePermissions();
+    } else {
+      return await _handleAndroid10AndBelowPermissions();
+    }
+  } else if (Platform.isIOS) {
+    return await _handleIOSPermissions();
+  } else {
+    return false;
+  }
+}
+
+Future<bool> _handleAndroid11AndAbovePermissions() async {
+  final fineStatus = await Permission.location.request();
+
+  if (fineStatus.isGranted) {
+    return true;
+  } else if (fineStatus.isDenied) {
+    showToast(
+        title: AppStrings.locationPermissionReqd,
+        type: ToastificationType.error);
+    return false;
+  } else if (fineStatus.isPermanentlyDenied) {
+    showToast(
+        title: AppStrings.enableLocationPermission,
+        type: ToastificationType.error);
+    await openAppSettings();
+    return false;
+  } else {
+    return false;
+  }
+
+  /*// Optionally request background location for better Qibla accuracy
+  if (await Permission.locationAlways.isDenied) {
+    final backgroundStatus = await Permission.locationAlways.request();
+    if (!backgroundStatus.isGranted) {
+      Get.snackbar(
+        'Background Permission Denied',
+        'Background location is recommended for better accuracy.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }*/
+}
+
+Future<bool> _handleAndroid10AndBelowPermissions() async {
+  final status = await Permission.locationWhenInUse.request();
+
+  if (status.isGranted) {
+    return true;
+  } else if (status.isDenied) {
+    showToast(
+        title: AppStrings.locationPermissionReqd,
+        type: ToastificationType.error);
+    return false;
+  } else if (status.isPermanentlyDenied) {
+    showToast(
+        title: AppStrings.enableLocationPermission,
+        type: ToastificationType.error);
+    await openAppSettings();
+    return false;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> _handleIOSPermissions() async {
+  final status = await Permission.locationWhenInUse.request();
+
+  if (status.isGranted) {
+    return true;
+  } else if (status.isDenied) {
+    showToast(
+        title: AppStrings.locationPermissionReqd,
+        type: ToastificationType.error);
+    return false;
+  } else if (status.isPermanentlyDenied) {
+    showToast(
+        title: AppStrings.enableLocationPermission,
+        type: ToastificationType.error);
+    await openAppSettings();
+    return false;
+  } else {
+    return false;
+  }
 }

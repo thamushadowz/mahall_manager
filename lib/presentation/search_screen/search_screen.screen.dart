@@ -24,7 +24,11 @@ class SearchScreenScreen extends GetView<SearchScreenController> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: Padding(
+        child: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover)),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [
@@ -82,7 +86,7 @@ class SearchScreenScreen extends GetView<SearchScreenController> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         decoration: BoxDecoration(
-          color: AppColors.lightGrey.withOpacity(0.1),
+          color: AppColors.lightGrey.withOpacity(0.8),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -98,10 +102,11 @@ class SearchScreenScreen extends GetView<SearchScreenController> {
                 text: controller.filteredList[index].name,
                 fontSize: AppMeasures.mediumTextSize,
                 fontWeight: AppMeasures.mediumWeight,
-                color: AppColors.blueGrey,
+                color: AppColors.themeColor,
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey),
+            Icon(Icons.arrow_forward_ios,
+                size: 16, color: AppColors.themeColor),
           ],
         ),
       ),

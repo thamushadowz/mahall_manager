@@ -18,8 +18,8 @@ class CommonDownloadItemWidget extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
+        color: AppColors.white.withOpacity(0.8),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.blueGrey),
       ),
       child: Row(
         children: [

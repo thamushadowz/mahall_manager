@@ -36,6 +36,8 @@ dependencies:
   permission_handler: ^11.3.1
   flutter_qiblah: ^3.0.4
   device_info_plus: ^9.1.2
+  adhan: ^2.0.0+1
+  geolocator: ^13.0.2
 
 
 dev_dependencies: 

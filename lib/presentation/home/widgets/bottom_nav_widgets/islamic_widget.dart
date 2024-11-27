@@ -12,41 +12,72 @@ class IslamicWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/dark_background.png'),
+              fit: BoxFit.cover)),
       padding: const EdgeInsets.all(20.0),
-      child: Column(
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 20,
         children: [
-          Material(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(10),
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.QIBLA_FINDER);
-                },
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/qibla.png',
-                      width: 30,
-                      height: 30,
-                      color: AppColors.themeColor,
-                    ),
-                    const SizedBox(height: 10),
-                    CommonTextWidget(
-                      text: AppStrings.qiblaFinder,
-                      fontSize: AppMeasures.mediumTextSize,
-                      fontWeight: AppMeasures.smallWeight,
-                      color: AppColors.themeColor,
-                    )
-                  ],
-                ),
-              ),
-            ),
-          )
+          _buildItemWidget(
+              onTap: () {
+                Get.toNamed(Routes.QIBLA_FINDER);
+              },
+              icon: 'assets/images/qibla.png',
+              text: AppStrings.qiblaFinder),
+          _buildItemWidget(
+              onTap: () {
+                Get.toNamed(Routes.PRAYER_TIME);
+              },
+              icon: 'assets/images/namaz.png',
+              text: AppStrings.prayerTime),
+          _buildItemWidget(
+              onTap: () {},
+              icon: 'assets/images/dua.png',
+              text: AppStrings.dua),
+          _buildItemWidget(
+              onTap: () {},
+              icon: 'assets/images/dasbiha.png',
+              text: AppStrings.azkar),
         ],
+      ),
+    );
+  }
+
+  _buildItemWidget(
+      {required Function() onTap, required String icon, required String text}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Material(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(10),
+        elevation: 4,
+        child: Container(
+          width: 110,
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              Image.asset(
+                icon,
+                width: 40,
+                height: 40,
+                color: AppColors.themeColor,
+              ),
+              const SizedBox(height: 10),
+              CommonTextWidget(
+                text: text,
+                fontSize: AppMeasures.mediumTextSize,
+                fontWeight: AppMeasures.smallWeight,
+                color: AppColors.themeColor,
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

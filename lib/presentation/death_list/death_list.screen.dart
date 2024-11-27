@@ -25,21 +25,27 @@ class DeathListScreen extends GetView<DeathListController> {
         appBar: CommonAppbarWidget(
           title: AppStrings.listOfDeceased,
         ),
-        body: Obx(
-            () => !controller.isLoading.value && controller.deathList.isEmpty
-                ? const CommonEmptyResultWidget()
-                : Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CommonTextFormField(
-                          suffixIcon: Icons.search,
-                          textController: controller.deathSearchController,
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover)),
+          child: Obx(
+              () => !controller.isLoading.value && controller.deathList.isEmpty
+                  ? const CommonEmptyResultWidget()
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: CommonTextFormField(
+                            suffixIcon: Icons.search,
+                            textController: controller.deathSearchController,
+                          ),
                         ),
-                      ),
-                      _buildDeceasedList(),
-                    ],
-                  )),
+                        _buildDeceasedList(),
+                      ],
+                    )),
+        ),
       ),
     );
   }
@@ -73,7 +79,7 @@ class DeathListScreen extends GetView<DeathListController> {
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.lightGrey.withOpacity(0.2)),
+          color: AppColors.white.withOpacity(0.8)),
       child: CommonTextWidget(
         text:
             '${controller.filteredDeathList[index].personName} : ${controller.filteredDeathList[index].houseRegNo} - ${controller.filteredDeathList[index].houseName}',

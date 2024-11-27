@@ -49,12 +49,9 @@ class LoginScreen extends GetView<LoginController> {
             body: SizedBox.expand(
               child: Container(
                 decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image:
-                        AssetImage('assets/images/lite_white_background.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/dark_background.png'),
+                        fit: BoxFit.cover)),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final keyboardHeight =
@@ -107,11 +104,10 @@ class LoginScreen extends GetView<LoginController> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Material(
-        color: AppColors.white,
+        color: AppColors.white.withOpacity(0.8),
         elevation: 10,
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          color: AppColors.white,
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(20),
           child: Form(
@@ -131,7 +127,7 @@ class LoginScreen extends GetView<LoginController> {
                   child: Text(
                     AppLocalizations.of(context)!.login_desc,
                     style: TextStyle(
-                        color: AppColors.grey,
+                        color: AppColors.blueGrey,
                         fontSize: AppMeasures.normalTextSize,
                         fontWeight: AppMeasures.mediumWeight),
                   ),

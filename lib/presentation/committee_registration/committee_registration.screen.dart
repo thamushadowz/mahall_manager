@@ -41,132 +41,142 @@ class CommitteeRegistrationScreen
         ],
         title: AppLocalizations.of(context)!.committee_registration,
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Obx(
-          () => Container(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: controller.formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 5),
-                    //Mahall name
-                    controller.isLoading.value
-                        ? const CommonTextFieldShimmerWidget()
-                        : CommonTextFormField(
-                            disabledLabelColor: controller.isEditMode.value
-                                ? AppColors.themeColor
-                                : AppColors.grey,
-                            enabled: controller.isEditMode.value,
-                            label: AppLocalizations.of(context)!.mahall_name,
-                            keyboardType: TextInputType.name,
-                            textController: controller.mahallNameController,
-                            focusNode: controller.mahallNameFocusNode,
-                            onFieldSubmitted: (value) {
-                              FocusScope.of(context)
-                                  .requestFocus(controller.mahallCodeFocusNode);
-                            },
-                            validator: Validators.validateMahallName),
-                    const SizedBox(height: 10),
-                    //Mahall code
-                    controller.isLoading.value
-                        ? const CommonTextFieldShimmerWidget()
-                        : CommonTextFormField(
-                            inputFormatters: [
-                                LengthLimitingTextInputFormatter(4),
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/dark_background.png'),
+                fit: BoxFit.cover)),
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Obx(
+            () => Container(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: controller.formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 5),
+                      //Mahall name
+                      controller.isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : CommonTextFormField(
+                              disabledLabelColor: controller.isEditMode.value
+                                  ? AppColors.themeColor
+                                  : AppColors.grey,
+                              enabled: controller.isEditMode.value,
+                              label: AppLocalizations.of(context)!.mahall_name,
+                              keyboardType: TextInputType.name,
+                              textController: controller.mahallNameController,
+                              focusNode: controller.mahallNameFocusNode,
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context).requestFocus(
+                                    controller.mahallCodeFocusNode);
+                              },
+                              validator: Validators.validateMahallName),
+                      const SizedBox(height: 10),
+                      //Mahall code
+                      controller.isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : CommonTextFormField(
+                              inputFormatters: [
+                                  LengthLimitingTextInputFormatter(4),
+                                ],
+                              disabledLabelColor:
+                                  controller.adminCode.value == '0'
+                                      ? AppColors.themeColor
+                                      : AppColors.grey,
+                              enabled: controller.adminCode.value == '0'
+                                  ? true
+                                  : false,
+                              label: AppStrings.mahallCode,
+                              keyboardType: TextInputType.name,
+                              textController: controller.mahallCodeController,
+                              focusNode: controller.mahallCodeFocusNode,
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context).requestFocus(
+                                    controller.mahallAddressFocusNode);
+                              },
+                              validator: Validators.validateMahallCode),
+                      const SizedBox(height: 10),
+                      //Mahall address
+                      controller.isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : CommonTextFormField(
+                              disabledLabelColor: controller.isEditMode.value
+                                  ? AppColors.themeColor
+                                  : AppColors.grey,
+                              enabled: controller.isEditMode.value,
+                              label:
+                                  AppLocalizations.of(context)!.mahall_address,
+                              keyboardType: TextInputType.name,
+                              textController:
+                                  controller.mahallAddressController,
+                              focusNode: controller.mahallAddressFocusNode,
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context).requestFocus(
+                                    controller.mahallPinFocusNode);
+                              },
+                              validator: Validators.validateMahallAddress),
+                      const SizedBox(height: 10),
+                      //Mahall pin
+                      controller.isLoading.value
+                          ? const CommonTextFieldShimmerWidget()
+                          : CommonTextFormField(
+                              disabledLabelColor:
+                                  controller.adminCode.value == '0'
+                                      ? AppColors.themeColor
+                                      : AppColors.grey,
+                              enabled: controller.adminCode.value == '0'
+                                  ? true
+                                  : false,
+                              label: AppLocalizations.of(context)!.mahall_pin,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(6),
+                                FilteringTextInputFormatter.digitsOnly,
                               ],
-                            disabledLabelColor:
-                                controller.adminCode.value == '0'
-                                    ? AppColors.themeColor
-                                    : AppColors.grey,
-                            enabled: controller.adminCode.value == '0'
-                                ? true
-                                : false,
-                            label: AppStrings.mahallCode,
-                            keyboardType: TextInputType.name,
-                            textController: controller.mahallCodeController,
-                            focusNode: controller.mahallCodeFocusNode,
-                            onFieldSubmitted: (value) {
-                              FocusScope.of(context).requestFocus(
-                                  controller.mahallAddressFocusNode);
-                            },
-                            validator: Validators.validateMahallCode),
-                    const SizedBox(height: 10),
-                    //Mahall address
-                    controller.isLoading.value
-                        ? const CommonTextFieldShimmerWidget()
-                        : CommonTextFormField(
-                            disabledLabelColor: controller.isEditMode.value
-                                ? AppColors.themeColor
-                                : AppColors.grey,
-                            enabled: controller.isEditMode.value,
-                            label: AppLocalizations.of(context)!.mahall_address,
-                            keyboardType: TextInputType.name,
-                            textController: controller.mahallAddressController,
-                            focusNode: controller.mahallAddressFocusNode,
-                            onFieldSubmitted: (value) {
-                              FocusScope.of(context)
-                                  .requestFocus(controller.mahallPinFocusNode);
-                            },
-                            validator: Validators.validateMahallAddress),
-                    const SizedBox(height: 10),
-                    //Mahall pin
-                    controller.isLoading.value
-                        ? const CommonTextFieldShimmerWidget()
-                        : CommonTextFormField(
-                            disabledLabelColor:
-                                controller.adminCode.value == '0'
-                                    ? AppColors.themeColor
-                                    : AppColors.grey,
-                            enabled: controller.adminCode.value == '0'
-                                ? true
-                                : false,
-                            label: AppLocalizations.of(context)!.mahall_pin,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(6),
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            keyboardType: TextInputType.number,
-                            textController: controller.mahallPinController,
-                            focusNode: controller.mahallPinFocusNode,
-                            onFieldSubmitted: (value) {
-                              FocusScope.of(context).requestFocus(
-                                  controller.presidentFNameFocusNode);
-                            },
-                            validator: Validators.validateMahallPin),
-                    const SizedBox(height: 20),
-                    // President Section
-                    _buildPresidentWidget(context),
-                    const SizedBox(height: 20),
+                              keyboardType: TextInputType.number,
+                              textController: controller.mahallPinController,
+                              focusNode: controller.mahallPinFocusNode,
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context).requestFocus(
+                                    controller.presidentFNameFocusNode);
+                              },
+                              validator: Validators.validateMahallPin),
+                      const SizedBox(height: 20),
+                      // President Section
+                      _buildPresidentWidget(context),
+                      const SizedBox(height: 20),
 
-                    // Secretary Section
-                    _buildSecretaryWidget(context),
-                    const SizedBox(height: 20),
+                      // Secretary Section
+                      _buildSecretaryWidget(context),
+                      const SizedBox(height: 20),
 
-                    // Treasurer Section
-                    _buildTreasurerWidget(context),
+                      // Treasurer Section
+                      _buildTreasurerWidget(context),
 
-                    const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                    controller.isEditMode.value
-                        ? CommonButtonWidget(
-                            isLoading: controller.isLoading,
-                            onTap: () {
-                              if (controller.formKey.currentState!.validate()) {
-                                if (controller.adminCode.value == '0') {
-                                  controller.performCommitteeRegistration();
-                                } else if (controller.adminCode.value == '1') {
-                                  controller.performEdit();
+                      controller.isEditMode.value
+                          ? CommonButtonWidget(
+                              isLoading: controller.isLoading,
+                              onTap: () {
+                                if (controller.formKey.currentState!
+                                    .validate()) {
+                                  if (controller.adminCode.value == '0') {
+                                    controller.performCommitteeRegistration();
+                                  } else if (controller.adminCode.value ==
+                                      '1') {
+                                    controller.performEdit();
+                                  }
                                 }
-                              }
-                            },
-                            label: AppLocalizations.of(context)!.submit)
-                        : const SizedBox()
-                  ],
+                              },
+                              label: AppLocalizations.of(context)!.submit)
+                          : const SizedBox()
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -218,8 +228,9 @@ class CommitteeRegistrationScreen
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.blueGrey)),
+        borderRadius: BorderRadius.circular(20),
+        color: AppColors.white.withOpacity(0.8),
+      ),
       child: Column(
         children: [
           /*controller.isEditMode.value
@@ -327,8 +338,9 @@ class CommitteeRegistrationScreen
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.blueGrey)),
+        borderRadius: BorderRadius.circular(20),
+        color: AppColors.white.withOpacity(0.8),
+      ),
       child: Column(
         children: [
           /*controller.isEditMode.value
@@ -433,8 +445,9 @@ class CommitteeRegistrationScreen
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.blueGrey)),
+        borderRadius: BorderRadius.circular(20),
+        color: AppColors.white.withOpacity(0.8),
+      ),
       child: Column(
         children: [
           /*controller.isEditMode.value

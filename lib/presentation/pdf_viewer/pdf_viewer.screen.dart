@@ -15,7 +15,11 @@ class PdfViewerScreen extends GetView<PdfViewerController> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CommonAppbarWidget(title: AppStrings.viewPdf),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/dark_background.png'),
+                fit: BoxFit.cover)),
         padding: const EdgeInsets.all(20),
         child: Obx(
           () => controller.isLoading.value

@@ -69,6 +69,7 @@ class ExpatsWidget extends StatelessWidget {
     return DataTable(
         columnSpacing: 30,
         headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+        dataRowColor: WidgetStateProperty.all(AppColors.white.withOpacity(0.8)),
         columns: [
           DataColumn(
             label: CommonTextWidget(

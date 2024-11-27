@@ -71,7 +71,7 @@ class CommonTextFormField extends StatelessWidget {
         keyboardType: keyboardType ?? TextInputType.text,
         decoration: InputDecoration(
             hintText: hint,
-            fillColor: fillColor ?? AppColors.white,
+            fillColor: fillColor ?? AppColors.white.withOpacity(0.8),
             filled: true,
             errorStyle: TextStyle(
               color: AppColors.darkRed,

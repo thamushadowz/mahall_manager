@@ -94,6 +94,7 @@ class PromisesWidget extends StatelessWidget {
     return DataTable(
       columnSpacing: 20,
       headingRowColor: WidgetStateProperty.all(AppColors.themeColor),
+      dataRowColor: WidgetStateProperty.all(AppColors.white.withOpacity(0.8)),
       columns: [
         DataColumn(
           label: CommonTextWidget(

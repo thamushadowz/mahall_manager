@@ -8,11 +8,19 @@ import '../../../domain/core/interfaces/utility_services.dart';
 class PrayerTimeController extends GetxController {
   RxString selectedMethod = ''.obs;
   RxString selectedMadhab = ''.obs;
+  RxString decorationGif = ''.obs;
+
+  RxBool isSettingsClicked = false.obs;
+  RxBool isLoading = true.obs;
+  RxBool isSubhAlarmOn = true.obs;
+  RxBool isLuhrAlarmOn = true.obs;
+  RxBool isAsrAlarmOn = true.obs;
+  RxBool isMagribAlarmOn = true.obs;
+  RxBool isIshaAlarmOn = true.obs;
 
   CalculationMethod methodKey = CalculationMethod.karachi;
   Madhab madhabKey = Madhab.shafi;
 
-  RxBool isSettingsClicked = false.obs;
   late Position currentCoordinates;
   double latitude = 0.0;
   double longitude = 0.0;
@@ -56,6 +64,7 @@ class PrayerTimeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    setDecorationGif();
     currentCoordinates = (await getCurrentLocation())!;
     latitude = currentCoordinates.latitude;
     longitude = currentCoordinates.longitude;
@@ -63,6 +72,8 @@ class PrayerTimeController extends GetxController {
 
     params.madhab = Madhab.shafi;
     prayerTimes.value = PrayerTimes.today(myCoordinates, params);
+    Future.delayed(Duration(seconds: 3));
+    isLoading.value = false;
     printTimings();
   }
 
@@ -80,6 +91,43 @@ class PrayerTimeController extends GetxController {
     print('Selected Madhab: $madhabName');
   }
 
+  void setDecorationGif() {
+    if (DateFormat.jm().format(DateTime.now()).split(' ').last.toLowerCase() ==
+        'am') {
+      if (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
+          3) {
+        decorationGif.value = 'assets/images/isha.gif';
+      } else if ((int.parse(
+                  DateFormat.jm().format(DateTime.now()).split(':').first) >=
+              3) &&
+          (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
+              6)) {
+        decorationGif.value = 'assets/images/subh.gif';
+      } else {
+        decorationGif.value = 'assets/images/luhr.gif';
+      }
+    } else {
+      if (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
+          3) {
+        decorationGif.value = 'assets/images/luhr.gif';
+      } else if ((int.parse(
+                  DateFormat.jm().format(DateTime.now()).split(':').first) >=
+              3) &&
+          (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
+              5)) {
+        decorationGif.value = 'assets/images/asr.gif';
+      } else if ((int.parse(
+                  DateFormat.jm().format(DateTime.now()).split(':').first) >=
+              5) &&
+          (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
+              7)) {
+        decorationGif.value = 'assets/images/magrib.gif';
+      } else {
+        decorationGif.value = 'assets/images/isha.gif';
+      }
+    }
+  }
+
   printTimings() {
     print(
         "---Today's Prayer Times in Your Local Timezone(${prayerTimes.value?.fajr.timeZoneName})---");
@@ -89,5 +137,8 @@ class PrayerTimeController extends GetxController {
     print(DateFormat.jm().format(prayerTimes.value!.asr));
     print(DateFormat.jm().format(prayerTimes.value!.maghrib));
     print(DateFormat.jm().format(prayerTimes.value!.isha));
+
+    print('Current Time :: ${DateFormat.jm().format(DateTime.now())}');
+    print('Current Prayer :: ${prayerTimes.value!.currentPrayer().name}');
   }
 }

@@ -27,6 +27,7 @@ class AppStrings {
   static String collectMoney = 'Collect Money';
   static String collectTotal = 'Collect Total';
   static String fullyPaid = 'Fully Paid';
+  static String advancePaid = 'Advance Paid';
   static String noDues = 'No Dues';
   static String totalDue = ' Total Due:';
   static String addedBy = 'Added By';

@@ -14,7 +14,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
@@ -35,8 +34,8 @@ class PaymentScreenController extends GetxController {
   final GlobalKey screenshotKey = GlobalKey();
   RxBool paymentSuccess = false.obs;
   RxBool isTakingScreenshot = false.obs;
-  String referenceNo = 'KNJ0001';
-  String currentDue = '';
+  RxString referenceNo = ''.obs;
+  RxString currentDue = ''.obs;
   final args = Get.arguments as Map;
   RxBool isLoading = false.obs;
   int paymentFor = 0;
@@ -50,11 +49,12 @@ class PaymentScreenController extends GetxController {
       textController.text = totalOrNot ? house.totalDue ?? '' : house.due ?? '';
     } else if (args['promises'] != null) {
       promises = args['promises'];
+      textController.text = promises.amount ?? '';
       paymentFor = 2; // 2 - promised money
     } else if (args['report'] != null) {
-      paymentSuccess.value = true;
+      //paymentSuccess.value = true;
       report = args['report'];
-      currentDue = report.currentDue.toString();
+      currentDue.value = report.currentDue.toString();
     }
 
     super.onInit();
@@ -68,8 +68,8 @@ class PaymentScreenController extends GetxController {
         PaymentSuccessModel response = await listingService.payment(
             storageService.getToken() ?? '', params);
         if (response.status == true) {
-          referenceNo = response.data!.referenceNo ?? '';
-          currentDue = response.data!.currentDue.toString();
+          referenceNo.value = response.data!.referenceNo ?? '';
+          currentDue.value = response.data!.currentDue.toString();
           paymentSuccess.value = true;
         } else {
           showToast(

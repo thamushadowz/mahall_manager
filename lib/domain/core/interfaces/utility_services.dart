@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -202,6 +203,17 @@ Future<bool> _handleIOSPermissions() async {
         type: ToastificationType.error);
     await openAppSettings();
     return false;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> isInternetAvailable() async {
+  var connectivityResult = await Connectivity().checkConnectivity();
+  print('Connectivity ::: ${connectivityResult}');
+  if (connectivityResult.first == ConnectivityResult.mobile ||
+      connectivityResult.first == ConnectivityResult.wifi) {
+    return true;
   } else {
     return false;
   }

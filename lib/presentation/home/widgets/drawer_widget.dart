@@ -28,13 +28,13 @@ class DrawerWidget extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundColor: Colors.transparent,
-              radius: 80,
+              radius: 70,
               child: Image.asset(
                 'assets/logo/Mahall_manager_trans_logo.png',
               ),
             ),
             Divider(
-              height: 30,
+              height: 10,
               thickness: 2,
               indent: 15,
               endIndent: 15,
@@ -70,13 +70,15 @@ class DrawerWidget extends StatelessWidget {
                     controller.userType == "1"
                         ? const SizedBox.shrink()
                         : Divider(
-                            height: 30,
+                            height: 20,
                             thickness: 2,
                             indent: 15,
                             endIndent: 15,
                             color: AppColors.lightGrey,
                           ),
-                    const SizedBox(height: 10),
+                    controller.userType == "1"
+                        ? const SizedBox.shrink()
+                        : const SizedBox(height: 10),
                     //Reset Password
                     CommonClickableTextWidget(
                       image: 'assets/images/reset_password.png',
@@ -124,6 +126,7 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),*/
             //Delete Account
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: CommonClickableTextWidget(
@@ -225,7 +228,9 @@ class DrawerWidget extends StatelessWidget {
           textColor: AppColors.white,
           title: AppLocalizations.of(context)!.user_registration,
           onTap: () {
-            Get.toNamed(Routes.REGISTRATION);
+            Get.toNamed(Routes.REGISTRATION)?.then((onValue) {
+              controller.getUserDetails();
+            });
           },
         ),
         const SizedBox(height: 10),
@@ -277,6 +282,7 @@ class DrawerWidget extends StatelessWidget {
           onTap: () {
             Get.toNamed(Routes.ADD_INCOME)?.then((onValue) {
               controller.getReportsDetails();
+              controller.getChartData();
             });
           },
         ),
@@ -291,12 +297,13 @@ class DrawerWidget extends StatelessWidget {
           onTap: () {
             Get.toNamed(Routes.ADD_EXPENSES)?.then((onValue) {
               controller.getReportsDetails();
+              controller.getChartData();
             });
           },
         ),
         const SizedBox(height: 10),
         Divider(
-          height: 30,
+          height: 20,
           thickness: 2,
           indent: 15,
           endIndent: 15,

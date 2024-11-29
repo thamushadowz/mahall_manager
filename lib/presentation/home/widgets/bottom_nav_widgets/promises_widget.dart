@@ -185,7 +185,11 @@ class PromisesWidget extends StatelessWidget {
                     title: AppStrings.collectMoney,
                     onTap: () {
                       Get.toNamed(Routes.PAYMENT_SCREEN,
-                          arguments: {'promises': promises});
+                          arguments: {'promises': promises})?.then((onValue) {
+                        controller.getPromisesDetails();
+                        controller.getChartData();
+                        controller.getReportsDetails();
+                      });
                     },
                   ),
                   //Edit

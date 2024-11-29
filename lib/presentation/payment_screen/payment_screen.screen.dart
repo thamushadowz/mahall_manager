@@ -23,19 +23,39 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
     return Scaffold(
         backgroundColor: AppColors.white,
         appBar: CommonAppbarWidget(title: AppStrings.paymentDetails),
-        body: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
+        body: Obx(() => controller.isLoading.value
+            ? Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/dark_background.png'),
-                      fit: BoxFit.cover)),
-            ),
-            Obx(() => controller.paymentSuccess.value
-                ? _buildSuccessWidget(context)
-                : _buildMainWidget(context)),
-          ],
-        ));
+                    image: AssetImage('assets/images/dark_background.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/spin_loader.gif',
+                    color: AppColors.white,
+                    width: 60,
+                    height: 60,
+                  ),
+                ),
+              )
+            : Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image:
+                                AssetImage('assets/images/dark_background.png'),
+                            fit: BoxFit.cover)),
+                  ),
+                  Obx(() => controller.paymentSuccess.value
+                      ? _buildSuccessWidget(context)
+                      : _buildMainWidget(context)),
+                ],
+              )));
   }
 
   _buildSuccessWidget(BuildContext context) {
@@ -43,106 +63,100 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
       key: controller.screenshotKey,
       child: Stack(
         children: [
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              color: AppColors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: 300,
+          Container(
+            width: double.infinity,
+            color: AppColors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: 300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Image.asset('assets/images/payment_successful.png',
+                          color: AppColors.themeColor, width: 150, height: 150),
+                      const SizedBox(height: 20),
+                      CommonTextWidget(
+                        text: AppStrings.paymentSuccess,
+                        fontSize: 25,
+                        color: AppColors.themeColor,
+                      ),
+                    ],
+                  ),
+                ),
+                ClipPath(
+                  clipper: TornEdgeClipper(),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(30),
+                    color: AppColors.themeColor,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset('assets/images/payment_successful.png',
-                            color: AppColors.themeColor,
-                            width: 150,
-                            height: 150),
                         const SizedBox(height: 20),
                         CommonTextWidget(
-                          text: AppStrings.paymentSuccess,
-                          fontSize: 25,
-                          color: AppColors.themeColor,
+                          text: controller.storageService.getMahallName() ?? '',
+                          color: AppColors.white,
                         ),
+                        const SizedBox(height: 20),
+                        CommonTextWidget(
+                          text: AppStrings.paymentDetails,
+                          color: AppColors.white,
+                        ),
+                        const Divider(height: 25),
+                        controller.args['report'] != null
+                            ? _buildUserPaymentSuccessDetailsWidget()
+                            : controller.args['promises'] != null
+                                ? _buildPromisesPaymentSuccessDetailsWidget()
+                                : _buildUserPaymentSuccessDetailsWidget(),
+                        _buildDataRow(
+                            color: AppColors.white,
+                            label: '${AppStrings.date} : ',
+                            text: getCurrentDate()),
+                        const Divider(height: 20),
+                        Obx(
+                          () => controller.isTakingScreenshot.value
+                              ? const SizedBox(height: 20)
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        controller.takeScreenshotAndShare(
+                                            controller.house.phone ?? '',
+                                            controller.args['report'] != null
+                                                ? controller.report.description!
+                                                    .split(' - ')
+                                                    .last
+                                                    .trim()
+                                                : controller.paymentFor == 2
+                                                    ? "${controller.promises.fName} ${controller.promises.lName}"
+                                                    : controller.totalOrNot
+                                                        ? '${controller.house.houseName}'
+                                                        : '${controller.house.fName} ${controller.house.lName}');
+                                      },
+                                      icon: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(60),
+                                            border: Border.all(
+                                                color: AppColors.white)),
+                                        child: Icon(
+                                          Icons.share_outlined,
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        )
                       ],
                     ),
                   ),
-                  ClipPath(
-                    clipper: TornEdgeClipper(),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(30),
-                      color: AppColors.themeColor,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(height: 20),
-                          CommonTextWidget(
-                            text:
-                                controller.storageService.getMahallName() ?? '',
-                            color: AppColors.white,
-                          ),
-                          const SizedBox(height: 20),
-                          CommonTextWidget(
-                            text: AppStrings.paymentDetails,
-                            color: AppColors.white,
-                          ),
-                          const Divider(height: 25),
-                          controller.args['report'] != null
-                              ? _buildUserPaymentSuccessDetailsWidget()
-                              : controller.args['promises'] != null
-                                  ? _buildPromisesPaymentSuccessDetailsWidget()
-                                  : _buildUserPaymentSuccessDetailsWidget(),
-                          _buildDataRow(
-                              color: AppColors.white,
-                              label: '${AppStrings.date} : ',
-                              text: getCurrentDate()),
-                          const Divider(height: 20),
-                          Obx(
-                            () => controller.isTakingScreenshot.value
-                                ? const SizedBox(height: 20)
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          controller.takeScreenshotAndShare(
-                                              controller.house.phone ?? '',
-                                              controller.args['report'] != null
-                                                  ? controller
-                                                      .report.description!
-                                                      .split(' - ')
-                                                      .last
-                                                      .trim()
-                                                  : controller.paymentFor == 2
-                                                      ? "${controller.promises.fName} ${controller.promises.lName}"
-                                                      : controller.totalOrNot
-                                                          ? '${controller.house.houseName}'
-                                                          : '${controller.house.fName} ${controller.house.lName}');
-                                        },
-                                        icon: Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(60),
-                                              border: Border.all(
-                                                  color: AppColors.white)),
-                                          child: Icon(
-                                            Icons.share_outlined,
-                                            color: AppColors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -158,7 +172,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
             label: '${AppStrings.referenceNo} : ',
             text: controller.args['report'] != null
                 ? controller.report.id.toString()
-                : controller.referenceNo),
+                : controller.referenceNo.value),
         const Divider(height: 20),
         controller.args['report'] != null || controller.totalOrNot
             ? const SizedBox()
@@ -186,11 +200,11 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         const Divider(height: 20),
         controller.totalOrNot
             ? const SizedBox()
-            : _buildDataRow(
-                color: AppColors.white,
-                label: '${AppStrings.currentDue} : ',
-                text: '₹ ${controller.currentDue}',
-              ),
+            : Obx(() => _buildDataRow(
+                  color: AppColors.white,
+                  label: '${AppStrings.currentDue} : ',
+                  text: '₹ ${controller.currentDue.value}',
+                )),
         controller.totalOrNot ? const SizedBox() : const Divider(height: 20),
       ],
     );
@@ -199,10 +213,10 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
   _buildPromisesPaymentSuccessDetailsWidget() {
     return Column(
       children: [
-        _buildDataRow(
+        Obx(() => _buildDataRow(
             color: AppColors.white,
             label: '${AppStrings.referenceNo} : ',
-            text: controller.referenceNo),
+            text: controller.referenceNo.value)),
         const Divider(height: 20),
         _buildDataRow(
             color: AppColors.white,
@@ -218,7 +232,13 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
         _buildDataRow(
             color: AppColors.white,
             label: '${AppStrings.paidAmount} : ',
-            text: '₹ ${controller.promises.amount}'),
+            text:
+                '₹ ${controller.textController.text.trim().isEmpty ? controller.promises.amount : controller.textController.text.trim()}'),
+        const Divider(height: 20),
+        Obx(() => _buildDataRow(
+            color: AppColors.white,
+            label: '${AppStrings.currentDue} : ',
+            text: '₹ ${controller.currentDue.value}')),
         const Divider(height: 20),
       ],
     );
@@ -303,7 +323,9 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                       ? "Varisamkhya : ${controller.house.userRegNo} - ${controller.house.fName} ${controller.house.lName}"
                       : "Varisamkhya : ${controller.house.houseRegNo} - ${controller.house.houseName}",
                   "amount": !controller.totalOrNot
-                      ? controller.house.due
+                      ? controller.textController.text.trim().isEmpty
+                          ? controller.house.due
+                          : controller.textController.text.trim()
                       : controller.house.totalDue,
                   "date": getCurrentDate(),
                   "payment_for": controller.paymentFor,
@@ -314,7 +336,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
             }
           },
           label: AppStrings.payNow,
-          isLoading: false.obs,
+          isLoading: controller.isLoading,
         )
       ],
     );
@@ -341,6 +363,17 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
             label: '${AppStrings.amount} : ',
             text: '₹ ${controller.promises.amount}'),
         const Divider(height: 25),
+        CommonTextFormField(
+          label: AppStrings.enterCustomAmount,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          keyboardType: TextInputType.number,
+          prefixText: '₹ ',
+          validator: Validators.validateAmount,
+          textController: controller.textController,
+        ),
+        const SizedBox(height: 20),
         CommonButtonWidget(
           onTap: () {
             if (controller.formKey.currentState!.validate()) {
@@ -352,7 +385,7 @@ class PaymentScreenScreen extends GetView<PaymentScreenController> {
                   "id": controller.promises.id,
                   "description":
                       '${controller.promises.description} - ${controller.promises.fName} ${controller.promises.lName}',
-                  "amount": controller.promises.amount,
+                  "amount": controller.textController.text.trim(),
                   "date": getCurrentDate(),
                   "payment_for": controller.paymentFor,
                 });

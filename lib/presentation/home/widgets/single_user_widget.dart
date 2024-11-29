@@ -50,6 +50,7 @@ class SingleUserWidget extends StatelessWidget {
                             controller.promisesDetails.isEmpty
                                 ? const SizedBox.shrink()
                                 : _buildPromisesWidget(context),
+                            const SizedBox(height: 20),
                           ],
                         ),
                 ),

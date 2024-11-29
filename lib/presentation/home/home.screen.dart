@@ -90,7 +90,7 @@ class HomeScreen extends GetView<HomeController> {
                             children: controller.userType == '2'
                                 ? [
                                     UsersWidget(controller: controller),
-                                    const IslamicWidget(),
+                                    IslamicWidget(controller: controller),
                                     BloodWidget(controller: controller),
                                     ExpatsWidget(controller: controller),
                                   ]

@@ -72,7 +72,7 @@ class PrayerTimeController extends GetxController {
 
     params.madhab = Madhab.shafi;
     prayerTimes.value = PrayerTimes.today(myCoordinates, params);
-    Future.delayed(Duration(seconds: 3));
+    Future.delayed(const Duration(seconds: 3));
     isLoading.value = false;
     printTimings();
   }
@@ -94,35 +94,46 @@ class PrayerTimeController extends GetxController {
   void setDecorationGif() {
     if (DateFormat.jm().format(DateTime.now()).split(' ').last.toLowerCase() ==
         'am') {
+      print('Time is AM');
       if (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
           3) {
+        print('Time is < 3');
         decorationGif.value = 'assets/images/isha.gif';
       } else if ((int.parse(
                   DateFormat.jm().format(DateTime.now()).split(':').first) >=
               3) &&
           (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
               6)) {
+        print('Time is > 3 and < 6');
         decorationGif.value = 'assets/images/subh.gif';
       } else {
+        print('Time is > 6');
         decorationGif.value = 'assets/images/luhr.gif';
       }
     } else {
-      if (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
-          3) {
+      print('Time is PM');
+      if ((int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) ==
+              12) ||
+          (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
+              3)) {
+        print('Time is < 3 or = 12');
         decorationGif.value = 'assets/images/luhr.gif';
       } else if ((int.parse(
                   DateFormat.jm().format(DateTime.now()).split(':').first) >=
               3) &&
           (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
               5)) {
+        print('Time is > 3 and < 5');
         decorationGif.value = 'assets/images/asr.gif';
       } else if ((int.parse(
                   DateFormat.jm().format(DateTime.now()).split(':').first) >=
               5) &&
           (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
               7)) {
+        print('Time is > 5 and < 7');
         decorationGif.value = 'assets/images/magrib.gif';
       } else {
+        print('Time is > 7');
         decorationGif.value = 'assets/images/isha.gif';
       }
     }

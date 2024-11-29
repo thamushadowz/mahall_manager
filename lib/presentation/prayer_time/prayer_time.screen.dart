@@ -72,13 +72,13 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
         children: [
           _prayerItemWidget(
               icon: 'assets/images/subh_icon.png',
-              alarmIcon: controller.isSubhAlarmOn.value
+              /*alarmIcon: controller.isSubhAlarmOn.value
                   ? Icons.volume_up
                   : Icons.volume_off_rounded,
               onBellPressed: () {
                 controller.isSubhAlarmOn.value =
                     !controller.isSubhAlarmOn.value;
-              },
+              },*/
               text: 'Subh',
               timing:
                   DateFormat.jm().format(controller.prayerTimes.value!.fajr)),
@@ -89,48 +89,48 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                   .format(controller.prayerTimes.value!.sunrise)),
           _prayerItemWidget(
               icon: 'assets/images/luhr_icon.png',
-              alarmIcon: controller.isLuhrAlarmOn.value
-                  ? Icons.volume_up
-                  : Icons.volume_off_rounded,
-              onBellPressed: () {
-                controller.isLuhrAlarmOn.value =
-                    !controller.isLuhrAlarmOn.value;
-              },
+              // alarmIcon: controller.isLuhrAlarmOn.value
+              //     ? Icons.volume_up
+              //     : Icons.volume_off_rounded,
+              // onBellPressed: () {
+              //   controller.isLuhrAlarmOn.value =
+              //       !controller.isLuhrAlarmOn.value;
+              // },
               text: 'Luhr',
               timing:
                   DateFormat.jm().format(controller.prayerTimes.value!.dhuhr)),
           _prayerItemWidget(
               icon: 'assets/images/asr_icon.png',
-              alarmIcon: controller.isAsrAlarmOn.value
+              /*alarmIcon: controller.isAsrAlarmOn.value
                   ? Icons.volume_up
                   : Icons.volume_off_rounded,
               onBellPressed: () {
                 controller.isAsrAlarmOn.value = !controller.isAsrAlarmOn.value;
-              },
+              },*/
               text: 'Asr',
               timing:
                   DateFormat.jm().format(controller.prayerTimes.value!.asr)),
           _prayerItemWidget(
               icon: 'assets/images/magrib_icon.png',
-              alarmIcon: controller.isMagribAlarmOn.value
+              /*alarmIcon: controller.isMagribAlarmOn.value
                   ? Icons.volume_up
                   : Icons.volume_off_rounded,
               onBellPressed: () {
                 controller.isMagribAlarmOn.value =
                     !controller.isMagribAlarmOn.value;
-              },
+              },*/
               text: 'Magrib',
               timing: DateFormat.jm()
                   .format(controller.prayerTimes.value!.maghrib)),
           _prayerItemWidget(
               icon: 'assets/images/isha_icon.png',
-              alarmIcon: controller.isIshaAlarmOn.value
+              /*alarmIcon: controller.isIshaAlarmOn.value
                   ? Icons.volume_up
                   : Icons.volume_off_rounded,
               onBellPressed: () {
                 controller.isIshaAlarmOn.value =
                     !controller.isIshaAlarmOn.value;
-              },
+              },*/
               text: 'Isha',
               timing:
                   DateFormat.jm().format(controller.prayerTimes.value!.isha)),

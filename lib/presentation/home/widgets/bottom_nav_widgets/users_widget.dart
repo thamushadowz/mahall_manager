@@ -275,14 +275,30 @@ class UsersWidget extends StatelessWidget {
                                                                             house,
                                                                         'totalOrNot':
                                                                             false,
-                                                                      });
+                                                                      })?.then(
+                                                                      (onValue) {
+                                                                    controller
+                                                                        .getUserDetails();
+                                                                    controller
+                                                                        .getReportsDetails();
+                                                                  });
                                                                 },
                                                               )
                                                             : CommonTextWidget(
-                                                                text: AppStrings
-                                                                    .fullyPaid,
-                                                                color: AppColors
-                                                                    .themeColor,
+                                                                text: int.parse(house.due ??
+                                                                            '0') ==
+                                                                        0
+                                                                    ? AppStrings
+                                                                        .fullyPaid
+                                                                    : AppStrings
+                                                                        .advancePaid,
+                                                                color: int.parse(house.due ??
+                                                                            '0') ==
+                                                                        0
+                                                                    ? AppColors
+                                                                        .themeColor
+                                                                    : AppColors
+                                                                        .blue,
                                                               )),
                                                         DataCell(
                                                           Row(
@@ -350,13 +366,21 @@ class UsersWidget extends StatelessWidget {
                                                           .all(
                                                         int.parse(house.due ??
                                                                     '0') >
-                                                                1000
+                                                                2000
                                                             ? AppColors.darkRed
                                                                 .withOpacity(
                                                                     0.2)
-                                                            : AppColors.white
-                                                                .withOpacity(
-                                                                    0.2),
+                                                            : int.parse(house
+                                                                            .due ??
+                                                                        '0') <
+                                                                    0
+                                                                ? AppColors.blue
+                                                                    .withOpacity(
+                                                                        0.2)
+                                                                : AppColors
+                                                                    .white
+                                                                    .withOpacity(
+                                                                        0.2),
                                                       ),
                                                     );
                                                   }),
@@ -432,7 +456,13 @@ class UsersWidget extends StatelessWidget {
                                                                               0],
                                                                       'totalOrNot':
                                                                           true,
-                                                                    });
+                                                                    })?.then(
+                                                                    (onValue) {
+                                                                  controller
+                                                                      .getUserDetails();
+                                                                  controller
+                                                                      .getReportsDetails();
+                                                                });
                                                               },
                                                             )),
                                                       const DataCell(

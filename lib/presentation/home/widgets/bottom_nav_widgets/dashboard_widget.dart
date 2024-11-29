@@ -4,7 +4,6 @@ import 'package:mahall_manager/presentation/home/controllers/home.controller.dar
 import 'package:mahall_manager/presentation/home/widgets/pie_chart_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../../infrastructure/theme/measures/app_measures.dart';
 import '../../../../infrastructure/theme/strings/app_strings.dart';
@@ -18,9 +17,7 @@ class DashboardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () {
-        return controller.getChartData();
-      },
+      onRefresh: () => controller.getChartData(),
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
@@ -29,9 +26,9 @@ class DashboardWidget extends StatelessWidget {
             children: [
               _buildMahallName(),
               const SizedBox(height: 20),
-              _generatePieChartView(),
+              _generatePieChartView(context),
               const SizedBox(height: 20),
-              _buildClickableIcons(),
+              _buildClickableIconsGridView(),
             ],
           ),
         ),
@@ -57,12 +54,12 @@ class DashboardWidget extends StatelessWidget {
           baseColor: Colors.green,
           highlightColor: Colors.red,
           child: const Divider(indent: 10, endIndent: 10),
-        )
+        ),
       ],
     );
   }
 
-  Material _generatePieChartView() {
+  Material _generatePieChartView(BuildContext context) {
     return Material(
       color: AppColors.white.withOpacity(0.8),
       elevation: 10,
@@ -76,51 +73,20 @@ class DashboardWidget extends StatelessWidget {
               text: AppStrings.incomeAndExpenses,
               fontWeight: AppMeasures.normalWeight,
             ),
-            const SizedBox(height: 20),
-            Row(
+            const SizedBox(height: 10),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: PieChartWidget(
+                controller: controller,
+              ),
+            ),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 250,
-                  height: 250,
-                  child: PieChartWidget(
-                    controller: controller,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          width: 15,
-                          height: 15,
-                          color: AppColors.themeColor,
-                        ),
-                        CommonTextWidget(
-                          text: AppStrings.income,
-                          fontSize: AppMeasures.smallTextSize,
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          width: 15,
-                          height: 15,
-                          color: AppColors.darkRed,
-                        ),
-                        CommonTextWidget(
-                          text: AppStrings.expenses,
-                          fontSize: AppMeasures.smallTextSize,
-                        )
-                      ],
-                    )
-                  ],
-                )
+                _buildLegendItem(AppColors.themeColor, AppStrings.income),
+                const SizedBox(height: 10),
+                _buildLegendItem(AppColors.darkRed, AppStrings.expenses),
               ],
             ),
           ],
@@ -129,67 +95,70 @@ class DashboardWidget extends StatelessWidget {
     );
   }
 
-  _buildClickableIcons() {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
+  Widget _buildLegendItem(Color color, String label) {
+    return Row(
       children: [
-        _buildIconWithText(
-            title: AppStrings.announcement,
-            image: 'assets/images/announcement.png',
-            onTap: () {
-              Get.toNamed(Routes.ANNOUNCEMENT);
-            }),
-        _buildIconWithText(
-            title: AppStrings.marriageCertificates,
-            image: 'assets/images/marriage.png',
-            onTap: () {
-              Get.toNamed(Routes.MARRIAGE_CERTIFICATES);
-            }),
-        _buildIconWithText(
-            title: AppStrings.listOfDeceased,
-            image: 'assets/images/deceased.png',
-            onTap: () {
-              Get.toNamed(Routes.DEATH_LIST);
-            }),
-        _buildIconWithText(
-            title: AppStrings.listOfReports,
-            image: 'assets/images/report.png',
-            onTap: () {
-              Get.toNamed(Routes.REPORTS_LIST);
-            }),
+        Container(
+          margin: const EdgeInsets.only(right: 10),
+          width: 15,
+          height: 15,
+          color: color,
+        ),
+        CommonTextWidget(
+          text: label,
+          fontSize: AppMeasures.smallTextSize,
+        ),
       ],
     );
   }
 
-  _buildIconWithText(
-      {required String title,
-      required String image,
-      required Function() onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Material(
-        color: AppColors.white.withOpacity(0.8),
-        borderRadius: BorderRadius.circular(20),
-        elevation: 10,
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              Image.asset(
-                image,
-                width: 30,
-                height: 30,
-                color: AppColors.themeColor,
+  _buildClickableIconsGridView() {
+    return SizedBox(
+      width: MediaQuery.of(Get.context!).size.width,
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 4,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Get.toNamed(controller.reportsGrid[index]['onClick']);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(10),
               ),
-              const SizedBox(height: 10),
-              CommonTextWidget(
-                text: title,
-                fontSize: 10,
-                color: AppColors.themeColor,
-              )
-            ],
-          ),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      controller.reportsGrid[index]['icon'],
+                      width: 30,
+                      height: 30,
+                      color: AppColors.themeColor,
+                    ),
+                    const SizedBox(height: 10),
+                    CommonTextWidget(
+                      text: controller.reportsGrid[index]['title'],
+                      fontSize: 10,
+                      color: AppColors.themeColor,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 2,
+          mainAxisSpacing: 2,
+          childAspectRatio: 1,
         ),
       ),
     );

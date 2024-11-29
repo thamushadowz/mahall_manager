@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
-import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
-
-import '../../../../infrastructure/navigation/routes.dart';
-import '../../../../infrastructure/theme/strings/app_strings.dart';
+import 'package:mahall_manager/presentation/home/controllers/home.controller.dart';
 
 class IslamicWidget extends StatelessWidget {
-  const IslamicWidget({super.key});
+  const IslamicWidget({super.key, required this.controller});
+
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -20,63 +19,57 @@ class IslamicWidget extends StatelessWidget {
               image: AssetImage('assets/images/dark_background.png'),
               fit: BoxFit.cover)),
       padding: const EdgeInsets.all(20.0),
-      child: Wrap(
-        spacing: 20,
-        runSpacing: 20,
-        children: [
-          _buildItemWidget(
-              onTap: () {
-                Get.toNamed(Routes.QIBLA_FINDER);
-              },
-              icon: 'assets/images/qibla.png',
-              text: AppStrings.qiblaFinder),
-          _buildItemWidget(
-              onTap: () {
-                Get.toNamed(Routes.PRAYER_TIME);
-              },
-              icon: 'assets/images/namaz.png',
-              text: AppStrings.prayerTime),
-          _buildItemWidget(
-              onTap: () {},
-              icon: 'assets/images/dua.png',
-              text: AppStrings.dua),
-          _buildItemWidget(
-              onTap: () {},
-              icon: 'assets/images/dasbiha.png',
-              text: AppStrings.azkar),
-        ],
-      ),
+      child: _buildClickableIconsGridView(),
     );
   }
 
-  _buildItemWidget(
-      {required Function() onTap, required String icon, required String text}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Material(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-        elevation: 4,
-        child: Container(
-          width: 110,
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              Image.asset(
-                icon,
-                width: 40,
-                height: 40,
-                color: AppColors.themeColor,
+  _buildClickableIconsGridView() {
+    return SizedBox(
+      width: MediaQuery.of(Get.context!).size.width,
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 4,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Get.toNamed(controller.islamicGrid[index]['onClick']);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(10),
               ),
-              const SizedBox(height: 10),
-              CommonTextWidget(
-                text: text,
-                fontSize: AppMeasures.mediumTextSize,
-                fontWeight: AppMeasures.smallWeight,
-                color: AppColors.themeColor,
-              )
-            ],
-          ),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      controller.islamicGrid[index]['icon'],
+                      width: 40,
+                      height: 40,
+                      color: AppColors.themeColor,
+                    ),
+                    const SizedBox(height: 10),
+                    CommonTextWidget(
+                      text: controller.islamicGrid[index]['title'],
+                      fontSize: 10,
+                      color: AppColors.themeColor,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+          childAspectRatio: 1,
         ),
       ),
     );

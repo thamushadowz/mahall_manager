@@ -71,7 +71,7 @@ String dataToJson(ReportsData data) => json.encode(data.toJson());
 
 class ReportsData {
   ReportsData({
-    num? id,
+    String? id,
     String? description,
     String? date,
     bool? isSharable,
@@ -100,7 +100,7 @@ class ReportsData {
     _amount = json['amount'];
     _addedBy = json['added_by'];
   }
-  num? _id;
+  String? _id;
   String? _description;
   String? _date;
   bool? _isSharable;
@@ -109,7 +109,7 @@ class ReportsData {
   String? _amount;
   num? _addedBy;
   ReportsData copyWith({
-    num? id,
+    String? id,
     String? description,
     String? date,
     bool? isSharable,
@@ -128,7 +128,7 @@ class ReportsData {
         amount: amount ?? _amount,
         addedBy: addedBy ?? _addedBy,
       );
-  num? get id => _id;
+  String? get id => _id;
   String? get description => _description;
   String? get date => _date;
   bool? get isSharable => _isSharable;

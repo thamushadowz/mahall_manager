@@ -116,6 +116,48 @@ class HomeController extends GetxController {
 
   ChartData chartData = ChartData(totalIncome: '0', totalExpense: '0');
 
+  final List<Map<String, dynamic>> reportsGrid = [
+    {
+      "title": AppStrings.announcement,
+      "icon": 'assets/images/announcement.png',
+      "onClick": Routes.ANNOUNCEMENT
+    },
+    {
+      "title": AppStrings.marriageCertificates,
+      "icon": 'assets/images/marriage.png',
+      "onClick": Routes.MARRIAGE_CERTIFICATES
+    },
+    {
+      "title": AppStrings.listOfDeceased,
+      "icon": 'assets/images/deceased.png',
+      "onClick": Routes.DEATH_LIST
+    },
+    {
+      "title": AppStrings.listOfReports,
+      "icon": 'assets/images/report.png',
+      "onClick": Routes.REPORTS_LIST
+    },
+  ];
+
+  final List<Map<String, dynamic>> islamicGrid = [
+    {
+      "title": AppStrings.qiblaFinder,
+      "icon": 'assets/images/qibla.png',
+      "onClick": Routes.QIBLA_FINDER
+    },
+    {
+      "title": AppStrings.prayerTime,
+      "icon": 'assets/images/namaz.png',
+      "onClick": Routes.PRAYER_TIME
+    },
+    {"title": AppStrings.dua, "icon": 'assets/images/dua.png', "onClick": ''},
+    {
+      "title": AppStrings.azkar,
+      "icon": 'assets/images/dasbiha.png',
+      "onClick": ''
+    },
+  ];
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -1023,7 +1065,7 @@ class HomeController extends GetxController {
     }
   }
 
-  deleteReport(num id) async {
+  deleteReport(String id) async {
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {

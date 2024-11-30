@@ -201,7 +201,9 @@ class PromisesWidget extends StatelessWidget {
                     onPressed: () async {
                       Get.toNamed(Routes.PROMISES, arguments: promises)
                           ?.then((onValue) {
-                        controller.getPromisesDetails();
+                        if (onValue != null && onValue) {
+                          controller.getPromisesDetails();
+                        }
                       });
                     },
                   ),

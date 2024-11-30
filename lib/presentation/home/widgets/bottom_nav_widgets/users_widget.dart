@@ -118,7 +118,10 @@ class UsersWidget extends StatelessWidget {
                                                     'key_name': keyName,
                                                     'is_from_edit': true
                                                   })?.then((onValue) {
-                                                controller.getUserDetails();
+                                                if (onValue != null &&
+                                                    onValue == true) {
+                                                  controller.getUserDetails();
+                                                }
                                               });
                                             },
                                           ),
@@ -319,8 +322,13 @@ class UsersWidget extends StatelessWidget {
                                                                               house)
                                                                       ?.then(
                                                                           (onValue) {
-                                                                    controller
-                                                                        .getUserDetails();
+                                                                    if (onValue !=
+                                                                            null &&
+                                                                        onValue ==
+                                                                            true) {
+                                                                      controller
+                                                                          .getUserDetails();
+                                                                    }
                                                                   });
                                                                   if (updatedUser !=
                                                                       null) {

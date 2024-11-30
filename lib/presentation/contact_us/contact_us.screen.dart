@@ -213,7 +213,7 @@ class ContactUsScreen extends GetView<ContactUsController> {
   /// Bottom Sheet for Actions
   void _generateBottomSheet(String number) {
     Get.bottomSheet(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.white.withOpacity(0.8),
       SizedBox(
         height: 140,
         child: Row(
@@ -245,12 +245,14 @@ class ContactUsScreen extends GetView<ContactUsController> {
     required Function() onTap,
     required String icon,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(50),
+          onTap: onTap,
+          radius: 40,
+          child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppColors.lightGrey.withOpacity(0.3),
@@ -263,15 +265,15 @@ class ContactUsScreen extends GetView<ContactUsController> {
               width: 40,
             ),
           ),
-          const SizedBox(height: 8),
-          CommonTextWidget(
-            text: title,
-            fontSize: AppMeasures.smallTextSize,
-            fontWeight: FontWeight.w500,
-            color: AppColors.black,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 8),
+        CommonTextWidget(
+          text: title,
+          fontSize: AppMeasures.smallTextSize,
+          fontWeight: FontWeight.w500,
+          color: AppColors.black,
+        ),
+      ],
     );
   }
 }

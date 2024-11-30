@@ -50,13 +50,12 @@ class QiblaFinderScreen extends GetView<QiblaFinderController> {
           controller.begin = (qiblahDirection.qiblah * (pi / 180) * -1);
           controller.animationController!.forward(from: 0);
 
-          return SizedBox(
-            width: double.infinity,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 10,
-                  top: 30,
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0, bottom: 80),
+                child: Align(
+                  alignment: Alignment.topLeft,
                   child: Material(
                     borderRadius: BorderRadius.circular(50),
                     color: AppColors.white.withOpacity(0.8),
@@ -71,49 +70,46 @@ class QiblaFinderScreen extends GetView<QiblaFinderController> {
                         )),
                   ),
                 ),
-                Positioned(
-                  bottom: 20,
-                  left: 20,
-                  right: 20,
-                  top: 20,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Image.asset(
-                        'assets/images/kaaba.png',
-                        width: 120,
-                        height: 120,
+              ),
+              Column(
+                children: [
+                  Image.asset(
+                    'assets/images/kaaba.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  const SizedBox(height: 100),
+                  Container(
+                    width: 300,
+                    height: 300,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/qibla_back_mandala.png'),
+                        fit: BoxFit.contain,
+                        opacity: 0.5,
                       ),
-                      const SizedBox(height: 180),
-                      Container(
-                        padding: const EdgeInsets.all(100),
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/images/qibla_back_mandala.png'),
-                              opacity: 0.5),
-                        ),
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: AnimatedBuilder(
-                            animation: controller.animation!,
-                            builder: (context, child) => Transform.rotate(
-                              angle: controller.animation!.value,
-                              child: Image.asset(
-                                'assets/images/compass_arrow.png',
-                                color: Colors.white,
-                              ),
+                    ),
+                    child: Center(
+                      child: AnimatedBuilder(
+                        animation: controller.animation!,
+                        builder: (context, child) => Transform.rotate(
+                          angle: controller.animation!.value,
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.asset(
+                              'assets/images/compass_arrow.png',
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 50),
-                    ],
+                    ),
                   ),
-                )
-              ],
-            ),
+                ],
+              ),
+            ],
           );
         },
       ),

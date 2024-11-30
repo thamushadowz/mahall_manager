@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_empty_result_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 
@@ -64,6 +65,17 @@ class ReportsListScreen extends GetView<ReportsListController> {
                       child: CommonTextFieldShimmerWidget(),
                     )
                   : CommonDownloadItemWidget(
+                      onItemTap: () {
+                        Get.toNamed(
+                          Routes.PDF_VIEWER,
+                          arguments: {
+                            AppStrings.pdfName:
+                                '${controller.pdfList[index].fromDate} - ${controller.pdfList[index].toDate}',
+                            AppStrings.pdfUrl:
+                                controller.pdfList[index].urlLink ?? ''
+                          },
+                        );
+                      },
                       name:
                           '${controller.pdfList[index].fromDate} - ${controller.pdfList[index].toDate}',
                       onDownloadTap: () {

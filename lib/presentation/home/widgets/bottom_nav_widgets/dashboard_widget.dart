@@ -66,7 +66,6 @@ class DashboardWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: Column(
           children: [
             CommonTextWidget(
@@ -74,13 +73,24 @@ class DashboardWidget extends StatelessWidget {
               fontWeight: AppMeasures.normalWeight,
             ),
             const SizedBox(height: 10),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: PieChartWidget(
-                controller: controller,
-              ),
-            ),
+            Obx(() => controller.isChartDataLoading.value
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: Center(
+                        child: Image.asset(
+                      'assets/images/spin_loader.gif',
+                      width: 40,
+                      height: 40,
+                      color: AppColors.themeColor,
+                    )),
+                  )
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: PieChartWidget(
+                      controller: controller,
+                    ),
+                  )),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

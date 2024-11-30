@@ -100,6 +100,10 @@ class AppStrings {
   static String oneg = 'O-ve';
   static String others = 'Others';
 
+  static String pdfName = 'pdfName';
+  static String pdfUrl = 'pdfUrl';
+  static String oops = 'oops!';
+
   static String kerala = 'Kerala';
   static String karnataka = 'Karnataka';
   static String tamilNadu = 'Tamil Nadu';

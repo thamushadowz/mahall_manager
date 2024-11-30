@@ -52,7 +52,7 @@ class PaymentScreenController extends GetxController {
       textController.text = promises.amount ?? '';
       paymentFor = 2; // 2 - promised money
     } else if (args['report'] != null) {
-      //paymentSuccess.value = true;
+      paymentSuccess.value = true;
       report = args['report'];
       currentDue.value = report.currentDue.toString();
     }

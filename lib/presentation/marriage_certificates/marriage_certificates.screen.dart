@@ -4,6 +4,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.
 import 'package:mahall_manager/presentation/common_widgets/common_download_item_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 
+import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
 import '../common_widgets/common_empty_result_widget.dart';
 import '../common_widgets/common_text_form_field.dart';
@@ -67,6 +68,19 @@ class MarriageCertificatesScreen
                       child: CommonTextFieldShimmerWidget(),
                     )
                   : CommonDownloadItemWidget(
+                      onItemTap: () {
+                        Get.toNamed(
+                          Routes.PDF_VIEWER,
+                          arguments: {
+                            AppStrings.pdfName: controller.generateName(index),
+                            AppStrings
+                                    .pdfUrl: /*controller
+                                    .marriageCertificatesList[index]
+                                    .certificateUrl ?? ''*/
+                                'https://github.com/ScerIO/packages.flutter/raw/fd0c92ac83ee355255acb306251b1adfeb2f2fd6/packages/native_pdf_renderer/example/assets/sample.pdf'
+                          },
+                        );
+                      },
                       name: controller.generateName(index),
                       onDownloadTap: () {
                         controller.savePdf(

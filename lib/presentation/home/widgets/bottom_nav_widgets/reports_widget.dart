@@ -575,13 +575,17 @@ class ReportsWidget extends StatelessWidget {
                                 Get.toNamed(Routes.ADD_INCOME,
                                         arguments: report)
                                     ?.then((onValue) {
-                                  controller.getReportsDetails();
+                                  if (onValue != null && onValue == true) {
+                                    controller.getReportsDetails();
+                                  }
                                 });
                               } else {
                                 Get.toNamed(Routes.ADD_EXPENSES,
                                         arguments: report)
                                     ?.then((onValue) {
-                                  controller.getReportsDetails();
+                                  if (onValue != null && onValue == true) {
+                                    controller.getReportsDetails();
+                                  }
                                 });
                               }
                             },
@@ -625,10 +629,13 @@ class ReportsWidget extends StatelessWidget {
               iconColor: AppColors.themeColor,
               title: AppStrings.viewPdf,
               onTap: () {
-                Get.toNamed(Routes.PDF_VIEWER,
-                        arguments: /*controller.reportPdfUrl.value*/
-                            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
-                    ?.then((onValue) {
+                Get.toNamed(
+                  Routes.PDF_VIEWER,
+                  arguments: {
+                    AppStrings.pdfName: controller.reportPdfName.value,
+                    AppStrings.pdfUrl: controller.reportPdfUrl.value
+                  },
+                )?.then((onValue) {
                   Get.close(0);
                 });
               },

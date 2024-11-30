@@ -220,7 +220,7 @@ class RegistrationController extends GetxController {
           showToast(
               title: response.message.toString(),
               type: ToastificationType.success);
-          Get.back();
+          Get.back(result: true);
         } else {
           if (response.message != null) {
             showToast(

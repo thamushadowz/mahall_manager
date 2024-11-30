@@ -229,7 +229,9 @@ class DrawerWidget extends StatelessWidget {
           title: AppLocalizations.of(context)!.user_registration,
           onTap: () {
             Get.toNamed(Routes.REGISTRATION)?.then((onValue) {
-              controller.getUserDetails();
+              if (onValue != null && onValue == true) {
+                controller.getUserDetails();
+              }
             });
           },
         ),
@@ -267,7 +269,9 @@ class DrawerWidget extends StatelessWidget {
           title: AppStrings.addPromises,
           onTap: () {
             Get.toNamed(Routes.PROMISES)?.then((onValue) {
-              controller.getPromisesDetails();
+              if (onValue != null && onValue == true) {
+                controller.getPromisesDetails();
+              }
             });
           },
         ),
@@ -281,8 +285,10 @@ class DrawerWidget extends StatelessWidget {
           title: AppStrings.addIncome,
           onTap: () {
             Get.toNamed(Routes.ADD_INCOME)?.then((onValue) {
-              controller.getReportsDetails();
-              controller.getChartData();
+              if (onValue != null && onValue == true) {
+                controller.getReportsDetails();
+                controller.getChartData();
+              }
             });
           },
         ),
@@ -296,8 +302,10 @@ class DrawerWidget extends StatelessWidget {
           title: AppStrings.addExpenses,
           onTap: () {
             Get.toNamed(Routes.ADD_EXPENSES)?.then((onValue) {
-              controller.getReportsDetails();
-              controller.getChartData();
+              if (onValue != null && onValue == true) {
+                controller.getReportsDetails();
+                controller.getChartData();
+              }
             });
           },
         ),

@@ -1,4 +1,4 @@
-package com.example.mahall_manager
+package com.allertempus.mahall_manager
 
 import io.flutter.embedding.android.FlutterActivity
 

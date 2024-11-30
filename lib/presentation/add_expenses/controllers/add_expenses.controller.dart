@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
@@ -53,7 +52,7 @@ class AddExpensesController extends GetxController {
           showToast(
               title: response.message.toString(),
               type: ToastificationType.success);
-          Get.back();
+          Get.back(result: true);
         } else {
           showToast(
               title: response.message.toString(),

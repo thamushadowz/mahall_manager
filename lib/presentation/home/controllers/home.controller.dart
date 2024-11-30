@@ -52,8 +52,9 @@ class HomeController extends GetxController {
   RxString fromDate = AppStrings.selectFromDate.obs;
   RxString toDate = AppStrings.selectToDate.obs;
   RxString reportPdfUrl = 'kjhgfdsth dgfdfghh  dgh '.obs;
-  RxString reportPdfName = '12/08/2024 - 14/08/2024.pdf'.obs;
+  RxString reportPdfName = '12/08/2024 - 14/08/2024'.obs;
 
+  RxBool canPop = false.obs;
   RxBool isReportFiltering = false.obs;
   RxBool isBloodFiltering = false.obs;
   RxBool isReportFilterSubmitted = false.obs;
@@ -75,6 +76,7 @@ class HomeController extends GetxController {
   RxBool isOposChecked = false.obs;
   RxBool isOnegChecked = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isChartDataLoading = false.obs;
   RxBool isReportLoading = false.obs;
   RxBool isLoggingOut = false.obs;
   RxBool isGenerateReport = false.obs;
@@ -1178,7 +1180,7 @@ class HomeController extends GetxController {
   }
 
   getChartData() async {
-    isLoading.value = true;
+    isChartDataLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
@@ -1197,13 +1199,13 @@ class HomeController extends GetxController {
             title: AppStrings.somethingWentWrong,
             type: ToastificationType.error);
       } finally {
-        isLoading.value = false;
+        isChartDataLoading.value = false;
       }
     } else {
       showToast(
           title: AppStrings.noInternetConnection,
           type: ToastificationType.error);
-      isLoading.value = false;
+      isChartDataLoading.value = false;
     }
   }
 

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1038711988521",
-    "project_id": "mahall-manager-8ef2c",
-    "storage_bucket": "mahall-manager-8ef2c.firebasestorage.app"
+    "project_number": "898621662772",
+    "project_id": "mahall-manager01",
+    "storage_bucket": "mahall-manager01.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1038711988521:android:3c6b5fcf20de6ad5999738",
+        "mobilesdk_app_id": "1:898621662772:android:56f69e8712c3de5eac0c61",
         "android_client_info": {
-          "package_name": "com.example.mahall_manager"
+          "package_name": "com.allertempus.mahall_manager"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDrFH8q629rA9tIvzaXGHM1a0rD9bxUtew"
+          "current_key": "AIzaSyAu7cJt4lfEliSDdwHrEY_p0ADFGnxu20U"
         }
       ],
       "services": {

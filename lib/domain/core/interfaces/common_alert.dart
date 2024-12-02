@@ -34,7 +34,7 @@ showCommonDialog(BuildContext context,
             builder: (context, constraints) {
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.85,
@@ -44,14 +44,15 @@ showCommonDialog(BuildContext context,
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 10),
                         if (licenseKey == 2)
                           Lottie.asset('assets/animations/oops.json',
                               width: 80, height: 80),
                         if (updatesAvailable == true)
-                          Lottie.asset('assets/animations/update.json',
-                              width: 100, height: 100),
-                        const SizedBox(height: 20),
+                          SizedBox(
+                            height: 20,
+                            child: Lottie.asset('assets/animations/update.json',
+                                width: 100, height: 100),
+                          ),
                         if (userType == 2)
                           CommonTextWidget(
                             textAlign: TextAlign.center,

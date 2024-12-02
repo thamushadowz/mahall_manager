@@ -49,10 +49,11 @@ class HomeController extends GetxController {
   DateTime? lastPressedAt;
   RxInt selectedNavIndex = 0.obs;
   RxInt licenseExpiry = 0.obs;
+  RxInt notificationCount = 0.obs;
   RxString fromDate = AppStrings.selectFromDate.obs;
   RxString toDate = AppStrings.selectToDate.obs;
-  RxString reportPdfUrl = 'kjhgfdsth dgfdfghh  dgh '.obs;
-  RxString reportPdfName = '12/08/2024 - 14/08/2024'.obs;
+  RxString reportPdfUrl = ''.obs;
+  RxString reportPdfName = ''.obs;
 
   RxBool canPop = false.obs;
   RxBool isReportFiltering = false.obs;
@@ -1141,7 +1142,7 @@ class HomeController extends GetxController {
         if (response.status == true) {
           reportPdfUrl.value = response.data!.first.urlLink.toString();
           reportPdfName.value =
-              '${response.data!.first.fromDate} - ${response.data!.first.toDate}';
+              '${response.data!.first.fromDate}-${response.data!.first.toDate}';
         } else {
           showToast(
               title: response.message.toString(),
@@ -1162,18 +1163,16 @@ class HomeController extends GetxController {
     }
   }
 
-  void savePdf() async {
-    const pdfUrl =
-        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
-    const fileName = 'sample.pdf';
-
-    String? path = await downloadPdfToExternal(pdfUrl, fileName);
+  void savePdf(String fileName, String filePath) async {
+    String tempFileName = fileName.replaceAll('/', '_');
+    String? path = await downloadPdfToExternal(filePath, '$tempFileName.pdf');
     if (path != null) {
       print("PDF saved at: $path");
       Get.close(0);
       reportPdfName.value = '';
       reportPdfUrl.value = '';
       isGenerateReport.value = false;
+      isReportFiltering.value = false;
     } else {
       print("Failed to save PDF.");
     }
@@ -1189,6 +1188,7 @@ class HomeController extends GetxController {
         if (response.status == true) {
           chartData = response.data!;
           storageService.saveMahallName(response.data!.mahallName ?? '');
+          notificationCount.value = response.data!.notificationCount ?? 0;
         } else {
           showToast(
               title: response.message.toString(),

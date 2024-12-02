@@ -15,119 +15,119 @@ class ResetPasswordScreen extends GetView<ResetPasswordController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CommonAppbarWidget(
-          title: AppLocalizations.of(context)!.reset_password),
-      body: SizedBox.expand(
-        child: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/dark_background.png'),
-                  fit: BoxFit.cover)),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: CommonAppbarWidget(
+            title: AppLocalizations.of(context)!.reset_password),
+        body: SizedBox.expand(
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/dark_background.png'),
+                    fit: BoxFit.cover)),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
-              return SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  top: keyboardHeight == 0 ? constraints.maxHeight * 0.2 : 20,
-                  bottom: 20,
-                ),
-                child: Column(
-                  mainAxisAlignment: keyboardHeight == 0
-                      ? MainAxisAlignment.center
-                      : MainAxisAlignment.start,
-                  children: [
-                    _buildResetPasswordWidget(context),
-                  ],
-                ),
-              );
-            },
+                return SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                    top: keyboardHeight == 0 ? constraints.maxHeight * 0.2 : 20,
+                    bottom: 20,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: keyboardHeight == 0
+                        ? MainAxisAlignment.center
+                        : MainAxisAlignment.start,
+                    children: [
+                      _buildResetPasswordWidget(context),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
 
-  GestureDetector _buildResetPasswordWidget(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Material(
-          color: AppColors.white.withOpacity(0.8),
-          elevation: 10,
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: controller.formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 5),
-                    //Current Password
-                    CommonTextFormField(
-                        label: AppLocalizations.of(context)!.current_password,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(15),
-                        ],
-                        textCapitalization: TextCapitalization.none,
-                        keyboardType: TextInputType.name,
-                        textController: controller.currentPswdController,
-                        focusNode: controller.currentPswdFocusNode,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(controller.newPswdFocusNode);
-                        },
-                        validator: Validators.validatePassword),
-                    const SizedBox(height: 10),
-                    //New Password
-                    CommonTextFormField(
-                      label: AppLocalizations.of(context)!.new_password,
+  _buildResetPasswordWidget(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Material(
+        color: AppColors.white.withOpacity(0.8),
+        elevation: 10,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: controller.formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 5),
+                  //Current Password
+                  CommonTextFormField(
+                      label: AppLocalizations.of(context)!.current_password,
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(15),
                       ],
                       textCapitalization: TextCapitalization.none,
                       keyboardType: TextInputType.name,
-                      textController: controller.newPswdController,
-                      focusNode: controller.newPswdFocusNode,
+                      textController: controller.currentPswdController,
+                      focusNode: controller.currentPswdFocusNode,
                       onFieldSubmitted: (value) {
                         FocusScope.of(context)
-                            .requestFocus(controller.confirmPswdFocusNode);
+                            .requestFocus(controller.newPswdFocusNode);
                       },
-                      validator: (value) => Validators.validateNewPassword(
-                          value, controller.currentPswdController.text),
-                    ),
-                    const SizedBox(height: 10),
-                    //Confirm Password
-                    CommonTextFormField(
-                      label: AppLocalizations.of(context)!.confirm_password,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(15),
-                      ],
-                      textCapitalization: TextCapitalization.none,
-                      keyboardType: TextInputType.name,
-                      textController: controller.confirmPswdController,
-                      focusNode: controller.confirmPswdFocusNode,
-                      onFieldSubmitted: (value) {},
-                      validator: (value) => Validators.validateConfirmPassword(
-                          value, controller.newPswdController.text),
-                    ),
-                    const SizedBox(height: 10),
-                    CommonButtonWidget(
-                        isLoading: controller.isLoading,
-                        onTap: () {
-                          if (controller.formKey.currentState!.validate()) {
-                            controller.performReset();
-                          }
-                        },
-                        label: AppLocalizations.of(context)!.submit)
-                  ],
-                ),
+                      validator: Validators.validatePassword),
+                  const SizedBox(height: 10),
+                  //New Password
+                  CommonTextFormField(
+                    label: AppLocalizations.of(context)!.new_password,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(15),
+                    ],
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.name,
+                    textController: controller.newPswdController,
+                    focusNode: controller.newPswdFocusNode,
+                    onFieldSubmitted: (value) {
+                      FocusScope.of(context)
+                          .requestFocus(controller.confirmPswdFocusNode);
+                    },
+                    validator: (value) => Validators.validateNewPassword(
+                        value, controller.currentPswdController.text),
+                  ),
+                  const SizedBox(height: 10),
+                  //Confirm Password
+                  CommonTextFormField(
+                    label: AppLocalizations.of(context)!.confirm_password,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(15),
+                    ],
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.name,
+                    textController: controller.confirmPswdController,
+                    focusNode: controller.confirmPswdFocusNode,
+                    onFieldSubmitted: (value) {},
+                    validator: (value) => Validators.validateConfirmPassword(
+                        value, controller.newPswdController.text),
+                  ),
+                  const SizedBox(height: 10),
+                  CommonButtonWidget(
+                      isLoading: controller.isLoading,
+                      onTap: () {
+                        if (controller.formKey.currentState!.validate()) {
+                          controller.performReset();
+                        }
+                      },
+                      label: AppLocalizations.of(context)!.submit)
+                ],
               ),
             ),
           ),

@@ -13,6 +13,7 @@ export 'package:mahall_manager/presentation/house_registration/house_registratio
 export 'package:mahall_manager/presentation/login/login.screen.dart';
 export 'package:mahall_manager/presentation/marriage_certificates/marriage_certificates.screen.dart';
 export 'package:mahall_manager/presentation/marriage_registration/marriage_registration.screen.dart';
+export 'package:mahall_manager/presentation/notifications/notifications.screen.dart';
 export 'package:mahall_manager/presentation/payment_screen/payment_screen.screen.dart';
 export 'package:mahall_manager/presentation/pdf_viewer/pdf_viewer.screen.dart';
 export 'package:mahall_manager/presentation/place_registration/place_registration.screen.dart';
@@ -23,3 +24,4 @@ export 'package:mahall_manager/presentation/reports_list/reports_list.screen.dar
 export 'package:mahall_manager/presentation/reset_password/reset_password.screen.dart';
 export 'package:mahall_manager/presentation/search_screen/search_screen.screen.dart';
 export 'package:mahall_manager/presentation/splash/splash.screen.dart';
+export 'package:mahall_manager/presentation/view_notification/view_notification.screen.dart';

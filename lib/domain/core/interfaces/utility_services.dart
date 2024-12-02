@@ -40,20 +40,26 @@ String getCurrentDate() {
 
 Future<String?> downloadPdfToExternal(String url, String fileName) async {
   try {
-    // Request storage permissions
     await requestStoragePermission();
     print("permission status : ${await requestStoragePermission()}");
 
-    // Get external directory (Downloads)
     final directory = Directory('/storage/emulated/0/Download');
 
     if (!await directory.exists()) {
       await directory.create(recursive: true);
     }
 
-    final filePath = '${directory.path}/$fileName';
+    // Handle duplicate file names
+    String uniqueFileName = fileName;
+    int fileIndex = 1;
+    while (File('${directory.path}/$uniqueFileName').existsSync()) {
+      final extension = fileName.split('.').last;
+      final baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+      uniqueFileName = '$baseName($fileIndex).$extension';
+      fileIndex++;
+    }
+    final filePath = '${directory.path}/$uniqueFileName';
 
-    // Download the file
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final file = File(filePath);

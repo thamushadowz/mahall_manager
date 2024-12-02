@@ -103,6 +103,9 @@ class AppStrings {
   static String pdfName = 'pdfName';
   static String pdfUrl = 'pdfUrl';
   static String oops = 'oops!';
+  static String notifications = 'Notifications';
+  static String noNotifications = 'No Notifications';
+  static String noResults = 'No results';
 
   static String kerala = 'Kerala';
   static String karnataka = 'Karnataka';

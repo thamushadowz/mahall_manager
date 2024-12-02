@@ -154,5 +154,15 @@ class Nav {
       page: () => const PrayerTimeScreen(),
       binding: PrayerTimeControllerBinding(),
     ),
+    GetPage(
+      name: Routes.NOTIFICATIONS,
+      page: () => const NotificationsScreen(),
+      binding: NotificationsControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.VIEW_NOTIFICATION,
+      page: () => const ViewNotificationScreen(),
+      binding: ViewNotificationControllerBinding(),
+    ),
   ];
 }

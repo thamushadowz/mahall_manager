@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mahall_manager/domain/core/interfaces/common_alert.dart';
 import 'package:mahall_manager/domain/core/interfaces/utilities.dart';
 import 'package:mahall_manager/infrastructure/dal/services/notofication_services.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
@@ -22,6 +21,7 @@ class LoginController extends GetxController {
   RxString selectedLanguage = 'English'.obs;
   RxBool showPassword = false.obs;
   RxBool isLoading = false.obs;
+  RxBool canPop = false.obs;
   DateTime? lastPressedAt;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -69,7 +69,9 @@ class LoginController extends GetxController {
     if (isConnectedToInternet) {
       try {
         LoginModel response = await listingService.loginCheck(
-            mobileController.text, passwordController.text);
+            mobileController.text.trim(),
+            passwordController.text.trim(),
+            await notificationServices.getDeviceToken());
         if (response.status == true) {
           showToast(
               title: response.message.toString(),

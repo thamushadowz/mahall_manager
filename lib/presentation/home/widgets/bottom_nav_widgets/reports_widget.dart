@@ -175,7 +175,8 @@ class ReportsWidget extends StatelessWidget {
                                           _generateBottomSheet();
                                         },
                                         child: CommonTextWidget(
-                                          text: controller.reportPdfName.value,
+                                          text:
+                                              '${controller.reportPdfName.value}.pdf',
                                           color: AppColors.blue,
                                           fontWeight: AppMeasures.mediumWeight,
                                           fontSize: AppMeasures.mediumTextSize,
@@ -453,8 +454,9 @@ class ReportsWidget extends StatelessWidget {
           controller.reportPdfName.value = '';
         },
         onGenerateTap: () {
-          controller.isReportFiltering.value = true;
           controller.isGenerateReport.value = true;
+          controller.isReportFiltering.value =
+              !controller.isReportFiltering.value;
         },
       ),
     );
@@ -645,7 +647,8 @@ class ReportsWidget extends StatelessWidget {
               iconColor: AppColors.blue,
               title: AppStrings.download,
               onTap: () {
-                controller.savePdf();
+                controller.savePdf(controller.reportPdfName.value,
+                    controller.reportPdfUrl.value);
               },
               icon: Icons.download_rounded,
             ),
@@ -662,12 +665,14 @@ class ReportsWidget extends StatelessWidget {
     required IconData icon,
     required Color iconColor,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(50),
+          onTap: onTap,
+          radius: 40,
+          child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppColors.lightGrey.withOpacity(0.3),
@@ -676,19 +681,19 @@ class ReportsWidget extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: iconColor,
               size: 30,
+              color: iconColor,
             ),
           ),
-          const SizedBox(height: 8),
-          CommonTextWidget(
-            text: title,
-            fontSize: AppMeasures.smallTextSize,
-            fontWeight: FontWeight.w500,
-            color: AppColors.black,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 8),
+        CommonTextWidget(
+          text: title,
+          fontSize: AppMeasures.smallTextSize,
+          fontWeight: FontWeight.w500,
+          color: AppColors.black,
+        ),
+      ],
     );
   }
 }

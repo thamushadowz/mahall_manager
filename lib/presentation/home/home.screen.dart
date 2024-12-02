@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widget.dart';
 import 'package:mahall_manager/presentation/home/widgets/bottom_nav_widgets/blood_widget.dart';
@@ -26,13 +28,13 @@ class HomeScreen extends GetView<HomeController> {
     return SafeArea(
       child: PopScope(
         canPop: controller.canPop.value,
-        onPopInvoked: (didPop) {
-          print('pop status : $didPop');
+        onPopInvokedWithResult: (didPop, result) {
           final now = DateTime.now();
           if (controller.lastPressedAt == null ||
               now.difference(controller.lastPressedAt!) >
                   const Duration(seconds: 2)) {
             controller.lastPressedAt = now;
+
             Get.showSnackbar(
               GetSnackBar(
                 snackPosition: SnackPosition.BOTTOM,
@@ -45,13 +47,13 @@ class HomeScreen extends GetView<HomeController> {
                 backgroundColor: AppColors.white,
               ),
             );
+
             controller.canPop.value = false;
           } else {
             controller.canPop.value = true;
-          }
-          print('CanPop val ::: ${controller.canPop.value}');
-          if (controller.canPop.value) {
-            Navigator.pop(context);
+            if (controller.canPop.value) {
+              SystemNavigator.pop();
+            }
           }
         },
         child: Obx(
@@ -81,6 +83,53 @@ class HomeScreen extends GetView<HomeController> {
                   ),
                   appBar: CommonAppbarWidget(
                     title: controller.appBarTitle.value,
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.NOTIFICATIONS)?.then((onValue) {
+                            controller.getChartData();
+                          });
+                        },
+                        icon: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              const Icon(Icons.notifications_none_rounded,
+                                  size: 30),
+                              Obx(
+                                () => controller.notificationCount.value == 0
+                                    ? const SizedBox.shrink()
+                                    : Positioned(
+                                        right: 2,
+                                        top: -6,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: 25,
+                                          height: 25,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppColors.darkRed,
+                                          ),
+                                          child: CommonTextWidget(
+                                            text: controller
+                                                .notificationCount.value
+                                                .toString(),
+                                            color: AppColors.white,
+                                            fontSize: 11,
+                                            fontWeight:
+                                                AppMeasures.mediumWeight,
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
                   ),
                   body: GestureDetector(
                     onTap: () {

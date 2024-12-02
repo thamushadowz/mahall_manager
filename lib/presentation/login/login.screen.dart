@@ -17,13 +17,15 @@ class LoginScreen extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: controller.canPop.value,
+      onPopInvokedWithResult: (didPop, result) {
         final now = DateTime.now();
         if (controller.lastPressedAt == null ||
             now.difference(controller.lastPressedAt!) >
                 const Duration(seconds: 2)) {
           controller.lastPressedAt = now;
+
           Get.showSnackbar(
             GetSnackBar(
               snackPosition: SnackPosition.BOTTOM,
@@ -36,9 +38,14 @@ class LoginScreen extends GetView<LoginController> {
               backgroundColor: AppColors.white,
             ),
           );
-          return false;
+
+          controller.canPop.value = false;
+        } else {
+          controller.canPop.value = true;
+          if (controller.canPop.value) {
+            SystemNavigator.pop();
+          }
         }
-        return true;
       },
       child: GestureDetector(
         onTap: () {

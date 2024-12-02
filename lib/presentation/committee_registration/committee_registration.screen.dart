@@ -59,92 +59,8 @@ class CommitteeRegistrationScreen
                   child: Column(
                     children: [
                       const SizedBox(height: 5),
-                      //Mahall name
-                      controller.isLoading.value
-                          ? const CommonTextFieldShimmerWidget()
-                          : CommonTextFormField(
-                              disabledLabelColor: controller.isEditMode.value
-                                  ? AppColors.themeColor
-                                  : AppColors.grey,
-                              enabled: controller.isEditMode.value,
-                              label: AppLocalizations.of(context)!.mahall_name,
-                              keyboardType: TextInputType.name,
-                              textController: controller.mahallNameController,
-                              focusNode: controller.mahallNameFocusNode,
-                              onFieldSubmitted: (value) {
-                                FocusScope.of(context).requestFocus(
-                                    controller.mahallCodeFocusNode);
-                              },
-                              validator: Validators.validateMahallName),
-                      const SizedBox(height: 10),
-                      //Mahall code
-                      controller.isLoading.value
-                          ? const CommonTextFieldShimmerWidget()
-                          : CommonTextFormField(
-                              inputFormatters: [
-                                  LengthLimitingTextInputFormatter(4),
-                                ],
-                              disabledLabelColor:
-                                  controller.adminCode.value == '0'
-                                      ? AppColors.themeColor
-                                      : AppColors.grey,
-                              enabled: controller.adminCode.value == '0'
-                                  ? true
-                                  : false,
-                              label: AppStrings.mahallCode,
-                              keyboardType: TextInputType.name,
-                              textController: controller.mahallCodeController,
-                              focusNode: controller.mahallCodeFocusNode,
-                              onFieldSubmitted: (value) {
-                                FocusScope.of(context).requestFocus(
-                                    controller.mahallAddressFocusNode);
-                              },
-                              validator: Validators.validateMahallCode),
-                      const SizedBox(height: 10),
-                      //Mahall address
-                      controller.isLoading.value
-                          ? const CommonTextFieldShimmerWidget()
-                          : CommonTextFormField(
-                              disabledLabelColor: controller.isEditMode.value
-                                  ? AppColors.themeColor
-                                  : AppColors.grey,
-                              enabled: controller.isEditMode.value,
-                              label:
-                                  AppLocalizations.of(context)!.mahall_address,
-                              keyboardType: TextInputType.name,
-                              textController:
-                                  controller.mahallAddressController,
-                              focusNode: controller.mahallAddressFocusNode,
-                              onFieldSubmitted: (value) {
-                                FocusScope.of(context).requestFocus(
-                                    controller.mahallPinFocusNode);
-                              },
-                              validator: Validators.validateMahallAddress),
-                      const SizedBox(height: 10),
-                      //Mahall pin
-                      controller.isLoading.value
-                          ? const CommonTextFieldShimmerWidget()
-                          : CommonTextFormField(
-                              disabledLabelColor:
-                                  controller.adminCode.value == '0'
-                                      ? AppColors.themeColor
-                                      : AppColors.grey,
-                              enabled: controller.adminCode.value == '0'
-                                  ? true
-                                  : false,
-                              label: AppLocalizations.of(context)!.mahall_pin,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(6),
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              keyboardType: TextInputType.number,
-                              textController: controller.mahallPinController,
-                              focusNode: controller.mahallPinFocusNode,
-                              onFieldSubmitted: (value) {
-                                FocusScope.of(context).requestFocus(
-                                    controller.presidentFNameFocusNode);
-                              },
-                              validator: Validators.validateMahallPin),
+                      //Mahall Section
+                      _buildMahallWidget(context),
                       const SizedBox(height: 20),
                       // President Section
                       _buildPresidentWidget(context),
@@ -224,6 +140,98 @@ class CommitteeRegistrationScreen
         middleText: AppLocalizations.of(Get.context!)!.are_you_sure_to_delete);
   }*/
 
+  _buildMahallWidget(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: AppColors.white.withOpacity(0.8),
+      ),
+      child: Column(
+        children: [
+          //Mahall name
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.blueGrey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.mahall_name,
+                  keyboardType: TextInputType.name,
+                  textController: controller.mahallNameController,
+                  focusNode: controller.mahallNameFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.mahallCodeFocusNode);
+                  },
+                  validator: Validators.validateMahallName),
+          const SizedBox(height: 10),
+          //Mahall code
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  inputFormatters: [
+                      LengthLimitingTextInputFormatter(4),
+                    ],
+                  disabledLabelColor: controller.adminCode.value == '0'
+                      ? AppColors.themeColor
+                      : AppColors.blueGrey,
+                  enabled: controller.adminCode.value == '0' ? true : false,
+                  label: AppStrings.mahallCode,
+                  keyboardType: TextInputType.name,
+                  textController: controller.mahallCodeController,
+                  focusNode: controller.mahallCodeFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.mahallAddressFocusNode);
+                  },
+                  validator: Validators.validateMahallCode),
+          const SizedBox(height: 10),
+          //Mahall address
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.blueGrey,
+                  enabled: controller.isEditMode.value,
+                  label: AppLocalizations.of(context)!.mahall_address,
+                  keyboardType: TextInputType.name,
+                  textController: controller.mahallAddressController,
+                  focusNode: controller.mahallAddressFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.mahallPinFocusNode);
+                  },
+                  validator: Validators.validateMahallAddress),
+          const SizedBox(height: 10),
+          //Mahall pin
+          controller.isLoading.value
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.adminCode.value == '0'
+                      ? AppColors.themeColor
+                      : AppColors.blueGrey,
+                  enabled: controller.adminCode.value == '0' ? true : false,
+                  label: AppLocalizations.of(context)!.mahall_pin,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(6),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  keyboardType: TextInputType.number,
+                  textController: controller.mahallPinController,
+                  focusNode: controller.mahallPinFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.presidentFNameFocusNode);
+                  },
+                  validator: Validators.validateMahallPin),
+        ],
+      ),
+    );
+  }
+
   _buildPresidentWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -265,7 +273,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.first_name,
                   keyboardType: TextInputType.name,
@@ -282,7 +290,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.last_name,
                   keyboardType: TextInputType.name,
@@ -299,7 +307,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.mobileNo,
                   prefixText: '+91 ',
@@ -372,7 +380,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.first_name,
                   keyboardType: TextInputType.name,
@@ -389,7 +397,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.last_name,
                   keyboardType: TextInputType.name,
@@ -406,7 +414,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.mobileNo,
                   prefixText: '+91 ',
@@ -479,7 +487,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.first_name,
                   keyboardType: TextInputType.name,
@@ -496,7 +504,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.last_name,
                   keyboardType: TextInputType.name,
@@ -513,7 +521,7 @@ class CommitteeRegistrationScreen
               : CommonTextFormField(
                   disabledLabelColor: controller.isEditMode.value
                       ? AppColors.themeColor
-                      : AppColors.grey,
+                      : AppColors.blueGrey,
                   enabled: controller.isEditMode.value,
                   label: AppLocalizations.of(context)!.mobileNo,
                   prefixText: '+91 ',

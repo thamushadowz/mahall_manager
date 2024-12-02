@@ -56,6 +56,7 @@ class RegistrationScreen extends GetView<RegistrationController> {
   Container _buildRegistrationForm(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
+      color: AppColors.white.withOpacity(0.8),
       child: Form(
         key: controller.formKey,
         child: SingleChildScrollView(
@@ -327,7 +328,7 @@ class RegistrationScreen extends GetView<RegistrationController> {
                 children: [
                   Obx(
                     () => Checkbox(
-                      side: BorderSide(color: AppColors.white),
+                      side: BorderSide(color: AppColors.black),
                       activeColor: AppColors.themeColor,
                       value: controller.isWillingToDonate.value,
                       onChanged: (bool? value) {
@@ -339,7 +340,7 @@ class RegistrationScreen extends GetView<RegistrationController> {
                     text: AppStrings.willingToDonateBlood,
                     fontSize: AppMeasures.mediumTextSize,
                     fontWeight: AppMeasures.mediumWeight,
-                    color: AppColors.white,
+                    color: AppColors.black,
                   ),
                 ],
               ),
@@ -368,7 +369,7 @@ class RegistrationScreen extends GetView<RegistrationController> {
                 children: [
                   Obx(
                     () => Checkbox(
-                      side: BorderSide(color: AppColors.white),
+                      side: BorderSide(color: AppColors.black),
                       activeColor: AppColors.themeColor,
                       value: controller.isExpat.value,
                       onChanged: (bool? value) {
@@ -380,7 +381,7 @@ class RegistrationScreen extends GetView<RegistrationController> {
                     text: AppLocalizations.of(context)!.is_expat,
                     fontSize: AppMeasures.mediumTextSize,
                     fontWeight: AppMeasures.mediumWeight,
-                    color: AppColors.white,
+                    color: AppColors.black,
                   ),
                 ],
               ),

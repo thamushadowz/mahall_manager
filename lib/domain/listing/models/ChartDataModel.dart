@@ -6,6 +6,7 @@ import 'dart:convert';
 
 ChartDataModel chartDataModelFromJson(String str) =>
     ChartDataModel.fromJson(json.decode(str));
+
 String chartDataModelToJson(ChartDataModel data) => json.encode(data.toJson());
 
 class ChartDataModel {
@@ -24,9 +25,11 @@ class ChartDataModel {
     _message = json['message'];
     _data = json['data'] != null ? ChartData.fromJson(json['data']) : null;
   }
+
   bool? _status;
   String? _message;
   ChartData? _data;
+
   ChartDataModel copyWith({
     bool? status,
     String? message,
@@ -37,8 +40,11 @@ class ChartDataModel {
         message: message ?? _message,
         data: data ?? _data,
       );
+
   bool? get status => _status;
+
   String? get message => _message;
+
   ChartData? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -55,8 +61,10 @@ class ChartDataModel {
 /// mahall_name : "Kayani Mahall"
 /// total_income : "120000"
 /// total_expense : "110000"
+/// notification_count : 4
 
 ChartData dataFromJson(String str) => ChartData.fromJson(json.decode(str));
+
 String dataToJson(ChartData data) => json.encode(data.toJson());
 
 class ChartData {
@@ -64,39 +72,53 @@ class ChartData {
     String? mahallName,
     String? totalIncome,
     String? totalExpense,
+    int? notificationCount,
   }) {
     _mahallName = mahallName;
     _totalIncome = totalIncome;
     _totalExpense = totalExpense;
+    _notificationCount = notificationCount;
   }
 
   ChartData.fromJson(dynamic json) {
     _mahallName = json['mahall_name'];
     _totalIncome = json['total_income'];
     _totalExpense = json['total_expense'];
+    _notificationCount = json['notification_count'];
   }
+
   String? _mahallName;
   String? _totalIncome;
   String? _totalExpense;
+  int? _notificationCount;
+
   ChartData copyWith({
     String? mahallName,
     String? totalIncome,
     String? totalExpense,
+    int? notificationCount,
   }) =>
       ChartData(
         mahallName: mahallName ?? _mahallName,
         totalIncome: totalIncome ?? _totalIncome,
         totalExpense: totalExpense ?? _totalExpense,
+        notificationCount: notificationCount ?? _notificationCount,
       );
+
   String? get mahallName => _mahallName;
+
   String? get totalIncome => _totalIncome;
+
   String? get totalExpense => _totalExpense;
+
+  int? get notificationCount => _notificationCount;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['mahall_name'] = _mahallName;
     map['total_income'] = _totalIncome;
     map['total_expense'] = _totalExpense;
+    map['notification_count'] = _notificationCount;
     return map;
   }
 }

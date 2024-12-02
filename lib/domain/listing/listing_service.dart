@@ -1,5 +1,6 @@
 import 'package:mahall_manager/domain/listing/models/ChartDataModel.dart';
 import 'package:mahall_manager/domain/listing/models/GetDeceasedListModel.dart';
+import 'package:mahall_manager/domain/listing/models/GetNotificationsModel.dart';
 import 'package:mahall_manager/domain/listing/models/GetReportPdfModel.dart';
 import 'package:mahall_manager/domain/listing/models/MarriageRegistrationModel.dart';
 import 'package:mahall_manager/domain/listing/models/common_response.dart';
@@ -18,7 +19,8 @@ import 'models/login_model.dart';
 import 'models/payment_success_model.dart';
 
 abstract class ListingService {
-  Future<LoginModel> loginCheck(String mobileNo, String password);
+  Future<LoginModel> loginCheck(
+      String mobileNo, String password, String fcmToken);
 
   Future<CommonResponse> mahallRegistration(
       String authToken, MahallRegistrationInputModel params);
@@ -95,4 +97,8 @@ abstract class ListingService {
       String authToken);
 
   Future<ChartDataModel> getChartData(String authToken);
+
+  Future<GetNotificationsModel> getNotifications(String authToken);
+
+  Future<CommonResponse> updateNotification(String authToken, dynamic params);
 }

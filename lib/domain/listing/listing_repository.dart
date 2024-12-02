@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/listing/models/GetNotificationsModel.dart';
 import 'package:mahall_manager/domain/listing/models/GetReportPdfModel.dart';
 import 'package:mahall_manager/domain/listing/models/common_response.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
@@ -24,15 +25,17 @@ class ListingRepository implements ListingService {
   ApiService apiService = Get.find();
 
   @override
-  Future<LoginModel> loginCheck(String mobileNo, String password) async {
+  Future<LoginModel> loginCheck(
+      String mobileNo, String password, String fcmToken) async {
     LoginModel loginModel;
-    final response = await apiService.reqst(
-        url: 'login',
-        method: Method.POST,
-        params: {
-          "phone": mobileNo.toString(),
-          "password": password.toString()
-        });
+    print(
+        'Login Input : mobileNo : $mobileNo, password : $password, fcmToken : $fcmToken');
+    final response =
+        await apiService.reqst(url: 'login', method: Method.POST, params: {
+      "phone": mobileNo.toString(),
+      "password": password.toString(),
+      "fcm_token": fcmToken.toString()
+    });
     try {
       loginModel = LoginModel.fromJson(response.body);
       return loginModel;
@@ -689,6 +692,42 @@ class ListingRepository implements ListingService {
       return chartDataModel;
     } catch (e) {
       return ChartDataModel();
+    }
+  }
+
+  @override
+  Future<GetNotificationsModel> getNotifications(String authToken) async {
+    GetNotificationsModel notificationsModel;
+    final response = await apiService.reqst(
+      url: 'notification/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    print('Response::: ${response.body}');
+    try {
+      notificationsModel = GetNotificationsModel.fromJson(response.body);
+      return notificationsModel;
+    } catch (e) {
+      return GetNotificationsModel();
+    }
+  }
+
+  @override
+  Future<CommonResponse> updateNotification(String authToken, params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'notification/update',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
     }
   }
 }

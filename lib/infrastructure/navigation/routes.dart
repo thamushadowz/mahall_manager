@@ -18,9 +18,11 @@ class Routes {
   static const LOGIN = '/login';
   static const MARRIAGE_CERTIFICATES = '/marriage-certificates';
   static const MARRIAGE_REGISTRATION = '/marriage-registration';
+  static const NOTIFICATIONS = '/notifications';
   static const PAYMENT_SCREEN = '/payment-screen';
   static const PDF_VIEWER = '/pdf-viewer';
   static const PLACE_REGISTRATION = '/place-registration';
+  static const PRAYER_TIME = '/prayer-time';
   static const PROFILE = '/profile';
   static const PROMISES = '/promises';
   static const QIBLA_FINDER = '/qibla-finder';
@@ -29,5 +31,5 @@ class Routes {
   static const RESET_PASSWORD = '/reset-password';
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
-  static const PRAYER_TIME = '/prayer-time';
+  static const VIEW_NOTIFICATION = '/view-notification';
 }

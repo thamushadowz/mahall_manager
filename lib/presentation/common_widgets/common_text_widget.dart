@@ -11,7 +11,9 @@ class CommonTextWidget extends StatelessWidget {
       this.fontWeight,
       this.shadows,
       this.color,
-      this.textAlign});
+      this.textAlign,
+      this.maxLines,
+      this.overflow});
 
   final String text;
   final double? fontSize;
@@ -19,13 +21,17 @@ class CommonTextWidget extends StatelessWidget {
   final Color? color;
   final List<Shadow>? shadows;
   final TextAlign? textAlign;
+  final int? maxLines;
+  final TextOverflow? overflow;
 
   @override
   Widget build(BuildContext context) {
     return Text(
+      maxLines: maxLines,
       textAlign: textAlign,
       text,
       style: TextStyle(
+          overflow: overflow,
           shadows: shadows,
           fontSize: fontSize ?? AppMeasures.normalTextSize,
           fontWeight: fontWeight ?? AppMeasures.normalWeight,

@@ -12,35 +12,40 @@ class AddExpensesScreen extends GetView<AddExpensesController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CommonAppbarWidget(
-        title: controller.mainHeading,
-      ),
-      body: SizedBox.expand(
-        child: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/dark_background.png'),
-                  fit: BoxFit.cover)),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: CommonAppbarWidget(
+          title: controller.mainHeading,
+        ),
+        body: SizedBox.expand(
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/dark_background.png'),
+                    fit: BoxFit.cover)),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
-              return SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  top: keyboardHeight == 0 ? constraints.maxHeight * 0.2 : 20,
-                  bottom: 20,
-                ),
-                child: Column(
-                  mainAxisAlignment: keyboardHeight == 0
-                      ? MainAxisAlignment.center
-                      : MainAxisAlignment.start,
-                  children: [
-                    _expenseWidget(context),
-                  ],
-                ),
-              );
-            },
+                return SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                    top: keyboardHeight == 0 ? constraints.maxHeight * 0.2 : 20,
+                    bottom: 20,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: keyboardHeight == 0
+                        ? MainAxisAlignment.center
+                        : MainAxisAlignment.start,
+                    children: [
+                      _expenseWidget(context),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:adhan/adhan.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 
 import '../../../domain/core/interfaces/utility_services.dart';
@@ -9,6 +12,8 @@ class PrayerTimeController extends GetxController {
   RxString selectedMethod = ''.obs;
   RxString selectedMadhab = ''.obs;
   RxString decorationGif = ''.obs;
+  RxString hijriDate = ''.obs;
+  RxString nextPrayer = ''.obs;
 
   RxBool isSettingsClicked = false.obs;
   RxBool isLoading = true.obs;
@@ -25,6 +30,8 @@ class PrayerTimeController extends GetxController {
   double latitude = 0.0;
   double longitude = 0.0;
   late Coordinates myCoordinates;
+  Rx<Duration> timeRemaining = const Duration().obs;
+  late Timer _timer;
 
   CalculationParameters params = CalculationMethod.karachi.getParameters();
 
@@ -64,6 +71,7 @@ class PrayerTimeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    getHijriDate();
     setDecorationGif();
     currentCoordinates = (await getCurrentLocation())!;
     latitude = currentCoordinates.latitude;
@@ -74,82 +82,89 @@ class PrayerTimeController extends GetxController {
     prayerTimes.value = PrayerTimes.today(myCoordinates, params);
     Future.delayed(const Duration(seconds: 3));
     isLoading.value = false;
-    printTimings();
+    nextPrayer.value = prayerTimes.value!.nextPrayer().name;
+    _updateCountdown();
+  }
+
+  @override
+  void onClose() {
+    _timer.cancel();
+    super.onClose();
+  }
+
+  void _updateCountdown() {
+    var nextPrayer = prayerTimes.value?.nextPrayer();
+    DateTime? nextPrayerTime = prayerTimes.value?.timeForPrayer(nextPrayer!);
+
+    timeRemaining.value = nextPrayerTime!.difference(DateTime.now());
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      timeRemaining.value = nextPrayerTime.difference(DateTime.now());
+      if (timeRemaining.value.isNegative) {
+        _timer.cancel();
+        _updateCountdown();
+      }
+    });
+  }
+
+  String capitalizeFirstLetter(String str) {
+    if (str.isEmpty) return str;
+    return str[0].toUpperCase() + str.substring(1);
+  }
+
+  getHijriDate() {
+    final date = HijriCalendar.now();
+    hijriDate.value = '${date.hDay} ${date.longMonthName} ${date.hYear}';
   }
 
   void setSelectedMethod(String methodName) {
     selectedMethod.value = methodName;
     methodKey = prayerMethods[methodName]!;
     params = methodKey.getParameters();
-    print('Selected Method: $methodKey');
   }
 
   void setSelectedMadhab(String madhabName) {
     selectedMadhab.value = madhabName;
     madhabKey = madhabs[madhabName]!;
     params.madhab = madhabKey;
-    print('Selected Madhab: $madhabName');
   }
 
   void setDecorationGif() {
     if (DateFormat.jm().format(DateTime.now()).split(' ').last.toLowerCase() ==
         'am') {
-      print('Time is AM');
       if (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
           3) {
-        print('Time is < 3');
         decorationGif.value = 'assets/images/isha.gif';
       } else if ((int.parse(
                   DateFormat.jm().format(DateTime.now()).split(':').first) >=
               3) &&
           (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
               6)) {
-        print('Time is > 3 and < 6');
         decorationGif.value = 'assets/images/subh.gif';
       } else {
-        print('Time is > 6');
         decorationGif.value = 'assets/images/luhr.gif';
       }
     } else {
-      print('Time is PM');
       if ((int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) ==
               12) ||
           (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
               3)) {
-        print('Time is < 3 or = 12');
         decorationGif.value = 'assets/images/luhr.gif';
       } else if ((int.parse(
                   DateFormat.jm().format(DateTime.now()).split(':').first) >=
               3) &&
           (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
               5)) {
-        print('Time is > 3 and < 5');
         decorationGif.value = 'assets/images/asr.gif';
       } else if ((int.parse(
                   DateFormat.jm().format(DateTime.now()).split(':').first) >=
               5) &&
           (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
               7)) {
-        print('Time is > 5 and < 7');
         decorationGif.value = 'assets/images/magrib.gif';
       } else {
-        print('Time is > 7');
         decorationGif.value = 'assets/images/isha.gif';
       }
     }
-  }
-
-  printTimings() {
-    print(
-        "---Today's Prayer Times in Your Local Timezone(${prayerTimes.value?.fajr.timeZoneName})---");
-    print(DateFormat.jm().format(prayerTimes.value!.fajr));
-    print(DateFormat.jm().format(prayerTimes.value!.sunrise));
-    print(DateFormat.jm().format(prayerTimes.value!.dhuhr));
-    print(DateFormat.jm().format(prayerTimes.value!.asr));
-    print(DateFormat.jm().format(prayerTimes.value!.maghrib));
-    print(DateFormat.jm().format(prayerTimes.value!.isha));
-
-    print('Current Time :: ${DateFormat.jm().format(DateTime.now())}');
-    print('Current Prayer :: ${prayerTimes.value!.currentPrayer().name}');
   }
 }

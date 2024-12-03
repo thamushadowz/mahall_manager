@@ -101,4 +101,6 @@ abstract class ListingService {
   Future<GetNotificationsModel> getNotifications(String authToken);
 
   Future<CommonResponse> updateNotification(String authToken, dynamic params);
+
+  Future<CommonResponse> sendNotification(String authToken, dynamic params);
 }

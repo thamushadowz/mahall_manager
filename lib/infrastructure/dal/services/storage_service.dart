@@ -7,6 +7,7 @@ class StorageService {
   final String _userTypeKey = 'user_type';
   final String _languageKey = 'preferred_language';
   final String _mahallNameKey = 'mahall_name';
+  final String _lastNotificationKey = 'last-notification';
 
   void saveToken(String token) {
     _storage.write(_tokenKey, token);
@@ -24,6 +25,10 @@ class StorageService {
     _storage.write(_mahallNameKey, mahallName);
   }
 
+  void saveLastNotification(String notification) {
+    _storage.write(_lastNotificationKey, notification);
+  }
+
   String? getToken() => _storage.read(_tokenKey);
 
   String? getUserType() => _storage.read(_userTypeKey);
@@ -31,6 +36,8 @@ class StorageService {
   String? getPreferredLanguage() => _storage.read(_languageKey);
 
   String? getMahallName() => _storage.read(_mahallNameKey);
+
+  String? getLastNotification() => _storage.read(_lastNotificationKey);
 
   bool isLoggedIn() => getToken() != null;
 

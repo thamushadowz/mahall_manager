@@ -730,4 +730,23 @@ class ListingRepository implements ListingService {
       return CommonResponse();
     }
   }
+
+  @override
+  Future<CommonResponse> sendNotification(String authToken, params) async {
+    CommonResponse commonResponse;
+    print('Input : $params');
+    final response = await apiService.reqst(
+      url: 'notification/send',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
 }

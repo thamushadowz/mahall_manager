@@ -53,6 +53,7 @@ class LoginScreen extends GetView<LoginController> {
         },
         child: SafeArea(
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: SizedBox.expand(
               child: Container(
                 decoration: const BoxDecoration(
@@ -83,24 +84,31 @@ class LoginScreen extends GetView<LoginController> {
                             ],
                           ),
                         ),
-                        Positioned(
-                          bottom: 20,
-                          left: 0,
-                          right: 0,
-                          child: CommonTextWidget(
-                            color: AppColors.blueGrey.withOpacity(0.8),
-                            fontSize: AppMeasures.smallTextSize,
-                            fontWeight: AppMeasures.mediumWeight,
-                            text: AppStrings.craftedWithAllerTempus,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        _buildCompanyNameDetailsWidget(),
                       ],
                     );
                   },
                 ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Align _buildCompanyNameDetailsWidget() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: SafeArea(
+          child: CommonTextWidget(
+            color: AppColors.blueGrey.withOpacity(0.8),
+            fontSize: AppMeasures.smallTextSize,
+            fontWeight: AppMeasures.mediumWeight,
+            text: AppStrings.craftedWithAllerTempus,
+            textAlign: TextAlign.center,
           ),
         ),
       ),

@@ -89,7 +89,9 @@ class AnnouncementScreen extends GetView<AnnouncementController> {
                 const SizedBox(height: 10),
                 CommonButtonWidget(
                   onTap: () {
-                    if (controller.formKey.currentState!.validate()) {}
+                    if (controller.formKey.currentState!.validate()) {
+                      controller.sendNotification();
+                    }
                   },
                   label: AppStrings.submit,
                   isLoading: false.obs,

@@ -24,7 +24,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                 fit: BoxFit.cover)),
         child: Stack(
           children: [
-            _buildHeaderWidget(),
+            _buildHeaderWidget(context),
             Positioned(
                 top: 320,
                 left: 0,
@@ -39,102 +39,128 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
 
   _buildBodyWidget(BuildContext context) {
     return Obx(
-      () => SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            controller.isLoading.value
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: Image.asset(
-                      'assets/images/spin_loader.gif',
-                      width: 50,
-                      height: 50,
-                    ),
-                  )
-                : _buildPrayerTimeWidget(context),
-          ],
-        ),
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20),
+          controller.isLoading.value
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Image.asset(
+                    'assets/images/spin_loader.gif',
+                    width: 50,
+                    height: 50,
+                  ),
+                )
+              : _buildPrayerTimeWidget(context),
+        ],
       ),
     );
   }
 
   _buildPrayerTimeWidget(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: AppColors.black.withOpacity(0.7)),
-      child: Column(
-        children: [
-          _prayerItemWidget(
-              icon: 'assets/images/subh_icon.png',
-              /*alarmIcon: controller.isSubhAlarmOn.value
-                  ? Icons.volume_up
-                  : Icons.volume_off_rounded,
-              onBellPressed: () {
-                controller.isSubhAlarmOn.value =
-                    !controller.isSubhAlarmOn.value;
-              },*/
-              text: 'Subh',
-              timing:
-                  DateFormat.jm().format(controller.prayerTimes.value!.fajr)),
-          _prayerItemWidget(
-              icon: 'assets/images/sunrise_icon.png',
-              text: 'Sunrise',
-              timing: DateFormat.jm()
-                  .format(controller.prayerTimes.value!.sunrise)),
-          _prayerItemWidget(
-              icon: 'assets/images/luhr_icon.png',
-              // alarmIcon: controller.isLuhrAlarmOn.value
-              //     ? Icons.volume_up
-              //     : Icons.volume_off_rounded,
-              // onBellPressed: () {
-              //   controller.isLuhrAlarmOn.value =
-              //       !controller.isLuhrAlarmOn.value;
-              // },
-              text: 'Luhr',
-              timing:
-                  DateFormat.jm().format(controller.prayerTimes.value!.dhuhr)),
-          _prayerItemWidget(
-              icon: 'assets/images/asr_icon.png',
-              /*alarmIcon: controller.isAsrAlarmOn.value
-                  ? Icons.volume_up
-                  : Icons.volume_off_rounded,
-              onBellPressed: () {
-                controller.isAsrAlarmOn.value = !controller.isAsrAlarmOn.value;
-              },*/
-              text: 'Asr',
-              timing:
-                  DateFormat.jm().format(controller.prayerTimes.value!.asr)),
-          _prayerItemWidget(
-              icon: 'assets/images/magrib_icon.png',
-              /*alarmIcon: controller.isMagribAlarmOn.value
-                  ? Icons.volume_up
-                  : Icons.volume_off_rounded,
-              onBellPressed: () {
-                controller.isMagribAlarmOn.value =
-                    !controller.isMagribAlarmOn.value;
-              },*/
-              text: 'Magrib',
-              timing: DateFormat.jm()
-                  .format(controller.prayerTimes.value!.maghrib)),
-          _prayerItemWidget(
-              icon: 'assets/images/isha_icon.png',
-              /*alarmIcon: controller.isIshaAlarmOn.value
-                  ? Icons.volume_up
-                  : Icons.volume_off_rounded,
-              onBellPressed: () {
-                controller.isIshaAlarmOn.value =
-                    !controller.isIshaAlarmOn.value;
-              },*/
-              text: 'Isha',
-              timing:
-                  DateFormat.jm().format(controller.prayerTimes.value!.isha)),
-        ],
+    return Expanded(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: AppColors.black.withOpacity(0.7)),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _prayerItemWidget(
+                  icon: 'assets/images/subh_icon.png',
+                  /*alarmIcon: controller.isSubhAlarmOn.value
+                      ? Icons.volume_up
+                      : Icons.volume_off_rounded,
+                  onBellPressed: () {
+                    controller.isSubhAlarmOn.value =
+                        !controller.isSubhAlarmOn.value;
+                  },*/
+                  text: controller.capitalizeFirstLetter(controller
+                      .prayerTimes.value!
+                      .currentPrayerByDateTime(
+                          controller.prayerTimes.value!.fajr)
+                      .name),
+                  timing: DateFormat.jm()
+                      .format(controller.prayerTimes.value!.fajr)),
+              _prayerItemWidget(
+                  icon: 'assets/images/sunrise_icon.png',
+                  text: controller.capitalizeFirstLetter(controller
+                      .prayerTimes.value!
+                      .currentPrayerByDateTime(
+                          controller.prayerTimes.value!.sunrise)
+                      .name),
+                  timing: DateFormat.jm()
+                      .format(controller.prayerTimes.value!.sunrise)),
+              _prayerItemWidget(
+                  icon: 'assets/images/luhr_icon.png',
+                  // alarmIcon: controller.isLuhrAlarmOn.value
+                  //     ? Icons.volume_up
+                  //     : Icons.volume_off_rounded,
+                  // onBellPressed: () {
+                  //   controller.isLuhrAlarmOn.value =
+                  //       !controller.isLuhrAlarmOn.value;
+                  // },
+                  text: controller.capitalizeFirstLetter(controller
+                      .prayerTimes.value!
+                      .currentPrayerByDateTime(
+                          controller.prayerTimes.value!.dhuhr)
+                      .name),
+                  timing: DateFormat.jm()
+                      .format(controller.prayerTimes.value!.dhuhr)),
+              _prayerItemWidget(
+                  icon: 'assets/images/asr_icon.png',
+                  /*alarmIcon: controller.isAsrAlarmOn.value
+                      ? Icons.volume_up
+                      : Icons.volume_off_rounded,
+                  onBellPressed: () {
+                    controller.isAsrAlarmOn.value = !controller.isAsrAlarmOn.value;
+                  },*/
+                  text: controller.capitalizeFirstLetter(controller
+                      .prayerTimes.value!
+                      .currentPrayerByDateTime(
+                          controller.prayerTimes.value!.asr)
+                      .name),
+                  timing: DateFormat.jm()
+                      .format(controller.prayerTimes.value!.asr)),
+              _prayerItemWidget(
+                  icon: 'assets/images/magrib_icon.png',
+                  /*alarmIcon: controller.isMagribAlarmOn.value
+                      ? Icons.volume_up
+                      : Icons.volume_off_rounded,
+                  onBellPressed: () {
+                    controller.isMagribAlarmOn.value =
+                        !controller.isMagribAlarmOn.value;
+                  },*/
+                  text: controller.capitalizeFirstLetter(controller
+                      .prayerTimes.value!
+                      .currentPrayerByDateTime(
+                          controller.prayerTimes.value!.maghrib)
+                      .name),
+                  timing: DateFormat.jm()
+                      .format(controller.prayerTimes.value!.maghrib)),
+              _prayerItemWidget(
+                  icon: 'assets/images/isha_icon.png',
+                  /*alarmIcon: controller.isIshaAlarmOn.value
+                      ? Icons.volume_up
+                      : Icons.volume_off_rounded,
+                  onBellPressed: () {
+                    controller.isIshaAlarmOn.value =
+                        !controller.isIshaAlarmOn.value;
+                  },*/
+                  text: controller.capitalizeFirstLetter(controller
+                      .prayerTimes.value!
+                      .currentPrayerByDateTime(
+                          controller.prayerTimes.value!.isha)
+                      .name),
+                  timing: DateFormat.jm()
+                      .format(controller.prayerTimes.value!.isha)),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -236,7 +262,6 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                       controller.params.madhab = controller.madhabKey;
                       controller.prayerTimes.value = PrayerTimes.today(
                           controller.myCoordinates, controller.params);
-                      controller.printTimings();
                       controller.isSettingsClicked.value = false;
                     },
                     label: AppStrings.submit,
@@ -249,11 +274,10 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
     );
   }
 
-  _buildHeaderWidget() {
+  _buildHeaderWidget(BuildContext context) {
     return Obx(
       () => Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
         height: 375,
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -261,42 +285,87 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                 fit: BoxFit.fill)),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Material(
-                  borderRadius: BorderRadius.circular(50),
-                  color: AppColors.white.withOpacity(0.8),
-                  elevation: 2,
-                  child: IconButton(
-                    onPressed: () => Get.back(),
-                    icon: Icon(
-                      Icons.arrow_back_rounded,
-                      color: AppColors.black,
-                      size: 20,
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                  top: 40,
+                  bottom: controller.isSettingsClicked.value
+                      ? 10
+                      : MediaQuery.of(context).size.height * 0.13),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Material(
+                    borderRadius: BorderRadius.circular(50),
+                    color: AppColors.white.withOpacity(0.8),
+                    elevation: 2,
+                    child: IconButton(
+                      onPressed: () => Get.back(),
+                      icon: Icon(
+                        Icons.arrow_back_rounded,
+                        color: AppColors.black,
+                        size: 20,
+                      ),
                     ),
                   ),
-                ),
-                Material(
-                  borderRadius: BorderRadius.circular(50),
-                  color: AppColors.white.withOpacity(0.8),
-                  elevation: 2,
-                  child: IconButton(
-                    highlightColor: AppColors.white.withOpacity(0.4),
-                    onPressed: () {
-                      controller.isSettingsClicked.value =
-                          !controller.isSettingsClicked.value;
-                    },
-                    icon: Icon(Icons.settings, color: AppColors.black),
+                  Material(
+                    borderRadius: BorderRadius.circular(50),
+                    color: AppColors.white.withOpacity(0.8),
+                    elevation: 2,
+                    child: IconButton(
+                      highlightColor: AppColors.white.withOpacity(0.4),
+                      onPressed: () {
+                        controller.isSettingsClicked.value =
+                            !controller.isSettingsClicked.value;
+                      },
+                      icon: Icon(Icons.settings, color: AppColors.black),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            _buildTimerAndCalendarWidget(),
             _buildSettingsWidget(),
           ],
         ),
       ),
     );
+  }
+
+  _buildTimerAndCalendarWidget() {
+    int hours = controller.timeRemaining.value.inHours;
+    int minutes = controller.timeRemaining.value.inMinutes % 60;
+    int seconds = controller.timeRemaining.value.inSeconds % 60;
+    return Obx(() => controller.isSettingsClicked.value
+        ? const SizedBox.shrink()
+        : Container(
+            padding: const EdgeInsets.all(10),
+            width: double.infinity,
+            height: 120,
+            color: AppColors.black.withOpacity(0.4),
+            child: Column(
+              children: [
+                Obx(() => CommonTextWidget(
+                      text: controller.hijriDate.value,
+                      fontSize: AppMeasures.bigTextSize,
+                      color: AppColors.white,
+                    )),
+                controller.isLoading.value
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: CommonTextWidget(
+                            textAlign: TextAlign.center,
+                            text:
+                                "${controller.capitalizeFirstLetter(controller.nextPrayer.value)} will start in: "
+                                "$hours hours, $minutes minutes, $seconds seconds",
+                            fontSize: AppMeasures.normalTextSize,
+                            color: AppColors.white),
+                      ),
+              ],
+            ),
+          ));
   }
 
   Container _prayerItemWidget(
@@ -306,7 +375,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
       IconData? alarmIcon,
       Function()? onBellPressed}) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       width: double.infinity,
       height: 60,
       padding: const EdgeInsets.all(10),
@@ -316,18 +385,20 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
         children: [
           Image.asset(
             icon,
-            width: 40,
-            height: 40,
+            width: 30,
+            height: 30,
           ),
           const SizedBox(width: 10),
           CommonTextWidget(
             text: text,
             color: AppColors.white,
+            fontSize: AppMeasures.mediumTextSize,
           ),
           const Spacer(),
           CommonTextWidget(
             text: timing,
             color: AppColors.white,
+            fontSize: AppMeasures.mediumTextSize,
           ),
           const SizedBox(width: 10),
           IconButton(

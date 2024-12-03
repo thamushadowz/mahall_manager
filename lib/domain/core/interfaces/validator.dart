@@ -231,7 +231,7 @@ class Validators {
   }
 
   static String? validateAnnouncement(String? value) {
-    if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
+    if (value == null || value.trim().isEmpty || value == '') {
       return AppStrings.announcementReqd;
     }
     return null;

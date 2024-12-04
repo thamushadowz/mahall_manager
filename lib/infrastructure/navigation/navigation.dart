@@ -164,5 +164,10 @@ class Nav {
       page: () => const ViewNotificationScreen(),
       binding: ViewNotificationControllerBinding(),
     ),
+    GetPage(
+      name: Routes.DUAS,
+      page: () => const DuasScreen(),
+      binding: DuasControllerBinding(),
+    ),
   ];
 }

@@ -32,4 +32,5 @@ class Routes {
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
   static const VIEW_NOTIFICATION = '/view-notification';
+  static const DUAS = '/duas';
 }

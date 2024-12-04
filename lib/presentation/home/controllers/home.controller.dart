@@ -153,7 +153,11 @@ class HomeController extends GetxController {
       "icon": 'assets/images/namaz.png',
       "onClick": Routes.PRAYER_TIME
     },
-    {"title": AppStrings.dua, "icon": 'assets/images/dua.png', "onClick": ''},
+    {
+      "title": AppStrings.dua,
+      "icon": 'assets/images/dua.png',
+      "onClick": Routes.DUAS
+    },
     {
       "title": AppStrings.azkar,
       "icon": 'assets/images/dasbiha.png',

@@ -358,7 +358,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                         child: CommonTextWidget(
                             textAlign: TextAlign.center,
                             text:
-                                "${controller.capitalizeFirstLetter(controller.nextPrayer.value)} will start in: "
+                                "${controller.capitalizeFirstLetter(controller.nextPrayerName.value)} will start in: "
                                 "$hours hours, $minutes minutes, $seconds seconds",
                             fontSize: AppMeasures.normalTextSize,
                             color: AppColors.white),

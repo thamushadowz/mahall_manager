@@ -54,6 +54,7 @@ flutter:
     - assets/logo/
     - assets/images/
     - assets/animations/
+    - assets/jsons/
     - lib/l10n/
 flutter_intl:
   enabled: true

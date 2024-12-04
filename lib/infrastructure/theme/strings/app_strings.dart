@@ -20,6 +20,7 @@ class AppStrings {
   static String mahallCode = 'Mahall Code';
   static String mahallName = 'Mahall Name';
   static String committeeName = 'Committee Name';
+  static String duas = 'Duas';
 
   static String warning = 'Warning!!';
   static String logout = 'Logout';

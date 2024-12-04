@@ -8,6 +8,7 @@ export 'package:mahall_manager/presentation/contact_us/contact_us.screen.dart';
 export 'package:mahall_manager/presentation/death_list/death_list.screen.dart';
 export 'package:mahall_manager/presentation/death_registration/death_registration.screen.dart';
 export 'package:mahall_manager/presentation/delete_account/delete_account.screen.dart';
+export 'package:mahall_manager/presentation/duas/duas.screen.dart';
 export 'package:mahall_manager/presentation/home/home.screen.dart';
 export 'package:mahall_manager/presentation/house_registration/house_registration.screen.dart';
 export 'package:mahall_manager/presentation/login/login.screen.dart';

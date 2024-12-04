@@ -7,6 +7,7 @@ export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/co
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/death_list.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/death_registration.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/delete_account.controller.binding.dart';
+export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/duas.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/home.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/house_registration.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/login.controller.binding.dart';

@@ -13,7 +13,7 @@ class PrayerTimeController extends GetxController {
   RxString selectedMadhab = ''.obs;
   RxString decorationGif = ''.obs;
   RxString hijriDate = ''.obs;
-  RxString nextPrayer = ''.obs;
+  RxString nextPrayerName = ''.obs;
 
   RxBool isSettingsClicked = false.obs;
   RxBool isLoading = true.obs;
@@ -82,7 +82,7 @@ class PrayerTimeController extends GetxController {
     prayerTimes.value = PrayerTimes.today(myCoordinates, params);
     Future.delayed(const Duration(seconds: 3));
     isLoading.value = false;
-    nextPrayer.value = prayerTimes.value!.nextPrayer().name;
+    nextPrayerName.value = prayerTimes.value!.nextPrayer().name;
     _updateCountdown();
   }
 
@@ -93,15 +93,28 @@ class PrayerTimeController extends GetxController {
   }
 
   void _updateCountdown() {
-    var nextPrayer = prayerTimes.value?.nextPrayer();
+    Prayer? nextPrayer = prayerTimes.value?.nextPrayer();
     DateTime? nextPrayerTime = prayerTimes.value?.timeForPrayer(nextPrayer!);
+
+    // Check if the current prayer is Isha and adjust for next day's Fajr
+    if (nextPrayer == Prayer.isha) {
+      DateTime now = DateTime.now();
+      DateTime tomorrow = now.add(const Duration(days: 1));
+      nextPrayer = Prayer.fajr;
+      nextPrayerTime = prayerTimes.value?.timeForPrayer(nextPrayer)!.add(
+            Duration(
+              days: tomorrow.day - now.day,
+            ),
+          );
+    }
 
     timeRemaining.value = nextPrayerTime!.difference(DateTime.now());
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      timeRemaining.value = nextPrayerTime.difference(DateTime.now());
+      timeRemaining.value = nextPrayerTime!.difference(DateTime.now());
       if (timeRemaining.value.isNegative) {
         _timer.cancel();
+        nextPrayerName.value = prayerTimes.value!.nextPrayer().name;
         _updateCountdown();
       }
     });

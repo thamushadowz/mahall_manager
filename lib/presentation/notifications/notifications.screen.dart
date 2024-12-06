@@ -89,6 +89,8 @@ class NotificationsScreen extends GetView<NotificationsController> {
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
+                      Icon(Icons.person, color: AppColors.grey, size: 15),
+                      const SizedBox(width: 5),
                       CommonTextWidget(
                         text: controller.notificationList[index].postedBy
                             .toString(),
@@ -97,6 +99,9 @@ class NotificationsScreen extends GetView<NotificationsController> {
                         color: AppColors.grey,
                       ),
                       const Spacer(),
+                      Icon(Icons.access_time_filled_rounded,
+                          color: AppColors.grey, size: 15),
+                      const SizedBox(width: 5),
                       CommonTextWidget(
                         text:
                             controller.notificationList[index].date.toString(),

@@ -39,6 +39,7 @@ dependencies:
   adhan: ^2.0.0+1
   geolocator: ^13.0.2
   hijri: ^3.0.0
+  audioplayers: ^6.1.0
 
 
 dev_dependencies: 
@@ -54,6 +55,7 @@ flutter:
     - assets/logo/
     - assets/images/
     - assets/animations/
+    - assets/audios/
     - assets/jsons/
     - lib/l10n/
 flutter_intl:

@@ -21,6 +21,8 @@ class AppStrings {
   static String mahallName = 'Mahall Name';
   static String committeeName = 'Committee Name';
   static String duas = 'Duas';
+  static String transliteration = 'Transliteration (ലിപ്യന്തരണം)';
+  static String translation = 'Translation (വിവർത്തനം)';
 
   static String warning = 'Warning!!';
   static String logout = 'Logout';

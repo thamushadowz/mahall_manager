@@ -87,7 +87,11 @@ class HomeScreen extends GetView<HomeController> {
                       IconButton(
                         onPressed: () {
                           Get.toNamed(Routes.NOTIFICATIONS)?.then((onValue) {
-                            controller.getChartData();
+                            if (controller.userType == '1') {
+                              controller.getChartData();
+                            } else {
+                              controller.getSingleHouseAndUsers();
+                            }
                           });
                         },
                         icon: SizedBox(

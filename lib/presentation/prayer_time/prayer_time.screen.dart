@@ -72,13 +72,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
             children: [
               _prayerItemWidget(
                   icon: 'assets/images/subh_icon.png',
-                  /*alarmIcon: controller.isSubhAlarmOn.value
-                      ? Icons.volume_up
-                      : Icons.volume_off_rounded,
-                  onBellPressed: () {
-                    controller.isSubhAlarmOn.value =
-                        !controller.isSubhAlarmOn.value;
-                  },*/
+                  alarmEnabled: controller.isSubhAlarmOn,
                   text: controller.capitalizeFirstLetter(controller
                       .prayerTimes.value!
                       .currentPrayerByDateTime(
@@ -87,6 +81,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                   timing: DateFormat.jm()
                       .format(controller.prayerTimes.value!.fajr)),
               _prayerItemWidget(
+                  alarmEnabled: false.obs,
                   icon: 'assets/images/sunrise_icon.png',
                   text: controller.capitalizeFirstLetter(controller
                       .prayerTimes.value!
@@ -97,13 +92,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                       .format(controller.prayerTimes.value!.sunrise)),
               _prayerItemWidget(
                   icon: 'assets/images/luhr_icon.png',
-                  // alarmIcon: controller.isLuhrAlarmOn.value
-                  //     ? Icons.volume_up
-                  //     : Icons.volume_off_rounded,
-                  // onBellPressed: () {
-                  //   controller.isLuhrAlarmOn.value =
-                  //       !controller.isLuhrAlarmOn.value;
-                  // },
+                  alarmEnabled: controller.isLuhrAlarmOn,
                   text: controller.capitalizeFirstLetter(controller
                       .prayerTimes.value!
                       .currentPrayerByDateTime(
@@ -113,12 +102,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                       .format(controller.prayerTimes.value!.dhuhr)),
               _prayerItemWidget(
                   icon: 'assets/images/asr_icon.png',
-                  /*alarmIcon: controller.isAsrAlarmOn.value
-                      ? Icons.volume_up
-                      : Icons.volume_off_rounded,
-                  onBellPressed: () {
-                    controller.isAsrAlarmOn.value = !controller.isAsrAlarmOn.value;
-                  },*/
+                  alarmEnabled: controller.isAsrAlarmOn,
                   text: controller.capitalizeFirstLetter(controller
                       .prayerTimes.value!
                       .currentPrayerByDateTime(
@@ -128,13 +112,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                       .format(controller.prayerTimes.value!.asr)),
               _prayerItemWidget(
                   icon: 'assets/images/magrib_icon.png',
-                  /*alarmIcon: controller.isMagribAlarmOn.value
-                      ? Icons.volume_up
-                      : Icons.volume_off_rounded,
-                  onBellPressed: () {
-                    controller.isMagribAlarmOn.value =
-                        !controller.isMagribAlarmOn.value;
-                  },*/
+                  alarmEnabled: controller.isMagribAlarmOn,
                   text: controller.capitalizeFirstLetter(controller
                       .prayerTimes.value!
                       .currentPrayerByDateTime(
@@ -144,13 +122,7 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                       .format(controller.prayerTimes.value!.maghrib)),
               _prayerItemWidget(
                   icon: 'assets/images/isha_icon.png',
-                  /*alarmIcon: controller.isIshaAlarmOn.value
-                      ? Icons.volume_up
-                      : Icons.volume_off_rounded,
-                  onBellPressed: () {
-                    controller.isIshaAlarmOn.value =
-                        !controller.isIshaAlarmOn.value;
-                  },*/
+                  alarmEnabled: controller.isIshaAlarmOn,
                   text: controller.capitalizeFirstLetter(controller
                       .prayerTimes.value!
                       .currentPrayerByDateTime(
@@ -368,19 +340,21 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
           ));
   }
 
-  Container _prayerItemWidget(
-      {required String text,
-      required String timing,
-      required String icon,
-      IconData? alarmIcon,
-      Function()? onBellPressed}) {
+  Container _prayerItemWidget({
+    required String text,
+    required String timing,
+    required String icon,
+    required RxBool alarmEnabled,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       width: double.infinity,
       height: 60,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), color: Colors.grey.shade900),
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.grey.shade900,
+      ),
       child: Row(
         children: [
           Image.asset(
@@ -401,13 +375,19 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
             fontSize: AppMeasures.mediumTextSize,
           ),
           const SizedBox(width: 10),
-          IconButton(
-              onPressed: onBellPressed,
-              icon: Icon(
-                alarmIcon,
-                size: 20,
-                color: AppColors.white,
-              ))
+          /*icon.contains('sunrise_icon')
+              ? IconButton(onPressed: () {}, icon: const SizedBox())
+              : Obx(() => IconButton(
+                    onPressed: () => alarmEnabled.value = !alarmEnabled.value,
+                    icon: Icon(
+                      alarmEnabled.value
+                          ? Icons.notifications
+                          : Icons.notifications_off,
+                      size: 20,
+                      color:
+                          alarmEnabled.value ? AppColors.white : AppColors.grey,
+                    ),
+                  )),*/
         ],
       ),
     );

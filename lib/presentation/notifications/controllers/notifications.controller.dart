@@ -146,7 +146,10 @@ class NotificationsController extends GetxController {
             {'id': notificationList[index].id});
         if (response.status == true) {
           Get.toNamed(Routes.VIEW_NOTIFICATION,
-              arguments: notificationList[index]);
+                  arguments: {'notification': notificationList[index]})
+              ?.then((onValue) {
+            getNotifications();
+          });
         } else {
           showToast(
               title: response.message.toString(),

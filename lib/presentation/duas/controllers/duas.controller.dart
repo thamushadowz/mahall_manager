@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:mahall_manager/domain/listing/models/dua_model.dart';
 
 class DuasController extends GetxController {
-  List<DuaData> duas = [];
+  RxList<DuaData> duas = RxList([]);
 
   @override
   void onInit() {
@@ -17,7 +17,8 @@ class DuasController extends GetxController {
     String jsonString = await rootBundle.loadString('assets/jsons/duas.json');
     List<dynamic> jsonList = json.decode(jsonString);
 
-    duas = jsonList.map((duaJson) => DuaData.fromJson(duaJson)).toList();
+    duas.clear(); // Clear the existing list (if any)
+    duas.addAll(jsonList.map((duaJson) => DuaData.fromJson(duaJson)));
 
     print('Duas : $duas');
   }

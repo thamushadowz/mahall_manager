@@ -6,6 +6,7 @@ import 'dart:convert';
 
 GetHouseAndUsersModel getHouseAndUsersModelFromJson(String str) =>
     GetHouseAndUsersModel.fromJson(json.decode(str));
+
 String getHouseAndUsersModelToJson(GetHouseAndUsersModel data) =>
     json.encode(data.toJson());
 
@@ -14,10 +15,12 @@ class GetHouseAndUsersModel {
     bool? status,
     String? message,
     List<PeopleData>? data,
+    int? notificationCount,
   }) {
     _status = status;
     _message = message;
     _data = data;
+    _notificationCount = notificationCount;
   }
 
   GetHouseAndUsersModel.fromJson(dynamic json) {
@@ -29,23 +32,34 @@ class GetHouseAndUsersModel {
         _data?.add(PeopleData.fromJson(v));
       });
     }
+    _notificationCount = json['notification_count'];
   }
+
   bool? _status;
   String? _message;
   List<PeopleData>? _data;
+  int? _notificationCount;
+
   GetHouseAndUsersModel copyWith({
     bool? status,
     String? message,
     List<PeopleData>? data,
+    int? notificationCount,
   }) =>
       GetHouseAndUsersModel(
         status: status ?? _status,
         message: message ?? _message,
         data: data ?? _data,
+        notificationCount: notificationCount ?? _notificationCount,
       );
+
   bool? get status => _status;
+
   String? get message => _message;
+
   List<PeopleData>? get data => _data;
+
+  int? get notificationCount => _notificationCount;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -54,6 +68,7 @@ class GetHouseAndUsersModel {
     if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
+    map['notification_count'] = _notificationCount;
     return map;
   }
 }
@@ -64,6 +79,7 @@ class GetHouseAndUsersModel {
 /// due : "₹1000"
 
 PeopleData peopleFromJson(String str) => PeopleData.fromJson(json.decode(str));
+
 String peopleToJson(PeopleData data) => json.encode(data.toJson());
 
 class PeopleData {
@@ -213,26 +229,47 @@ class PeopleData {
       );
 
   num? get id => _id;
+
   String? get userRegNo => _userRegNo;
+
   String? get fName => _fName;
+
   String? get lName => _lName;
+
   num? get houseId => _houseId;
+
   String? get houseName => _houseName;
+
   String? get houseRegNo => _houseRegNo;
+
   String? get phone => _phone;
+
   String? get due => _due;
+
   String? get totalDue => _totalDue;
+
   String? get place => _place;
+
   String? get state => _state;
+
   String? get district => _district;
+
   String? get gender => _gender;
+
   String? get dob => _dob;
+
   String? get age => _age;
+
   String? get job => _job;
+
   String? get annualIncome => _annualIncome;
+
   bool? get willingToDonateBlood => _willingToDonateBlood;
+
   String? get bloodGroup => _bloodGroup;
+
   bool? get isExpat => _isExpat;
+
   String? get country => _country;
 
   Map<String, dynamic> toJson() {
@@ -259,6 +296,7 @@ class PeopleData {
     map['blood_group'] = _bloodGroup;
     map['is_expat'] = _isExpat;
     map['country'] = _country;
+
     return map;
   }
 }

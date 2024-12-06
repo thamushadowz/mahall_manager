@@ -449,6 +449,7 @@ class HomeController extends GetxController {
         print('RESSSS :: ${response.data}');
         if (response.status == true) {
           userDetails.addAll(response.data!);
+          notificationCount.value = response.notificationCount!;
           print('userDetails : ${userDetails.first}');
         } else {}
       } catch (e) {

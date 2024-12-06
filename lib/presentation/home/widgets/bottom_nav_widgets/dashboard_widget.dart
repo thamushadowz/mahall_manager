@@ -132,7 +132,16 @@ class DashboardWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Get.toNamed(controller.reportsGrid[index]['onClick']);
+              Get.toNamed(controller.reportsGrid[index]['onClick'])
+                  ?.then((onValue) {
+                if (onValue != null && onValue) {
+                  if (controller.userType == '1') {
+                    controller.getChartData();
+                  } else {
+                    controller.getSingleHouseAndUsers();
+                  }
+                }
+              });
             },
             child: Container(
               alignment: Alignment.center,

@@ -24,6 +24,7 @@ class AnnouncementController extends GetxController {
   }
 
   sendNotification() async {
+    isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
@@ -36,7 +37,8 @@ class AnnouncementController extends GetxController {
         if (response.status == true) {
           showToast(
               title: response.message.toString(),
-              type: ToastificationType.error);
+              type: ToastificationType.success);
+          Get.back(result: true);
         } else {
           showToast(
               title: response.message.toString(),

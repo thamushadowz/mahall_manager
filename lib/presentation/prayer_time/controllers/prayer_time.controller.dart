@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 
 class PrayerTimeController extends GetxController {
+  //final AudioPlayer _audioPlayer = AudioPlayer();
+
   RxString selectedMethod = ''.obs;
   RxString selectedMadhab = ''.obs;
   RxString decorationGif = ''.obs;
@@ -88,15 +90,27 @@ class PrayerTimeController extends GetxController {
 
   @override
   void onClose() {
+    //_audioPlayer.dispose();
     _timer.cancel();
     super.onClose();
   }
 
+/*  Future<void> playAzan(Prayer prayer) async {
+    if (prayer == Prayer.fajr && isSubhAlarmOn.value ||
+        prayer == Prayer.dhuhr && isLuhrAlarmOn.value ||
+        prayer == Prayer.asr && isAsrAlarmOn.value ||
+        prayer == Prayer.maghrib && isMagribAlarmOn.value ||
+        prayer == Prayer.isha && isIshaAlarmOn.value) {
+      await _audioPlayer.play(AssetSource('audios/azaan.mp3'));
+    }
+  }*/
+
   void _updateCountdown() {
     Prayer? nextPrayer = prayerTimes.value?.nextPrayer();
     DateTime? nextPrayerTime = prayerTimes.value?.timeForPrayer(nextPrayer!);
+    /*DateTime now = DateTime.now();
+    DateTime? nextPrayerTime = now.add(Duration(seconds: 5));*/
 
-    // Check if the current prayer is Isha and adjust for next day's Fajr
     if (nextPrayer == Prayer.isha) {
       DateTime now = DateTime.now();
       DateTime tomorrow = now.add(const Duration(days: 1));
@@ -110,10 +124,11 @@ class PrayerTimeController extends GetxController {
 
     timeRemaining.value = nextPrayerTime!.difference(DateTime.now());
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       timeRemaining.value = nextPrayerTime!.difference(DateTime.now());
       if (timeRemaining.value.isNegative) {
         _timer.cancel();
+        //await playAzan(nextPrayer!);
         nextPrayerName.value = prayerTimes.value!.nextPrayer().name;
         _updateCountdown();
       }

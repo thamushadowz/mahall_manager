@@ -94,7 +94,7 @@ class AnnouncementScreen extends GetView<AnnouncementController> {
                     }
                   },
                   label: AppStrings.submit,
-                  isLoading: false.obs,
+                  isLoading: controller.isLoading,
                 )
               ],
             ),

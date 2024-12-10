@@ -75,12 +75,14 @@ class DeceasedData {
     String? houseName,
     String? personName,
     String? place,
+    String? date,
   }) {
     _id = id;
     _houseRegNo = houseRegNo;
     _houseName = houseName;
     _personName = personName;
     _place = place;
+    _date = date;
   }
 
   DeceasedData.fromJson(dynamic json) {
@@ -89,18 +91,21 @@ class DeceasedData {
     _houseName = json['house_name'];
     _personName = json['person_name'];
     _place = json['place'];
+    _date = json['date'];
   }
   num? _id;
   String? _houseRegNo;
   String? _houseName;
   String? _personName;
   String? _place;
+  String? _date;
   DeceasedData copyWith({
     num? id,
     String? houseRegNo,
     String? houseName,
     String? personName,
     String? place,
+    String? date,
   }) =>
       DeceasedData(
         id: id ?? _id,
@@ -108,12 +113,14 @@ class DeceasedData {
         houseName: houseName ?? _houseName,
         personName: personName ?? _personName,
         place: place ?? _place,
+        date: date ?? _date,
       );
   num? get id => _id;
   String? get houseRegNo => _houseRegNo;
   String? get houseName => _houseName;
   String? get personName => _personName;
   String? get place => _place;
+  String? get date => _date;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -122,6 +129,7 @@ class DeceasedData {
     map['house_name'] = _houseName;
     map['person_name'] = _personName;
     map['place'] = _place;
+    map['date'] = _date;
     return map;
   }
 }

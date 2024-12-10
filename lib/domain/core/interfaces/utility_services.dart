@@ -38,6 +38,20 @@ String getCurrentDate() {
   return formattedDate;
 }
 
+String formatDateTimeToDateAndTime(String dateTimeString) {
+  DateTime dateTime = DateTime.parse(dateTimeString);
+
+  String formattedDate =
+      "${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year}";
+
+  int hour = dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour;
+  hour = hour == 0 ? 12 : hour;
+  String formattedTime =
+      "${hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')} ${dateTime.hour >= 12 ? 'PM' : 'AM'}";
+
+  return "$formattedDate $formattedTime";
+}
+
 Future<String?> downloadPdfToExternal(String url, String fileName) async {
   try {
     await requestStoragePermission();

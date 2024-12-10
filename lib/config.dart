@@ -6,7 +6,7 @@ class Environments {
 }
 
 class ConfigEnvironments {
-  static const String _currentEnvironments = Environments.LOCAL;
+  static const String _currentEnvironments = Environments.DEV;
   static final List<Map<String, String>> _availableEnvironments = [
     {
       'env': Environments.LOCAL,
@@ -14,7 +14,7 @@ class ConfigEnvironments {
     },
     {
       'env': Environments.DEV,
-      'url': 'https://api-masjid.allertempus.com/api/',
+      'url': 'https://api-masjid-dev.allertempus.com/api/',
     },
     {
       'env': Environments.QAS,

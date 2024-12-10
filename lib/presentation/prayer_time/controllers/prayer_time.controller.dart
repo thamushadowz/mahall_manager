@@ -107,14 +107,14 @@ class PrayerTimeController extends GetxController {
 
   void _updateCountdown() {
     Prayer? nextPrayer = prayerTimes.value?.nextPrayer();
+    Prayer? currentPrayer = prayerTimes.value?.currentPrayer();
     DateTime? nextPrayerTime = prayerTimes.value?.timeForPrayer(nextPrayer!);
-    /*DateTime now = DateTime.now();
-    DateTime? nextPrayerTime = now.add(Duration(seconds: 5));*/
 
-    if (nextPrayer == Prayer.isha) {
+    if (currentPrayer == Prayer.isha) {
       DateTime now = DateTime.now();
       DateTime tomorrow = now.add(const Duration(days: 1));
       nextPrayer = Prayer.fajr;
+      nextPrayerName.value = nextPrayer.name;
       nextPrayerTime = prayerTimes.value?.timeForPrayer(nextPrayer)!.add(
             Duration(
               days: tomorrow.day - now.day,
@@ -160,8 +160,10 @@ class PrayerTimeController extends GetxController {
   void setDecorationGif() {
     if (DateFormat.jm().format(DateTime.now()).split(' ').last.toLowerCase() ==
         'am') {
-      if (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
-          3) {
+      if ((int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) <
+              3) ||
+          (int.parse(DateFormat.jm().format(DateTime.now()).split(':').first) ==
+              12)) {
         decorationGif.value = 'assets/images/isha.gif';
       } else if ((int.parse(
                   DateFormat.jm().format(DateTime.now()).split(':').first) >=

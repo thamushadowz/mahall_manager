@@ -28,10 +28,10 @@ class AnnouncementController extends GetxController {
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
-        CommonResponse response = await listingService.sendNotification(
-            storageService.getToken() ?? '', {
+        CommonResponse response = await listingService
+            .sendNotification(storageService.getToken() ?? '', {
           'notification': announcementController.text.trim(),
-          'date': getCurrentDate()
+          'date': DateTime.now().toString()
         });
         storageService.saveLastNotification(announcementController.text.trim());
         if (response.status == true) {

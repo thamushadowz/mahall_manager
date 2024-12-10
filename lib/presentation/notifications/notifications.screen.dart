@@ -8,6 +8,7 @@ import 'package:mahall_manager/presentation/common_widgets/common_empty_result_w
 import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
+import '../../domain/core/interfaces/utility_services.dart';
 import 'controllers/notifications.controller.dart';
 
 class NotificationsScreen extends GetView<NotificationsController> {
@@ -55,6 +56,7 @@ class NotificationsScreen extends GetView<NotificationsController> {
             ? Container(height: 3, color: AppColors.grey.withOpacity(0.6))
             : const SizedBox(height: 5);
       },
+      padding: const EdgeInsets.only(top: 10),
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
@@ -103,8 +105,8 @@ class NotificationsScreen extends GetView<NotificationsController> {
                           color: AppColors.grey, size: 15),
                       const SizedBox(width: 5),
                       CommonTextWidget(
-                        text:
-                            controller.notificationList[index].date.toString(),
+                        text: formatDateTimeToDateAndTime(
+                            controller.notificationList[index].date.toString()),
                         fontSize: AppMeasures.mediumTextSize,
                         fontWeight: AppMeasures.mediumWeight,
                         color: AppColors.grey,

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../infrastructure/theme/colors/app_colors.dart';
 import '../../infrastructure/theme/measures/app_measures.dart';
@@ -8,7 +8,7 @@ import 'common_text_widget.dart';
 class CommonEmptyResultWidget extends StatelessWidget {
   const CommonEmptyResultWidget({
     super.key,
-    this.message = '',
+    this.message,
   });
 
   final String? message;
@@ -18,6 +18,7 @@ class CommonEmptyResultWidget extends StatelessWidget {
     return Center(
       child: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
               'assets/images/empty_result.png',

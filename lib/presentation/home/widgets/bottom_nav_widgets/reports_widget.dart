@@ -525,7 +525,7 @@ class ReportsWidget extends StatelessWidget {
                 : AppColors.darkRed.withOpacity(0.2)),
             cells: [
               DataCell(CommonTextWidget(
-                text: report.id.toString(),
+                text: report.referenceNo.toString(),
                 fontWeight: AppMeasures.mediumWeight,
                 fontSize: AppMeasures.mediumTextSize,
               )),

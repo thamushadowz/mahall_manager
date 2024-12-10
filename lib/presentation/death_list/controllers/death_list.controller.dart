@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mahall_manager/domain/listing/models/GetDeceasedListModel.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';

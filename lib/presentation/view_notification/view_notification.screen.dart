@@ -5,6 +5,7 @@ import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_appbar_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
+import '../../domain/core/interfaces/utility_services.dart';
 import '../../infrastructure/theme/strings/app_strings.dart';
 import 'controllers/view_notification.controller.dart';
 
@@ -55,7 +56,8 @@ class ViewNotificationScreen extends GetView<ViewNotificationController> {
                 color: AppColors.white, size: 15),
             const SizedBox(width: 5),
             CommonTextWidget(
-              text: controller.notification.date.toString(),
+              text: formatDateTimeToDateAndTime(
+                  controller.notification.date.toString()),
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
               color: AppColors.white,

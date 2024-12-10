@@ -80,7 +80,11 @@ class LoginController extends GetxController {
           _storageService.saveToken('Bearer ${response.token}');
           _storageService.saveUserType(response.userType.toString());
           _storageService.saveMahallName(response.mahallName ?? '');
-          Get.offAllNamed(Routes.HOME);
+          if (passwordController.text.trim() == 'admin123') {
+            Get.offAllNamed(Routes.RESET_PASSWORD);
+          } else {
+            Get.offAllNamed(Routes.HOME);
+          }
         } else {
           showToast(
               title: response.message.toString(),

@@ -71,7 +71,8 @@ String dataToJson(ReportsData data) => json.encode(data.toJson());
 
 class ReportsData {
   ReportsData({
-    String? id,
+    int? id,
+    String? referenceNo,
     String? description,
     String? date,
     bool? isSharable,
@@ -81,6 +82,7 @@ class ReportsData {
     num? addedBy,
   }) {
     _id = id;
+    _referenceNo = referenceNo;
     _description = description;
     _date = date;
     _isSharable = isSharable;
@@ -92,6 +94,7 @@ class ReportsData {
 
   ReportsData.fromJson(dynamic json) {
     _id = json['id'];
+    _referenceNo = json['reference_no'];
     _description = json['description'];
     _date = json['date'];
     _isSharable = json['isSharable'];
@@ -100,7 +103,8 @@ class ReportsData {
     _amount = json['amount'];
     _addedBy = json['added_by'];
   }
-  String? _id;
+  int? _id;
+  String? _referenceNo;
   String? _description;
   String? _date;
   bool? _isSharable;
@@ -109,7 +113,8 @@ class ReportsData {
   String? _amount;
   num? _addedBy;
   ReportsData copyWith({
-    String? id,
+    int? id,
+    String? referenceNo,
     String? description,
     String? date,
     bool? isSharable,
@@ -120,6 +125,7 @@ class ReportsData {
   }) =>
       ReportsData(
         id: id ?? _id,
+        referenceNo: referenceNo ?? _referenceNo,
         description: description ?? _description,
         date: date ?? _date,
         isSharable: isSharable ?? _isSharable,
@@ -128,7 +134,8 @@ class ReportsData {
         amount: amount ?? _amount,
         addedBy: addedBy ?? _addedBy,
       );
-  String? get id => _id;
+  int? get id => _id;
+  String? get referenceNo => _referenceNo;
   String? get description => _description;
   String? get date => _date;
   bool? get isSharable => _isSharable;
@@ -140,6 +147,7 @@ class ReportsData {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map['reference_no'] = _referenceNo;
     map['description'] = _description;
     map['date'] = _date;
     map['isSharable'] = _isSharable;

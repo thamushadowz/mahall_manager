@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:mahall_manager/domain/listing/models/GetNotificationsModel.dart';
+import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 
 import '../../theme/strings/app_strings.dart';
 
@@ -88,9 +91,35 @@ class NotificationServices {
 
   void firebaseInit() {
     FirebaseMessaging.onMessage.listen((message) {
+      print('Total Notification ::: ${message.data}');
       print(message.notification!.title.toString());
       print(message.notification!.body.toString());
       showNotification(message);
     });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Notification clicked in background: ${message.data}');
+      Get.toNamed(Routes.VIEW_NOTIFICATION, arguments: {
+        'notification': NotificationsData(
+            notification: message.notification?.body,
+            id: int.parse(message.data['id']),
+            postedBy: message.data['posted_by'],
+            date: message.data['date'])
+      });
+    });
+  }
+
+  Future<void> handleTerminatedNotification(BuildContext context) async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      Get.toNamed(Routes.VIEW_NOTIFICATION, arguments: {
+        'notification': NotificationsData(
+            notification: initialMessage.notification?.body,
+            id: int.parse(initialMessage.data['id']),
+            postedBy: initialMessage.data['posted_by'],
+            date: initialMessage.data['date'])
+      });
+    }
   }
 }

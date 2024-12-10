@@ -115,7 +115,7 @@ class HomeController extends GetxController {
   RxList<ReportsData> reportsDetails = RxList([]);
   RxList<BloodData> bloodDetails = RxList([]);
   RxList<ExpatData> expatDetails = RxList([]);
-  List<PeopleData> userProfile = [];
+  RxList<PeopleData> userProfile = RxList([]);
 
   ChartData chartData = ChartData(totalIncome: '0', totalExpense: '0');
 
@@ -1073,7 +1073,7 @@ class HomeController extends GetxController {
     }
   }
 
-  deleteReport(String id) async {
+  deleteReport(int id) async {
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {

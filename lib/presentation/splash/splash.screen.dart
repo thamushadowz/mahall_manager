@@ -10,7 +10,7 @@ class SplashScreen extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
-      controller.checkLogin();
+      controller.moveToScreen();
     });
 
     return Scaffold(

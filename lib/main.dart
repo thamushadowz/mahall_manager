@@ -11,6 +11,7 @@ import 'package:toastification/toastification.dart';
 
 import 'domain/core/di/dependancy.dart';
 import 'domain/listing/listing_repository.dart';
+import 'infrastructure/dal/services/notofication_services.dart';
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
@@ -26,11 +27,10 @@ void main() async {
   Get.put(ListingRepository());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
   ]).then((_) {
+    final notificationServices = NotificationServices();
     runApp(Main(initialRoute));
+    notificationServices.handleTerminatedNotification(Get.context!);
   });
 }
 

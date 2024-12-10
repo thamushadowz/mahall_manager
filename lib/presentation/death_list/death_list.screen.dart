@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/core/interfaces/utility_services.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_empty_result_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 
@@ -80,11 +81,25 @@ class DeathListScreen extends GetView<DeathListController> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: AppColors.white.withOpacity(0.8)),
-      child: CommonTextWidget(
-        text:
-            '${controller.filteredDeathList[index].personName} : ${controller.filteredDeathList[index].houseRegNo} - ${controller.filteredDeathList[index].houseName}',
-        fontSize: AppMeasures.mediumTextSize,
-        fontWeight: AppMeasures.mediumWeight,
+      child: Row(
+        children: [
+          CommonTextWidget(
+            text:
+                '${controller.filteredDeathList[index].personName} : ${controller.filteredDeathList[index].houseRegNo} - ${controller.filteredDeathList[index].houseName}',
+            fontSize: AppMeasures.mediumTextSize,
+            fontWeight: AppMeasures.mediumWeight,
+          ),
+          const Spacer(),
+          CommonTextWidget(
+            text: formatDateTimeToDateAndTime(
+                    controller.filteredDeathList[index].date.toString())
+                .split(' ')
+                .first,
+            fontSize: AppMeasures.smallTextSize,
+            fontWeight: AppMeasures.mediumWeight,
+            color: AppColors.blueGrey,
+          ),
+        ],
       ),
     );
   }

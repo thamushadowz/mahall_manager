@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:mahall_manager/domain/listing/models/GetNotificationsModel.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 
 import '../../theme/strings/app_strings.dart';
@@ -48,8 +47,16 @@ class NotificationServices {
     var initializeSettings = InitializationSettings(
         android: androidInitializationSettings, iOS: iOSInitializationSettings);
 
-    await notificationsPlugin.initialize(initializeSettings,
-        onDidReceiveNotificationResponse: (payLoad) {});
+    await notificationsPlugin.initialize(
+      initializeSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        // Handle notification click
+        if (response.payload != null) {
+          // Navigate to Notifications Screen
+          Get.toNamed(Routes.NOTIFICATIONS);
+        }
+      },
+    );
   }
 
   Future<void> showNotification(RemoteMessage msg) async {
@@ -89,37 +96,30 @@ class NotificationServices {
     });
   }
 
-  void firebaseInit() {
+  void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
       print('Total Notification ::: ${message.data}');
       print(message.notification!.title.toString());
       print(message.notification!.body.toString());
+
+      // Show local notification
       showNotification(message);
+      initLocalNotifications(context, message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Notification clicked in background: ${message.data}');
-      Get.toNamed(Routes.VIEW_NOTIFICATION, arguments: {
-        'notification': NotificationsData(
-            notification: message.notification?.body,
-            id: int.parse(message.data['id']),
-            postedBy: message.data['posted_by'],
-            date: message.data['date'])
-      });
+      if (Get.currentRoute != Routes.NOTIFICATIONS) {
+        Get.offAllNamed(Routes.NOTIFICATIONS);
+      }
     });
   }
 
-  Future<void> handleTerminatedNotification(BuildContext context) async {
+  Future<void> handleTerminatedNotification() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
-      Get.toNamed(Routes.VIEW_NOTIFICATION, arguments: {
-        'notification': NotificationsData(
-            notification: initialMessage.notification?.body,
-            id: int.parse(initialMessage.data['id']),
-            postedBy: initialMessage.data['posted_by'],
-            date: initialMessage.data['date'])
-      });
+      Get.toNamed(Routes.NOTIFICATIONS);
     }
   }
 }

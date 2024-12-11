@@ -5,6 +5,7 @@ import 'package:mahall_manager/presentation/home/controllers/home.controller.dar
 import '../../../infrastructure/theme/colors/app_colors.dart';
 import '../../../infrastructure/theme/measures/app_measures.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
+import '../../common_widgets/common_empty_result_widget.dart';
 import '../../common_widgets/common_text_widget.dart';
 
 class UserProfileWidget extends StatelessWidget {
@@ -27,19 +28,32 @@ class UserProfileWidget extends StatelessWidget {
                       child: CircularProgressIndicator(
                     color: AppColors.white,
                   )))
-              : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      _buildProfileImage(),
-                      const SizedBox(height: 20),
-                      _buildUserName(),
-                      const SizedBox(height: 10),
-                      _buildUserAddress(),
-                      const SizedBox(height: 20),
-                      Expanded(child: _buildDetailsCard()),
-                    ],
+              : RefreshIndicator(
+                  onRefresh: () {
+                    return controller.getUserProfile();
+                  },
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: controller.userProfile.isEmpty
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: const CommonEmptyResultWidget())
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SizedBox(height: 20),
+                                _buildProfileImage(),
+                                const SizedBox(height: 20),
+                                _buildUserName(),
+                                const SizedBox(height: 10),
+                                _buildUserAddress(),
+                                const SizedBox(height: 20),
+                                Expanded(child: _buildDetailsCard()),
+                              ],
+                            ),
+                          ),
                   ),
                 ),
         ));

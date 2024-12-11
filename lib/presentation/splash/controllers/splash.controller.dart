@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/dal/services/storage_service.dart';
@@ -11,11 +9,13 @@ class SplashController extends GetxController {
   FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  checkLogin() {
+  bool checkLogin() {
     if (_storageService.isLoggedIn()) {
       Get.offAllNamed(Routes.HOME);
+      return true;
     } else {
       Get.offAllNamed(Routes.LOGIN);
+      return false;
     }
   }
 
@@ -25,11 +25,10 @@ class SplashController extends GetxController {
     final didNotificationLaunchApp =
         notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
     if (didNotificationLaunchApp) {
-      // appStorage.writeIsFirstTime(true);
-      Map<String, dynamic> payLoad = jsonDecode(
-          notificationAppLaunchDetails?.notificationResponse?.payload ?? "");
-      print('Payload in notification is ::: \n$payLoad');
-      Get.offAllNamed(Routes.NOTIFICATIONS);
+      if (checkLogin()) {
+        Get.offNamed(Routes.HOME);
+        Get.toNamed(Routes.NOTIFICATIONS);
+      }
     } else {
       checkLogin();
     }

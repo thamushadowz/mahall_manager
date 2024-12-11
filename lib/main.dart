@@ -30,7 +30,10 @@ void main() async {
   ]).then((_) {
     final notificationServices = NotificationServices();
     runApp(Main(initialRoute));
-    notificationServices.handleTerminatedNotification(Get.context!);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notificationServices.firebaseInit(Get.context!);
+      notificationServices.handleTerminatedNotification();
+    });
   });
 }
 

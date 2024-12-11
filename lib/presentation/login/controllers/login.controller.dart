@@ -36,7 +36,7 @@ class LoginController extends GetxController {
   void onInit() {
     super.onInit();
     notificationServices.requestNotificationPermission();
-    notificationServices.firebaseInit();
+    notificationServices.firebaseInit(Get.context!);
     notificationServices.getDeviceToken().then((val) {
       print('Device Token :- \n$val');
     });

@@ -235,6 +235,8 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                       controller.prayerTimes.value = PrayerTimes.today(
                           controller.myCoordinates, controller.params);
                       controller.isSettingsClicked.value = false;
+                      print(
+                          'method : ${controller.params.method}, madhab : ${controller.params.madhab}');
                     },
                     label: AppStrings.submit,
                     isLoading: false.obs,
@@ -312,9 +314,8 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
     return Obx(() => controller.isSettingsClicked.value
         ? const SizedBox.shrink()
         : Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(20),
             width: double.infinity,
-            height: 120,
             color: AppColors.black.withOpacity(0.4),
             child: Column(
               children: [

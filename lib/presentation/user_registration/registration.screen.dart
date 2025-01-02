@@ -139,8 +139,6 @@ class RegistrationScreen extends GetView<RegistrationController> {
                                                 ? onValue.name.toString()
                                                 : '';
                                         controller.houseId = onValue.id ?? 0;
-                                        print(
-                                            'HouseID ::: ${onValue.district}');
                                         controller.placeController.text =
                                             onValue.place ?? '';
                                         controller.stateController.text =

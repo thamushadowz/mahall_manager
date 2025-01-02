@@ -79,7 +79,6 @@ class ReportsListScreen extends GetView<ReportsListController> {
                       name:
                           '${controller.pdfList[index].fromDate} - ${controller.pdfList[index].toDate}',
                       onDownloadTap: () {
-                        print('Tapped on Report ${index + 1}');
                         controller.savePdf(
                             '${controller.pdfList[index].fromDate} - ${controller.pdfList[index].toDate}.pdf',
                             controller.pdfList[index].urlLink ?? '');

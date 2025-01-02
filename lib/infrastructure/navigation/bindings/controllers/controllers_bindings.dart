@@ -1,6 +1,7 @@
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/add_expenses.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/add_income.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/announcement.controller.binding.dart';
+export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/committee_details.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/committee_registration.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/contact_developers.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/contact_us.controller.binding.dart';
@@ -25,4 +26,5 @@ export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/re
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/reset_password.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/search_screen.controller.binding.dart';
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
+export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/update_varisankhya.controller.binding.dart'; 
 export 'package:mahall_manager/infrastructure/navigation/bindings/controllers/view_notification.controller.binding.dart'; 

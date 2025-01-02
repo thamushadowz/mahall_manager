@@ -1,6 +1,7 @@
 export 'package:mahall_manager/presentation/add_expenses/add_expenses.screen.dart';
 export 'package:mahall_manager/presentation/add_income/add_income.screen.dart';
 export 'package:mahall_manager/presentation/announcement/announcement.screen.dart';
+export 'package:mahall_manager/presentation/committee_details/committee_details.screen.dart';
 export 'package:mahall_manager/presentation/committee_registration/committee_registration.screen.dart';
 export 'package:mahall_manager/presentation/common_widgets/common_registration_success_widget.dart';
 export 'package:mahall_manager/presentation/contact_developers/contact_developers.screen.dart';
@@ -25,4 +26,5 @@ export 'package:mahall_manager/presentation/reports_list/reports_list.screen.dar
 export 'package:mahall_manager/presentation/reset_password/reset_password.screen.dart';
 export 'package:mahall_manager/presentation/search_screen/search_screen.screen.dart';
 export 'package:mahall_manager/presentation/splash/splash.screen.dart';
+export 'package:mahall_manager/presentation/update_varisankhya/update_varisankhya.screen.dart';
 export 'package:mahall_manager/presentation/view_notification/view_notification.screen.dart';

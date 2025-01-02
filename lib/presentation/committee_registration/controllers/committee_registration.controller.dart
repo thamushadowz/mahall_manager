@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
@@ -34,7 +33,6 @@ class CommitteeRegistrationController extends GetxController {
     if (adminCode.value == '1') {
       getMahallDetails();
     }
-    print('adminCode::: $adminCode');
     if (adminCode.value == '0') {
       isEditMode.value = true;
     } else {
@@ -47,6 +45,10 @@ class CommitteeRegistrationController extends GetxController {
   final mahallCodeFocusNode = FocusNode();
   final mahallAddressFocusNode = FocusNode();
   final mahallPinFocusNode = FocusNode();
+
+  final presidentDesignationFocusNode = FocusNode();
+  final secretaryDesignationFocusNode = FocusNode();
+  final treasurerDesignationFocusNode = FocusNode();
 
   final presidentFNameFocusNode = FocusNode();
   final secretaryFNameFocusNode = FocusNode();
@@ -68,6 +70,10 @@ class CommitteeRegistrationController extends GetxController {
   final mahallCodeController = TextEditingController();
   final mahallAddressController = TextEditingController();
   final mahallPinController = TextEditingController();
+
+  final presidentDesignationController = TextEditingController();
+  final secretaryDesignationController = TextEditingController();
+  final treasurerDesignationController = TextEditingController();
 
   final presidentFNameController = TextEditingController();
   final secretaryFNameController = TextEditingController();
@@ -100,16 +106,19 @@ class CommitteeRegistrationController extends GetxController {
                 admins: [
                   Admins(
                       role: 0,
+                      designation: presidentDesignationController.text.trim(),
                       firstName: presidentFNameController.text.trim(),
                       lastName: presidentLNameController.text.trim(),
                       phone: int.parse(presidentMobileController.text.trim())),
                   Admins(
                       role: 1,
+                      designation: secretaryDesignationController.text.trim(),
                       firstName: secretaryFNameController.text.trim(),
                       lastName: secretaryLNameController.text.trim(),
                       phone: int.parse(secretaryMobileController.text.trim())),
                   Admins(
                       role: 2,
+                      designation: treasurerDesignationController.text.trim(),
                       firstName: treasurerFNameController.text.trim(),
                       lastName: treasurerLNameController.text.trim(),
                       phone: int.parse(treasurerMobileController.text.trim())),
@@ -159,18 +168,21 @@ class CommitteeRegistrationController extends GetxController {
   }
 
   clearPresidentDetails() {
+    presidentDesignationController.clear();
     presidentFNameController.clear();
     presidentLNameController.clear();
     presidentMobileController.clear();
   }
 
   clearSecretaryDetails() {
+    secretaryDesignationController.clear();
     secretaryFNameController.clear();
     secretaryLNameController.clear();
     secretaryMobileController.clear();
   }
 
   clearTreasurerDetails() {
+    treasurerDesignationController.clear();
     treasurerFNameController.clear();
     treasurerLNameController.clear();
     treasurerMobileController.clear();
@@ -183,6 +195,12 @@ class CommitteeRegistrationController extends GetxController {
   }
 
   disposeAll() {
+    presidentDesignationFocusNode.dispose();
+    secretaryDesignationFocusNode.dispose();
+    treasurerDesignationFocusNode.dispose();
+    presidentDesignationController.dispose();
+    secretaryDesignationController.dispose();
+    treasurerDesignationController.dispose();
     mahallNameFocusNode.dispose();
     mahallAddressFocusNode.dispose();
     mahallPinFocusNode.dispose();
@@ -222,13 +240,12 @@ class CommitteeRegistrationController extends GetxController {
       try {
         MahallRegistrationOrDetailsModel response = await listingService
             .getMahallDetails(_storageService.getToken() ?? '');
-        print('token is : ${_storageService.getToken()}');
         if (response.status == true) {
           showDetails(response.masjid!, response.admins!);
           mahallId = response.masjid!.id!.toInt();
-          presedentId = response.admins![0].id!.toInt();
-          secretaryId = response.admins![1].id!.toInt();
-          treasurerId = response.admins![2].id!.toInt();
+          presedentId = response.admins![0].id ?? 0;
+          secretaryId = response.admins![1].id ?? 0;
+          treasurerId = response.admins![2].id ?? 0;
           if (adminCode.value == '0') {
             clearAll();
           }
@@ -264,14 +281,17 @@ class CommitteeRegistrationController extends GetxController {
     mahallPinController.text = masjid.pincode.toString();
     mahallCodeController.text = masjid.code.toString();
 
+    presidentDesignationController.text = admins[0].designation ?? '';
     presidentFNameController.text = admins[0].firstName ?? '';
     presidentLNameController.text = admins[0].lastName ?? '';
     presidentMobileController.text = admins[0].phone ?? '';
 
+    secretaryDesignationController.text = admins[1].designation ?? '';
     secretaryFNameController.text = admins[1].firstName ?? '';
     secretaryLNameController.text = admins[1].lastName ?? '';
     secretaryMobileController.text = admins[1].phone ?? '';
 
+    treasurerDesignationController.text = admins[2].designation ?? '';
     treasurerFNameController.text = admins[2].firstName ?? '';
     treasurerLNameController.text = admins[2].lastName ?? '';
     treasurerMobileController.text = admins[2].phone ?? '';
@@ -282,7 +302,6 @@ class CommitteeRegistrationController extends GetxController {
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
-        print('ID :::: $presedentId, $secretaryId, $treasurerId, $mahallId');
         CommonResponse response = await listingService.updateMahallDetails(
             _storageService.getToken() ?? '',
             MahallRegistrationInputModel(
@@ -295,18 +314,21 @@ class CommitteeRegistrationController extends GetxController {
                   Admins(
                       id: presedentId,
                       role: 0,
+                      designation: presidentDesignationController.text.trim(),
                       firstName: presidentFNameController.text.trim(),
                       lastName: presidentLNameController.text.trim(),
                       phone: int.parse(presidentMobileController.text.trim())),
                   Admins(
                       id: secretaryId,
                       role: 1,
+                      designation: secretaryDesignationController.text.trim(),
                       firstName: secretaryFNameController.text.trim(),
                       lastName: secretaryLNameController.text.trim(),
                       phone: int.parse(secretaryMobileController.text.trim())),
                   Admins(
                       id: treasurerId,
                       role: 2,
+                      designation: treasurerDesignationController.text.trim(),
                       firstName: treasurerFNameController.text.trim(),
                       lastName: treasurerLNameController.text.trim(),
                       phone: int.parse(treasurerMobileController.text.trim())),

@@ -102,8 +102,6 @@ class DeathRegistrationScreen extends GetView<DeathRegistrationController> {
                                       controller.houseDetailsController.text =
                                           '${onValue.name}, ${onValue.place}';
                                       controller.houseId = onValue.id;
-                                      print(
-                                          'houseId ::: ${controller.houseId}');
                                     }
                                   });
                                 },

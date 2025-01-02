@@ -235,8 +235,6 @@ class PrayerTimeScreen extends GetView<PrayerTimeController> {
                       controller.prayerTimes.value = PrayerTimes.today(
                           controller.myCoordinates, controller.params);
                       controller.isSettingsClicked.value = false;
-                      print(
-                          'method : ${controller.params.method}, madhab : ${controller.params.madhab}');
                     },
                     label: AppStrings.submit,
                     isLoading: false.obs,

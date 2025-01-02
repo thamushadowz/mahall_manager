@@ -36,6 +36,10 @@ class PromisesController extends GetxController {
   PromisesData promises = PromisesData();
   final args = Get.arguments;
 
+  RxInt page = 1.obs;
+  RxInt offset = 10.obs;
+  int totalPages = 0;
+
   @override
   void onInit() {
     super.onInit();
@@ -70,7 +74,10 @@ class PromisesController extends GetxController {
     if (isConnectedToInternet) {
       try {
         GetHouseAndUsersModel response = await listingService
-            .getHouseAndUsersDetails(storageService.getToken() ?? '');
+            .getHouseAndUsersDetails(storageService.getToken() ?? '', {
+          'page': '1',
+          'offset': '10000',
+        });
         if (response.status == true) {
           userDetails.addAll(response.data!.map((person) => IdNameModel(
               id: person.id,

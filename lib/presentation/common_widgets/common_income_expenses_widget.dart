@@ -16,10 +16,10 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
     super.key,
     required this.heading,
     required this.color,
-    required this.descriptionController,
+    this.descriptionController,
     required this.amountController,
     this.nameController,
-    required this.descriptionFocusNode,
+    this.descriptionFocusNode,
     required this.amountFocusNode,
     this.nameFocusNode,
     this.onNameTap,
@@ -27,23 +27,23 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
     required this.formKey,
     required this.isLoading,
     this.isDataLoading = false,
-    this.isPromises = false,
+    this.type = 0,
   });
 
   final String heading;
   final Color color;
-  final TextEditingController descriptionController;
+  final TextEditingController? descriptionController;
   final TextEditingController? nameController;
   final TextEditingController amountController;
   final FocusNode? nameFocusNode;
-  final FocusNode descriptionFocusNode;
+  final FocusNode? descriptionFocusNode;
   final FocusNode amountFocusNode;
   final Function()? onNameTap;
   final Function() onSubmitTap;
   final Key formKey;
   final RxBool isLoading;
   final bool? isDataLoading;
-  final bool? isPromises;
+  final int? type; //0 - Income/Expense, 1 - Promise, 2 - Varisankhya
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
               child: Column(
                 children: [
                   // Name
-                  isPromises!
+                  type == 1
                       ? isDataLoading!
                           ? const CommonTextFieldShimmerWidget()
                           : CommonTextFormField(
@@ -102,7 +102,7 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
                               validator: Validators.validateName,
                             )
                       : const SizedBox.shrink(),
-                  isPromises!
+                  type == 1
                       ? const SizedBox(height: 10)
                       : const SizedBox.shrink(),
 
@@ -128,18 +128,32 @@ class CommonIncomeExpensesWidget extends StatelessWidget {
                     const SizedBox(height: 10),*/
 
                   // Description
-                  CommonTextFormField(
-                    label: AppStrings.description,
-                    textController: descriptionController,
-                    focusNode: descriptionFocusNode,
-                    onFieldSubmitted: (value) {
-                      FocusScope.of(context).requestFocus(amountFocusNode);
-                    },
-                    keyboardType: TextInputType.text,
-                    validator: Validators.validateDescription,
-                  ),
-                  const SizedBox(height: 10),
+                  type == 2
+                      ? const SizedBox.shrink()
+                      : CommonTextFormField(
+                          label: AppStrings.description,
+                          textController: descriptionController!,
+                          focusNode: descriptionFocusNode!,
+                          onFieldSubmitted: (value) {
+                            FocusScope.of(context)
+                                .requestFocus(amountFocusNode);
+                          },
+                          keyboardType: TextInputType.text,
+                          validator: Validators.validateDescription,
+                        ),
+                  type == 2
+                      ? const SizedBox.shrink()
+                      : const SizedBox(height: 10),
 
+                  type == 2
+                      ? CommonTextWidget(
+                          color: AppColors.darkRed,
+                          textAlign: TextAlign.center,
+                          text: AppStrings.varisankhyaUpdateConfirmation)
+                      : const SizedBox.shrink(),
+                  type == 2
+                      ? const SizedBox(height: 20)
+                      : const SizedBox.shrink(),
                   // Amount
                   CommonTextFormField(
                     label: AppStrings.amount,

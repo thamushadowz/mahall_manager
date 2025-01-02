@@ -5,45 +5,33 @@ import 'package:toastification/toastification.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
-import '../../../domain/listing/models/MarriageRegistrationModel.dart';
+import '../../../domain/listing/models/common_response.dart';
 import '../../../infrastructure/dal/services/storage_service.dart';
 import '../../../infrastructure/theme/strings/app_strings.dart';
 
-class MarriageCertificatesController extends GetxController {
+class UpdateVarisankhyaController extends GetxController {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final StorageService storageService = StorageService();
   ListingService listingService = Get.find<ListingRepository>();
 
-  final certificateSearchController = TextEditingController();
-  RxBool isLoading = false.obs;
+  final amountController = TextEditingController();
+  final amountFocusNode = FocusNode();
 
-  RxList<MarriageData> marriageCertificatesList = RxList([]);
+  final RxBool isLoading = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getMarriageCertificatesList();
-  }
-
-  void savePdf(String url, String name) async {
-    const pdfUrl =
-        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
-    const fileName = 'sample.pdf';
-
-    String? path = await downloadPdfToExternal(pdfUrl, fileName);
-    if (path != null) {
-    } else {
-    }
-  }
-
-  getMarriageCertificatesList() async {
+  updateVarisankhya() async {
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
-        MarriageRegistrationModel response = await listingService
-            .getMarriageCertificateList(storageService.getToken() ?? '');
+        CommonResponse response = await listingService.updateVarisankhya(
+            storageService.getToken() ?? '',
+            {'amount': amountController.text.trim()});
         if (response.status == true) {
-          marriageCertificatesList.addAll(response.data!);
+          Get.back();
+          showToast(
+              title: response.message.toString(),
+              type: ToastificationType.success);
         } else {
           showToast(
               title: response.message.toString(),
@@ -64,7 +52,10 @@ class MarriageCertificatesController extends GetxController {
     }
   }
 
-  String generateName(int index) {
-    return '${marriageCertificatesList[index].marriageRegNo} : ${marriageCertificatesList[index].groomName} - ${marriageCertificatesList[index].brideName}';
+  @override
+  void onClose() {
+    super.onClose();
+    amountController.dispose();
+    amountFocusNode.dispose();
   }
 }

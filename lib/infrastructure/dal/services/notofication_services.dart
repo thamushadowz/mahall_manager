@@ -25,13 +25,9 @@ class NotificationServices {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Permission Granted');
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      print('Provisional Permission Granted');
-    } else {
-      print('Permission Denied');
-    }
+    } else {}
   }
 
   Future<String> getDeviceToken() async {
@@ -98,17 +94,12 @@ class NotificationServices {
 
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
-      print('Total Notification ::: ${message.data}');
-      print(message.notification!.title.toString());
-      print(message.notification!.body.toString());
-
       // Show local notification
       showNotification(message);
       initLocalNotifications(context, message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Notification clicked in background: ${message.data}');
       if (Get.currentRoute != Routes.NOTIFICATIONS) {
         Get.offAllNamed(Routes.NOTIFICATIONS);
       }

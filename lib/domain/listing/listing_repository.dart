@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:mahall_manager/domain/listing/models/GetNotificationsModel.dart';
 import 'package:mahall_manager/domain/listing/models/GetReportPdfModel.dart';
+import 'package:mahall_manager/domain/listing/models/committee_details_model.dart';
 import 'package:mahall_manager/domain/listing/models/common_response.dart';
 import 'package:mahall_manager/domain/listing/models/get_house_and_users_model.dart';
 import 'package:mahall_manager/domain/listing/models/house_registration_model.dart';
@@ -28,8 +29,6 @@ class ListingRepository implements ListingService {
   Future<LoginModel> loginCheck(
       String mobileNo, String password, String fcmToken) async {
     LoginModel loginModel;
-    print(
-        'Login Input : mobileNo : $mobileNo, password : $password, fcmToken : $fcmToken');
     final response =
         await apiService.reqst(url: 'login', method: Method.POST, params: {
       "phone": mobileNo.toString(),
@@ -54,7 +53,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params.toJson(),
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -72,8 +70,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
-    print('AuthToken ::: $authToken');
     try {
       mahallRegistrationInputModel =
           MahallRegistrationOrDetailsModel.fromJson(response.body);
@@ -93,7 +89,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params.toJson(),
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -112,7 +107,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -129,8 +123,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
-    print('AuthToken ::: $authToken');
     try {
       houseRegistrationModel = HouseRegistrationModel.fromJson(response.body);
       return houseRegistrationModel;
@@ -148,7 +140,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -166,7 +157,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -184,7 +174,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -201,8 +190,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
-    print('AuthToken ::: $authToken');
     try {
       placeModel = GetPlaceModel.fromJson(response.body);
       return placeModel;
@@ -215,38 +202,34 @@ class ListingRepository implements ListingService {
   Future<CommonResponse> userRegistration(
       String authToken, PeopleData params) async {
     CommonResponse commonResponse;
-    print('params :: $params');
     final response = await apiService.reqst(
       url: 'user/create',
       authToken: authToken,
       method: Method.POST,
       params: params.toJson(),
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
     } catch (e) {
-      print('Exception : $e');
       return CommonResponse();
     }
   }
 
   @override
   Future<GetHouseAndUsersModel> getHouseAndUsersDetails(
-      String authToken) async {
+      String authToken, query) async {
     GetHouseAndUsersModel getHouseAndUsersModel;
     final response = await apiService.reqst(
       url: 'user/all',
       authToken: authToken,
       method: Method.GET,
+      queryParams: query,
     );
-    print('Response::: ${response.body}');
     try {
       getHouseAndUsersModel = GetHouseAndUsersModel.fromJson(response.body);
       return getHouseAndUsersModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetHouseAndUsersModel();
     }
   }
@@ -260,7 +243,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params.toJson(),
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -278,7 +260,6 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -291,14 +272,12 @@ class ListingRepository implements ListingService {
   Future<CommonResponse> addOrEditPromises(
       String url, String authToken, params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: url,
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -311,14 +290,12 @@ class ListingRepository implements ListingService {
   Future<CommonResponse> deletePromises(
       String authToken, dynamic params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'promise/delete',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -328,19 +305,18 @@ class ListingRepository implements ListingService {
   }
 
   @override
-  Future<GetPromisesModel> getPromises(String authToken) async {
+  Future<GetPromisesModel> getPromises(String authToken, query) async {
     GetPromisesModel getPromisesModel;
     final response = await apiService.reqst(
       url: 'promise/all',
       authToken: authToken,
       method: Method.GET,
+      queryParams: query,
     );
-    print('Response::: ${response.body}');
     try {
       getPromisesModel = GetPromisesModel.fromJson(response.body);
       return getPromisesModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetPromisesModel();
     }
   }
@@ -349,14 +325,12 @@ class ListingRepository implements ListingService {
   Future<CommonResponse> addOrEditIncomeOrExpense(
       String url, String authToken, params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: url,
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -368,14 +342,12 @@ class ListingRepository implements ListingService {
   @override
   Future<CommonResponse> deleteReport(String authToken, dynamic params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'reports/delete',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -385,55 +357,52 @@ class ListingRepository implements ListingService {
   }
 
   @override
-  Future<GetReportsModel> getReports(String authToken) async {
+  Future<GetReportsModel> getReports(String authToken, query) async {
     GetReportsModel getReportsModel;
     final response = await apiService.reqst(
       url: 'reports/all',
       authToken: authToken,
       method: Method.GET,
+      queryParams: query,
     );
-    print('Response::: ${response.body}');
     try {
       getReportsModel = GetReportsModel.fromJson(response.body);
       return getReportsModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetReportsModel();
     }
   }
 
   @override
-  Future<GetBloodModel> getBloodGroups(String authToken) async {
+  Future<GetBloodModel> getBloodGroups(String authToken, query) async {
     GetBloodModel getBloodModel;
     final response = await apiService.reqst(
       url: 'blood/all',
       authToken: authToken,
       method: Method.GET,
+      queryParams: query,
     );
-    print('Response::: ${response.body}');
     try {
       getBloodModel = GetBloodModel.fromJson(response.body);
       return getBloodModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetBloodModel();
     }
   }
 
   @override
-  Future<GetExpatModel> getExpats(String authToken) async {
+  Future<GetExpatModel> getExpats(String authToken, query) async {
     GetExpatModel getExpatModel;
     final response = await apiService.reqst(
       url: 'expat/all',
       authToken: authToken,
       method: Method.GET,
+      queryParams: query,
     );
-    print('Response::: ${response.body}');
     try {
       getExpatModel = GetExpatModel.fromJson(response.body);
       return getExpatModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetExpatModel();
     }
   }
@@ -446,12 +415,10 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       getHouseAndUsersModel = GetHouseAndUsersModel.fromJson(response.body);
       return getHouseAndUsersModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetHouseAndUsersModel();
     }
   }
@@ -464,12 +431,10 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       getHouseAndUsersModel = GetHouseAndUsersModel.fromJson(response.body);
       return getHouseAndUsersModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetHouseAndUsersModel();
     }
   }
@@ -482,12 +447,10 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       getPromisesModel = GetPromisesModel.fromJson(response.body);
       return getPromisesModel;
     } catch (e) {
-      print('Exception :::: $e');
       return GetPromisesModel();
     }
   }
@@ -495,14 +458,12 @@ class ListingRepository implements ListingService {
   @override
   Future<CommonResponse> resetPassword(String authToken, params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'password/reset',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -519,7 +480,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.POST,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -531,14 +491,12 @@ class ListingRepository implements ListingService {
   @override
   Future<CommonResponse> deleteAccount(String authToken, params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'account/delete',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -550,14 +508,12 @@ class ListingRepository implements ListingService {
   @override
   Future<PaymentSuccessModel> payment(String authToken, params) async {
     PaymentSuccessModel paymentSuccessModel;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'payment',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       paymentSuccessModel = PaymentSuccessModel.fromJson(response.body);
       return paymentSuccessModel;
@@ -569,14 +525,12 @@ class ListingRepository implements ListingService {
   @override
   Future<GetReportPdfModel> generateReportPdf(String authToken, params) async {
     GetReportPdfModel getReportPdfModel;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'reports/generate-pdf',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       getReportPdfModel = GetReportPdfModel.fromJson(response.body);
       return getReportPdfModel;
@@ -593,7 +547,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       getReportPdfModel = GetReportPdfModel.fromJson(response.body);
       return getReportPdfModel;
@@ -605,14 +558,12 @@ class ListingRepository implements ListingService {
   @override
   Future<CommonResponse> registerDeath(String authToken, dynamic params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'death/add',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -629,7 +580,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       getDeceasedListModel = GetDeceasedListModel.fromJson(response.body);
       return getDeceasedListModel;
@@ -642,14 +592,12 @@ class ListingRepository implements ListingService {
   Future<MarriageRegistrationModel> registerMarriage(
       String authToken, MarriageRegistrationInputModel params) async {
     MarriageRegistrationModel marriageRegistrationModel;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'marriage/add',
       authToken: authToken,
       method: Method.POST,
       params: params.toJson(),
     );
-    print('Response::: ${response.body}');
     try {
       marriageRegistrationModel =
           MarriageRegistrationModel.fromJson(response.body);
@@ -668,7 +616,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       marriageRegistrationModel =
           MarriageRegistrationModel.fromJson(response.body);
@@ -686,7 +633,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       chartDataModel = ChartDataModel.fromJson(response.body);
       return chartDataModel;
@@ -703,7 +649,6 @@ class ListingRepository implements ListingService {
       authToken: authToken,
       method: Method.GET,
     );
-    print('Response::: ${response.body}');
     try {
       notificationsModel = GetNotificationsModel.fromJson(response.body);
       return notificationsModel;
@@ -715,14 +660,12 @@ class ListingRepository implements ListingService {
   @override
   Future<CommonResponse> updateNotification(String authToken, params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'notification/update',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;
@@ -734,14 +677,98 @@ class ListingRepository implements ListingService {
   @override
   Future<CommonResponse> sendNotification(String authToken, params) async {
     CommonResponse commonResponse;
-    print('Input : $params');
     final response = await apiService.reqst(
       url: 'notification/send',
       authToken: authToken,
       method: Method.POST,
       params: params,
     );
-    print('Response::: ${response.body}');
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> updateVarisankhya(String authToken, params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'subscription/update',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommitteeDetailsModel> getCommitteeDetails(String authToken) async {
+    CommitteeDetailsModel committeeDetailsModel;
+    final response = await apiService.reqst(
+      url: 'committee/all',
+      authToken: authToken,
+      method: Method.GET,
+    );
+    try {
+      committeeDetailsModel = CommitteeDetailsModel.fromJson(response.body);
+      return committeeDetailsModel;
+    } catch (e) {
+      return CommitteeDetailsModel();
+    }
+  }
+
+  @override
+  Future<CommonResponse> addCommitteeDetails(String authToken, params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'committee/add',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> updateCommitteeDetails(
+      String authToken, params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'committee/update',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
+    try {
+      commonResponse = CommonResponse.fromJson(response.body);
+      return commonResponse;
+    } catch (e) {
+      return CommonResponse();
+    }
+  }
+
+  @override
+  Future<CommonResponse> deleteCommitteeDetails(
+      String authToken, params) async {
+    CommonResponse commonResponse;
+    final response = await apiService.reqst(
+      url: 'committee/delete',
+      authToken: authToken,
+      method: Method.POST,
+      params: params,
+    );
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;

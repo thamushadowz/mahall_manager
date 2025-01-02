@@ -12,6 +12,7 @@ import 'package:mahall_manager/domain/listing/models/get_reports_model.dart';
 import 'package:mahall_manager/domain/listing/models/input_models/mahall_registration_input_model.dart';
 import 'package:mahall_manager/domain/listing/models/mahall_registration_or_details_model.dart';
 
+import 'models/committee_details_model.dart';
 import 'models/get_expat_model.dart';
 import 'models/house_registration_model.dart';
 import 'models/input_models/MarriageRegistrationInputModel.dart';
@@ -44,7 +45,8 @@ abstract class ListingService {
 
   Future<CommonResponse> userRegistration(String authToken, PeopleData params);
 
-  Future<GetHouseAndUsersModel> getHouseAndUsersDetails(String authToken);
+  Future<GetHouseAndUsersModel> getHouseAndUsersDetails(
+      String authToken, dynamic query);
 
   Future<CommonResponse> updateUser(String authToken, PeopleData params);
 
@@ -55,18 +57,18 @@ abstract class ListingService {
 
   Future<CommonResponse> deletePromises(String authToken, dynamic params);
 
-  Future<GetPromisesModel> getPromises(String authToken);
+  Future<GetPromisesModel> getPromises(String authToken, dynamic query);
 
   Future<CommonResponse> addOrEditIncomeOrExpense(
       String url, String authToken, dynamic params);
 
   Future<CommonResponse> deleteReport(String authToken, dynamic params);
 
-  Future<GetReportsModel> getReports(String authToken);
+  Future<GetReportsModel> getReports(String authToken, dynamic query);
 
-  Future<GetBloodModel> getBloodGroups(String authToken);
+  Future<GetBloodModel> getBloodGroups(String authToken, dynamic query);
 
-  Future<GetExpatModel> getExpats(String authToken);
+  Future<GetExpatModel> getExpats(String authToken, dynamic query);
 
   Future<GetHouseAndUsersModel> getUserProfile(String authToken);
 
@@ -103,4 +105,16 @@ abstract class ListingService {
   Future<CommonResponse> updateNotification(String authToken, dynamic params);
 
   Future<CommonResponse> sendNotification(String authToken, dynamic params);
+
+  Future<CommonResponse> updateVarisankhya(String authToken, dynamic params);
+
+  Future<CommitteeDetailsModel> getCommitteeDetails(String authToken);
+
+  Future<CommonResponse> addCommitteeDetails(String authToken, dynamic params);
+
+  Future<CommonResponse> updateCommitteeDetails(
+      String authToken, dynamic params);
+
+  Future<CommonResponse> deleteCommitteeDetails(
+      String authToken, dynamic params);
 }

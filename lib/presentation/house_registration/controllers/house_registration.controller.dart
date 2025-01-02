@@ -51,7 +51,6 @@ class HouseRegistrationController extends GetxController {
   }
 
   seperateKeyToIdAndName() {
-    print('Key ::: $houseNameKey');
     regNoController.text = houseNameKey.split(' - ').first.toString().trim();
     houseNameController.text = houseNameKey
         .split(' - ')
@@ -135,7 +134,6 @@ class HouseRegistrationController extends GetxController {
       try {
         GetPlaceModel response = await listingService
             .getPlaceDetails(_storageService.getToken() ?? '');
-        print('token is : ${_storageService.getToken()}');
         if (response.status == true) {
           placeData.addAll(response.data!);
           isPlaceDataSuccessful.value = true;
@@ -162,7 +160,6 @@ class HouseRegistrationController extends GetxController {
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
-        print('updateHouse input : $houseId, ${houseNameController.text}');
         CommonResponse response =
             await listingService.updateHouse(_storageService.getToken() ?? '', {
           'id': houseId,

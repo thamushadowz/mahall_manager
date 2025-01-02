@@ -169,5 +169,15 @@ class Nav {
       page: () => const DuasScreen(),
       binding: DuasControllerBinding(),
     ),
+    GetPage(
+      name: Routes.UPDATE_VARISANKHYA,
+      page: () => const UpdateVarisankhyaScreen(),
+      binding: UpdateVarisankhyaControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.COMMITTEE_DETAILS,
+      page: () => const CommitteeDetailsScreen(),
+      binding: CommitteeDetailsControllerBinding(),
+    ),
   ];
 }

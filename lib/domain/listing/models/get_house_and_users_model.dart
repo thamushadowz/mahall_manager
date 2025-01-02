@@ -16,11 +16,13 @@ class GetHouseAndUsersModel {
     String? message,
     List<PeopleData>? data,
     int? notificationCount,
+    int? totalPages,
   }) {
     _status = status;
     _message = message;
     _data = data;
     _notificationCount = notificationCount;
+    _totalPages = totalPages;
   }
 
   GetHouseAndUsersModel.fromJson(dynamic json) {
@@ -33,24 +35,28 @@ class GetHouseAndUsersModel {
       });
     }
     _notificationCount = json['notification_count'];
+    _totalPages = json['total_pages'];
   }
 
   bool? _status;
   String? _message;
   List<PeopleData>? _data;
   int? _notificationCount;
+  int? _totalPages;
 
   GetHouseAndUsersModel copyWith({
     bool? status,
     String? message,
     List<PeopleData>? data,
     int? notificationCount,
+    int? totalPages,
   }) =>
       GetHouseAndUsersModel(
         status: status ?? _status,
         message: message ?? _message,
         data: data ?? _data,
         notificationCount: notificationCount ?? _notificationCount,
+        totalPages: totalPages ?? _totalPages,
       );
 
   bool? get status => _status;
@@ -60,6 +66,7 @@ class GetHouseAndUsersModel {
   List<PeopleData>? get data => _data;
 
   int? get notificationCount => _notificationCount;
+  int? get totalPages => _totalPages;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -69,6 +76,7 @@ class GetHouseAndUsersModel {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
     map['notification_count'] = _notificationCount;
+    map['total_pages'] = _totalPages;
     return map;
   }
 }

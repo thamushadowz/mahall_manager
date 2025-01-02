@@ -72,7 +72,7 @@ class ChartData {
     String? mahallName,
     String? totalIncome,
     String? totalExpense,
-    int? notificationCount,
+    String? notificationCount,
   }) {
     _mahallName = mahallName;
     _totalIncome = totalIncome;
@@ -90,13 +90,13 @@ class ChartData {
   String? _mahallName;
   String? _totalIncome;
   String? _totalExpense;
-  int? _notificationCount;
+  String? _notificationCount;
 
   ChartData copyWith({
     String? mahallName,
     String? totalIncome,
     String? totalExpense,
-    int? notificationCount,
+    String? notificationCount,
   }) =>
       ChartData(
         mahallName: mahallName ?? _mahallName,
@@ -111,7 +111,7 @@ class ChartData {
 
   String? get totalExpense => _totalExpense;
 
-  int? get notificationCount => _notificationCount;
+  String? get notificationCount => _notificationCount;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

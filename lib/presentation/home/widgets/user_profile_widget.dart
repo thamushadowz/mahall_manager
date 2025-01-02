@@ -123,25 +123,25 @@ class UserProfileWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildDetailItem(AppStrings.mobileNo,
-                  "+91 ${controller.userProfile.first.phone}"),
+                  "+91 ${controller.userProfile.first.phone ?? '-'}"),
+              _buildDivider(),
+              _buildDetailItem(AppStrings.gender,
+                  controller.userProfile.first.gender ?? '-'),
               _buildDivider(),
               _buildDetailItem(
-                  AppStrings.gender, "${controller.userProfile.first.gender}"),
+                  AppStrings.dob, controller.userProfile.first.dob ?? '-'),
               _buildDivider(),
               _buildDetailItem(
-                  AppStrings.dob, "${controller.userProfile.first.dob}"),
+                  AppStrings.age, controller.userProfile.first.age ?? '-'),
               _buildDivider(),
               _buildDetailItem(
-                  AppStrings.age, "${controller.userProfile.first.age}"),
-              _buildDivider(),
-              _buildDetailItem(
-                  AppStrings.job, "${controller.userProfile.first.job}"),
+                  AppStrings.job, controller.userProfile.first.job ?? '-'),
               _buildDivider(),
               _buildDetailItem(AppStrings.annualIncome,
-                  "${controller.userProfile.first.annualIncome}"),
+                  controller.userProfile.first.annualIncome ?? '-'),
               _buildDivider(),
               _buildDetailItem(AppStrings.bloodGroup,
-                  "${controller.userProfile.first.bloodGroup}"),
+                  controller.userProfile.first.bloodGroup ?? '-'),
             ],
           ),
         ),
@@ -170,7 +170,7 @@ class UserProfileWidget extends StatelessWidget {
   }
 
   Divider _buildDivider() => Divider(
-        height: 20,
+        height: 25,
         thickness: 0.5,
         color: Colors.white.withOpacity(0.3),
       );

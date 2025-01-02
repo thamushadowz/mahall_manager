@@ -21,37 +21,60 @@ class DrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Colors.grey.shade900,
-      child: Container(
-        color: Colors.transparent,
-        padding: const EdgeInsets.only(top: 30),
-        child: Column(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: 70,
-              child: Image.asset(
-                'assets/logo/Mahall_manager_trans_logo.png',
-              ),
+      child: Column(
+        children: [
+          // Fixed Image Section
+          Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.only(top: 30),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 70,
+                  child: Image.asset(
+                    'assets/logo/Mahall_manager_trans_logo.png',
+                  ),
+                ),
+                Divider(
+                  height: 10,
+                  thickness: 2,
+                  indent: 15,
+                  endIndent: 15,
+                  color: AppColors.lightGrey,
+                ),
+              ],
             ),
-            Divider(
-              height: 10,
-              thickness: 2,
-              indent: 15,
-              endIndent: 15,
-              color: AppColors.lightGrey,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
+          ),
+          // Scrollable Section
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     controller.userType == '2'
                         ? const SizedBox()
                         : _buildAdminDrawer(context),
-                    const SizedBox(height: 10),
-                    //Contact Us
+                    _buildSizedBox(),
+                    //Committee Details
+                    controller.userType == "2"
+                        ? CommonClickableTextWidget(
+                            image: 'assets/images/committee.png',
+                            fontSize: AppMeasures.normalTextSize,
+                            fontWeight: AppMeasures.mediumWeight,
+                            textColor: AppColors.white,
+                            title: AppStrings.committeeDetails,
+                            onTap: () {
+                              Get.toNamed(Routes.COMMITTEE_DETAILS);
+                            },
+                          )
+                        : const SizedBox.shrink(),
+                    controller.userType == "2"
+                        ? _buildSizedBox()
+                        : const SizedBox.shrink(),
+                    // Contact Us
                     controller.userType == "1"
                         ? const SizedBox.shrink()
                         : CommonClickableTextWidget(
@@ -66,7 +89,7 @@ class DrawerWidget extends StatelessWidget {
                           ),
                     controller.userType == "1"
                         ? const SizedBox.shrink()
-                        : const SizedBox(height: 10),
+                        : _buildSizedBox(),
                     controller.userType == "1"
                         ? const SizedBox.shrink()
                         : Divider(
@@ -78,8 +101,8 @@ class DrawerWidget extends StatelessWidget {
                           ),
                     controller.userType == "1"
                         ? const SizedBox.shrink()
-                        : const SizedBox(height: 10),
-                    //Reset Password
+                        : _buildSizedBox(),
+                    // Reset Password
                     CommonClickableTextWidget(
                       image: 'assets/images/reset_password.png',
                       fontSize: AppMeasures.normalTextSize,
@@ -90,8 +113,8 @@ class DrawerWidget extends StatelessWidget {
                         Get.toNamed(Routes.RESET_PASSWORD);
                       },
                     ),
-                    const SizedBox(height: 10),
-                    //Logout
+                    _buildSizedBox(),
+                    // Logout
                     CommonClickableTextWidget(
                       image: 'assets/images/logout.png',
                       fontSize: AppMeasures.normalTextSize,
@@ -108,94 +131,92 @@ class DrawerWidget extends StatelessWidget {
                         });
                       },
                     ),
-                  ],
-                ),
-              ),
-            ),
-            const Spacer(),
-            /*Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CommonLanguageSelectionWidget(
-                selectedLanguage: controller.selectedLanguage.value,
-                onChanged: (String? newValue) {
-                  if (newValue != null) {
-                    controller.selectedLanguage.value = newValue;
-                    controller.changeLanguage(newValue);
-                  }
-                },
-              ),
-            ),*/
-            //Delete Account
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: CommonClickableTextWidget(
-                image: 'assets/images/delete-account.png',
-                fontSize: AppMeasures.normalTextSize,
-                fontWeight: AppMeasures.mediumWeight,
-                textColor: AppColors.darkRed,
-                iconColor: AppColors.darkRed,
-                title: AppStrings.deleteAccount,
-                onTap: () {
-                  Get.toNamed(Routes.DELETE_ACCOUNT);
-                },
-              ),
-            ),
-            const SizedBox(height: 20),
-            CommonTextWidget(
-              text: controller.versionCode.value,
-              fontSize: AppMeasures.mediumTextSize,
-              fontWeight: AppMeasures.mediumWeight,
-              color: AppColors.white.withOpacity(0.5),
-            ),
-            const Divider(thickness: 1, endIndent: 10, indent: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text.rich(
-                TextSpan(
-                  text: AppStrings.copyRight,
-                  style: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: AppMeasures.mediumTextSize,
-                    fontWeight: AppMeasures.mediumWeight,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: ' ${AppStrings.privacyPolicy}',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: AppMeasures.mediumTextSize,
-                        fontWeight: AppMeasures.mediumWeight,
-                      ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    _buildSizedBox(),
+                    // Delete Account
+                    CommonClickableTextWidget(
+                      image: 'assets/images/delete-account.png',
+                      fontSize: AppMeasures.normalTextSize,
+                      fontWeight: AppMeasures.mediumWeight,
+                      textColor: AppColors.darkRed,
+                      iconColor: AppColors.darkRed,
+                      title: AppStrings.deleteAccount,
+                      onTap: () {
+                        Get.toNamed(Routes.DELETE_ACCOUNT);
+                      },
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20)
-          ],
-        ),
+          ),
+          CommonTextWidget(
+            text: controller.versionCode.value,
+            fontSize: AppMeasures.mediumTextSize,
+            fontWeight: AppMeasures.mediumWeight,
+            color: AppColors.white.withOpacity(0.5),
+          ),
+          const Divider(thickness: 1, endIndent: 10, indent: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text.rich(
+              TextSpan(
+                text: AppStrings.copyRight,
+                style: TextStyle(
+                  color: AppColors.grey,
+                  fontSize: AppMeasures.mediumTextSize,
+                  fontWeight: AppMeasures.mediumWeight,
+                ),
+                children: [
+                  TextSpan(
+                    text: ' ${AppStrings.privacyPolicy}',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: AppMeasures.mediumTextSize,
+                      fontWeight: AppMeasures.mediumWeight,
+                    ),
+                    recognizer: TapGestureRecognizer()..onTap = () {},
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
 
+  SizedBox _buildSizedBox() => const SizedBox(height: 20);
+
   _buildAdminDrawer(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //Committee Registration
+        CommonClickableTextWidget(
+          image: 'assets/images/monitor.png',
+          fontSize: AppMeasures.normalTextSize,
+          fontWeight: AppMeasures.mediumWeight,
+          textColor: AppColors.white,
+          title: AppStrings.adminsRegistration,
+          onTap: () {
+            Get.toNamed(Routes.COMMITTEE_REGISTRATION);
+          },
+        ),
+        _buildSizedBox(),
+        //Committee Details
         CommonClickableTextWidget(
           image: 'assets/images/committee.png',
           fontSize: AppMeasures.normalTextSize,
           fontWeight: AppMeasures.mediumWeight,
           textColor: AppColors.white,
-          title: AppLocalizations.of(context)!.committee_registration,
+          title: AppStrings.committeeDetails,
           onTap: () {
-            Get.toNamed(Routes.COMMITTEE_REGISTRATION);
+            Get.toNamed(Routes.COMMITTEE_DETAILS);
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //Place Registration
         CommonClickableTextWidget(
           image: 'assets/images/place.png',
@@ -207,7 +228,7 @@ class DrawerWidget extends StatelessWidget {
             Get.toNamed(Routes.PLACE_REGISTRATION);
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //House Registration
         CommonClickableTextWidget(
           image: 'assets/images/home.png',
@@ -219,7 +240,7 @@ class DrawerWidget extends StatelessWidget {
             Get.toNamed(Routes.HOUSE_REGISTRATION);
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //User Registration
         CommonClickableTextWidget(
           image: 'assets/images/user.png',
@@ -230,12 +251,14 @@ class DrawerWidget extends StatelessWidget {
           onTap: () {
             Get.toNamed(Routes.REGISTRATION)?.then((onValue) {
               if (onValue != null && onValue == true) {
+                controller.userPage.value = 1;
+                controller.userDetails.clear();
                 controller.getUserDetails();
               }
             });
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //Marriage Registration
         CommonClickableTextWidget(
           image: 'assets/images/marriage.png',
@@ -247,7 +270,7 @@ class DrawerWidget extends StatelessWidget {
             Get.toNamed(Routes.MARRIAGE_REGISTRATION);
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //Death Registration
         CommonClickableTextWidget(
           image: 'assets/images/deceased.png',
@@ -259,7 +282,7 @@ class DrawerWidget extends StatelessWidget {
             Get.toNamed(Routes.DEATH_REGISTRATION);
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //Add Promises
         CommonClickableTextWidget(
           image: 'assets/images/promises.png',
@@ -270,12 +293,14 @@ class DrawerWidget extends StatelessWidget {
           onTap: () {
             Get.toNamed(Routes.PROMISES)?.then((onValue) {
               if (onValue != null && onValue == true) {
+                controller.promisePage.value = 1;
+                controller.promisesDetails.clear();
                 controller.getPromisesDetails();
               }
             });
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //Add Income
         CommonClickableTextWidget(
           image: 'assets/images/income.png',
@@ -286,13 +311,15 @@ class DrawerWidget extends StatelessWidget {
           onTap: () {
             Get.toNamed(Routes.ADD_INCOME)?.then((onValue) {
               if (onValue != null && onValue == true) {
+                controller.reportPage.value = 1;
+                controller.reportsDetails.clear();
                 controller.getReportsDetails();
                 controller.getChartData();
               }
             });
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
         //Add Expense
         CommonClickableTextWidget(
           image: 'assets/images/expense.png',
@@ -303,13 +330,32 @@ class DrawerWidget extends StatelessWidget {
           onTap: () {
             Get.toNamed(Routes.ADD_EXPENSES)?.then((onValue) {
               if (onValue != null && onValue == true) {
+                controller.reportPage.value = 1;
+                controller.reportsDetails.clear();
                 controller.getReportsDetails();
                 controller.getChartData();
               }
             });
           },
         ),
-        const SizedBox(height: 10),
+        _buildSizedBox(),
+
+        //Update Varisankhya
+        controller.currentDate == 1
+            ? CommonClickableTextWidget(
+                image: 'assets/images/money.png',
+                fontSize: AppMeasures.normalTextSize,
+                fontWeight: AppMeasures.mediumWeight,
+                textColor: AppColors.white,
+                title: AppStrings.updateVarisankhya,
+                onTap: () {
+                  Get.toNamed(Routes.UPDATE_VARISANKHYA);
+                },
+              )
+            : const SizedBox.shrink(),
+        controller.currentDate == 1
+            ? _buildSizedBox()
+            : const SizedBox.shrink(),
         Divider(
           height: 20,
           thickness: 2,

@@ -19,26 +19,56 @@ class PromisesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Obx(
-          () => controller.promisesDetails.isEmpty
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: CommonTextFormField(
-                    suffixIcon: Icons.search,
-                    textController: controller.promisesSearchController,
-                  ),
-                ),
-        ),
-        _buildPromisesList(context),
-        controller.promisesDetails.isEmpty
-            ? const SizedBox.shrink()
-            : _buildTotalWidget(),
-        const SizedBox(height: 20)
-      ],
-    );
+    return Obx(() => controller.isPromiseListLoading.value
+        ? Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/dark_background.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: Image.asset(
+                'assets/images/spin_loader.gif',
+                color: AppColors.white,
+                width: 60,
+                height: 60,
+              ),
+            ),
+          )
+        : Column(
+            children: [
+              Obx(
+                () => controller.promisesDetails.isEmpty &&
+                        controller.promisesSearchController.text.isEmpty
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CommonTextFormField(
+                          suffixIcon: Icons.search,
+                          textController: controller.promisesSearchController,
+                          onSuffixTap: () {
+                            controller.promisePage.value = 1;
+                            controller.promisesDetails.clear();
+                            controller.getPromisesDetails();
+                          },
+                          onFieldSubmitted: (val) {
+                            controller.promisePage.value = 1;
+                            controller.promisesDetails.clear();
+                            controller.getPromisesDetails();
+                          },
+                        ),
+                      ),
+              ),
+              _buildPromisesList(context),
+              controller.promisesDetails.isEmpty
+                  ? const SizedBox.shrink()
+                  : _buildTotalWidget(),
+              const SizedBox(height: 20)
+            ],
+          ));
   }
 
   Container _buildTotalWidget() {
@@ -69,12 +99,15 @@ class PromisesWidget extends StatelessWidget {
       color: AppColors.themeColor,
       backgroundColor: AppColors.white,
       onRefresh: () {
+        controller.promisePage.value = 1;
+        controller.promisesDetails.clear();
         return controller.getPromisesDetails();
       },
       child: Obx(
         () => SingleChildScrollView(
+          controller: controller.promiseScrollController,
           physics: const AlwaysScrollableScrollPhysics(),
-          child: controller.filteredPromisesDetails.isEmpty
+          child: controller.promisesDetails.isEmpty
               ? SizedBox(
                   height: MediaQuery.of(context).size.height * 0.8,
                   child: const CommonEmptyResultWidget())
@@ -145,7 +178,7 @@ class PromisesWidget extends StatelessWidget {
           ),
         ),
       ],
-      rows: controller.filteredPromisesDetails.map((promises) {
+      rows: controller.promisesDetails.map((promises) {
         return DataRow(
           cells: [
             DataCell(CommonTextWidget(
@@ -186,8 +219,12 @@ class PromisesWidget extends StatelessWidget {
                     onTap: () {
                       Get.toNamed(Routes.PAYMENT_SCREEN,
                           arguments: {'promises': promises})?.then((onValue) {
+                        controller.promisePage.value = 1;
+                        controller.promisesDetails.clear();
                         controller.getPromisesDetails();
                         controller.getChartData();
+                        controller.reportPage.value = 1;
+                        controller.reportsDetails.clear();
                         controller.getReportsDetails();
                       });
                     },
@@ -202,6 +239,8 @@ class PromisesWidget extends StatelessWidget {
                       Get.toNamed(Routes.PROMISES, arguments: promises)
                           ?.then((onValue) {
                         if (onValue != null && onValue) {
+                          controller.promisePage.value = 1;
+                          controller.promisesDetails.clear();
                           controller.getPromisesDetails();
                         }
                       });

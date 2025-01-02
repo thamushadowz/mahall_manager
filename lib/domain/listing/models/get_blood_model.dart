@@ -13,10 +13,12 @@ class GetBloodModel {
     bool? status,
     String? message,
     List<BloodData>? data,
+    int? totalPages,
   }) {
     _status = status;
     _message = message;
     _data = data;
+    _totalPages = totalPages;
   }
 
   GetBloodModel.fromJson(dynamic json) {
@@ -28,23 +30,28 @@ class GetBloodModel {
         _data?.add(BloodData.fromJson(v));
       });
     }
+    _totalPages = json['total_pages'];
   }
   bool? _status;
   String? _message;
   List<BloodData>? _data;
+  int? _totalPages;
   GetBloodModel copyWith({
     bool? status,
     String? message,
     List<BloodData>? data,
+    int? totalPages,
   }) =>
       GetBloodModel(
         status: status ?? _status,
         message: message ?? _message,
         data: data ?? _data,
+        totalPages: totalPages ?? _totalPages,
       );
   bool? get status => _status;
   String? get message => _message;
   List<BloodData>? get data => _data;
+  int? get totalPages => _totalPages;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -53,6 +60,7 @@ class GetBloodModel {
     if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
+    map['total_pages'] = _totalPages;
     return map;
   }
 }

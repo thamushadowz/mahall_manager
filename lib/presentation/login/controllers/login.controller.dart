@@ -37,11 +37,8 @@ class LoginController extends GetxController {
     super.onInit();
     notificationServices.requestNotificationPermission();
     notificationServices.firebaseInit(Get.context!);
-    notificationServices.getDeviceToken().then((val) {
-      print('Device Token :- \n$val');
-    });
-    mobileController.text = "9995560424";
-    passwordController.text = "admin123";
+    notificationServices.getDeviceToken().then((val) {});
+
     String lang = _storageService.getPreferredLanguage() ?? 'en';
     try {
       selectedLanguage.value = Utilities.languages

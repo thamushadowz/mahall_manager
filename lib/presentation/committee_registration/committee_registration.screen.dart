@@ -62,16 +62,16 @@ class CommitteeRegistrationScreen
                       //Mahall Section
                       _buildMahallWidget(context),
                       const SizedBox(height: 20),
-                      // President Section
-                      _buildPresidentWidget(context),
+                      // Admin 1 Section
+                      _buildAdmin1Widget(context),
                       const SizedBox(height: 20),
 
-                      // Secretary Section
-                      _buildSecretaryWidget(context),
+                      // Admin 2 Section
+                      _buildAdmin2Widget(context),
                       const SizedBox(height: 20),
 
-                      // Treasurer Section
-                      _buildTreasurerWidget(context),
+                      // Admin 3 Section
+                      _buildAdmin2rWidget(context),
 
                       const SizedBox(height: 20),
 
@@ -114,14 +114,6 @@ class CommitteeRegistrationScreen
     );
   }
 
-  _buildHeadingShimmerWidget(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: AppColors.lightGrey.withOpacity(0.5),
-      highlightColor: AppColors.white.withOpacity(0.3),
-      child: buildCommonTextWidget(context: context, title: ''),
-    );
-  }
-
   buildCommonTextWidget(
       {required BuildContext context, required String title}) {
     return CommonTextWidget(
@@ -129,16 +121,6 @@ class CommitteeRegistrationScreen
         fontSize: AppMeasures.normalTextSize,
         fontWeight: AppMeasures.normalWeight);
   }
-
-/*  _commonAlertWidget({required Function() onConfirm}) {
-    CommonAlert.alertDialogWidget(
-        onConfirm: onConfirm,
-        onCancel: () {},
-        title: AppLocalizations.of(Get.context!)!.delete,
-        textConfirm: AppLocalizations.of(Get.context!)!.delete,
-        textCancel: AppLocalizations.of(Get.context!)!.cancel,
-        middleText: AppLocalizations.of(Get.context!)!.are_you_sure_to_delete);
-  }*/
 
   _buildMahallWidget(BuildContext context) {
     return Container(
@@ -232,7 +214,7 @@ class CommitteeRegistrationScreen
     );
   }
 
-  _buildPresidentWidget(BuildContext context) {
+  _buildAdmin1Widget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -257,17 +239,28 @@ class CommitteeRegistrationScreen
           controller.isLoading.value
               ? _buildIconShimmerWidget()
               : Image.asset(
-                  'assets/images/president.png',
+                  'assets/images/secretary.png',
                   width: 60,
                   height: 60,
                 ),
           const SizedBox(height: 5),
           controller.isLoading.value
-              ? _buildHeadingShimmerWidget(context)
-              : buildCommonTextWidget(
-                  context: context,
-                  title: AppLocalizations.of(context)!.president),
-          const SizedBox(height: 5),
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.blueGrey,
+                  enabled: controller.isEditMode.value,
+                  label: AppStrings.designation,
+                  keyboardType: TextInputType.name,
+                  textController: controller.presidentDesignationController,
+                  focusNode: controller.presidentDesignationFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.presidentFNameFocusNode);
+                  },
+                  validator: Validators.required),
+          const SizedBox(height: 10),
           controller.isLoading.value
               ? const CommonTextFieldShimmerWidget()
               : CommonTextFormField(
@@ -320,7 +313,7 @@ class CommitteeRegistrationScreen
                   focusNode: controller.presidentMobileFocusNode,
                   onFieldSubmitted: (value) {
                     FocusScope.of(context)
-                        .requestFocus(controller.presidentPasswordFocusNode);
+                        .requestFocus(controller.secretaryDesignationFocusNode);
                   },
                   validator: Validators.validateMobileNumber),
           const SizedBox(height: 10),
@@ -342,7 +335,7 @@ class CommitteeRegistrationScreen
     );
   }
 
-  _buildSecretaryWidget(BuildContext context) {
+  _buildAdmin2Widget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -370,11 +363,22 @@ class CommitteeRegistrationScreen
                 ),
           const SizedBox(height: 5),
           controller.isLoading.value
-              ? _buildHeadingShimmerWidget(context)
-              : buildCommonTextWidget(
-                  context: context,
-                  title: AppLocalizations.of(context)!.secretary),
-          const SizedBox(height: 5),
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.blueGrey,
+                  enabled: controller.isEditMode.value,
+                  label: AppStrings.designation,
+                  keyboardType: TextInputType.name,
+                  textController: controller.secretaryDesignationController,
+                  focusNode: controller.secretaryDesignationFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.secretaryFNameFocusNode);
+                  },
+                  validator: Validators.required),
+          const SizedBox(height: 10),
           controller.isLoading.value
               ? const CommonTextFieldShimmerWidget()
               : CommonTextFormField(
@@ -427,7 +431,7 @@ class CommitteeRegistrationScreen
                   focusNode: controller.secretaryMobileFocusNode,
                   onFieldSubmitted: (value) {
                     FocusScope.of(context)
-                        .requestFocus(controller.secretaryPasswordFocusNode);
+                        .requestFocus(controller.treasurerDesignationFocusNode);
                   },
                   validator: Validators.validateMobileNumber),
           const SizedBox(height: 10),
@@ -449,7 +453,7 @@ class CommitteeRegistrationScreen
     );
   }
 
-  _buildTreasurerWidget(BuildContext context) {
+  _buildAdmin2rWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -471,17 +475,28 @@ class CommitteeRegistrationScreen
           controller.isLoading.value
               ? _buildIconShimmerWidget()
               : Image.asset(
-                  'assets/images/treasurer.png',
+                  'assets/images/secretary.png',
                   width: 60,
                   height: 60,
                 ),
           const SizedBox(height: 5),
           controller.isLoading.value
-              ? _buildHeadingShimmerWidget(context)
-              : buildCommonTextWidget(
-                  context: context,
-                  title: AppLocalizations.of(context)!.treasurer),
-          const SizedBox(height: 5),
+              ? const CommonTextFieldShimmerWidget()
+              : CommonTextFormField(
+                  disabledLabelColor: controller.isEditMode.value
+                      ? AppColors.themeColor
+                      : AppColors.blueGrey,
+                  enabled: controller.isEditMode.value,
+                  label: AppStrings.designation,
+                  keyboardType: TextInputType.name,
+                  textController: controller.treasurerDesignationController,
+                  focusNode: controller.treasurerDesignationFocusNode,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context)
+                        .requestFocus(controller.treasurerFNameFocusNode);
+                  },
+                  validator: Validators.required),
+          const SizedBox(height: 10),
           controller.isLoading.value
               ? const CommonTextFieldShimmerWidget()
               : CommonTextFormField(

@@ -82,16 +82,18 @@ String adminsToJson(GetAdmins data) => json.encode(data.toJson());
 
 class GetAdmins {
   GetAdmins({
-    num? id,
+    int? id,
     String? firstName,
     String? lastName,
     String? phone,
-    num? masjidRole,
+    String? designation,
+    int? masjidRole,
   }) {
     _id = id;
     _firstName = firstName;
     _lastName = lastName;
     _phone = phone;
+    _designation = designation;
     _masjidRole = masjidRole;
   }
 
@@ -100,32 +102,37 @@ class GetAdmins {
     _firstName = json['first_name'];
     _lastName = json['last_name'];
     _phone = json['phone'];
+    _designation = json['designation'];
     _masjidRole = json['masjid_role'];
   }
-  num? _id;
+  int? _id;
   String? _firstName;
   String? _lastName;
   String? _phone;
-  num? _masjidRole;
+  String? _designation;
+  int? _masjidRole;
   GetAdmins copyWith({
-    num? id,
+    int? id,
     String? firstName,
     String? lastName,
     String? phone,
-    num? masjidRole,
+    String? designation,
+    int? masjidRole,
   }) =>
       GetAdmins(
         id: id ?? _id,
         firstName: firstName ?? _firstName,
         lastName: lastName ?? _lastName,
         phone: phone ?? _phone,
+        designation: designation ?? _designation,
         masjidRole: masjidRole ?? _masjidRole,
       );
-  num? get id => _id;
+  int? get id => _id;
   String? get firstName => _firstName;
   String? get lastName => _lastName;
   String? get phone => _phone;
-  num? get masjidRole => _masjidRole;
+  String? get designation => _designation;
+  int? get masjidRole => _masjidRole;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -133,6 +140,7 @@ class GetAdmins {
     map['first_name'] = _firstName;
     map['last_name'] = _lastName;
     map['phone'] = _phone;
+    map['designation'] = _designation;
     map['masjid_role'] = _masjidRole;
     return map;
   }

@@ -25,7 +25,6 @@ showCommonDialog(BuildContext context,
       barrierDismissible: barrierDismissible ?? true,
       context: context,
       builder: (BuildContext context) {
-        print('license Key ::: $licenseKey');
         return Dialog(
           surfaceTintColor: AppColors.white,
           shape:

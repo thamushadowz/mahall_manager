@@ -100,12 +100,14 @@ class Admins {
     num? id,
     String? firstName,
     String? lastName,
+    String? designation,
     num? phone,
   }) {
     _role = role;
     _id = id;
     _firstName = firstName;
     _lastName = lastName;
+    _designation = designation;
     _phone = phone;
   }
 
@@ -114,18 +116,21 @@ class Admins {
     _id = json['id'];
     _firstName = json['first_name'];
     _lastName = json['last_name'];
+    _designation = json['designation'];
     _phone = json['phone'];
   }
   num? _role;
   num? _id;
   String? _firstName;
   String? _lastName;
+  String? _designation;
   num? _phone;
   Admins copyWith({
     num? role,
     num? id,
     String? firstName,
     String? lastName,
+    String? designation,
     num? phone,
   }) =>
       Admins(
@@ -133,12 +138,14 @@ class Admins {
         id: id ?? _id,
         firstName: firstName ?? _firstName,
         lastName: lastName ?? _lastName,
+        designation: designation ?? _designation,
         phone: phone ?? _phone,
       );
   num? get role => _role;
   num? get id => _id;
   String? get firstName => _firstName;
   String? get lastName => _lastName;
+  String? get designation => _designation;
   num? get phone => _phone;
 
   Map<String, dynamic> toJson() {
@@ -147,6 +154,7 @@ class Admins {
     map['id'] = _id;
     map['first_name'] = _firstName;
     map['last_name'] = _lastName;
+    map['designation'] = _designation;
     map['phone'] = _phone;
     return map;
   }

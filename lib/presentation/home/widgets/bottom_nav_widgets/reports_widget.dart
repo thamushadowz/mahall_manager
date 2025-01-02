@@ -25,31 +25,61 @@ class ReportsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Column(
-        children: [
-          controller.reportsDetails.isEmpty
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: CommonTextFormField(
-                    suffixIcon: Icons.search,
-                    textController: controller.reportSearchController,
-                  ),
+      () => controller.isReportsListLoading.value
+          ? Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover,
                 ),
-          controller.reportsDetails.isEmpty
-              ? const SizedBox.shrink()
-              : _buildFilterAndClearFilterOption(),
-          Obx(() =>
-              SizedBox(height: controller.isReportFiltering.value ? 10 : 0)),
-          _buildFilterWidget(context),
-          const SizedBox(height: 10),
-          _buildReportsList(context),
-          controller.reportsDetails.isEmpty
-              ? const SizedBox.shrink()
-              : _buildTotalWidget(),
-          const SizedBox(height: 20)
-        ],
-      ),
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/spin_loader.gif',
+                  color: AppColors.white,
+                  width: 60,
+                  height: 60,
+                ),
+              ),
+            )
+          : Column(
+              children: [
+                controller.reportsDetails.isEmpty &&
+                        controller.reportSearchController.text.isEmpty
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CommonTextFormField(
+                          suffixIcon: Icons.search,
+                          textController: controller.reportSearchController,
+                          onSuffixTap: () {
+                            controller.reportPage.value = 1;
+                            controller.reportsDetails.clear();
+                            controller.getReportsDetails();
+                          },
+                          onFieldSubmitted: (val) {
+                            controller.reportPage.value = 1;
+                            controller.reportsDetails.clear();
+                            controller.getReportsDetails();
+                          },
+                        ),
+                      ),
+                controller.reportsDetails.isEmpty
+                    ? const SizedBox.shrink()
+                    : _buildFilterAndClearFilterOption(),
+                Obx(() => SizedBox(
+                    height: controller.isReportFiltering.value ? 10 : 0)),
+                _buildFilterWidget(context),
+                const SizedBox(height: 10),
+                _buildReportsList(context),
+                controller.reportsDetails.isEmpty
+                    ? const SizedBox.shrink()
+                    : _buildTotalWidget(),
+                const SizedBox(height: 20)
+              ],
+            ),
     );
   }
 
@@ -81,12 +111,15 @@ class ReportsWidget extends StatelessWidget {
         color: AppColors.themeColor,
         backgroundColor: AppColors.white,
         onRefresh: () {
+          controller.reportPage.value = 1;
+          controller.reportsDetails.clear();
           return controller.getReportsDetails();
         },
         child: Obx(
           () => SingleChildScrollView(
+            controller: controller.reportScrollController,
             physics: const AlwaysScrollableScrollPhysics(),
-            child: controller.filteredReportsDetails.isEmpty
+            child: controller.reportsDetails.isEmpty
                 ? SizedBox(
                     height: MediaQuery.of(context).size.height * 0.8,
                     child: const CommonEmptyResultWidget())
@@ -422,7 +455,9 @@ class ReportsWidget extends StatelessWidget {
                                         controller
                                                 .isReportFilterSubmitted.value =
                                             controller.checkReportFilters();
-                                        controller.applyFilters();
+                                        controller.reportPage.value = 1;
+                                        controller.reportsDetails.clear();
+                                        controller.getReportsDetails();
                                         controller.isReportFiltering.value =
                                             false;
                                       }
@@ -518,7 +553,7 @@ class ReportsWidget extends StatelessWidget {
             ),
           ),
         ],
-        rows: controller.filteredReportsDetails.map((report) {
+        rows: controller.reportsDetails.map((report) {
           return DataRow(
             color: WidgetStateProperty.all(report.incomeOrExpense == '0'
                 ? AppColors.themeColor.withOpacity(0.2)
@@ -578,7 +613,10 @@ class ReportsWidget extends StatelessWidget {
                                         arguments: report)
                                     ?.then((onValue) {
                                   if (onValue != null && onValue == true) {
+                                    controller.reportPage.value = 1;
+                                    controller.reportsDetails.clear();
                                     controller.getReportsDetails();
+                                    controller.getChartData();
                                   }
                                 });
                               } else {
@@ -586,7 +624,10 @@ class ReportsWidget extends StatelessWidget {
                                         arguments: report)
                                     ?.then((onValue) {
                                   if (onValue != null && onValue == true) {
+                                    controller.reportPage.value = 1;
+                                    controller.reportsDetails.clear();
                                     controller.getReportsDetails();
+                                    controller.getChartData();
                                   }
                                 });
                               }

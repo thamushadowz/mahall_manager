@@ -22,20 +22,51 @@ class ExpatsWidget extends StatelessWidget {
     return controller.userType == '2'
         ? UserProfileWidget(controller: controller)
         : Obx(
-            () => Column(
-              children: [
-                controller.expatDetails.isEmpty
-                    ? const SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CommonTextFormField(
-                          suffixIcon: Icons.search,
-                          textController: controller.expatSearchController,
-                        ),
+            () => controller.isExpatsListLoading.value
+                ? Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/dark_background.png'),
+                        fit: BoxFit.cover,
                       ),
-                _buildExpatsList(context),
-              ],
-            ),
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/spin_loader.gif',
+                        color: AppColors.white,
+                        width: 60,
+                        height: 60,
+                      ),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      controller.expatDetails.isEmpty &&
+                              controller.expatSearchController.text.isEmpty
+                          ? const SizedBox.shrink()
+                          : Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: CommonTextFormField(
+                                suffixIcon: Icons.search,
+                                textController:
+                                    controller.expatSearchController,
+                                onSuffixTap: () {
+                                  controller.expatPage.value = 1;
+                                  controller.expatDetails.clear();
+                                  controller.getExpatsDetails();
+                                },
+                                onFieldSubmitted: (val) {
+                                  controller.expatPage.value = 1;
+                                  controller.expatDetails.clear();
+                                  controller.getExpatsDetails();
+                                },
+                              ),
+                            ),
+                      _buildExpatsList(context),
+                    ],
+                  ),
           );
   }
 
@@ -45,11 +76,14 @@ class ExpatsWidget extends StatelessWidget {
         color: AppColors.themeColor,
         backgroundColor: AppColors.white,
         onRefresh: () {
+          controller.expatPage.value = 1;
+          controller.expatDetails.clear();
           return controller.getExpatsDetails();
         },
         child: Obx(() => SingleChildScrollView(
+              controller: controller.expatScrollController,
               physics: const AlwaysScrollableScrollPhysics(),
-              child: controller.filteredExpatDetails.isEmpty
+              child: controller.expatDetails.isEmpty
                   ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.8,
                       child: const CommonEmptyResultWidget())
@@ -112,7 +146,7 @@ class ExpatsWidget extends StatelessWidget {
             ),
           ),
         ],
-        rows: controller.filteredExpatDetails.map((expat) {
+        rows: controller.expatDetails.map((expat) {
           return DataRow(
             cells: [
               DataCell(

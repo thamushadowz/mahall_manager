@@ -24,7 +24,6 @@ class ApiService extends GetConnect implements GetxService {
     try {
       switch (method) {
         case Method.POST:
-          final encodedParams = _encodeParams(params);
           response = await post(url, params,
               headers: {
                 'Content-Type': 'application/json',
@@ -36,10 +35,9 @@ class ApiService extends GetConnect implements GetxService {
           response = await delete(url, headers: _headers, query: queryParams);
           break;
         case Method.PATCH:
-          final encodedParams = _encodeParams(params);
           response = await patch(
             url,
-            encodedParams,
+            params,
             query: queryParams,
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -57,14 +55,6 @@ class ApiService extends GetConnect implements GetxService {
     } catch (e) {
       throw Exception("Something went wrong: $e");
     }
-  }
-
-  String _encodeParams(Map<String, dynamic>? params) {
-    if (params == null) return '';
-    return params.entries
-        .map((e) =>
-            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
-        .join('&');
   }
 
   void updateHeaders(String token) {

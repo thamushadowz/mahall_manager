@@ -6,6 +6,7 @@ class AppStrings {
   static String home = "Home";
   static String addIncome = "Add Income";
   static String addExpenses = "Add Expenses";
+  static String updateVarisankhya = "Update Varisankhya";
   static String call = "Call";
   static String whatsapp = "Whatsapp";
   static String incomeAndExpenses = 'Income and Expenses';
@@ -85,13 +86,18 @@ class AppStrings {
   static String retry = 'Retry';
   static String failedToFetchLocation =
       'Failed to get Qibla direction. Please check your location settings.';
+  static String varisankhyaUpdateConfirmation =
+      'Are you sure you want to update Varisankhya?\n\nThis change cannot be undone for a year. Please double-check the amount before submitting.';
 
   static String male = 'Male';
   static String female = 'Female';
 
+  static String adminsRegistration = 'Admins Registration';
+  static String committeeDetails = 'Committee Details';
   static String president = 'President';
   static String secretary = 'Secretary';
   static String treasurer = 'Treasurer';
+  static String designation = 'Designation';
 
   static String apos = 'A+ve';
   static String aneg = 'A-ve';

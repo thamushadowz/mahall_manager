@@ -55,7 +55,6 @@ String formatDateTimeToDateAndTime(String dateTimeString) {
 Future<String?> downloadPdfToExternal(String url, String fileName) async {
   try {
     await requestStoragePermission();
-    print("permission status : ${await requestStoragePermission()}");
 
     final directory = Directory('/storage/emulated/0/Download');
 
@@ -78,19 +77,16 @@ Future<String?> downloadPdfToExternal(String url, String fileName) async {
     if (response.statusCode == 200) {
       final file = File(filePath);
       await file.writeAsBytes(response.bodyBytes);
-      print("File saved to $filePath");
       showToast(
           title: '$fileName saved to $filePath',
           type: ToastificationType.success);
       return filePath;
     } else {
-      print("Failed to download PDF. Status code: ${response.statusCode}");
       showToast(
           title: 'Failed to download PDF', type: ToastificationType.error);
       return null;
     }
   } catch (e) {
-    print("Error: $e");
     return null;
   }
 }
@@ -99,8 +95,6 @@ Future<bool> requestStoragePermission() async {
   if (Platform.isAndroid) {
     var androidInfo = await DeviceInfoPlugin().androidInfo;
     var release = androidInfo.version.release;
-    var sdkInt = androidInfo.version.sdkInt;
-    print('android version ::: $release, $sdkInt');
     if (release == "10" || release == "11") {
       if (await Permission.manageExternalStorage.isGranted) {
         return true;
@@ -137,9 +131,7 @@ Future<bool> requestStoragePermission() async {
 Future<bool> requestLocationPermission() async {
   if (Platform.isAndroid) {
     var androidInfo = await DeviceInfoPlugin().androidInfo;
-    var release = androidInfo.version.release;
     var sdkInt = androidInfo.version.sdkInt;
-    print('android version ::: $release, $sdkInt');
 
     if (sdkInt >= 30) {
       return await _handleAndroid11AndAbovePermissions();
@@ -230,7 +222,6 @@ Future<bool> _handleIOSPermissions() async {
 
 Future<bool> isInternetAvailable() async {
   var connectivityResult = await Connectivity().checkConnectivity();
-  print('Connectivity ::: ${connectivityResult}');
   if (connectivityResult.first == ConnectivityResult.mobile ||
       connectivityResult.first == ConnectivityResult.wifi) {
     return true;

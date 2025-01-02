@@ -114,7 +114,6 @@ class PaymentScreenController extends GetxController {
               'Dear *$name*, we received your payment successfully. Thank you!!\n*-${storageService.getMahallName()}*');
       isTakingScreenshot.value = false;
     } catch (e) {
-      print('Error taking screenshot: $e');
       isTakingScreenshot.value = false;
     }
   }

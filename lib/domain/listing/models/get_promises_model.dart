@@ -14,10 +14,12 @@ class GetPromisesModel {
     bool? status,
     String? message,
     List<PromisesData>? data,
+    int? totalPages,
   }) {
     _status = status;
     _message = message;
     _data = data;
+    _totalPages = totalPages;
   }
 
   GetPromisesModel.fromJson(dynamic json) {
@@ -29,23 +31,28 @@ class GetPromisesModel {
         _data?.add(PromisesData.fromJson(v));
       });
     }
+    _totalPages = json['total_pages'];
   }
   bool? _status;
   String? _message;
   List<PromisesData>? _data;
+  int? _totalPages;
   GetPromisesModel copyWith({
     bool? status,
     String? message,
     List<PromisesData>? data,
+    int? totalPages,
   }) =>
       GetPromisesModel(
         status: status ?? _status,
         message: message ?? _message,
         data: data ?? _data,
+        totalPages: totalPages ?? _totalPages,
       );
   bool? get status => _status;
   String? get message => _message;
   List<PromisesData>? get data => _data;
+  int? get totalPages => _totalPages;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -54,6 +61,7 @@ class GetPromisesModel {
     if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
+    map['total_pages'] = _totalPages;
     return map;
   }
 }

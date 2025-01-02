@@ -14,10 +14,12 @@ class GetExpatModel {
     bool? status,
     String? message,
     List<ExpatData>? data,
+    int? totalPages,
   }) {
     _status = status;
     _message = message;
     _data = data;
+    _totalPages = totalPages;
   }
 
   GetExpatModel.fromJson(dynamic json) {
@@ -29,21 +31,25 @@ class GetExpatModel {
         _data?.add(ExpatData.fromJson(v));
       });
     }
+    _totalPages = json['total_pages'];
   }
 
   bool? _status;
   String? _message;
   List<ExpatData>? _data;
+  int? _totalPages;
 
   GetExpatModel copyWith({
     bool? status,
     String? message,
     List<ExpatData>? data,
+    int? totalPages,
   }) =>
       GetExpatModel(
         status: status ?? _status,
         message: message ?? _message,
         data: data ?? _data,
+        totalPages: totalPages ?? _totalPages,
       );
 
   bool? get status => _status;
@@ -51,6 +57,7 @@ class GetExpatModel {
   String? get message => _message;
 
   List<ExpatData>? get data => _data;
+  int? get totalPages => _totalPages;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -59,6 +66,7 @@ class GetExpatModel {
     if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
+    map['total_pages'] = _totalPages;
     return map;
   }
 }

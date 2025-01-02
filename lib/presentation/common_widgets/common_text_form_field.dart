@@ -5,28 +5,30 @@ import '../../infrastructure/theme/colors/app_colors.dart';
 import '../../infrastructure/theme/measures/app_measures.dart';
 
 class CommonTextFormField extends StatelessWidget {
-  const CommonTextFormField(
-      {super.key,
-      this.label,
-      this.hint,
-      this.inputFormatters,
-      required this.textController,
-      this.focusNode,
-      this.validator,
-      this.onFieldSubmitted,
-      this.suffixIcon,
-      this.prefixText,
-      this.obscureText,
-      this.enabled,
-      this.keyboardType,
-      this.onSuffixTap,
-      this.disabledBorderColor,
-      this.disabledLabelColor,
-      this.fillColor,
-      this.onDateTap,
-      this.minLines,
-      this.maxLines,
-      this.textCapitalization});
+  const CommonTextFormField({
+    super.key,
+    this.label,
+    this.hint,
+    this.inputFormatters,
+    required this.textController,
+    this.focusNode,
+    this.validator,
+    this.onFieldSubmitted,
+    this.suffixIcon,
+    this.prefixText,
+    this.obscureText,
+    this.enabled,
+    this.keyboardType,
+    this.onSuffixTap,
+    this.disabledBorderColor,
+    this.disabledLabelColor,
+    this.fillColor,
+    this.onDateTap,
+    this.minLines,
+    this.maxLines,
+    this.textCapitalization,
+    this.textInputAction,
+  });
 
   final String? label;
   final String? hint;
@@ -48,6 +50,7 @@ class CommonTextFormField extends StatelessWidget {
   final int? minLines;
   final int? maxLines;
   final TextCapitalization? textCapitalization;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +71,7 @@ class CommonTextFormField extends StatelessWidget {
         obscureText: obscureText ?? false,
         controller: textController,
         inputFormatters: inputFormatters,
+        textInputAction: textInputAction ?? TextInputAction.next,
         keyboardType: keyboardType ?? TextInputType.text,
         decoration: InputDecoration(
             hintText: hint,

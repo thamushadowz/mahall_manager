@@ -21,34 +21,64 @@ class BloodWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/images/dark_background.png'),
-                fit: BoxFit.cover)),
-        child: Column(
-          children: [
-            controller.bloodDetails.isEmpty
-                ? const SizedBox.shrink()
-                : Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: CommonTextFormField(
-                      fillColor: AppColors.white.withOpacity(0.8),
-                      suffixIcon: Icons.search,
-                      textController: controller.bloodSearchController,
-                    ),
-                  ),
-            controller.bloodDetails.isEmpty
-                ? const SizedBox.shrink()
-                : _buildFilterAndClearFilterOption(),
-            Obx(() =>
-                SizedBox(height: controller.isBloodFiltering.value ? 10 : 0)),
-            _buildFilterWidget(context),
-            const SizedBox(height: 10),
-            _buildBloodList(context),
-          ],
-        ),
-      ),
+      () => controller.isBloodListLoading.value
+          ? Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/dark_background.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/spin_loader.gif',
+                  color: AppColors.white,
+                  width: 60,
+                  height: 60,
+                ),
+              ),
+            )
+          : Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/dark_background.png'),
+                      fit: BoxFit.cover)),
+              child: Column(
+                children: [
+                  controller.bloodDetails.isEmpty &&
+                          controller.bloodSearchController.text.isEmpty
+                      ? const SizedBox.shrink()
+                      : Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: CommonTextFormField(
+                            fillColor: AppColors.white.withOpacity(0.8),
+                            suffixIcon: Icons.search,
+                            textController: controller.bloodSearchController,
+                            onSuffixTap: () {
+                              controller.bloodPage.value = 1;
+                              controller.bloodDetails.clear();
+                              controller.getBloodGroupDetails();
+                            },
+                            onFieldSubmitted: (val) {
+                              controller.bloodPage.value = 1;
+                              controller.bloodDetails.clear();
+                              controller.getBloodGroupDetails();
+                            },
+                          ),
+                        ),
+                  controller.bloodDetails.isEmpty
+                      ? const SizedBox.shrink()
+                      : _buildFilterAndClearFilterOption(),
+                  Obx(() => SizedBox(
+                      height: controller.isBloodFiltering.value ? 10 : 0)),
+                  _buildFilterWidget(context),
+                  const SizedBox(height: 10),
+                  _buildBloodList(context),
+                ],
+              ),
+            ),
     );
   }
 
@@ -155,7 +185,9 @@ class BloodWidget extends StatelessWidget {
                         onTap: () {
                           controller.isBloodFilterSubmitted.value =
                               controller.checkBloodFilters();
-                          controller.applyBloodFilters();
+                          controller.bloodPage.value = 1;
+                          controller.bloodDetails.clear();
+                          controller.getBloodGroupDetails();
                           controller.isBloodFiltering.value = false;
                         },
                         label: AppStrings.submit,
@@ -197,12 +229,15 @@ class BloodWidget extends StatelessWidget {
         color: AppColors.themeColor,
         backgroundColor: AppColors.white,
         onRefresh: () {
+          controller.bloodPage.value = 1;
+          controller.bloodDetails.clear();
           return controller.getBloodGroupDetails();
         },
         child: Obx(
           () => SingleChildScrollView(
+            controller: controller.bloodScrollController,
             physics: const AlwaysScrollableScrollPhysics(),
-            child: controller.filteredBloodDetails.isEmpty
+            child: controller.bloodDetails.isEmpty
                 ? SizedBox(
                     height: MediaQuery.of(context).size.height * 0.8,
                     child: const CommonEmptyResultWidget())
@@ -274,7 +309,7 @@ class BloodWidget extends StatelessWidget {
             ),
           ),
         ],
-        rows: controller.filteredBloodDetails.map((blood) {
+        rows: controller.bloodDetails.map((blood) {
           return DataRow(
             cells: [
               DataCell(

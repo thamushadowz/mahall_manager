@@ -112,7 +112,6 @@ class RegistrationController extends GetxController {
       try {
         HouseRegistrationModel response = await listingService
             .getHouseDetails(_storageService.getToken() ?? '');
-        print('token is : ${_storageService.getToken()}');
         if (response.status == true) {
           houseData.addAll(response.data!);
           isHouseDataSuccessful.value = true;
@@ -151,14 +150,12 @@ class RegistrationController extends GetxController {
         bloodGroup: bloodController.text.trim(),
         isExpat: isExpat.value,
         country: countryController.text.trim());
-    print('peopleDataaaa ::: ${userData.toJson()}');
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
         CommonResponse response = await listingService.userRegistration(
             _storageService.getToken() ?? '', userData);
-        print('USER DATA ::: ${userData.toJson()}');
         if (response.status == true) {
           showToast(
               title: response.message.toString(),
@@ -178,7 +175,6 @@ class RegistrationController extends GetxController {
           }
         }
       } catch (e) {
-        print('Exception : $e');
         showToast(
             title: AppStrings.somethingWentWrong,
             type: ToastificationType.error);

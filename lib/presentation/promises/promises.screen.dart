@@ -54,7 +54,7 @@ class PromisesScreen extends GetView<PromisesController> {
   _promisesWidget(BuildContext context) {
     return Obx(
       () => CommonIncomeExpensesWidget(
-        isPromises: true,
+        type: 1,
         heading: AppStrings.promises,
         color: AppColors.orange,
         nameController: controller.nameController,
@@ -82,7 +82,6 @@ class PromisesScreen extends GetView<PromisesController> {
                   if (onValue.name != null) {
                     controller.nameController.text = onValue.name.toString();
                     controller.userId = onValue.id;
-                    print('userId ::: ${controller.userId}');
                   }
                 });
               },

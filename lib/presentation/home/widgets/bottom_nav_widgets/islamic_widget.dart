@@ -29,7 +29,7 @@ class IslamicWidget extends StatelessWidget {
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 4,
+        itemCount: controller.islamicGrid.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {

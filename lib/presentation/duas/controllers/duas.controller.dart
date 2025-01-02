@@ -17,9 +17,7 @@ class DuasController extends GetxController {
     String jsonString = await rootBundle.loadString('assets/jsons/duas.json');
     List<dynamic> jsonList = json.decode(jsonString);
 
-    duas.clear(); // Clear the existing list (if any)
+    duas.clear();
     duas.addAll(jsonList.map((duaJson) => DuaData.fromJson(duaJson)));
-
-    print('Duas : $duas');
   }
 }

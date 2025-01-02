@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mahall_manager/domain/listing/models/input_models/MarriageRegistrationInputModel.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
@@ -86,7 +85,6 @@ class MarriageRegistrationController extends GetxController {
       try {
         HouseRegistrationModel response = await listingService
             .getHouseDetails(_storageService.getToken() ?? '');
-        print('token is : ${_storageService.getToken()}');
         if (response.status == true) {
           houseData.addAll(response.data!);
           isHouseDataSuccessful.value = true;
@@ -115,7 +113,6 @@ class MarriageRegistrationController extends GetxController {
       try {
         MahallRegistrationOrDetailsModel response = await listingService
             .getMahallDetails(_storageService.getToken() ?? '');
-        print('token is : ${_storageService.getToken()}');
         if (response.status == true) {
           committeeNameController.text = response.masjid!.name ?? '';
           mahallAddressController.text =
@@ -254,9 +251,6 @@ class MarriageRegistrationController extends GetxController {
 
     String? path = await downloadPdfToExternal(pdfUrl, fileName);
     if (path != null) {
-      print("PDF saved at: $path");
-    } else {
-      print("Failed to save PDF.");
-    }
+    } else {}
   }
 }

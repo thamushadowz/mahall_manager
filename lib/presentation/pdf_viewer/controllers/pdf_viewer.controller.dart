@@ -15,7 +15,6 @@ class PdfViewerController extends GetxController {
   void onInit() {
     filePath = args[AppStrings.pdfUrl];
     fileName = '${args[AppStrings.pdfName]}.pdf';
-    print('File Name : $fileName\nFile Path : $filePath');
     /*filePath =
         'https://github.com/ScerIO/packages.flutter/raw/fd0c92ac83ee355255acb306251b1adfeb2f2fd6/packages/native_pdf_renderer/example/assets/sample.pdf';*/
     InternetFile.get(filePath).then((data) {

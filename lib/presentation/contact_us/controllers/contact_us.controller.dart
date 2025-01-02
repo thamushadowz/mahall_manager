@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
@@ -53,7 +52,6 @@ class ContactUsController extends GetxController {
       try {
         MahallRegistrationOrDetailsModel response = await listingService
             .getMahallDetails(_storageService.getToken() ?? '');
-        print('token is : ${_storageService.getToken()}');
         if (response.status == true) {
           showDetails(response.admins!);
         } else {

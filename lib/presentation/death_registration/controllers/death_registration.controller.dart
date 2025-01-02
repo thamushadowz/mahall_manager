@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../../domain/core/interfaces/common_alert.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
@@ -42,7 +41,6 @@ class DeathRegistrationController extends GetxController {
       try {
         HouseRegistrationModel response = await listingService
             .getHouseDetails(storageService.getToken() ?? '');
-        print('token is : ${storageService.getToken()}');
         if (response.status == true) {
           houseDetails.addAll(response.data!);
           isHouseDataSuccessful.value = true;

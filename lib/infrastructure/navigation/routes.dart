@@ -13,6 +13,7 @@ class Routes {
   static const DEATH_LIST = '/death-list';
   static const DEATH_REGISTRATION = '/death-registration';
   static const DELETE_ACCOUNT = '/delete-account';
+  static const DUAS = '/duas';
   static const HOME = '/home';
   static const HOUSE_REGISTRATION = '/house-registration';
   static const LOGIN = '/login';
@@ -31,6 +32,7 @@ class Routes {
   static const RESET_PASSWORD = '/reset-password';
   static const SEARCH_SCREEN = '/search-screen';
   static const SPLASH = '/splash';
+  static const UPDATE_VARISANKHYA = '/update-varisankhya';
   static const VIEW_NOTIFICATION = '/view-notification';
-  static const DUAS = '/duas';
+  static const COMMITTEE_DETAILS = '/committee-details';
 }

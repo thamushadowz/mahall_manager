@@ -15,7 +15,9 @@ class PieChartWidget extends StatelessWidget {
         sections: [
           PieChartSectionData(
             color: AppColors.themeColor,
-            value: double.parse(controller.chartData.totalIncome ?? ''),
+            value: controller.chartData.totalIncome == '0'
+                ? 1
+                : double.parse(controller.chartData.totalIncome ?? ''),
             title: '₹ ${controller.chartData.totalIncome}',
             radius: 80,
             titleStyle: TextStyle(
@@ -26,7 +28,9 @@ class PieChartWidget extends StatelessWidget {
           ),
           PieChartSectionData(
             color: AppColors.darkRed,
-            value: double.parse(controller.chartData.totalExpense ?? ''),
+            value: controller.chartData.totalExpense == '0'
+                ? 1
+                : double.parse(controller.chartData.totalExpense ?? '0'),
             title: '₹ ${controller.chartData.totalExpense}',
             radius: 70,
             titleStyle: TextStyle(

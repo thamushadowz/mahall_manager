@@ -212,7 +212,7 @@ class AppStrings {
       "Crafted with ♥ AllerTempus Innovative®";
   static String privacyPolicy = 'Privacy Policy';
   static String copyRight =
-      '© 2024 AllerTempus Innovative. All rights reserved.';
+      '© 2025 AllerTempus Innovative®. All rights reserved.';
   static String licenseExpired = 'Your license expired.';
   static String pleaseContact = 'Please contact ';
   static String developers = 'Developers';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mahall_manager/domain/core/interfaces/utility_services.dart';
 import 'package:mahall_manager/infrastructure/theme/colors/app_colors.dart';
 import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
@@ -8,7 +9,6 @@ import 'package:mahall_manager/presentation/common_widgets/common_empty_result_w
 import 'package:mahall_manager/presentation/common_widgets/common_text_field_shimmer_widget.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
-import '../../domain/core/interfaces/utility_services.dart';
 import 'controllers/notifications.controller.dart';
 
 class NotificationsScreen extends GetView<NotificationsController> {
@@ -94,7 +94,7 @@ class NotificationsScreen extends GetView<NotificationsController> {
                       Icon(Icons.person, color: AppColors.grey, size: 15),
                       const SizedBox(width: 5),
                       CommonTextWidget(
-                        text: controller.notificationList[index].postedBy
+                        text: controller.notificationList[index].designation
                             .toString(),
                         fontSize: AppMeasures.mediumTextSize,
                         fontWeight: AppMeasures.mediumWeight,

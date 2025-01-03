@@ -473,7 +473,7 @@ class HomeController extends GetxController {
                   if (isSecretaryChecked.value) '1',
                   if (isTreasurerChecked.value) '2',
                 ].toString(),
-          'from_date': fromDate.value,
+          'from_date': fromDate.value.contains('/') ? fromDate.value : '',
           'to_date': toDate.value.contains('/') ? toDate.value : ''
         });
         if (response.status == true) {

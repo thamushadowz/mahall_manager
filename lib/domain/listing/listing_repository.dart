@@ -666,6 +666,7 @@ class ListingRepository implements ListingService {
       method: Method.POST,
       params: params,
     );
+    print('ressss update notification: ${response.body}');
     try {
       commonResponse = CommonResponse.fromJson(response.body);
       return commonResponse;

@@ -46,7 +46,7 @@ class ViewNotificationScreen extends GetView<ViewNotificationController> {
             Icon(Icons.person, color: AppColors.white, size: 15),
             const SizedBox(width: 5),
             CommonTextWidget(
-              text: controller.notification.postedBy.toString(),
+              text: controller.notification.designation.toString(),
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
               color: AppColors.white,

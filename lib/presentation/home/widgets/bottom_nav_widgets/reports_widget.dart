@@ -581,7 +581,7 @@ class ReportsWidget extends StatelessWidget {
                 fontSize: AppMeasures.mediumTextSize,
               )),
               DataCell(CommonTextWidget(
-                text: controller.getAddedBy(report.addedBy.toString()),
+                text: report.designation ?? '',
                 fontWeight: AppMeasures.mediumWeight,
                 fontSize: AppMeasures.mediumTextSize,
               )),

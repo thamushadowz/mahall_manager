@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mahall_manager/infrastructure/navigation/routes.dart';
@@ -22,10 +24,10 @@ class CommitteeRegistrationController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxString adminCode = ''.obs; //superAdmin=0,admin=1,user=2,
 
-  int mahallId = -1;
-  int presedentId = -1;
-  int secretaryId = -1;
-  int treasurerId = -1;
+  int? mahallId;
+  int? presedentId;
+  int? secretaryId;
+  int? treasurerId;
 
   @override
   void onInit() {
@@ -242,10 +244,12 @@ class CommitteeRegistrationController extends GetxController {
             .getMahallDetails(_storageService.getToken() ?? '');
         if (response.status == true) {
           showDetails(response.masjid!, response.admins!);
+          print('resss get admin ::: ${jsonEncode(response.admins)}');
           mahallId = response.masjid!.id!.toInt();
-          presedentId = response.admins![0].id ?? 0;
-          secretaryId = response.admins![1].id ?? 0;
-          treasurerId = response.admins![2].id ?? 0;
+          presedentId = response.admins![0].id;
+          secretaryId = response.admins![1].id;
+          treasurerId = response.admins![2].id;
+
           if (adminCode.value == '0') {
             clearAll();
           }
@@ -261,6 +265,7 @@ class CommitteeRegistrationController extends GetxController {
           }
         }
       } catch (e) {
+        print('Exception in get committee $e');
         showToast(
             title: AppStrings.somethingWentWrong,
             type: ToastificationType.error);
@@ -302,37 +307,39 @@ class CommitteeRegistrationController extends GetxController {
     var isConnectedToInternet = await isInternetAvailable();
     if (isConnectedToInternet) {
       try {
+        print('IDs :::: $presedentId, $secretaryId, $treasurerId');
+        MahallRegistrationInputModel inputModel = MahallRegistrationInputModel(
+            id: mahallId,
+            name: mahallNameController.text.trim(),
+            code: mahallCodeController.text.trim(),
+            address: mahallAddressController.text.trim(),
+            pincode: int.parse(mahallPinController.text.trim()),
+            admins: [
+              Admins(
+                  id: presedentId,
+                  role: 0,
+                  designation: presidentDesignationController.text.trim(),
+                  firstName: presidentFNameController.text.trim(),
+                  lastName: presidentLNameController.text.trim(),
+                  phone: int.parse(presidentMobileController.text.trim())),
+              Admins(
+                  id: secretaryId,
+                  role: 1,
+                  designation: secretaryDesignationController.text.trim(),
+                  firstName: secretaryFNameController.text.trim(),
+                  lastName: secretaryLNameController.text.trim(),
+                  phone: int.parse(secretaryMobileController.text.trim())),
+              Admins(
+                  id: treasurerId,
+                  role: 2,
+                  designation: treasurerDesignationController.text.trim(),
+                  firstName: treasurerFNameController.text.trim(),
+                  lastName: treasurerLNameController.text.trim(),
+                  phone: int.parse(treasurerMobileController.text.trim())),
+            ]);
+        print('update committee input : ${inputModel.toJson()}');
         CommonResponse response = await listingService.updateMahallDetails(
-            _storageService.getToken() ?? '',
-            MahallRegistrationInputModel(
-                id: mahallId,
-                name: mahallNameController.text.trim(),
-                code: mahallCodeController.text.trim(),
-                address: mahallAddressController.text.trim(),
-                pincode: int.parse(mahallPinController.text.trim()),
-                admins: [
-                  Admins(
-                      id: presedentId,
-                      role: 0,
-                      designation: presidentDesignationController.text.trim(),
-                      firstName: presidentFNameController.text.trim(),
-                      lastName: presidentLNameController.text.trim(),
-                      phone: int.parse(presidentMobileController.text.trim())),
-                  Admins(
-                      id: secretaryId,
-                      role: 1,
-                      designation: secretaryDesignationController.text.trim(),
-                      firstName: secretaryFNameController.text.trim(),
-                      lastName: secretaryLNameController.text.trim(),
-                      phone: int.parse(secretaryMobileController.text.trim())),
-                  Admins(
-                      id: treasurerId,
-                      role: 2,
-                      designation: treasurerDesignationController.text.trim(),
-                      firstName: treasurerFNameController.text.trim(),
-                      lastName: treasurerLNameController.text.trim(),
-                      phone: int.parse(treasurerMobileController.text.trim())),
-                ]));
+            _storageService.getToken() ?? '', inputModel);
         if (response.status == true) {
           showToast(
               title: response.message.toString(),

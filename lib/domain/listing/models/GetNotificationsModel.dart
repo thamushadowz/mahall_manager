@@ -71,13 +71,15 @@ String dataToJson(NotificationsData data) => json.encode(data.toJson());
 class NotificationsData {
   NotificationsData({
     num? id,
-    String? postedBy,
+    int? postedBy,
+    String? designation,
     String? notification,
     bool? readStatus,
     String? date,
   }) {
     _id = id;
     _postedBy = postedBy;
+    _designation = designation;
     _notification = notification;
     _readStatus = readStatus;
     _date = date;
@@ -86,18 +88,21 @@ class NotificationsData {
   NotificationsData.fromJson(dynamic json) {
     _id = json['id'];
     _postedBy = json['posted_by'];
+    _designation = json['designation'];
     _notification = json['notification'];
     _readStatus = json['read_status'];
     _date = json['date'];
   }
   num? _id;
-  String? _postedBy;
+  int? _postedBy;
+  String? _designation;
   String? _notification;
   bool? _readStatus;
   String? _date;
   NotificationsData copyWith({
     num? id,
-    String? postedBy,
+    int? postedBy,
+    String? designation,
     String? notification,
     bool? readStatus,
     String? date,
@@ -105,12 +110,14 @@ class NotificationsData {
       NotificationsData(
         id: id ?? _id,
         postedBy: postedBy ?? _postedBy,
+        designation: designation ?? _designation,
         notification: notification ?? _notification,
         readStatus: readStatus ?? _readStatus,
         date: date ?? _date,
       );
   num? get id => _id;
-  String? get postedBy => _postedBy;
+  int? get postedBy => _postedBy;
+  String? get designation => _designation;
   String? get notification => _notification;
   bool? get readStatus => _readStatus;
   String? get date => _date;
@@ -119,6 +126,7 @@ class NotificationsData {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['posted_by'] = _postedBy;
+    map['designation'] = _designation;
     map['notification'] = _notification;
     map['read_status'] = _readStatus;
     map['date'] = _date;

@@ -87,6 +87,7 @@ class ReportsData {
     String? currentDue,
     String? incomeOrExpense,
     String? amount,
+    String? designation,
     num? addedBy,
   }) {
     _id = id;
@@ -97,6 +98,7 @@ class ReportsData {
     _currentDue = currentDue;
     _incomeOrExpense = incomeOrExpense;
     _amount = amount;
+    _designation = designation;
     _addedBy = addedBy;
   }
 
@@ -109,6 +111,7 @@ class ReportsData {
     _currentDue = json['currentDue'];
     _incomeOrExpense = json['incomeOrExpense'];
     _amount = json['amount'];
+    _designation = json['designation'];
     _addedBy = json['added_by'];
   }
   int? _id;
@@ -119,6 +122,7 @@ class ReportsData {
   String? _currentDue;
   String? _incomeOrExpense;
   String? _amount;
+  String? _designation;
   num? _addedBy;
   ReportsData copyWith({
     int? id,
@@ -129,6 +133,7 @@ class ReportsData {
     String? currentDue,
     String? incomeOrExpense,
     String? amount,
+    String? designation,
     num? addedBy,
   }) =>
       ReportsData(
@@ -140,6 +145,7 @@ class ReportsData {
         currentDue: currentDue ?? _currentDue,
         incomeOrExpense: incomeOrExpense ?? _incomeOrExpense,
         amount: amount ?? _amount,
+        designation: designation ?? _designation,
         addedBy: addedBy ?? _addedBy,
       );
   int? get id => _id;
@@ -150,6 +156,7 @@ class ReportsData {
   String? get currentDue => _currentDue;
   String? get incomeOrExpense => _incomeOrExpense;
   String? get amount => _amount;
+  String? get designation => _designation;
   num? get addedBy => _addedBy;
 
   Map<String, dynamic> toJson() {
@@ -162,6 +169,7 @@ class ReportsData {
     map['currentDue'] = _currentDue;
     map['incomeOrExpense'] = _incomeOrExpense;
     map['amount'] = _amount;
+    map['designation'] = _designation;
     map['added_by'] = _addedBy;
     return map;
   }

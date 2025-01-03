@@ -14,7 +14,7 @@ class NotificationsController extends GetxController {
   final StorageService storageService = StorageService();
   ListingService listingService = Get.find<ListingRepository>();
 
-  List<NotificationsData> notificationList = [
+  /*List<NotificationsData> notificationList = [
     NotificationsData(
         id: 1,
         date: '02/12/2024',
@@ -97,9 +97,9 @@ class NotificationsController extends GetxController {
         notification:
             'This is a sample notification. Please check the notification by opening it for the sake of your knowledge. Otherwise you may miss the important information about the masjid.',
         postedBy: 'Secretary'),
-  ];
+  ];*/
 
-  //RxList<NotificationsData> notificationList = RxList([]);
+  List<NotificationsData> notificationList = [];
   RxBool isLoading = false.obs;
 
   @override
@@ -115,6 +115,7 @@ class NotificationsController extends GetxController {
       try {
         GetNotificationsModel response = await listingService
             .getNotifications(storageService.getToken() ?? '');
+        print('notification ::: ${response.data}');
         if (response.status == true) {
           notificationList = response.data!;
         } else {
@@ -144,6 +145,7 @@ class NotificationsController extends GetxController {
         CommonResponse response = await listingService.updateNotification(
             storageService.getToken() ?? '',
             {'id': notificationList[index].id});
+        print('notification id : ${notificationList[index].id}');
         if (response.status == true) {
           Get.toNamed(Routes.VIEW_NOTIFICATION,
                   arguments: {'notification': notificationList[index]})

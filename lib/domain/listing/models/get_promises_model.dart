@@ -84,6 +84,7 @@ class PromisesData {
     String? description,
     String? date,
     String? amount,
+    String? designation,
     num? addedBy,
   }) {
     _id = id;
@@ -93,6 +94,7 @@ class PromisesData {
     _description = description;
     _date = date;
     _amount = amount;
+    _designation = designation;
     _addedBy = addedBy;
   }
 
@@ -104,6 +106,7 @@ class PromisesData {
     _description = json['description'];
     _date = json['date'];
     _amount = json['amount'];
+    _designation = json['designation'];
     _addedBy = json['added_by'];
   }
   num? _id;
@@ -113,6 +116,7 @@ class PromisesData {
   String? _description;
   String? _date;
   String? _amount;
+  String? _designation;
   num? _addedBy;
   PromisesData copyWith({
     num? id,
@@ -122,6 +126,7 @@ class PromisesData {
     String? description,
     String? date,
     String? amount,
+    String? designation,
     num? addedBy,
   }) =>
       PromisesData(
@@ -132,6 +137,7 @@ class PromisesData {
         description: description ?? _description,
         date: date ?? _date,
         amount: amount ?? _amount,
+        designation: designation ?? _designation,
         addedBy: addedBy ?? _addedBy,
       );
   num? get id => _id;
@@ -141,6 +147,7 @@ class PromisesData {
   String? get description => _description;
   String? get date => _date;
   String? get amount => _amount;
+  String? get designation => _designation;
   num? get addedBy => _addedBy;
 
   Map<String, dynamic> toJson() {
@@ -152,6 +159,7 @@ class PromisesData {
     map['description'] = _description;
     map['date'] = _date;
     map['amount'] = _amount;
+    map['designation'] = _designation;
     map['added_by'] = _addedBy;
     return map;
   }

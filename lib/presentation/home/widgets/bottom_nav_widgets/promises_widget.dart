@@ -204,7 +204,7 @@ class PromisesWidget extends StatelessWidget {
               fontSize: AppMeasures.mediumTextSize,
             )),
             DataCell(CommonTextWidget(
-              text: controller.getAddedBy(promises.addedBy.toString()),
+              text: promises.designation ?? '',
               fontWeight: AppMeasures.mediumWeight,
               fontSize: AppMeasures.mediumTextSize,
             )),

@@ -80,8 +80,9 @@ class CommitteeDetailsScreen extends GetView<CommitteeDetailsController> {
                         elevation: 3,
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         child: Container(
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: AppColors.white.withOpacity(0.7),
+                            color: AppColors.white,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                                 color: AppColors.blueGrey.withOpacity(0.5)),
@@ -93,82 +94,105 @@ class CommitteeDetailsScreen extends GetView<CommitteeDetailsController> {
                               ),
                             ],
                           ),
-                          child: ListTile(
-                            title: Align(
-                              alignment: Alignment.center,
-                              child: CommonTextWidget(
-                                text: member.designation ?? '',
-                                fontSize: AppMeasures.bigTextSize,
+                          child: Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: AppColors.black,
+                                    child: Image.asset(
+                                      'assets/logo/Mahall_manager_trans_logo.png',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
                               ),
-                            ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  radius: 35,
-                                  backgroundColor: AppColors.black,
-                                  child: Image.asset(
-                                    'assets/logo/Mahall_manager_trans_logo.png',
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CommonTextWidget(
-                                        text: member.name ?? '',
-                                        fontSize: AppMeasures.normalTextSize,
-                                        fontWeight: AppMeasures.mediumWeight,
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(width: 20),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CommonTextWidget(
+                                            text: member.designation!
+                                                .toUpperCase(),
+                                            color: AppColors.themeColor,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          CommonTextWidget(
+                                            text: member.name ?? '',
+                                            fontSize:
+                                                AppMeasures.normalTextSize,
+                                            fontWeight:
+                                                AppMeasures.mediumWeight,
+                                            color: Colors.grey.shade800,
+                                          ),
+                                          CommonClickableTextWidget(
+                                            title: '+91 ${member.phone}',
+                                            fontSize:
+                                                AppMeasures.normalTextSize,
+                                            fontWeight:
+                                                AppMeasures.mediumWeight,
+                                            textColor: AppColors.blue,
+                                            onTap: () {
+                                              _generateBottomSheet(
+                                                  member.phone ?? '');
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                      CommonClickableTextWidget(
-                                        title: '+91 ${member.phone}',
-                                        fontSize: AppMeasures.normalTextSize,
-                                        fontWeight: AppMeasures.mediumWeight,
-                                        textColor: AppColors.blue,
-                                        onTap: () {
-                                          _generateBottomSheet(
-                                              member.phone ?? '');
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    const Spacer(),
+                                    controller.userType == '2'
+                                        ? const SizedBox.shrink()
+                                        : IconButton(
+                                            onPressed: () {
+                                              controller.designationController
+                                                      .text =
+                                                  member.designation ?? '';
+                                              controller.nameController.text =
+                                                  member.name ?? '';
+                                              controller.mobileController.text =
+                                                  member.phone ?? '';
+                                              _showAddCommitteeDialog(context,
+                                                  id: member.id!.toInt());
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit_note,
+                                              size: 20,
+                                            )),
+                                    controller.userType == '2'
+                                        ? const SizedBox.shrink()
+                                        : IconButton(
+                                            onPressed: () {
+                                              controller.deleteCommitteeDetails(
+                                                  member.id!.toInt());
+                                            },
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: AppColors.darkRed,
+                                              size: 20,
+                                            )),
+                                  ],
                                 ),
-                                const Spacer(),
-                                controller.userType == '2'
-                                    ? const SizedBox.shrink()
-                                    : IconButton(
-                                        onPressed: () {
-                                          controller.designationController
-                                              .text = member.designation ?? '';
-                                          controller.nameController.text =
-                                              member.name ?? '';
-                                          controller.mobileController.text =
-                                              member.phone ?? '';
-                                          _showAddCommitteeDialog(context,
-                                              id: member.id!.toInt());
-                                        },
-                                        icon: const Icon(
-                                          Icons.edit_note,
-                                          size: 20,
-                                        )),
-                                controller.userType == '2'
-                                    ? const SizedBox.shrink()
-                                    : IconButton(
-                                        onPressed: () {
-                                          controller.deleteCommitteeDetails(
-                                              member.id!.toInt());
-                                        },
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: AppColors.darkRed,
-                                          size: 20,
-                                        )),
-                              ],
-                            ),
+                              ),
+                              /*ListTile(
+                                title: Container(
+                                  color: Colors.grey.shade700.withOpacity(0.6),
+                                  padding: const EdgeInsets.all(10),
+                                  alignment: Alignment.center,
+                                ),
+                                subtitle: ,
+                              ),*/
+                            ],
                           ),
                         ),
                       );

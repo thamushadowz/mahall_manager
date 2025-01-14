@@ -11,6 +11,7 @@ import '../../infrastructure/dal/services/api_service.dart';
 import 'listing_service.dart';
 import 'models/ChartDataModel.dart';
 import 'models/GetDeceasedListModel.dart';
+import 'models/GetMasjidListModel.dart';
 import 'models/MarriageRegistrationModel.dart';
 import 'models/get_blood_model.dart';
 import 'models/get_expat_model.dart';
@@ -26,12 +27,30 @@ class ListingRepository implements ListingService {
   ApiService apiService = Get.find();
 
   @override
-  Future<LoginModel> loginCheck(
-      String mobileNo, String password, String fcmToken) async {
+  Future<GetMasjidListModel> getMasjidsList(query) async {
+    GetMasjidListModel getMasjidListModel;
+    final response = await apiService.reqst(
+      url: 'masjid-list',
+      method: Method.GET,
+      queryParams: query,
+    );
+    try {
+      getMasjidListModel = GetMasjidListModel.fromJson(response.body);
+      return getMasjidListModel;
+    } catch (e) {
+      return GetMasjidListModel();
+    }
+  }
+
+  @override
+  Future<LoginModel> loginCheck(String mobileNo, String masjidId,
+      String password, String fcmToken) async {
+    print('masjidId ::: $masjidId');
     LoginModel loginModel;
     final response =
         await apiService.reqst(url: 'login', method: Method.POST, params: {
       "phone": mobileNo.toString(),
+      "masjid_id": masjidId.toString(),
       "password": password.toString(),
       "fcm_token": fcmToken.toString()
     });

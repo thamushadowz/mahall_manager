@@ -8,6 +8,7 @@ import 'package:mahall_manager/infrastructure/theme/measures/app_measures.dart';
 import 'package:mahall_manager/infrastructure/theme/strings/app_strings.dart';
 import 'package:mahall_manager/presentation/common_widgets/common_text_widget.dart';
 
+import '../../infrastructure/navigation/routes.dart';
 import '../common_widgets/common_button_widget.dart';
 import '../common_widgets/common_text_form_field.dart';
 import 'controllers/login.controller.dart';
@@ -127,83 +128,142 @@ class LoginScreen extends GetView<LoginController> {
           padding: const EdgeInsets.all(20),
           child: Form(
             key: controller.formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CommonTextWidget(
-                  text: AppStrings.login,
-                  fontSize: AppMeasures.textSize25,
-                  textAlign: TextAlign.center,
-                  fontWeight: AppMeasures.normalWeight,
-                ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    AppLocalizations.of(context)!.login_desc,
-                    style: TextStyle(
-                        color: AppColors.blueGrey,
-                        fontSize: AppMeasures.normalTextSize,
-                        fontWeight: AppMeasures.mediumWeight),
+            child: Obx(
+              () => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CommonTextWidget(
+                    text: AppStrings.login,
+                    fontSize: AppMeasures.textSize25,
+                    textAlign: TextAlign.center,
+                    fontWeight: AppMeasures.normalWeight,
                   ),
-                ),
-                const SizedBox(height: 30),
-                CommonTextFormField(
-                  textController: controller.mobileController,
-                  label: AppLocalizations.of(context)!.mobileNo,
-                  suffixIcon: Icons.phone_iphone_rounded,
-                  prefixText: '+91 ',
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(10),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  keyboardType: TextInputType.number,
-                  validator: Validators.validateMobileNumber,
-                  focusNode: controller.mobileFocusNode,
-                  onFieldSubmitted: (value) {
-                    FocusScope.of(context)
-                        .requestFocus(controller.passwordFocusNode);
-                  },
-                ),
-                const SizedBox(height: 20),
-                Obx(() => CommonTextFormField(
-                      textController: controller.passwordController,
-                      obscureText: !controller.showPassword.value,
-                      maxLines: 1,
-                      textCapitalization: TextCapitalization.none,
-                      label: AppLocalizations.of(context)!.password,
-                      suffixIcon: controller.showPassword.value
-                          ? Icons.remove_red_eye_outlined
-                          : Icons.visibility_off_outlined,
-                      onSuffixTap: () {
-                        controller.showPassword.value =
-                            !controller.showPassword.value;
-                      },
-                      inputFormatters: [LengthLimitingTextInputFormatter(15)],
-                      focusNode: controller.passwordFocusNode,
-                      onFieldSubmitted: (value) {},
-                      validator: Validators.validatePassword,
-                    )),
-                /*const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: CommonClickableTextWidget(
-                    title: AppLocalizations.of(context)!.forgot_password,
-                    textColor: AppColors.blue,
-                    onTap: () {},
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      AppLocalizations.of(context)!.login_desc,
+                      style: TextStyle(
+                          color: AppColors.blueGrey,
+                          fontSize: AppMeasures.normalTextSize,
+                          fontWeight: AppMeasures.mediumWeight),
+                    ),
                   ),
-                ),*/
-                const SizedBox(height: 20),
-                CommonButtonWidget(
-                  isLoading: controller.isLoading,
-                  label: AppLocalizations.of(context)!.login,
-                  onTap: () {
-                    if (controller.formKey.currentState!.validate()) {
-                      controller.performLogin();
-                    }
-                  },
-                )
-              ],
+                  const SizedBox(height: 30),
+                  //Mobile No
+                  CommonTextFormField(
+                    textController: controller.mobileController,
+                    label: AppLocalizations.of(context)!.mobileNo,
+                    suffixIcon: Icons.phone_iphone_rounded,
+                    prefixText: '+91 ',
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(10),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    keyboardType: TextInputType.number,
+                    validator: Validators.validateMobileNumber,
+                    focusNode: controller.mobileFocusNode,
+                    onFieldSubmitted: (value) {
+                      FocusScope.of(context)
+                          .requestFocus(controller.masjidListFocusNode);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  //Masjids List
+                  !controller.isDataFetchSuccessful.value ||
+                          controller.mobileNumber.isEmpty
+                      ? const SizedBox.shrink()
+                      : Row(
+                          children: [
+                            Expanded(
+                              child: CommonTextFormField(
+                                disabledBorderColor: AppColors.blueGrey,
+                                disabledLabelColor: AppColors.blueGrey,
+                                enabled: false,
+                                label: AppStrings.mahallName,
+                                keyboardType: TextInputType.none,
+                                textController: controller.masjidListController,
+                                focusNode: controller.masjidListFocusNode,
+                                onFieldSubmitted: (value) {
+                                  FocusScope.of(context).requestFocus(
+                                      controller.passwordFocusNode);
+                                },
+                                onDateTap: () {
+                                  Get.toNamed(Routes.SEARCH_SCREEN,
+                                          arguments: controller.masjidList)
+                                      ?.then((onValue) {
+                                    controller.masjidListController.text =
+                                        onValue.name != null
+                                            ? onValue.name.toString()
+                                            : '';
+                                    controller.masjidId = onValue.id ?? 0;
+                                  });
+                                },
+                              ),
+                            ),
+                            Obx(() => !controller.isDataFetchSuccessful.value
+                                ? IconButton(
+                                    onPressed: () {
+                                      controller.getMasjidsList();
+                                    },
+                                    icon: Icon(
+                                      Icons.refresh_rounded,
+                                      size: 30,
+                                      color: AppColors.darkRed,
+                                    ),
+                                  )
+                                : const SizedBox.shrink()),
+                          ],
+                        ),
+                  !controller.isDataFetchSuccessful.value ||
+                          controller.mobileNumber.isEmpty
+                      ? const SizedBox.shrink()
+                      : const SizedBox(height: 20),
+                  //Password
+                  !controller.isDataFetchSuccessful.value ||
+                          controller.mobileNumber.isEmpty
+                      ? const SizedBox.shrink()
+                      : Obx(() => CommonTextFormField(
+                            textController: controller.passwordController,
+                            obscureText: !controller.showPassword.value,
+                            maxLines: 1,
+                            textCapitalization: TextCapitalization.none,
+                            label: AppLocalizations.of(context)!.password,
+                            suffixIcon: controller.showPassword.value
+                                ? Icons.remove_red_eye_outlined
+                                : Icons.visibility_off_outlined,
+                            onSuffixTap: () {
+                              controller.showPassword.value =
+                                  !controller.showPassword.value;
+                            },
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(15)
+                            ],
+                            focusNode: controller.passwordFocusNode,
+                            onFieldSubmitted: (value) {},
+                            validator: Validators.validatePassword,
+                          )),
+                  !controller.isDataFetchSuccessful.value ||
+                          controller.mobileNumber.isEmpty
+                      ? const SizedBox.shrink()
+                      : const SizedBox(height: 20),
+                  CommonButtonWidget(
+                    isLoading: controller.isLoading,
+                    label: controller.isDataFetchSuccessful.value
+                        ? AppLocalizations.of(context)!.login
+                        : AppStrings.submit,
+                    onTap: () {
+                      if (controller.formKey.currentState!.validate()) {
+                        if (controller.isDataFetchSuccessful.value) {
+                          controller.performLogin();
+                        } else {
+                          controller.getMasjidsList();
+                        }
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

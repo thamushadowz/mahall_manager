@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -10,6 +12,7 @@ import 'package:toastification/toastification.dart';
 import '../../../domain/core/interfaces/utility_services.dart';
 import '../../../domain/listing/listing_repository.dart';
 import '../../../domain/listing/listing_service.dart';
+import '../../../domain/listing/models/GetMasjidListModel.dart';
 import '../../../domain/listing/models/login_model.dart';
 import '../../../infrastructure/dal/services/storage_service.dart';
 
@@ -19,22 +22,35 @@ class LoginController extends GetxController {
 
   final StorageService _storageService = StorageService();
   RxString selectedLanguage = 'English'.obs;
+  RxString mobileNumber = ''.obs;
   RxBool showPassword = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isDataLoading = false.obs;
+  RxBool isDataFetchSuccessful = false.obs;
   RxBool canPop = false.obs;
   DateTime? lastPressedAt;
+  List<MasjidListData> masjidList = [];
+  int masjidId = 0;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final mobileController = TextEditingController();
+  final masjidListController = TextEditingController();
   final passwordController = TextEditingController();
 
   final mobileFocusNode = FocusNode();
+  final masjidListFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
 
   @override
   void onInit() {
     super.onInit();
+    mobileController.addListener(() {
+      mobileNumber.value = mobileController.text;
+      if (mobileNumber.value.isEmpty) {
+        isDataFetchSuccessful.value = false;
+      }
+    });
     notificationServices.requestNotificationPermission();
     notificationServices.firebaseInit(Get.context!);
     notificationServices.getDeviceToken().then((val) {});
@@ -60,6 +76,44 @@ class LoginController extends GetxController {
     Get.updateLocale(Locale(langCode));
   }
 
+  Future<void> getMasjidsList() async {
+    isLoading.value = true;
+    masjidList.clear();
+    var isConnectedToInternet = await isInternetAvailable();
+    if (isConnectedToInternet) {
+      try {
+        GetMasjidListModel response = await listingService
+            .getMasjidsList({'phone': mobileController.text.trim()});
+        print('response is ::: ${jsonEncode(response)}');
+        if (response.status == true) {
+          masjidList.addAll(response.data ?? []);
+          if (masjidList.length == 1) {
+            masjidListController.text =
+                '${masjidList[0].code} - ${masjidList[0].name}';
+            masjidId = masjidList[0].id!.toInt();
+          }
+          isDataFetchSuccessful.value = true;
+        } else {
+          isDataFetchSuccessful.value = false;
+          showToast(
+              title: response.message ?? '', type: ToastificationType.error);
+        }
+      } catch (e) {
+        isDataFetchSuccessful.value = false;
+        showToast(
+            title: AppStrings.somethingWentWrong,
+            type: ToastificationType.error);
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      showToast(
+          title: AppStrings.noInternetConnection,
+          type: ToastificationType.error);
+      isLoading.value = false;
+    }
+  }
+
   Future<void> performLogin() async {
     isLoading.value = true;
     var isConnectedToInternet = await isInternetAvailable();
@@ -67,6 +121,7 @@ class LoginController extends GetxController {
       try {
         LoginModel response = await listingService.loginCheck(
             mobileController.text.trim(),
+            masjidId.toString(),
             passwordController.text.trim(),
             await notificationServices.getDeviceToken());
         if (response.status == true) {

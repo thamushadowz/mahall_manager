@@ -12,6 +12,7 @@ import 'package:mahall_manager/domain/listing/models/get_reports_model.dart';
 import 'package:mahall_manager/domain/listing/models/input_models/mahall_registration_input_model.dart';
 import 'package:mahall_manager/domain/listing/models/mahall_registration_or_details_model.dart';
 
+import 'models/GetMasjidListModel.dart';
 import 'models/committee_details_model.dart';
 import 'models/get_expat_model.dart';
 import 'models/house_registration_model.dart';
@@ -20,8 +21,10 @@ import 'models/login_model.dart';
 import 'models/payment_success_model.dart';
 
 abstract class ListingService {
+  Future<GetMasjidListModel> getMasjidsList(dynamic query);
+
   Future<LoginModel> loginCheck(
-      String mobileNo, String password, String fcmToken);
+      String mobileNo, String masjidId, String password, String fcmToken);
 
   Future<CommonResponse> mahallRegistration(
       String authToken, MahallRegistrationInputModel params);

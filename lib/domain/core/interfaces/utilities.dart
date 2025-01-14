@@ -28,7 +28,6 @@ class Utilities {
       AppStrings.abneg,
       AppStrings.opos,
       AppStrings.oneg,
-      AppStrings.others,
     ];
   }
 
